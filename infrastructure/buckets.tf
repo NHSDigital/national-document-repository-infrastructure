@@ -1,4 +1,4 @@
 module "ndr-document-store" {
   source      = "./modules/s3/"
-  bucket_name = "ndr-document-store"
+  bucket_name = "document-store"
 }
