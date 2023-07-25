@@ -1,4 +1,25 @@
 National Document Repository Infrastructure 
 -
 
-Repository for the National Document Respoitory Infrastructure
+## Prerequisite
+Ensure the following Prereqs are installed first (can use brew on Mac/Linux or Chocolatey on Windows)
+- [Terraform Docs](https://terraform-docs.io/) - for formmating terraform documentation
+```bash
+    brew install terraform-docs
+```
+- [findutils](https://www.gnu.org/software/findutils/) - Needed for scripts running on MacOSX
+```bash
+brew intsall findutils
+```
+
+## Repository best practices
+
+We provide a makefile to ensure consistency and provide simplicity. It is strongly advised, both when planning and applying terraform, that this is done via the makefile.
+
+The `make pre-commit` command this will format all terraform code, and re-create all README.md files. This should be run before every commit to keep the code base clean.
+
+## The makefile
+
+The following commands currently exist in the make file:
+
+- `make pre-commit` -> runs both the `make generate-docs` and `make format-all` commands.

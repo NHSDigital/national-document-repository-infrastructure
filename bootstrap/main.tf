@@ -1,8 +1,8 @@
 terraform {
-  required_version = ">= 0.12.29" 
+  required_version = ">= 0.12.29"
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = ">= 4.0"
     }
   }
@@ -13,23 +13,23 @@ provider "aws" {
 }
 
 resource "aws_kms_key" "ndr_state_key" {
-  description = "ndr-dev-terraform-state-key"
+  description             = "ndr-dev-terraform-state-key"
   deletion_window_in_days = 10
-  enable_key_rotation = true
+  enable_key_rotation     = true
 }
 
 resource "aws_s3_bucket" "ndr_lock_bucket" {
   bucket = "ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}"
 
-    lifecycle {
+  lifecycle {
     prevent_destroy = true
   }
 }
 
 resource "aws_s3_bucket_acl" "ndr_lock_bucket_acl" {
-  bucket = aws_s3_bucket.ndr_lock_bucket.id
-  acl    = "private"
-    depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
+  bucket     = aws_s3_bucket.ndr_lock_bucket.id
+  acl        = "private"
+  depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
 
 }
 
@@ -68,16 +68,16 @@ resource "aws_s3_bucket_public_access_block" "public_access_block" {
 }
 
 resource "aws_dynamodb_table" "dynamodb_terraform_state_lock" {
-  name = "ndr-terraform-locks"
-  hash_key = "LockID"
-  read_capacity = 20
+  name           = "ndr-terraform-locks"
+  hash_key       = "LockID"
+  read_capacity  = 20
   write_capacity = 20
 
   attribute {
     name = "LockID"
     type = "S"
   }
-    lifecycle {
+  lifecycle {
     prevent_destroy = true
   }
 }
