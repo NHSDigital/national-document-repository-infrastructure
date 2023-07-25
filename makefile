@@ -1,5 +1,9 @@
 default: help
 
+.PHONY: Install
+install:
+	cd ./infrastructure && npm install
+	
 # Bootstrap
 .PHONY: init-bootstrap
 init-bootstrap:
@@ -11,9 +15,11 @@ apply-bootstrap:
 
 # Pre-commit husky
 .PHONY:pre-commit
-pre-commit:  generate-terraform-docs format-all
+pre-commit:  ;cd ./infrastructure && npx lint-staged
 
 # Pre-push husky
+# .PHONY:pre-push
+# pre-commit: 
 
 # Formatting
 .PHONY:format-all
