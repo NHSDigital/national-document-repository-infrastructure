@@ -1,11 +1,12 @@
-National Document Repository Infrastructure 
--
+# National Document Repository Infrastructure 
+
+
 
 ## Prerequisite
 Ensure the following Prereqs are installed first (can use brew on Mac/Linux or Chocolatey on Windows)
 - [Terraform Docs](https://terraform-docs.io/) - for formmating terraform documentation
 ```bash
-    brew install terraform-docs
+brew install terraform-docs
 ```
 - [findutils](https://www.gnu.org/software/findutils/) - Needed for scripts running on MacOSX
 ```bash
@@ -18,7 +19,13 @@ We provide a makefile to ensure consistency and provide simplicity. It is strong
 
 The `make pre-commit` command this will format all terraform code, and re-create all README.md files. This should be run before every commit to keep the code base clean.
 
-## The makefile
+## Using Workspaces
+To initialise the S3 backend, cd to infrastructure folder and run 
+```bash
+terraform init -backend-config=backend.conf
+```
+
+### The makefile
 
 The following commands currently exist in the make file:
 
