@@ -29,7 +29,7 @@ format-all:
 # Documentation
 .PHONY:generate-terraform-docs
 generate-terraform-docs:
-	./supporting_scripts/create-terraform-docs.sh
+	./scripts/create-terraform-docs.sh
 
 # Installing
 

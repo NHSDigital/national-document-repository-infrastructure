@@ -12,11 +12,6 @@
   "scripts": {
     "prepare": "husky install ./.husky"
   },
-  "lint-staged": {
-    "*.{tf}": [
-      "make generate-terraform-docs && make format-all"
-    ]
-  },
   "author": "",
   "license": "ISC"
 }
