@@ -15,7 +15,7 @@ apply-bootstrap:
 
 # Pre-commit husky
 .PHONY:pre-commit
-pre-commit:  npx lint-staged
+pre-commit:  generate-terraform-docs format-all
 
 # Pre-push husky
 # .PHONY:pre-push
