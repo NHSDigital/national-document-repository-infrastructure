@@ -15,7 +15,7 @@ apply-bootstrap:
 
 # Pre-commit husky
 .PHONY:pre-commit
-pre-commit:  ;cd ./infrastructure && npx lint-staged
+pre-commit:  npx lint-staged
 
 # Pre-push husky
 # .PHONY:pre-push

@@ -1,0 +1,22 @@
+{
+  "name": "national-document-repository-infrastructure",
+  "version": "1.0.0",
+  "description": "National Document Repository Infrastructure  -",
+  "main": "index.js",
+  "dependencies": {
+    "husky": "^8.0.3"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0"
+  },
+  "scripts": {
+    "prepare": "husky install ./.husky"
+  },
+  "lint-staged": {
+    "*.{tf}": [
+      "make generate-terraform-docs && make format-all"
+    ]
+  },
+  "author": "",
+  "license": "ISC"
+}
