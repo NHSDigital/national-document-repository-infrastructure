@@ -17,7 +17,9 @@ fi
 make pre-commit
 RESULT=$?
 if [ $RESULT -ne 0 ]; then
-  git stash pop -q
+  if [ $WIPCHANGES -ne 0 ]; then
+    git stash pop -q
+  fi
   printf "Error in make file, exiting\n"
   exit 1;
 fi
