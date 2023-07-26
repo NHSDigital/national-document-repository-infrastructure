@@ -3,15 +3,6 @@ default: help
 .PHONY: Install
 install:
 	cd ./infrastructure && npm install
-	
-# Bootstrap
-.PHONY: init-bootstrap
-init-bootstrap:
-	cd ./bootstrap && terraform init
-
-.PHONY: apply-bootstrap
-apply-bootstrap:
-	cd ./bootstrap && terraform apply
 
 # Pre-commit husky
 .PHONY:pre-commit
@@ -36,3 +27,12 @@ generate-terraform-docs:
 # Linting
 
 # Testing
+
+# Bootstrap
+.PHONY: init-bootstrap
+init-bootstrap:
+	cd ./bootstrap && terraform init
+
+.PHONY: apply-bootstrap
+apply-bootstrap:
+	cd ./bootstrap && terraform apply
