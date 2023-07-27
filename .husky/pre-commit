@@ -1,14 +1,30 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# git stash push --staged            # Stash staged changes
-# git stash                          # Stash everything else
-# git stash pop stash@{1}  # Restore staged changes stash
-# make pre-commit
-# RESULT=$?
-# if [ $RESULT -ne 0 ]; then
-#   git stash pop -q
-#   exit 1;
-# fi
-# git add --all
-# git stash pop -q
+if (echo min version 2.35; git --version) | sort -Vk3 | tail -1 | grep -q git
+then
+    git stash push --staged
+    WIPCHANGES=$(git status --porcelain=v1 2>/dev/null | wc -l)             
+    if [ $WIPCHANGES -ne 0 ]; then
+      git stash
+      git stash pop stash@{1} -q
+    else
+      git stash pop stash@{0} -q
+    fi
+    make pre-commit
+    RESULT=$?
+    if [ $RESULT -ne 0 ]; then
+      if [ $WIPCHANGES -ne 0 ]; then
+        git stash pop -q
+      fi
+      printf "Error in make file, exiting\n"
+      exit 1;
+    fi
+    git add --all
+    if [ $WIPCHANGES -ne 0 ]; then
+      git stash pop -q
+    fi
+else
+     printf "Git is out of date, skipping auto-stage..."
+     make pre-commit
+fi
