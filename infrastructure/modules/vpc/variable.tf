@@ -17,14 +17,6 @@ variable "enable_private_routes" {
   default     = false
 }
 
-
-# Availability zones
-variable "azs" {
-  type        = list(string)
-  description = "This is a list that specifies all the Availability Zones that will have public and private subnets in it. Defaulting this value to an empty list selects of all the Availability Zones in the region you specify when defining the provider in your terraform project."
-  default     = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
-}
-
 # CIDR Defintions
 variable "ig_cidr" {
   type        = string
@@ -39,7 +31,15 @@ variable "ig_ipv6_cidr" {
 }
 
 variable "vpc_cidr" {
-  type = string
+  type        = string
   description = "This specifices the VPC CIDR block"
   default     = "10.0.0.0/16"
+}
+
+
+# Availability zones
+variable "azs" {
+  type        = list(string)
+  description = "This is a list that specifies all the Availability Zones that will have public and private subnets in it. Defaulting this value to an empty list selects of all the Availability Zones in the region you specify when defining the provider in your terraform project."
+  default     = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
 }
