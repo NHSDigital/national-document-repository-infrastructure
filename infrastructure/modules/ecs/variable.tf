@@ -18,3 +18,7 @@ variable "ecs_launch_type" {
   type    = string
   default = "FARGATE"
 }
+
+variable "public_subnets" {
+
+}
