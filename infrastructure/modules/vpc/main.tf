@@ -4,7 +4,9 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = var.enable_dns_hostnames
   tags = {
     Name        = "${terraform.workspace}-vpc"
-    Environment = terraform.workspace
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
   }
 }
 
@@ -14,8 +16,11 @@ resource "aws_subnet" "public_subnets" {
   cidr_block        = element(local.public_subnet_cidrs, count.index)
   availability_zone = element(local.az_zones, count.index)
   tags = {
-    Name = "${terraform.workspace}-public-subnet-${count.index + 1}"
-    Zone = "Public"
+    Name        = "${terraform.workspace}-public-subnet-${count.index + 1}"
+    Zone        = "Public"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
   }
 }
 
@@ -25,8 +30,11 @@ resource "aws_subnet" "private_subnets" {
   cidr_block        = element(local.private_subnet_cidrs, count.index)
   availability_zone = element(local.az_zones, count.index)
   tags = {
-    Name = "${terraform.workspace}-private-subnet-${count.index + 1}"
-    Zone = "Private"
+    Name        = "${terraform.workspace}-private-subnet-${count.index + 1}"
+    Zone        = "Private"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
   }
 }
 
@@ -34,7 +42,11 @@ resource "aws_internet_gateway" "ig" {
   count  = local.num_public_subnets > 0 ? 1 : 0
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "${terraform.workspace}-vpc-internet-gateway"
+    Name        = "${terraform.workspace}-vpc-internet-gateway"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+
   }
 }
 
@@ -42,7 +54,12 @@ resource "aws_route_table" "public" {
   count  = local.num_public_subnets > 0 ? 1 : 0
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "${terraform.workspace}-public-route-table"
+    Name        = "${terraform.workspace}-public-route-table"
+    Zone        = "Public"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+
   }
 }
 
@@ -50,7 +67,12 @@ resource "aws_route_table" "private" {
   count  = local.num_private_subnets > 0 ? 1 : 0
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "${terraform.workspace}-private-route-table"
+    Name        = "${terraform.workspace}-private-route-table"
+    Zone        = "Private"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+
   }
 }
 

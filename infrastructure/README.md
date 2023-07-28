@@ -15,7 +15,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ndr-document-store"></a> [ndr-document-store](#module\_ndr-document-store) | ./modules/s3/ | n/a |
-| <a name="module_ndr-vpc"></a> [ndr-vpc](#module\_ndr-vpc) | ./modules/vpc/ | n/a |
+| <a name="module_ndr-vpc-ui"></a> [ndr-vpc-ui](#module\_ndr-vpc-ui) | ./modules/vpc/ | n/a |
 
 ## Resources
 
@@ -25,7 +25,10 @@
 
 ## Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
+| <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
 
 ## Outputs
 

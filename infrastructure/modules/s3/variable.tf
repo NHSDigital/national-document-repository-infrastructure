@@ -8,3 +8,13 @@ variable "force_destroy" {
   type        = bool
   default     = false
 }
+
+# Tags
+
+variable "environment" {
+  type = string
+}
+
+variable "owner" {
+  type = string
+}
