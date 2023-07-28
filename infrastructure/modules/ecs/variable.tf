@@ -22,3 +22,13 @@ variable "ecs_launch_type" {
 variable "public_subnets" {
 
 }
+
+# Tags
+
+variable "environment" {
+  type = string
+}
+
+variable "owner" {
+  type = string
+}
