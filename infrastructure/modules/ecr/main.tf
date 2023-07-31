@@ -7,6 +7,12 @@ resource "aws_ecr_repository" "ndr-docker-ui" {
   encryption_configuration {
     encryption_type = "KMS"
   }
+  tags = {
+    Name = "${terraform.workspace}-${var.app_name}"
+    #    Owner       = var.owner
+    #    Environment = var.environment
+    Workspace = terraform.workspace
+  }
 }
 
 resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
@@ -34,7 +40,7 @@ resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
 
 resource "aws_ecr_repository_policy" "ndr_ecr_repository_policy" {
   repository = aws_ecr_repository.ndr-docker-ui.name
-  policy = <<EOF
+  policy     = <<EOF
 {
     "Version": "2008-10-17",
     "Statement": [
