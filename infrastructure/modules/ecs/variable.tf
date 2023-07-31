@@ -20,10 +20,12 @@ variable "ecs_launch_type" {
 }
 
 variable "public_subnets" {
-
 }
 
-# Tags
+variable "aws_region" {
+  type = string
+  default = "eu-west-2"
+}
 
 variable "environment" {
   type = string
