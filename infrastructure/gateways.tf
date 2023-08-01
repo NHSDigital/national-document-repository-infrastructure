@@ -49,7 +49,7 @@ resource "aws_api_gateway_gateway_response" "unauthorised_response" {
 }
 
 resource "aws_api_gateway_gateway_response" "bad_gateway_response" {
-  rest_api_id   = aws_api_gateway_rest_api.lambda_api.id
+  rest_api_id   = aws_api_gateway_rest_api.ndr_docstore_api.id
   response_type = "DEFAULT_5XX"
 
   response_templates = {
