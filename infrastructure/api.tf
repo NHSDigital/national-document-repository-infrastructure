@@ -9,11 +9,10 @@ module "ndr-create-doc-ref" {
   api_gateway_id = aws_api_gateway_rest_api.ndr_docstore_api.id
   parent_id      = aws_api_gateway_rest_api.ndr_docstore_api.root_resource_id
   http_method    = "POST"
-  authorization  = "NONE"
+  authorization  = "NONE" // "CUSTOM"
   gateway_path   = "CreateDocumentReference"
-  # lambda_uri     = "arn:aws:lambda:eu-west-2:533825906475:function:lambda_handler"
-  # authorization  = "CUSTOM"
-  # authorizer_id  = aws_api_gateway_authorizer.cis2_authoriser.id
+  lambda_uri     = null
+  authorizer_id  = null
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_docstore_api

@@ -13,7 +13,9 @@ variable "http_method" {
 variable "authorization" {
   type = string
 }
-# variable "lambda_uri" {
-#     type =  string
-# }
-# variable "authorizer_id" {}
+variable "lambda_uri" {
+  type = string
+}
+variable "authorizer_id" {
+  type = string
+}
