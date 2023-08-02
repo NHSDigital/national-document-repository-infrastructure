@@ -31,22 +31,22 @@ module "create-doc-ref-gateway" {
   ]
 }
 
-# resource "aws_api_gateway_deployment" "ndr_api_deploy" {
-#   rest_api_id = aws_api_gateway_rest_api.ndr_docstore_api.id
-#   stage_name  = var.environment
+resource "aws_api_gateway_deployment" "ndr_api_deploy" {
+  rest_api_id = aws_api_gateway_rest_api.ndr_docstore_api.id
+  stage_name  = var.environment
 
-#   triggers = {
-#     redeployment = sha1(jsonencode([
-#       aws_api_gateway_rest_api.ndr_docstore_api,
-#       module.create-doc-ref-gateway
-#     ]))
-#   }
+  triggers = {
+    redeployment = sha1(jsonencode([
+      aws_api_gateway_rest_api.ndr_docstore_api,
+      module.create-doc-ref-gateway
+    ]))
+  }
 
-#   depends_on = [
-#     aws_api_gateway_rest_api.ndr_docstore_api,
-#     module.create-doc-ref-gateway
-#   ]
-# }
+  depends_on = [
+    aws_api_gateway_rest_api.ndr_docstore_api,
+    module.create-doc-ref-gateway
+  ]
+}
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response" {
   rest_api_id   = aws_api_gateway_rest_api.ndr_docstore_api.id

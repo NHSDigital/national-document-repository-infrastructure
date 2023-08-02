@@ -4,16 +4,6 @@ resource "aws_api_gateway_resource" "gateway_resource" {
   path_part   = var.gateway_path
 }
 
-resource "aws_api_gateway_method" "lambda_method" {
-  rest_api_id   = var.api_gateway_id
-  resource_id   = aws_api_gateway_resource.gateway_resource.id
-  http_method   = var.http_method
-  authorization = var.authorization
-  authorizer_id = var.authorizer_id
-  depends_on    = [aws_api_gateway_resource.gateway_resource]
-
-}
-
 resource "aws_api_gateway_method" "preflight_method" {
   rest_api_id   = var.api_gateway_id
   resource_id   = aws_api_gateway_resource.gateway_resource.id
