@@ -15,10 +15,10 @@ module "create-doc-ref-gateway" {
 
   api_gateway_id           = aws_api_gateway_rest_api.ndr_docstore_api.id
   parent_id                = aws_api_gateway_rest_api.ndr_docstore_api.root_resource_id
-  http_method              = "POST"
-  methods                  = "POST,OPTIONS"
+  http_method              = "POST,GET,DELETE"
+  methods                  = "POST,GET,DELETE,OPTIONS"
   authorization            = "NONE" // "CUSTOM"
-  gateway_path             = "CreateDocumentReference"
+  gateway_path             = "DocumentReference"
   lambda_uri               = null
   authorizer_id            = null
   cors_require_credentials = var.cors_require_credentials
