@@ -1,9 +1,5 @@
-variable "cors_origin" {
-  type = string
-}
-
-variable "cors_credentials" {
-  type = string 
+variable "cors_require_credentials" {
+  type = bool
 }
 
 variable "api_gateway_stage" {
