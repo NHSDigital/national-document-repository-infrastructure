@@ -1,7 +1,11 @@
-variable "cors_require_credentials" {
-  type = bool
+variable "environment" {
+  type = string
 }
 
-variable "api_gateway_stage" {
+variable "owner" {
   type = string
+}
+
+variable "cors_require_credentials" {
+  type = bool
 }

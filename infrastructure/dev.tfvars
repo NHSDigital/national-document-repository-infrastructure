@@ -1,2 +1,3 @@
-api_gateway_stage        = "dev"
+environment              = "dev"
+owner                    = "nhse/ndr-team"
 cors_require_credentials = true

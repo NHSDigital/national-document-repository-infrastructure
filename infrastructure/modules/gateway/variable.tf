@@ -19,3 +19,17 @@ variable "lambda_uri" {
 variable "authorizer_id" {
   type = string
 }
+variable "owner" {
+  type = string
+}
+variable "environment" {
+  type = string
+}
+
+variable "cors_require_credentials" {
+  type = bool
+}
+
+variable "methods" {
+  type = string
+}
