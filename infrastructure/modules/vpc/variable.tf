@@ -1,3 +1,11 @@
+
+# Availability zones
+variable "azs" {
+  type        = list(string)
+  description = "This is a list that specifies all the Availability Zones that will have public and private subnets in it. Defaulting this value to an empty list selects of all the Availability Zones in the region you specify when defining the provider in your terraform project."
+  default     = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+}
+
 # Toggles
 variable "enable_dns_support" {
   type        = bool
@@ -36,14 +44,6 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
-
-# Availability zones
-variable "azs" {
-  type        = list(string)
-  description = "This is a list that specifies all the Availability Zones that will have public and private subnets in it. Defaulting this value to an empty list selects of all the Availability Zones in the region you specify when defining the provider in your terraform project."
-  default     = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
-}
-
 # Tags
 
 variable "environment" {
@@ -52,4 +52,12 @@ variable "environment" {
 
 variable "owner" {
   type = string
+}
+
+variable "num_public_subnets" {
+  type = number
+}
+
+variable "num_private_subnets" {
+  type = number
 }

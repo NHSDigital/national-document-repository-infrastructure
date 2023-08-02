@@ -28,6 +28,8 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
+| <a name="input_num_private_subnets"></a> [num\_private\_subnets](#input\_num\_private\_subnets) | n/a | `number` | `3` | no |
+| <a name="input_num_public_subnets"></a> [num\_public\_subnets](#input\_num\_public\_subnets) | n/a | `number` | `3` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
 
 ## Outputs
