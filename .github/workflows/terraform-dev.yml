@@ -30,11 +30,18 @@ jobs:
         terraform_version: 1.5.4
         terraform_wrapper: false
   
+    - name: Terraform Set Workspace
+      id: init
+      run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
+      env:
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      working-directory: ./infrastructure 
+      shell: bash
+
     - name: Terraform Init
       id: init
-      run:  >
-            terraform workspace select ${{ secrets.AWS_WORKSPACE }}
-            terraform init
+      run: terraform init
       env:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
