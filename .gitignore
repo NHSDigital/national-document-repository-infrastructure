@@ -27,3 +27,4 @@ terraform.rc
 
 .terraform.lock.hcl
 node_modules/
+tfplan
