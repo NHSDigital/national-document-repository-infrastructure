@@ -17,11 +17,21 @@ jobs:
   terraform_process:
     runs-on: ubuntu-latest
     environment: development
-    
+    env:
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        ASSUME_ROLE: "dev"
+
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::533825906475:role/NHSDAdminRole
+        aws-region: eu-west-2
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
@@ -33,18 +43,12 @@ jobs:
     - name: Terraform Init
       id: init
       run: terraform init
-      env:
-        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       working-directory: ./infrastructure 
       shell: bash
 
     - name: Terraform Set Workspace
       id: workspace
       run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
-      env:
-        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       working-directory: ./infrastructure 
       shell: bash
       
@@ -56,9 +60,6 @@ jobs:
       id: plan
       run: |
         terraform plan -input=false -no-color -var-file="dev.tfvars" -out tf.plan
-      env:
-        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       working-directory: ./infrastructure
       shell: bash
         
