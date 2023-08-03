@@ -1,0 +1,55 @@
+# .github/workflows/terraform-dev
+name: 'Terraform - Development'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  push:
+    branches:
+    - dev
+  pull_request:
+    branches:
+    - dev
+    
+jobs:
+  terraform_process:
+    runs-on: ubuntu-latest
+    environment: development
+    
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.4
+        terraform_wrapper: false
+  
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      env:
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      working-directory: ./infrastructure 
+      shell: bash
+      
+    - name: Terraform Validate
+      uses: hashicorp/terraform-github-actions/validate@v0.3.7
+
+    - name: Terraform Plan
+      id: plan
+      run: |
+        terraform plan -input=false -no-color -out tf.plan
+      env:
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      working-directory: ./infrastructure
+      shell: bash
+        
+        
