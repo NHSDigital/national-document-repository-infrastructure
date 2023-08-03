@@ -1,5 +1,5 @@
 locals {
-  num_az_zones = length(var.azs)
+  num_az_zones = length(var.availability_zones)
 }
 
 locals {

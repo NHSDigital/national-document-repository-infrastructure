@@ -14,7 +14,7 @@ resource "aws_subnet" "public_subnets" {
   count             = var.num_public_subnets
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = element(local.public_subnet_cidrs, count.index)
-  availability_zone = element(var.azs, count.index)
+  availability_zone = element(var.availability_zones, count.index)
   tags = {
     Name        = "${terraform.workspace}-public-subnet-${count.index + 1}"
     Zone        = "Public"
@@ -28,7 +28,7 @@ resource "aws_subnet" "private_subnets" {
   count             = var.num_private_subnets
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = element(local.private_subnet_cidrs, count.index)
-  availability_zone = element(var.azs, count.index)
+  availability_zone = element(var.availability_zones, count.index)
   tags = {
     Name        = "${terraform.workspace}-private-subnet-${count.index + 1}"
     Zone        = "Private"
@@ -98,7 +98,7 @@ resource "aws_route_table_association" "public" {
 }
 
 resource "aws_route_table_association" "private" {
-  count          = var.enable_private_routes ? var.num_private_subnets
+  count          = var.enable_private_routes ? var.num_private_subnets : 0
   subnet_id      = element(aws_subnet.private_subnets[*].id, count.index)
   route_table_id = aws_route_table.private[0].id
 }
