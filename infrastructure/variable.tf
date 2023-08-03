@@ -10,7 +10,10 @@ variable "owner" {
 
 
 # Bucket Variables
-
+variable "docstore_bucket_name" {
+  type    = string
+  default = "document-store"
+}
 # Gateway Variables
 variable "cors_require_credentials" {
   type        = bool
