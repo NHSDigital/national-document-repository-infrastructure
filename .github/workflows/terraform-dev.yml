@@ -1,10 +1,6 @@
 # .github/workflows/terraform-dev
 name: 'Terraform - Development'
 
-permissions:
-  contents: read
-  pull-requests: write
-
 on:
   push:
     branches:
@@ -12,6 +8,10 @@ on:
   pull_request:
     branches:
     - dev
+
+permissions:
+  contents: read
+  pull-requests: write
     
 jobs:
   terraform_process:
@@ -41,8 +41,9 @@ jobs:
       working-directory: ./infrastructure 
       shell: bash
       
-    - name: Terraform Validate
-      uses: hashicorp/terraform-github-actions/validate@v0.3.7
+      # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt -check
 
     - name: Terraform Plan
       id: plan
