@@ -98,7 +98,7 @@ resource "aws_route_table_association" "public" {
 }
 
 resource "aws_route_table_association" "private" {
-  count          = var.num_private_subnets
+  count          = var.enable_private_routes ? var.num_private_subnets
   subnet_id      = element(aws_subnet.private_subnets[*].id, count.index)
   route_table_id = aws_route_table.private[0].id
 }
