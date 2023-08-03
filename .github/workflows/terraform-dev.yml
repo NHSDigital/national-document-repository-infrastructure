@@ -31,7 +31,7 @@ jobs:
         terraform_wrapper: false
   
     - name: Terraform Set Workspace
-      id: init
+      id: workspace
       run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
       env:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
