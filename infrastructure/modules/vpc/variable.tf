@@ -1,5 +1,11 @@
 
 
+#Availability zones for Amazon region
+variable "availability_zones" {
+  type        = list(string)
+  description = "This is a list that specifies all the Availability Zones that will have a pair of public and private subnets"
+}
+
 # Toggles
 variable "enable_dns_support" {
   type        = bool
@@ -19,7 +25,7 @@ variable "enable_private_routes" {
   default     = false
 }
 
-# CIDR Defintions
+# CIDR Definitions
 variable "ig_cidr" {
   type        = string
   description = "This specifies the CIDR block for the internet gateway."
