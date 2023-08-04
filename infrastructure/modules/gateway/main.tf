@@ -75,7 +75,7 @@ module "create-doc-ref-lambda" {
   source = "../lambda"
 
   name                 = "CreateDocRefLambda"
-  handler              = "uk.nhs.digital.docstore.lambdas.CreateDocumentReferenceHandler::handleRequest"
+  handler              = "CreateDocRefLambda.lambda_handler"
   table_name           = "DocumentReferenceMetadata"
   docstore_bucket_name = var.docstore_bucket_name
 

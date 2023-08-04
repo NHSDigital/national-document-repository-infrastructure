@@ -1,3 +1,4 @@
+# Create Document Store API
 resource "aws_api_gateway_rest_api" "ndr_docstore_api" {
   name        = "${terraform.workspace}-DocStoreAPI"
   description = "Document store API for Repo"
@@ -10,9 +11,12 @@ resource "aws_api_gateway_rest_api" "ndr_docstore_api" {
   }
 }
 
-module "create-doc-ref-gateway" {
-  source = "./modules/gateway"
+# Endpoints
 
+module "create-doc-ref" {
+
+  # Gateway Variables
+  source                   = "./modules/gateway"
   api_gateway_id           = aws_api_gateway_rest_api.ndr_docstore_api.id
   parent_id                = aws_api_gateway_rest_api.ndr_docstore_api.root_resource_id
   http_method              = "POST"
@@ -20,15 +24,19 @@ module "create-doc-ref-gateway" {
   gateway_path             = "DocumentReference"
   authorizer_id            = null
   cors_require_credentials = var.cors_require_credentials
-  docstore_bucket_name     = var.docstore_bucket_name
-  api_execution_arn        = aws_api_gateway_rest_api.ndr_docstore_api.execution_arn
-  owner                    = var.owner
-  environment              = var.environment
+
+  # Lambda Variables
+  docstore_bucket_name = var.docstore_bucket_name
+  api_execution_arn    = aws_api_gateway_rest_api.ndr_docstore_api.execution_arn
+  owner                = var.owner
+  environment          = var.environment
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_docstore_api,
   ]
 }
+
+# API Config
 
 resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   rest_api_id = aws_api_gateway_rest_api.ndr_docstore_api.id
