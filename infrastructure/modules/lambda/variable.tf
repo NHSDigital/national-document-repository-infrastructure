@@ -10,7 +10,7 @@ variable "table_name" {
 }
 
 variable "docstore_bucket_name" {
-    type = string
+  type = string
 }
 
 variable "rest_api_id" {

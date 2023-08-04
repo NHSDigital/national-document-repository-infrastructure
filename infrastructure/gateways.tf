@@ -15,15 +15,15 @@ module "create-doc-ref-gateway" {
 
   api_gateway_id           = aws_api_gateway_rest_api.ndr_docstore_api.id
   parent_id                = aws_api_gateway_rest_api.ndr_docstore_api.root_resource_id
-  http_method = "POST"
+  http_method              = "POST"
   authorization            = "NONE" // "CUSTOM"
   gateway_path             = "DocumentReference"
   authorizer_id            = null
   cors_require_credentials = var.cors_require_credentials
- docstore_bucket_name = var.docstore_bucket_name
- api_execution_arn = aws_api_gateway_rest_api.ndr_docstore_api.execution_arn
-  owner       = var.owner
-  environment = var.environment
+  docstore_bucket_name     = var.docstore_bucket_name
+  api_execution_arn        = aws_api_gateway_rest_api.ndr_docstore_api.execution_arn
+  owner                    = var.owner
+  environment              = var.environment
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_docstore_api,

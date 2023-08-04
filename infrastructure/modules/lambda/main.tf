@@ -3,17 +3,17 @@
 resource "aws_lambda_function" "lambda" {
   # If the file is not in the current working directory you will need to include a
   # path.module in the filename.
-  filename      = "${var.name}_payload.zip"
-  function_name = "${terraform.workspace}_${var.name}"
-  role          = aws_iam_role.iam_for_lambda.arn
-  handler       = var.handler
+  filename         = "${var.name}_payload.zip"
+  function_name    = "${terraform.workspace}_${var.name}"
+  role             = aws_iam_role.iam_for_lambda.arn
+  handler          = var.handler
   source_code_hash = data.archive_file.lambda.output_base64sha256
-  runtime = "python3.7"
+  runtime          = "python3.7"
 
 
   environment {
     variables = {
-      DOCUMENT_STORE_BUCKET_NAME = var.docstore_bucket_name
+      DOCUMENT_STORE_BUCKET_NAME   = var.docstore_bucket_name
       DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.table_name}"
     }
   }
