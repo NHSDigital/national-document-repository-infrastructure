@@ -8,10 +8,10 @@ resource "aws_ecr_repository" "ndr-docker-ui" {
     encryption_type = "KMS"
   }
   tags = {
-    Name = "${terraform.workspace}-${var.app_name}"
-    #    Owner       = var.owner
-    #    Environment = var.environment
-    Workspace = terraform.workspace
+    Name        = "${terraform.workspace}-${var.app_name}"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
   }
 }
 
