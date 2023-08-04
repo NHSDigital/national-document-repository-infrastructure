@@ -20,6 +20,16 @@ resource "aws_lambda_function" "lambda" {
 }
 
 
+resource "aws_api_gateway_integration" "lambda_integration" {
+  rest_api_id             = var.rest_api_id
+  resource_id             = var.resource_id
+  http_method             = var.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = aws_lambda_function.lambda.invoke_arn
+}
+
+
 resource "aws_lambda_permission" "lambda_permission" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
@@ -53,13 +63,4 @@ data "archive_file" "lambda" {
   type        = "zip"
   source_file = "${var.name}.py"
   output_path = "${var.name}_payload.zip"
-}
-
-resource "aws_api_gateway_integration" "lambda_integration" {
-  rest_api_id             = var.rest_api_id
-  resource_id             = var.resource_id
-  http_method             = var.http_method
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.lambda.invoke_arn
 }
