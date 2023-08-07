@@ -52,3 +52,7 @@ variable "environment" {
 variable "owner" {
   type = string
 }
+
+output "dynamodb_policy" {
+  value = aws_iam_policy.dynamodb_policy.arn
+}

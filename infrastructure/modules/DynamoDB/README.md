@@ -17,6 +17,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_dynamodb_table.ndr_dynamodb_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table) | resource |
+| [aws_iam_policy.dynamodb_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 
 ## Inputs
 
@@ -36,4 +37,6 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_dynamodb_policy"></a> [dynamodb\_policy](#output\_dynamodb\_policy) | n/a |

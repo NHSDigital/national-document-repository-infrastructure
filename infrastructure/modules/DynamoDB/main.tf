@@ -36,3 +36,44 @@ resource "aws_dynamodb_table" "ndr_dynamodb_table" {
     Workspace   = terraform.workspace
   }
 }
+resource "aws_iam_policy" "dynamodb_policy" {
+  name = "${terraform.workspace}_${var.table_name}_policy"
+  path = "/"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:Scan",
+        ],
+        "Resource" : [
+          aws_dynamodb_table.ndr_dynamodb_table.arn
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:Query",
+        ],
+        "Resource" : [
+          for index in var.global_secondary_indexes :
+          "${aws_dynamodb_table.ndr_dynamodb_table.arn}/index/${index.name}"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+        ],
+        "Resource" : [
+          aws_dynamodb_table.ndr_dynamodb_table.arn,
+        ]
+      }
+
+    ]
+  })
+}
