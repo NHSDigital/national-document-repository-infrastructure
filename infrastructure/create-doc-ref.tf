@@ -27,12 +27,13 @@ module "create-doc-ref-lambda" {
   handler              = "CreateDocRefLambda.lambda_handler"
   table_name           = "DocumentReferenceMetadata"
   docstore_bucket_name = var.docstore_bucket_name
-
-  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = gateway_resource_id
-  http_method       = "POST"
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  iam_role_policies    = [module.document_reference_dynamodb_table.dynamodb_policy, "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
+  rest_api_id          = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id          = module.create-doc-ref-gateway.gateway_resource_id
+  http_method          = "POST"
+  api_execution_arn    = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   depends_on = [
-    aws_api_gateway_rest_api.ndr_doc_store_api
+    aws_api_gateway_rest_api.ndr_doc_store_api,
+    module.document_reference_dynamodb_table
   ]
 }

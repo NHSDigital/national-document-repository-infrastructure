@@ -29,3 +29,7 @@ variable "http_method" {
 variable "api_execution_arn" {
   type = string
 }
+
+variable "iam_role_policies" {
+  type = list(string)
+}

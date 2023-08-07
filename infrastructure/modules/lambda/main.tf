@@ -3,7 +3,7 @@ resource "aws_lambda_function" "lambda" {
   # path.module in the filename.
   filename         = "${var.name}_payload.zip"
   function_name    = "${terraform.workspace}_${var.name}"
-  role             = aws_iam_role.iam_for_lambda.arn
+  role             = aws_iam_role.lambda_execution_role.arn
   handler          = var.handler
   source_code_hash = data.archive_file.lambda.output_base64sha256
   runtime          = "python3.9"
@@ -48,9 +48,15 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-resource "aws_iam_role" "iam_for_lambda" {
-  name               = "iam_${terraform.workspace}_${var.name}"
+resource "aws_iam_role" "lambda_execution_role" {
+  name               = "${terraform.workspace}_lambda_execution_role_${var.name}"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
+  count      = length(var.iam_role_policies)
+  role       = aws_iam_role.lambda_execution_role.name
+  policy_arn = var.iam_role_policies[count.index]
 }
 
 data "archive_file" "lambda" {
