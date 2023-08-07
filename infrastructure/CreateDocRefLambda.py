@@ -10,8 +10,6 @@ def lambda_handler(event, context):
     s3_bucket_name = os.environ['DOCUMENT_STORE_BUCKET_NAME']
     s3_object_key = str(uuid.uuid4())
     try:
-        print(event['body'])
-        print(event['body']['subject'])
         body = event['body']
         create_document_reference_object(s3_bucket_name, s3_object_key, body)
         response = create_document_presigned_url_handler(s3_bucket_name, s3_object_key)

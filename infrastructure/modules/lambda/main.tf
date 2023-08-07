@@ -9,10 +9,7 @@ resource "aws_lambda_function" "lambda" {
   runtime          = "python3.9"
 
   environment {
-    variables = {
-      DOCUMENT_STORE_BUCKET_NAME   = var.docstore_bucket_name
-      DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.table_name}"
-    }
+    variables = var.lambda_environment_variables
   }
 }
 
@@ -43,7 +40,6 @@ data "aws_iam_policy_document" "assume_role" {
       type        = "Service"
       identifiers = ["lambda.amazonaws.com"]
     }
-
     actions = ["sts:AssumeRole"]
   }
 }

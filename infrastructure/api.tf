@@ -18,7 +18,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
 
   triggers = {
     redeployment = sha1(jsonencode([
-      aws_api_gateway_rest_api.ndr_doc_store_api,
+      aws_api_gateway_rest_api.ndr_doc_store_api.body,
       module.create-doc-ref-gateway,
     ]))
   }
@@ -28,6 +28,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.create-doc-ref-gateway,
   ]
 }
+
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response" {
   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
