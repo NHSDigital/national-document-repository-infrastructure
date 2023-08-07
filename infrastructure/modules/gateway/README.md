@@ -10,9 +10,7 @@ No requirements.
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_create-doc-ref-lambda"></a> [create-doc-ref-lambda](#module\_create-doc-ref-lambda) | ../lambda | n/a |
+No modules.
 
 ## Resources
 
@@ -43,4 +41,6 @@ No requirements.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_gateway_resource_id"></a> [gateway\_resource\_id](#output\_gateway\_resource\_id) | n/a |

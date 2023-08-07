@@ -50,8 +50,6 @@ resource "aws_api_gateway_integration" "preflight_integration" {
 }
 EOF
   }
-
-
   depends_on = [aws_api_gateway_method.preflight_method, aws_api_gateway_resource.gateway_resource]
 }
 
@@ -68,22 +66,4 @@ resource "aws_api_gateway_integration_response" "preflight_integration_response"
 
   }
   depends_on = [aws_api_gateway_method_response.preflight_method_response, aws_api_gateway_resource.gateway_resource]
-}
-
-
-module "create-doc-ref-lambda" {
-  source = "../lambda"
-
-  name                 = "CreateDocRefLambda"
-  handler              = "CreateDocRefLambda.lambda_handler"
-  table_name           = "DocumentReferenceMetadata"
-  docstore_bucket_name = var.docstore_bucket_name
-
-  rest_api_id       = var.api_gateway_id
-  resource_id       = aws_api_gateway_resource.gateway_resource.id
-  http_method       = var.http_method
-  api_execution_arn = var.api_execution_arn
-  depends_on = [
-    aws_api_gateway_resource.gateway_resource
-  ]
 }

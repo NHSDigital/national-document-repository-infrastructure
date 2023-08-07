@@ -1,5 +1,3 @@
-
-
 resource "aws_lambda_function" "lambda" {
   # If the file is not in the current working directory you will need to include a
   # path.module in the filename.
@@ -8,8 +6,7 @@ resource "aws_lambda_function" "lambda" {
   role             = aws_iam_role.iam_for_lambda.arn
   handler          = var.handler
   source_code_hash = data.archive_file.lambda.output_base64sha256
-  runtime          = "python3.7"
-
+  runtime          = "python3.9"
 
   environment {
     variables = {
@@ -18,7 +15,6 @@ resource "aws_lambda_function" "lambda" {
     }
   }
 }
-
 
 resource "aws_api_gateway_integration" "lambda_integration" {
   rest_api_id             = var.rest_api_id
@@ -29,7 +25,6 @@ resource "aws_api_gateway_integration" "lambda_integration" {
   uri                     = aws_lambda_function.lambda.invoke_arn
 }
 
-
 resource "aws_lambda_permission" "lambda_permission" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
@@ -39,7 +34,6 @@ resource "aws_lambda_permission" "lambda_permission" {
   # within the API Gateway REST API.
   source_arn = "${var.api_execution_arn}/*/*"
 }
-
 
 data "aws_iam_policy_document" "assume_role" {
   statement {

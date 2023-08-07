@@ -34,3 +34,7 @@ variable "docstore_bucket_name" {
 variable "api_execution_arn" {
   type = string
 }
+
+output "gateway_resource_id" {
+  value = aws_api_gateway_resource.gateway_resource.id
+}
