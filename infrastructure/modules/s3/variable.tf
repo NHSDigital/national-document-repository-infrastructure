@@ -18,3 +18,7 @@ variable "environment" {
 variable "owner" {
   type = string
 }
+
+output "s3_object_access_policy" {
+  value = aws_s3_bucket_policy.bucket_policy.policy
+}
