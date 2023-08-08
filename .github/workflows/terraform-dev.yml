@@ -31,7 +31,7 @@ jobs:
         role-skip-session-tagging: true
         aws-region: eu-west-2
       
-    -name: View AWS Role
+    - name: View AWS Role
       run: aws sts get-caller-identity
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
