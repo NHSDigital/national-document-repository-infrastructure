@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "lambda" {
   # If the file is not in the current working directory you will need to include a
   # path.module in the filename.
-  filename         = "${var.name}_payload.zip"
+  filename         = data.archive_file.lambda.output_path
   function_name    = "${terraform.workspace}_${var.name}"
   role             = aws_iam_role.lambda_execution_role.arn
   handler          = var.handler
@@ -57,6 +57,6 @@ resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "${var.name}.py"
-  output_path = "${var.name}_payload.zip"
+  source_file = "placeholder_lambda.py"
+  output_path = "placeholder_lambda_payload.zip"
 }
