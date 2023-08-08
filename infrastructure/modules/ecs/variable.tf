@@ -23,7 +23,7 @@ variable "public_subnets" {
 }
 
 variable "aws_region" {
-  type = string
+  type    = string
   default = "eu-west-2"
 }
 
@@ -33,4 +33,8 @@ variable "environment" {
 
 variable "owner" {
   type = string
+}
+
+output "ecs_role" {
+  value = aws_iam_role.ecs_service
 }
