@@ -8,7 +8,7 @@ resource "aws_ecs_task_definition" "nsr_ecs_task" {
 
   container_definitions = jsonencode([
     {
-      name        = "first"
+      name        = "${terraform.workspace}-app-container"
       image       = var.ecr_repository_url
       cpu         = 512
       memory      = 1024
