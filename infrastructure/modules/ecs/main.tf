@@ -1,6 +1,6 @@
 resource "aws_ecs_task_definition" "nsr_ecs_task" {
-  family                   = "ndr-service-task"
-  execution_role_arn       = aws_iam_role.ecs_service.arn
+  family                   = "${terraform.workspace}-ndr-service-task"
+  execution_role_arn       = aws_iam_role.task_exec.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = 1024
@@ -8,8 +8,8 @@ resource "aws_ecs_task_definition" "nsr_ecs_task" {
 
   container_definitions = jsonencode([
     {
-      name = "first"
-      #       image     = "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${aws_ecr_repository.docker-backend.name}:latest"
+      name        = "first"
+      image       = var.ecr_repository_url
       cpu         = 512
       memory      = 1024
       essential   = true
@@ -19,6 +19,14 @@ resource "aws_ecs_task_definition" "nsr_ecs_task" {
           containerPort = 80
           hostPort      = 80
       }]
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          "awslogs-group" : "awslogs-${terraform.workspace}",
+          "awslogs-region" : var.aws_region,
+          "awslogs-stream-prefix" : "${terraform.workspace}r"
+        }
+      }
     }
   ])
 }

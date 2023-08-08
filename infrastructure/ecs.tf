@@ -6,7 +6,7 @@ module "ndr-ecs-fargate" {
   sg_name                  = "${terraform.workspace}-fargate-sg"
   ecs_launch_type          = "FARGATE"
   ecs_cluster_service_name = "${terraform.workspace}-ecs-cluster-service"
-
-  environment = var.environment
-  owner       = var.owner
+  ecr_repository_url       = module.ndr-docker-ecr-ui.ecr_repository_url
+  environment              = var.environment
+  owner                    = var.owner
 }

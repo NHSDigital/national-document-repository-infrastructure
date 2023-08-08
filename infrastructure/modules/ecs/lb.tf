@@ -1,4 +1,3 @@
-
 resource "aws_route53_zone" "ndr_zone" {
   name = "access-request-fulfilment.patient-deductions.nhs.uk"
 }
@@ -10,7 +9,6 @@ resource "aws_route53_record" "ndr_fargate_record" {
   zone_id = aws_route53_zone.ndr_zone.zone_id
   ttl     = 300
 }
-
 
 resource "aws_lb" "ecs_lb" {
   name               = "${terraform.workspace}-lb-${var.ecs_cluster_name}"
@@ -26,6 +24,7 @@ resource "aws_lb" "ecs_lb" {
     Workspace   = terraform.workspace
   }
 }
+
 resource "aws_lb_target_group" "ecs_lb_tg" {
   name        = "${terraform.workspace}-ecs"
   port        = 80

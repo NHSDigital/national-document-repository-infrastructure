@@ -35,6 +35,9 @@ variable "owner" {
   type = string
 }
 
+variable "ecr_repository_url" {
+}
+
 output "ecs_role" {
   value = aws_iam_role.ecs_service
 }
