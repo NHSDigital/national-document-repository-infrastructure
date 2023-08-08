@@ -30,6 +30,9 @@ jobs:
         role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
         role-skip-session-tagging: true
         aws-region: eu-west-2
+      
+    -name: View AWS Role
+      run: run: aws sts get-caller-identity
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
@@ -37,6 +40,7 @@ jobs:
       with:
         terraform_version: 1.5.4
         terraform_wrapper: false
+      
   
     - name: Terraform Init
       id: init
