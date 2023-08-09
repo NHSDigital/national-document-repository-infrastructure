@@ -1,5 +1,4 @@
 # Tag Variables
-
 variable "environment" {
   type = string
 }
@@ -7,7 +6,6 @@ variable "environment" {
 variable "owner" {
   type = string
 }
-
 
 # Bucket Variables
 variable "docstore_bucket_name" {
@@ -18,8 +16,7 @@ variable "docstore_bucket_name" {
 variable "cors_require_credentials" {
   type        = bool
   description = "Sets the value of 'Access-Control-Allow-Credentials' which controls whether auth cookies are needed"
-
-  default = true
+  default     = true
 }
 
 # VPC Variables

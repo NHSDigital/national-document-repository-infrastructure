@@ -11,7 +11,13 @@ resource "aws_api_gateway_method" "preflight_method" {
   authorization = var.authorization
   authorizer_id = var.authorizer_id
   depends_on    = [aws_api_gateway_resource.gateway_resource]
+}
 
+resource "aws_api_gateway_method" "proxy_method" {
+  rest_api_id   = var.api_gateway_id
+  resource_id   = aws_api_gateway_resource.gateway_resource.id
+  http_method   = var.http_method
+  authorization = var.authorization // Requires authorisationId on CUSTOM
 }
 
 resource "aws_api_gateway_method_response" "preflight_method_response" {
@@ -44,8 +50,6 @@ resource "aws_api_gateway_integration" "preflight_integration" {
 }
 EOF
   }
-
-
   depends_on = [aws_api_gateway_method.preflight_method, aws_api_gateway_resource.gateway_resource]
 }
 

@@ -13,9 +13,6 @@ variable "http_method" {
 variable "authorization" {
   type = string
 }
-variable "lambda_uri" {
-  type = string
-}
 variable "authorizer_id" {
   type = string
 }
@@ -30,6 +27,14 @@ variable "cors_require_credentials" {
   type = bool
 }
 
-variable "methods" {
+variable "docstore_bucket_name" {
   type = string
+}
+
+variable "api_execution_arn" {
+  type = string
+}
+
+output "gateway_resource_id" {
+  value = aws_api_gateway_resource.gateway_resource.id
 }
