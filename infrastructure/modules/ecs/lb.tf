@@ -1,11 +1,11 @@
 resource "aws_route53_zone" "ndr_zone" {
-  name = "access-request-fulfilment.patient-deductions.nhs.uk"
+  name = var.domain
 }
 
 resource "aws_route53_record" "ndr_fargate_record" {
-  name    = "${terraform.workspace}.access-request-fulfilment"
+  name    = "${terraform.workspace}.${var.sub_domain}"
   type    = "CNAME"
-  records = ["${terraform.workspace}.access-request-fulfilment.patient-deductions.nhs.uk"]
+  records = ["${terraform.workspace}.${var.domain}"]
   zone_id = aws_route53_zone.ndr_zone.zone_id
   ttl     = 300
 }
@@ -50,17 +50,28 @@ resource "aws_lb_target_group" "ecs_lb_tg" {
   }
 }
 
-# resource "aws_lb_listener" "https" {
-#   load_balancer_arn = aws_lb.ecs_lb.arn
-#   port              = "443"
-#   protocol          = "HTTPS"
-#   ssl_policy        = "ELBSecurityPolicy-2016-08"
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.ecs_lb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
 
-#   default_action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.ecs_lb_tg.arn
-#   }
-# }
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.ecs_lb_tg.arn
+  }
+}
+
+resource "aws_lb_listener_certificate" "example" {
+  listener_arn    = aws_lb_listener.https.arn
+  certificate_arn = data.aws_acm_certificate.amazon_issued.arn
+}
+
+data "aws_acm_certificate" "amazon_issued" {
+  domain      = var.domain
+  types       = ["AMAZON_ISSUED"]
+  most_recent = true
+}
 
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.ecs_lb.arn
@@ -72,13 +83,13 @@ resource "aws_lb_listener" "http" {
     target_group_arn = aws_lb_target_group.ecs_lb_tg.arn
   }
 
-  # default_action {
-  #   type             = "redirect"
-  #   target_group_arn = aws_lb_target_group.ecs_lb_tg.arn
-  #   redirect {
-  #     port        = "443"
-  #     protocol    = "HTTPS"
-  #     status_code = "HTTP_301"
-  #   }
-  # }
+  default_action {
+    type             = "redirect"
+    target_group_arn = aws_lb_target_group.ecs_lb_tg.arn
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
 }

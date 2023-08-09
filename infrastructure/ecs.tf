@@ -9,4 +9,6 @@ module "ndr-ecs-fargate" {
   ecr_repository_url       = module.ndr-docker-ecr-ui.ecr_repository_url
   environment              = var.environment
   owner                    = var.owner
+  domain                   = var.domain
+  sub_domain               = var.sub_domain
 }

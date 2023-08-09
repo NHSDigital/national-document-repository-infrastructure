@@ -37,3 +37,11 @@ variable "owner" {
 
 variable "ecr_repository_url" {
 }
+
+variable "domain" {
+  type = string
+}
+
+variable "sub_domain" {
+  type = string
+}
