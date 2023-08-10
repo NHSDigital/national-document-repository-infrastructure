@@ -17,7 +17,7 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: preprod
+    environment: pre-prod
 
     steps:
     # Checkout the repository to the GitHub Actions runner
