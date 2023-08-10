@@ -1,13 +1,8 @@
 # .github/workflows/terraform-dev
-name: 'Terraform - Deploy to Test'
+name: 'Terraform - Deploy Main Branch to Perf'
 
 on:
   workflow_dispatch:
-    inputs:
-      buildBranch:
-        description: "Feature branch to push to test?"
-        required: true
-        type: "string"
 
 permissions:
   pull-requests: write
@@ -17,14 +12,14 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: development
+    environment: perf
 
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        ref: ${{ github.event.inputs.buildBranch}}
+        ref: main
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -65,5 +60,8 @@ jobs:
         terraform plan -input=false -no-color -var-file="dev.tfvars" -out tf.plan
       working-directory: ./infrastructure
       shell: bash
+    
+    # - name: Terraform Apply
+    #   run: terraform apply -auto-approve -input=false
         
         

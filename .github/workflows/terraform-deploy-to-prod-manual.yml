@@ -1,13 +1,8 @@
 # .github/workflows/terraform-dev
-name: 'Terraform - Development'
+name: 'Terraform - Deploy Main Branch to Prod'
 
 on:
-  push:
-    branches:
-    - main
-  pull_request:
-    branches:
-    - main
+  workflow_dispatch:
 
 permissions:
   pull-requests: write
@@ -17,12 +12,14 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: development
+    environment: prod
 
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        ref: main
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -56,6 +53,7 @@ jobs:
       # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
       run: terraform fmt -check
+      working-directory: ./infrastructure 
 
     - name: Terraform Plan
       id: plan
@@ -63,5 +61,8 @@ jobs:
         terraform plan -input=false -no-color -var-file="dev.tfvars" -out tf.plan
       working-directory: ./infrastructure
       shell: bash
+    
+    # - name: Terraform Apply
+    #   run: terraform apply -auto-approve -input=false
         
         
