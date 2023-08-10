@@ -1,5 +1,5 @@
 # .github/workflows/terraform-dev
-name: 'Terraform - Development'
+name: 'Terraform - Development CI Feature to Main'
 
 on:
   push:
@@ -17,7 +17,7 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: development
+    environment: preprod
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -29,7 +29,7 @@ jobs:
       with:
         role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
         role-skip-session-tagging: true
-        aws-region: eu-west-2
+        aws-region: ${{ env.AWS_REGION}}
       
     - name: View AWS Role
       run: aws sts get-caller-identity
@@ -61,13 +61,13 @@ jobs:
     - name: Terraform Plan
       id: plan
       run: |
-        terraform plan -input=false -no-color -var-file="dev.tfvars" -out tf.plan
+        terraform plan -input=false -no-color -var-file="${{env.TF_VARS_FILE}}" -out tf.plan
       working-directory: ./infrastructure
       shell: bash
     
     # Terraform apply will only occur on a push (merge request completion)
-    - name: Terraform Apply
+    - name: Terraform Apply 
       if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
+      run: terraform apply -auto-approve -input=false tf.plan
         
         
