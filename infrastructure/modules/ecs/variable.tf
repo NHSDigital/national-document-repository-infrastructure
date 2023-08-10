@@ -45,3 +45,8 @@ variable "domain" {
 variable "sub_domain" {
   type = string
 }
+
+variable "container_port" {
+  type    = number
+  default = 8080
+}

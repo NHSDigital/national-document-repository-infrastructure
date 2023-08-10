@@ -55,16 +55,12 @@ resource "aws_lb_listener" "https" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = data.aws_acm_certificate.amazon_issued.arn
 
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.ecs_lb_tg.arn
   }
-}
-
-resource "aws_lb_listener_certificate" "example" {
-  listener_arn    = aws_lb_listener.https.arn
-  certificate_arn = data.aws_acm_certificate.amazon_issued.arn
 }
 
 data "aws_acm_certificate" "amazon_issued" {
@@ -77,11 +73,6 @@ resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.ecs_lb.arn
   port              = "80"
   protocol          = "HTTP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.ecs_lb_tg.arn
-  }
 
   default_action {
     type             = "redirect"

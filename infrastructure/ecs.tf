@@ -11,4 +11,5 @@ module "ndr-ecs-fargate" {
   owner                    = var.owner
   domain                   = var.domain
   sub_domain               = var.sub_domain
+  container_port           = 8080
 }

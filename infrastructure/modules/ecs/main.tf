@@ -16,17 +16,21 @@ resource "aws_ecs_task_definition" "nsr_ecs_task" {
       networkMode = "awsvpc"
       portMappings = [
         {
-          containerPort = 80
-          hostPort      = 80
+          containerPort = var.container_port
+          hostPort      = var.container_port
       }]
       logConfiguration = {
         logDriver = "awslogs",
         options = {
-          "awslogs-group" : "awslogs-${terraform.workspace}",
+          "awslogs-group" : aws_cloudwatch_log_group.awslogs-ndr-ecs.name,
           "awslogs-region" : var.aws_region,
           "awslogs-stream-prefix" : "${terraform.workspace}r"
         }
       }
     }
   ])
+}
+
+resource "aws_cloudwatch_log_group" "awslogs-ndr-ecs" {
+  name = "${terraform.workspace}-ecs-task"
 }

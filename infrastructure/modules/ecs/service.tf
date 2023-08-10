@@ -14,8 +14,10 @@ resource "aws_ecs_service" "ndr_ecs_service" {
   load_balancer {
     target_group_arn = aws_lb_target_group.ecs_lb_tg.arn
     container_name   = "${terraform.workspace}-app-container"
-    container_port   = 80
+    container_port   = var.container_port
   }
+
+  depends_on = [aws_lb_target_group.ecs_lb_tg]
 
   tags = {
     Name        = "${terraform.workspace}-ecs"
