@@ -50,3 +50,8 @@ variable "container_port" {
   type    = number
   default = 8080
 }
+
+variable "using_arf_hosted_zone" {
+  type    = bool
+  default = true
+}

@@ -1,12 +1,24 @@
 resource "aws_route53_zone" "ndr_zone" {
-  name = var.domain
+  count = var.using_arf_hosted_zone ? 0 : 1
+  name  = var.domain
+  tags = {
+    Name        = "${terraform.workspace}-lb-${var.ecs_cluster_name}"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+  }
+}
+
+data "aws_route53_zone" "ndr_zone" {
+  name  = var.domain
+  count = var.using_arf_hosted_zone ? 1 : 0
 }
 
 resource "aws_route53_record" "ndr_fargate_record" {
   name    = "${terraform.workspace}.${var.sub_domain}"
   type    = "CNAME"
   records = ["${terraform.workspace}.${var.domain}"]
-  zone_id = aws_route53_zone.ndr_zone.zone_id
+  zone_id = var.using_arf_hosted_zone ? data.aws_route53_zone.ndr_zone[0].zone_id : aws_route53_zone.ndr_zone[0].zone_id
   ttl     = 300
 }
 
