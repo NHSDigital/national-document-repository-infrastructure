@@ -31,7 +31,7 @@ jobs:
       with:
         role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
         role-skip-session-tagging: true
-        aws-region: eu-west-2
+        aws-region: ${{ vars.AWS_REGION }}
       
     - name: View AWS Role
       run: aws sts get-caller-identity
@@ -63,7 +63,7 @@ jobs:
     - name: Terraform Plan
       id: plan
       run: |
-        terraform plan -input=false -no-color -var-file="${{env.TF_VARS_FILE}}" -out tf.plan
+        terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
       working-directory: ./infrastructure
       shell: bash
     
