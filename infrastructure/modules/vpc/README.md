@@ -34,7 +34,7 @@ No modules.
 | <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | This is a list that specifies all the Availability Zones that will have a pair of public and private subnets | `list(string)` | n/a | yes |
 | <a name="input_enable_dns_hostnames"></a> [enable\_dns\_hostnames](#input\_enable\_dns\_hostnames) | This allows AWS DNS hostname support to be switched on or off. | `bool` | `true` | no |
 | <a name="input_enable_dns_support"></a> [enable\_dns\_support](#input\_enable\_dns\_support) | This allows AWS DNS support to be switched on or off. | `bool` | `true` | no |
-| <a name="input_enable_private_routes"></a> [enable\_private\_routes](#input\_enable\_private\_routes) | This allows AWS DNS hostname support to be switched on or off. | `bool` | `false` | no |
+| <a name="input_enable_private_routes"></a> [enable\_private\_routes](#input\_enable\_private\_routes) | n/a | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
 | <a name="input_ig_cidr"></a> [ig\_cidr](#input\_ig\_cidr) | This specifies the CIDR block for the internet gateway. | `string` | `"0.0.0.0/0"` | no |
 | <a name="input_ig_ipv6_cidr"></a> [ig\_ipv6\_cidr](#input\_ig\_ipv6\_cidr) | This specifies the IPV6 CIDR block for the internet gateway. | `string` | `"::/0"` | no |
@@ -47,5 +47,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_private_subnets"></a> [private\_subnets](#output\_private\_subnets) | n/a |
 | <a name="output_public_subnets"></a> [public\_subnets](#output\_public\_subnets) | n/a |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | n/a |

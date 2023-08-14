@@ -88,7 +88,6 @@ resource "aws_route" "private" {
   route_table_id              = aws_route_table.private[0].id
   destination_ipv6_cidr_block = var.ig_ipv6_cidr
   gateway_id                  = aws_internet_gateway.ig[0].id
-
 }
 
 resource "aws_route_table_association" "public" {

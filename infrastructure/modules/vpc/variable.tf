@@ -20,9 +20,8 @@ variable "enable_dns_hostnames" {
 }
 
 variable "enable_private_routes" {
-  type        = bool
-  description = "This allows AWS DNS hostname support to be switched on or off."
-  default     = false
+  type    = bool
+  default = false
 }
 
 # CIDR Definitions
