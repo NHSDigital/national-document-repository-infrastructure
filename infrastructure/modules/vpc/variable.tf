@@ -1,5 +1,3 @@
-
-
 #Availability zones for Amazon region
 variable "availability_zones" {
   type        = list(string)
@@ -43,14 +41,15 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
-# Tags
-
-variable "environment" {
-  type = string
+variable "endpoint_gateway_services" {
+  type = list(string)
 }
 
-variable "owner" {
-  type = string
+variable "endpoint_interface_services" {
+  type = list(string)
+}
+
+variable "security_group_id" {
 }
 
 variable "num_public_subnets" {
@@ -59,4 +58,13 @@ variable "num_public_subnets" {
 
 variable "num_private_subnets" {
   type = number
+}
+
+# Tags
+variable "environment" {
+  type = string
+}
+
+variable "owner" {
+  type = string
 }

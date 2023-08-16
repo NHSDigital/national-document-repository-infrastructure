@@ -42,10 +42,6 @@ variable "domain" {
   type = string
 }
 
-variable "sub_domain" {
-  type = string
-}
-
 variable "container_port" {
   type    = number
   default = 8080
@@ -54,4 +50,8 @@ variable "container_port" {
 variable "using_arf_hosted_zone" {
   type    = bool
   default = true
+}
+
+output "security_group_id" {
+  value = aws_security_group.ndr_ecs_sg.id
 }

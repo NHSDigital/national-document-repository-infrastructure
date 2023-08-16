@@ -10,7 +10,6 @@ module "ndr-ecs-fargate" {
   environment              = var.environment
   owner                    = var.owner
   domain                   = var.domain
-  sub_domain               = var.sub_domain
   container_port           = 80
   using_arf_hosted_zone    = true
 }
