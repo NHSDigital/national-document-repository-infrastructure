@@ -52,7 +52,7 @@ resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
 }
 
 resource "aws_s3_bucket_cors_configuration" "document_store_bucket_cors_config" {
-  bucket = aws_s3_bucket.bucket
+  bucket = aws_s3_bucket.bucket.id
   count  = var.enable_cors_configuration ? 1 : 0
 
   cors_rule {
