@@ -50,3 +50,21 @@ resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
     object_ownership = "ObjectWriter"
   }
 }
+
+resource "aws_s3_bucket_cors_configuration" "document_store_bucket_cors_config" {
+  bucket = aws_s3_bucket.bucket.id
+  count  = var.enable_cors_configuration ? 1 : 0
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["PUT", "DELETE"]
+    allowed_origins = [var.origin]
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
+
+  cors_rule {
+    allowed_methods = ["GET"]
+    allowed_origins = [var.origin]
+  }
+}

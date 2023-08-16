@@ -59,10 +59,10 @@ resource "aws_api_gateway_integration_response" "preflight_integration_response"
   http_method = aws_api_gateway_method.preflight_method.http_method
   status_code = aws_api_gateway_method_response.preflight_method_response.status_code
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Origin"      = "integration.response.header.Access-Control-Allow-Origin"
-    "method.response.header.Access-Control-Allow-Methods"     = "integration.response.header.Access-Control-Allow-Methods"
-    "method.response.header.Access-Control-Allow-Headers"     = "integration.response.header.Access-Control-Allow-Headers"
-    "method.response.header.Access-Control-Allow-Credentials" = "integration.response.header.Access-Control-Allow-Credentials"
+    "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,Cookie,X-Api-Key,X-Amz-Security-Token,X-Auth-Cookie,Accept'",
+    "method.response.header.Access-Control-Allow-Methods"     = "'${var.http_method}'",
+    "method.response.header.Access-Control-Allow-Origin"      = var.origin,
+    "method.response.header.Access-Control-Allow-Credentials" = "'true'"
 
   }
   depends_on = [aws_api_gateway_method_response.preflight_method_response, aws_api_gateway_resource.gateway_resource]

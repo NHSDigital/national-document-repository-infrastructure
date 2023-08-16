@@ -9,6 +9,15 @@ variable "force_destroy" {
   default     = false
 }
 
+variable "enable_cors_configuration" {
+  type    = bool
+  default = false
+}
+
+variable "origin" {
+  type = string
+}
+
 # Tags
 
 variable "environment" {

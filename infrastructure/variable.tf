@@ -56,3 +56,7 @@ variable "enable_dns_hostnames" {
   description = "Enable DNS hostnames for VPC"
   default     = true
 }
+
+variable "domain" {
+  type = string
+}
