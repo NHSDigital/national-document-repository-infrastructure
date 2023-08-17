@@ -22,6 +22,9 @@ variable "ecs_launch_type" {
 variable "public_subnets" {
 }
 
+variable "private_subnets" {
+}
+
 variable "aws_region" {
   type    = string
   default = "eu-west-2"

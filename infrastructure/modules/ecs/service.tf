@@ -8,7 +8,7 @@ resource "aws_ecs_service" "ndr_ecs_service" {
   network_configuration {
     assign_public_ip = false
     security_groups  = [aws_security_group.ndr_ecs_sg.id]
-    subnets          = [for subnet in var.public_subnets : subnet]
+    subnets          = [for subnet in var.private_subnets : subnet]
   }
 
   load_balancer {
