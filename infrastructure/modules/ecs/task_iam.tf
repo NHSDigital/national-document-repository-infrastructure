@@ -32,23 +32,9 @@ resource "aws_iam_role_policy_attachment" "log_access" {
   role       = aws_iam_role.task_exec.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
-resource "aws_iam_role_policy" "s3_endpoint_ecr_access" {
-  role = aws_iam_role.task_exec.id
-  name = "s3_endpoint_ecr_access"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    "Statement" : [
-      {
-        "Sid" : "Access-to-specific-bucket-only",
-        "Principal" : "*",
-        "Action" : [
-          "s3:GetObject"
-        ],
-        "Effect" : "Allow",
-        "Resource" : ["arn:aws:s3:::prod-eu-west-2-starport-layer-bucket/*"]
-      },
-    ]
-  })
+resource "aws_iam_role_policy_attachment" "s3_access" {
+  role       = aws_iam_role.task_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
 #resource "aws_iam_role_policy" "ecs_service_elb" {
