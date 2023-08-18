@@ -26,6 +26,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.create-doc-ref-gateway,
+    module.create-doc-ref-lambda
   ]
 }
 
