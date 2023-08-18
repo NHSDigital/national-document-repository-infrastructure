@@ -23,7 +23,7 @@ resource "aws_route53_record" "ndr_fargate_record" {
 }
 
 resource "aws_lb" "ecs_lb" {
-  name               = "${terraform.workspace}-lb-${var.ecs_cluster_name}"
+  name               = "${terraform.workspace}-lb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.ndr_ecs_sg.id]

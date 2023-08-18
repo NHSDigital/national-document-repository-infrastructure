@@ -1,6 +1,6 @@
 module "ndr-ecs-fargate" {
   source                   = "./modules/ecs"
-  ecs_cluster_name         = "${terraform.workspace}-ecs-cluster"
+  ecs_cluster_name         = "app-cluster"
   vpc_id                   = module.ndr-vpc-ui.vpc_id
   public_subnets           = module.ndr-vpc-ui.public_subnets
   private_subnets          = module.ndr-vpc-ui.private_subnets

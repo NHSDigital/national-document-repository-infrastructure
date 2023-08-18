@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "ndr_esc_cluster" {
-  name = var.ecs_cluster_name
+  name = "${terraform.workspace}-${var.ecs_cluster_name}"
 
   configuration {
     execute_command_configuration {
@@ -19,5 +19,5 @@ resource "aws_ecs_cluster" "ndr_esc_cluster" {
 }
 
 resource "aws_cloudwatch_log_group" "ecs_cluster_logs" {
-  name = "${var.ecs_cluster_name}-logs"
+  name = "${terraform.workspace}-${var.ecs_cluster_name}-logs"
 }
