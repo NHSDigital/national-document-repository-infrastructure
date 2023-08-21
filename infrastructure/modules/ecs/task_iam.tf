@@ -24,16 +24,20 @@ resource "aws_iam_role_policy_attachment" "ecs_task_exec" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_iam_role_policy_attachment" "ecr_access" {
-  role       = aws_iam_role.task_exec.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess"
-}
+resource "aws_iam_role_policy" "s3_access" {
+  name = "${terraform.workspace}-s3_access_policy"
+  role = aws_iam_role.task_exec.name
 
-resource "aws_iam_role_policy_attachment" "log_access" {
-  role       = aws_iam_role.task_exec.name
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
-}
-resource "aws_iam_role_policy_attachment" "s3_access" {
-  role       = aws_iam_role.task_exec.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:GetObject"
+        ],
+        Effect   = "Allow",
+        Resource = ["arn:aws:s3:::prod-eu-west-2-starport-layer-bucket/*"]
+      }
+    ]
+  })
 }
