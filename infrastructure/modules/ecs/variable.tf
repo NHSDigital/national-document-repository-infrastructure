@@ -50,9 +50,8 @@ variable "container_port" {
   default = 8080
 }
 
-variable "using_arf_hosted_zone" {
-  type    = bool
-  default = true
+output "dns_name" {
+  value = aws_lb.ecs_lb.dns_name
 }
 
 output "security_group_id" {
