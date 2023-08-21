@@ -20,13 +20,18 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     redeployment = sha1(jsonencode([
       aws_api_gateway_rest_api.ndr_doc_store_api.body,
       module.create-doc-ref-gateway,
+      module.create-doc-ref-lambda,
+      module.search-patient-details-gateway,
+      module.search-patient-details-lambda,
     ]))
   }
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.create-doc-ref-gateway,
-    module.create-doc-ref-lambda
+    module.create-doc-ref-lambda,
+    module.search-patient-details-gateway,
+    module.search-patient-details-lambda,
   ]
 }
 
