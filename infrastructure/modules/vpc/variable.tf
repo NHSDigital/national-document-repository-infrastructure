@@ -1,6 +1,4 @@
-
-
-#Availability zones for Amazon region
+# Availability zones for Amazon region
 variable "availability_zones" {
   type        = list(string)
   description = "This is a list that specifies all the Availability Zones that will have a pair of public and private subnets"
@@ -20,9 +18,8 @@ variable "enable_dns_hostnames" {
 }
 
 variable "enable_private_routes" {
-  type        = bool
-  description = "This allows AWS DNS hostname support to be switched on or off."
-  default     = false
+  type    = bool
+  default = false
 }
 
 # CIDR Definitions
@@ -44,14 +41,15 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
-# Tags
-
-variable "environment" {
-  type = string
+variable "endpoint_gateway_services" {
+  type = list(string)
 }
 
-variable "owner" {
-  type = string
+variable "endpoint_interface_services" {
+  type = list(string)
+}
+
+variable "security_group_id" {
 }
 
 variable "num_public_subnets" {
@@ -60,4 +58,13 @@ variable "num_public_subnets" {
 
 variable "num_private_subnets" {
   type = number
+}
+
+# Tags
+variable "environment" {
+  type = string
+}
+
+variable "owner" {
+  type = string
 }

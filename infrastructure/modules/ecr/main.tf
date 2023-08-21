@@ -1,4 +1,4 @@
-resource "aws_ecr_repository" "ndr-docker-ui" {
+resource "aws_ecr_repository" "ndr-ecr" {
   name                 = var.app_name
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration {
@@ -16,7 +16,7 @@ resource "aws_ecr_repository" "ndr-docker-ui" {
 }
 
 resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
-  repository = aws_ecr_repository.ndr-docker-ui.name
+  repository = aws_ecr_repository.ndr-ecr.name
   policy     = <<EOF
   {
       "rules": [
@@ -39,7 +39,7 @@ resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
 }
 
 resource "aws_ecr_repository_policy" "ndr_ecr_repository_policy" {
-  repository = aws_ecr_repository.ndr-docker-ui.name
+  repository = aws_ecr_repository.ndr-ecr.name
   policy     = <<EOF
 {
     "Version": "2008-10-17",

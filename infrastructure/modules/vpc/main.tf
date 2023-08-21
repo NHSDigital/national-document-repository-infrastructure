@@ -10,34 +10,6 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-resource "aws_subnet" "public_subnets" {
-  count             = var.num_public_subnets
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(local.public_subnet_cidrs, count.index)
-  availability_zone = element(var.availability_zones, count.index)
-  tags = {
-    Name        = "${terraform.workspace}-public-subnet-${count.index + 1}"
-    Zone        = "Public"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
-  }
-}
-
-resource "aws_subnet" "private_subnets" {
-  count             = var.num_private_subnets
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(local.private_subnet_cidrs, count.index)
-  availability_zone = element(var.availability_zones, count.index)
-  tags = {
-    Name        = "${terraform.workspace}-private-subnet-${count.index + 1}"
-    Zone        = "Private"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
-  }
-}
-
 resource "aws_internet_gateway" "ig" {
   count  = var.num_public_subnets > 0 ? 1 : 0
   vpc_id = aws_vpc.vpc.id
@@ -50,55 +22,33 @@ resource "aws_internet_gateway" "ig" {
   }
 }
 
-resource "aws_route_table" "public" {
-  count  = var.num_public_subnets > 0 ? 1 : 0
-  vpc_id = aws_vpc.vpc.id
+resource "aws_vpc_endpoint" "ndr_gateway_vpc_endpoint" {
+  count           = length(var.endpoint_gateway_services)
+  vpc_id          = aws_vpc.vpc.id
+  service_name    = "com.amazonaws.eu-west-2.${var.endpoint_gateway_services[count.index]}"
+  route_table_ids = [aws_route_table.private[0].id]
   tags = {
-    Name        = "${terraform.workspace}-public-route-table"
-    Zone        = "Public"
+    Name        = "${terraform.workspace}-${var.endpoint_gateway_services[count.index]}-vpc"
     Owner       = var.owner
     Environment = var.environment
     Workspace   = terraform.workspace
-
   }
 }
 
-resource "aws_route_table" "private" {
-  count  = var.num_private_subnets > 0 ? 1 : 0
-  vpc_id = aws_vpc.vpc.id
+resource "aws_vpc_endpoint" "ndr_interface_vpc_endpoint" {
+  count               = length(var.endpoint_interface_services)
+  vpc_id              = aws_vpc.vpc.id
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [var.security_group_id]
+  private_dns_enabled = true
+  subnet_ids          = [for subnet in aws_subnet.private_subnets : subnet.id]
+
+
+  service_name = "com.amazonaws.eu-west-2.${var.endpoint_interface_services[count.index]}"
   tags = {
-    Name        = "${terraform.workspace}-private-route-table"
-    Zone        = "Private"
+    Name        = "${terraform.workspace}-${var.endpoint_interface_services[count.index]}-vpc"
     Owner       = var.owner
     Environment = var.environment
     Workspace   = terraform.workspace
-
   }
-}
-
-resource "aws_route" "public" {
-  count                  = var.num_public_subnets > 0 ? 1 : 0
-  route_table_id         = aws_route_table.public[0].id
-  destination_cidr_block = var.ig_cidr
-  gateway_id             = aws_internet_gateway.ig[0].id
-}
-
-resource "aws_route" "private" {
-  count                       = (var.num_private_subnets > 0) && var.enable_private_routes ? 1 : 0
-  route_table_id              = aws_route_table.private[0].id
-  destination_ipv6_cidr_block = var.ig_ipv6_cidr
-  gateway_id                  = aws_internet_gateway.ig[0].id
-
-}
-
-resource "aws_route_table_association" "public" {
-  count          = var.num_public_subnets
-  subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
-  route_table_id = aws_route_table.public[0].id
-}
-
-resource "aws_route_table_association" "private" {
-  count          = var.enable_private_routes ? var.num_private_subnets : 0
-  subnet_id      = element(aws_subnet.private_subnets[*].id, count.index)
-  route_table_id = aws_route_table.private[0].id
 }
