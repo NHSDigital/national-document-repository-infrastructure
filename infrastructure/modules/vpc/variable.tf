@@ -1,4 +1,4 @@
-#Availability zones for Amazon region
+# Availability zones for Amazon region
 variable "availability_zones" {
   type        = list(string)
   description = "This is a list that specifies all the Availability Zones that will have a pair of public and private subnets"
