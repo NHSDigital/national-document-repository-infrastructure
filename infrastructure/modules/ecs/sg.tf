@@ -8,7 +8,7 @@ resource "aws_security_group" "ndr_ecs_sg" {
   }
 }
 
-resource "aws_vpc_security_group_egress_rule" "ndr_esc_sg_engress_http" {
+resource "aws_vpc_security_group_egress_rule" "ndr_esc_sg_egress_http" {
   security_group_id = aws_security_group.ndr_ecs_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
@@ -24,7 +24,7 @@ resource "aws_vpc_security_group_ingress_rule" "ndr_esc_sg_ingress_http" {
   to_port           = 80
 }
 
-resource "aws_vpc_security_group_egress_rule" "ndr_esc_sg_engress_https" {
+resource "aws_vpc_security_group_egress_rule" "ndr_esc_sg_egress_https" {
   security_group_id = aws_security_group.ndr_ecs_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 443
