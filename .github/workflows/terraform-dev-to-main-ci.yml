@@ -6,6 +6,7 @@ on:
     branches:
     - main
   pull_request:
+    types: [opened, reopened, closed]
     branches:
     - main
 
@@ -67,7 +68,8 @@ jobs:
     
     # Terraform apply will only occur on a push (merge request completion)
     - name: Terraform Apply 
-      if: github.event.pull_request.merged
+      if: github.event.pull_request.merged == true
       run: terraform apply -auto-approve -input=false tf.plan
+      working-directory: ./infrastructure
         
         
