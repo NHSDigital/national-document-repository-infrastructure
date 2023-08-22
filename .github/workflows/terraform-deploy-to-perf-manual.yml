@@ -1,8 +1,13 @@
 # .github/workflows/terraform-dev
-name: 'Terraform - Deploy Main Branch to Perf'
+name: 'Terraform - Deploy Feature Branch to Perf'
 
 on:
   workflow_dispatch:
+    inputs:
+      buildBranch:
+        description: "Feature branch to push to test?"
+        required: true
+        type: "string"
 
 permissions:
   pull-requests: write
@@ -19,7 +24,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        ref: ${{ github.event.inputs.tagVersion}}
+        ref: ${{ github.event.inputs.buildBranch}}
         fetch-depth: '0'
 
     - name: Configure AWS Credentials
