@@ -17,9 +17,6 @@ jobs:
     outputs:
       tag: ${{steps.versioning.outputs.tag}}
       new_tag: ${{steps.versioning.outputs.new_tag}}
-    defaults:
-      run:
-        working-directory: ./app
 
     steps:
 
