@@ -3,6 +3,11 @@ name: 'Terraform - Deploy Main Branch to Prod'
 
 on:
   workflow_dispatch:
+    inputs:
+      tagVersion:
+        description: "What tagged verison do you want to push to prod?"
+        required: true
+        type: "string"
 
 permissions:
   pull-requests: write
@@ -19,7 +24,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        ref: main
+        ref: ${{ github.event.inputs.tagVersion}}
+        fetch-depth: '0'
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2

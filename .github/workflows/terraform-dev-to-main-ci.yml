@@ -17,7 +17,7 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: pre-prod
+    environment: development
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -67,7 +67,7 @@ jobs:
     
     # Terraform apply will only occur on a push (merge request completion)
     - name: Terraform Apply 
-      if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+      if: github.event.pull_request.merged
       run: terraform apply -auto-approve -input=false tf.plan
         
         
