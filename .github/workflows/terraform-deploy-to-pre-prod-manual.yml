@@ -17,6 +17,7 @@ jobs:
     outputs:
       tag: ${{steps.versioning.outputs.tag}}
       new_tag: ${{steps.versioning.outputs.new_tag}}
+    permissions: write-all
 
     steps:
 
