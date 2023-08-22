@@ -1,13 +1,8 @@
 # .github/workflows/terraform-dev
-name: 'Terraform - Deploy to Test'
+name: 'Terraform - Deploy and Version Main to Pre-Prod'
 
 on:
   workflow_dispatch:
-    inputs:
-      buildBranch:
-        description: "Feature branch to push to test?"
-        required: true
-        type: "string"
 
 permissions:
   pull-requests: write
@@ -15,16 +10,49 @@ permissions:
   contents: read  # This is required for actions/checkout
     
 jobs:
+
+  tag_and_release:
+    runs-on: ubuntu-latest
+    environment: pre-prod
+    outputs:
+      tag: ${{steps.versioning.outputs.tag}}
+      new_tag: ${{steps.versioning.outputs.new_tag}}
+    defaults:
+      run:
+        working-directory: ./app
+
+    steps:
+
+    - uses: actions/checkout@v3
+      with:
+        ref: main
+        fetch-depth: '0'
+
+    - name: Bump version and push tag
+      id: versioning
+      uses: anothrNick/github-tag-action@1.64.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: false
+        DEFAULT_BUMP: patch
+    
+    - name: View outputs
+      run: |
+        echo Current tag: ${{steps.versioning.outputs.tag}} 
+        echo New tag: ${{steps.versioning.outputs.new_tag}}
+
   terraform_process:
     runs-on: ubuntu-latest
-    environment: test
+    environment: pre-prod
+    needs: ['tag_and_release']
 
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        ref: ${{ github.event.inputs.buildBranch}}
+        ref: ${{needs.tag_and_release.outputs.tag}}
+        fetch-depth: '0'
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
