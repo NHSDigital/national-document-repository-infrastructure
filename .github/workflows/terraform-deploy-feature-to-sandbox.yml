@@ -1,5 +1,5 @@
 # .github/workflows/terraform-dev
-name: 'Terraform - Deploy Feature Branch to Sandbox'
+name: 'Deploy Feature Branch to Sandbox'
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: dev
+    environment: development
 
     steps:
     # Checkout the repository to the GitHub Actions runner

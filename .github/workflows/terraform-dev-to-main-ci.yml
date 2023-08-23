@@ -1,5 +1,5 @@
 # .github/workflows/terraform-dev
-name: 'Terraform - Development CI Feature to Main'
+name: 'Development CI Feature to Main'
 
 on:
   push:
