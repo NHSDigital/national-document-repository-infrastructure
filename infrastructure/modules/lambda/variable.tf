@@ -8,10 +8,7 @@ variable "handler" {
 
 variable "lambda_environment_variables" {
   type = map(string)
-}
-
-variable "docstore_bucket_name" {
-  type = string
+  default = {}
 }
 
 variable "rest_api_id" {
@@ -33,3 +30,4 @@ variable "api_execution_arn" {
 variable "iam_role_policies" {
   type = list(string)
 }
+

@@ -1,5 +1,5 @@
 # .github/workflows/terraform-dev
-name: 'Terraform - Deploy and Version Main to Pre-Prod'
+name: 'Deploy and Version Main to Pre-Prod'
 
 on:
   workflow_dispatch:

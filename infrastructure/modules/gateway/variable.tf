@@ -27,10 +27,6 @@ variable "cors_require_credentials" {
   type = bool
 }
 
-variable "docstore_bucket_name" {
-  type = string
-}
-
 variable "api_execution_arn" {
   type = string
 }

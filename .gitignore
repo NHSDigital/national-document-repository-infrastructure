@@ -29,3 +29,6 @@ terraform.rc
 node_modules/
 tfplan
 *.zip
+
+.idea/
+.vscode/
