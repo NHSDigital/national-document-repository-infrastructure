@@ -11,9 +11,9 @@ module "create-doc-ref-gateway" {
   origin                   = "'https://${terraform.workspace}.${var.domain}'"
 
   # Lambda Variables
-  api_execution_arn    = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  owner                = var.owner
-  environment          = var.environment
+  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  owner             = var.owner
+  environment       = var.environment
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
@@ -21,9 +21,9 @@ module "create-doc-ref-gateway" {
 }
 
 module "create-doc-ref-lambda" {
-  source               = "./modules/lambda"
-  name                 = "CreateDocRefLambda"
-  handler              = "handlers.create_document_reference_handler.lambda_handler"
+  source  = "./modules/lambda"
+  name    = "CreateDocRefLambda"
+  handler = "handlers.create_document_reference_handler.lambda_handler"
   iam_role_policies = [
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.ndr-document-store.s3_object_access_policy,
