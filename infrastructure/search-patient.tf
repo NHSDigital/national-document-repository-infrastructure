@@ -22,7 +22,7 @@ module "search-patient-details-gateway" {
 
 module "search-patient-details-lambda" {
   source  = "./modules/lambda"
-  name    = "SearchPatientDetails"
+  name    = "SearchPatientDetailsLambda"
   handler = "handlers.search_patient_details_handler.lambda_handler"
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
