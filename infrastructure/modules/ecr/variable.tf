@@ -1,6 +1,6 @@
 variable "app_name" {
   description = "the name of the app"
-  type        = string
+  type = string
 }
 
 variable "environment" {
