@@ -23,6 +23,8 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
       module.create-doc-ref-lambda,
       module.search-patient-details-gateway,
       module.search-patient-details-lambda,
+      module.search-document-references-gateway,
+      module.search-document-references-lambda,
     ]))
   }
 

@@ -7,7 +7,7 @@ variable "handler" {
 }
 
 variable "lambda_environment_variables" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
