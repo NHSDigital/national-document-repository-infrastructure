@@ -1,5 +1,4 @@
-# .github/workflows/terraform-dev
-name: 'Destroy Test (Dev Account) Environment'
+name: 'Destroy Test (Dev Account) Environment CRON'
 
 on: 
   schedule:

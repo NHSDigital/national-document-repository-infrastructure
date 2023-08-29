@@ -1,5 +1,4 @@
-# .github/workflows/terraform-dev
-name: 'Destroy (Dev Account) Environment'
+name: 'Destroy (Dev Account) Environment CRON'
 
 on: 
   schedule:
@@ -18,7 +17,7 @@ jobs:
     strategy:
       matrix:
         # Can't use an env var here unfortunatly, we will have to update here with new sandbox environments
-        sandbox-name: [ndr-dev, ndra, ndrb]
+        sandbox-name: [ndra, ndrb]
 
     steps:
     # Checkout the repository to the GitHub Actions runner

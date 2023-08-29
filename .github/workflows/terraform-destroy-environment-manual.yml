@@ -1,4 +1,3 @@
-# .github/workflows/terraform-dev
 name: 'Destroy (Dev Account) Environment'
 
 on:
