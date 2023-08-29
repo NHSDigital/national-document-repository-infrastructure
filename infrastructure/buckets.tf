@@ -6,4 +6,5 @@ module "ndr-document-store" {
   enable_cors_configuration = true
   environment               = var.environment
   owner                     = var.owner
+  force_destroy             = contains(["ndra", "ndrb", "ndr-test"], terraform.workspace)
 }
