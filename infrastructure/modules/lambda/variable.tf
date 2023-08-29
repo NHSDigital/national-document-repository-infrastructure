@@ -7,7 +7,7 @@ variable "handler" {
 }
 
 variable "lambda_environment_variables" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
@@ -31,3 +31,7 @@ variable "iam_role_policies" {
   type = list(string)
 }
 
+variable "lambda_timeout" {
+  type    = number
+  default = 30
+}

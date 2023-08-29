@@ -30,11 +30,11 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_api_execution_arn"></a> [api\_execution\_arn](#input\_api\_execution\_arn) | n/a | `string` | n/a | yes |
-| <a name="input_docstore_bucket_name"></a> [docstore\_bucket\_name](#input\_docstore\_bucket\_name) | n/a | `string` | n/a | yes |
 | <a name="input_handler"></a> [handler](#input\_handler) | n/a | `string` | n/a | yes |
 | <a name="input_http_method"></a> [http\_method](#input\_http\_method) | n/a | `string` | n/a | yes |
 | <a name="input_iam_role_policies"></a> [iam\_role\_policies](#input\_iam\_role\_policies) | n/a | `list(string)` | n/a | yes |
-| <a name="input_lambda_environment_variables"></a> [lambda\_environment\_variables](#input\_lambda\_environment\_variables) | n/a | `map(string)` | n/a | yes |
+| <a name="input_lambda_environment_variables"></a> [lambda\_environment\_variables](#input\_lambda\_environment\_variables) | n/a | `map(string)` | `{}` | no |
+| <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | n/a | `number` | `30` | no |
 | <a name="input_name"></a> [name](#input\_name) | n/a | `string` | n/a | yes |
 | <a name="input_resource_id"></a> [resource\_id](#input\_resource\_id) | n/a | `string` | n/a | yes |
 | <a name="input_rest_api_id"></a> [rest\_api\_id](#input\_rest\_api\_id) | n/a | `string` | n/a | yes |
