@@ -1,0 +1,63 @@
+# .github/workflows/terraform-dev
+name: 'Destroy (Dev Account) Environment'
+
+on: 
+  schedule:
+    - cron: 15 18 * * 1-5  
+
+permissions:
+  pull-requests: write
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+    
+jobs:
+  terraform_destroy_process:
+    runs-on: ubuntu-latest
+    environment: development
+
+    strategy:
+      matrix:
+        # Can't use an env var here unfortunatly, we will have to update here with new sandbox environments
+        sandbox-name: [ndr-dev, ndra, ndrb]
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        ref: main
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+        role-skip-session-tagging: true
+        aws-region: ${{ vars.AWS_REGION }}
+      
+    - name: View AWS Role
+      run: aws sts get-caller-identity
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.4
+        terraform_wrapper: false
+      
+    - name: Terraform Init
+      id: init
+      run: terraform init -backend-config=backend.conf
+      working-directory: ./infrastructure 
+      shell: bash
+
+    - name: Terraform Set Workspace
+      id: workspace
+      run:  terraform workspace select ${{ matrix.sandbox-name }}
+      working-directory: ./infrastructure 
+      shell: bash
+    
+    - name: Terraform Destroy 
+      run: terraform destroy -auto-approve -var-file="${{vars.TF_VARS_FILE}}"
+      working-directory: ./infrastructure
+        
+        
