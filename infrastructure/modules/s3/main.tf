@@ -57,7 +57,7 @@ resource "aws_s3_bucket_cors_configuration" "document_store_bucket_cors_config" 
 
   cors_rule {
     allowed_headers = ["*"]
-    allowed_methods = ["PUT", "DELETE"]
+    allowed_methods = ["POST", "DELETE"]
     allowed_origins = [var.origin]
     expose_headers  = ["ETag"]
     max_age_seconds = 3000
