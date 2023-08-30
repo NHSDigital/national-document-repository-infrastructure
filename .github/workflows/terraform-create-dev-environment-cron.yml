@@ -1,4 +1,4 @@
-name: 'Destroy (Dev Account) Environment CRON'
+name: 'Create (Dev Account) Environment CRON'
 
 on: 
   schedule:
