@@ -14,12 +14,10 @@ variable "enable_cors_configuration" {
   default = false
 }
 
-variable "origin" {
-  type = string
+variable "cors_rules" {
+  default = []
 }
-
 # Tags
-
 variable "environment" {
   type = string
 }
@@ -28,6 +26,7 @@ variable "owner" {
   type = string
 }
 
+# Outputs
 output "s3_object_access_policy" {
   value = aws_iam_policy.s3_document_data_policy.arn
 }

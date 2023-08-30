@@ -28,14 +28,14 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | the name of the bucket | `string` | n/a | yes |
+| <a name="input_cors_rules"></a> [cors\_rules](#input\_cors\_rules) | n/a | `list` | `[]` | no |
 | <a name="input_enable_cors_configuration"></a> [enable\_cors\_configuration](#input\_enable\_cors\_configuration) | n/a | `bool` | `false` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | Tags | `string` | n/a | yes |
 | <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | (Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable. | `bool` | `false` | no |
-| <a name="input_origin"></a> [origin](#input\_origin) | n/a | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_s3_object_access_policy"></a> [s3\_object\_access\_policy](#output\_s3\_object\_access\_policy) | n/a |
+| <a name="output_s3_object_access_policy"></a> [s3\_object\_access\_policy](#output\_s3\_object\_access\_policy) | Outputs |

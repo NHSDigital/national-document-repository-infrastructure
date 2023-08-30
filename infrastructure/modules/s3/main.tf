@@ -54,17 +54,14 @@ resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
 resource "aws_s3_bucket_cors_configuration" "document_store_bucket_cors_config" {
   bucket = aws_s3_bucket.bucket.id
   count  = var.enable_cors_configuration ? 1 : 0
-
-  cors_rule {
-    allowed_headers = ["*"]
-    allowed_methods = ["POST", "DELETE"]
-    allowed_origins = [var.origin]
-    expose_headers  = ["ETag"]
-    max_age_seconds = 3000
-  }
-
-  cors_rule {
-    allowed_methods = ["GET"]
-    allowed_origins = [var.origin]
+  dynamic "cors_rule" {
+    for_each = var.cors_rules
+    content {
+      allowed_headers = try(cors_rule.value.allowed_headers, null)
+      allowed_methods = cors_rule.value.allowed_methods
+      allowed_origins = cors_rule.value.allowed_origins
+      expose_headers  = try(cors_rule.value.expose_headers, null)
+      max_age_seconds = try(cors_rule.value.max_age_seconds, null)
+    }
   }
 }
