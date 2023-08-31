@@ -1,5 +1,5 @@
 resource "aws_ssm_parameter" "secret" {
-  name        = "/ndr/${var.environment}/${terraform.workspace}/${var.name}"
+  name        = "/ndr/${terraform.workspace}/${var.name}"
   type        = var.type
   description = var.description
   value       = var.value
