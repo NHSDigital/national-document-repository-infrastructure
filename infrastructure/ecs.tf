@@ -12,4 +12,5 @@ module "ndr-ecs-fargate" {
   owner                    = var.owner
   domain                   = var.domain
   container_port           = 80
+  api_resource             = aws_api_gateway_deployment.ndr_api_deploy
 }

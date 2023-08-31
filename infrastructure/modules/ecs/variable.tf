@@ -41,6 +41,10 @@ variable "owner" {
 variable "ecr_repository_url" {
 }
 
+variable "api_resource" {
+  default = ""
+}
+
 variable "domain" {
   type = string
 }
