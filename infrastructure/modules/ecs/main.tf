@@ -25,7 +25,7 @@ resource "aws_ecs_task_definition" "nsr_ecs_task" {
           "awslogs-group" : aws_cloudwatch_log_group.awslogs-ndr-ecs.name,
           "awslogs-region" : var.aws_region,
           "awslogs-create-group" : "true",
-          "awslogs-stream-prefix" : "${terraform.workspace}r"
+          "awslogs-stream-prefix" : terraform.workspace
         }
       }
     }

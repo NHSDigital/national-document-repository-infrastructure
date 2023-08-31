@@ -70,3 +70,14 @@ resource "aws_api_gateway_gateway_response" "bad_gateway_response" {
     "gatewayresponse.header.Access-Control-Allow-Credentials" = var.cors_require_credentials ? "'true'" : "'false'"
   }
 }
+
+module "api_endpoint_url_ssm_parameter" {
+  source              = "./modules/ssm_parameter"
+  name                = "api_endpoint"
+  description         = "api endpoint url for ${var.environment}"
+  resource_depends_on = aws_api_gateway_deployment.ndr_api_deploy
+  value               = aws_api_gateway_deployment.ndr_api_deploy.invoke_url
+  type                = "SecureString"
+  owner               = var.owner
+  environment         = var.environment
+}
