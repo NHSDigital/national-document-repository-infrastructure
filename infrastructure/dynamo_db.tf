@@ -1,6 +1,46 @@
 module "document_reference_dynamodb_table" {
-  source                      = "./modules/DynamoDB"
+  source                      = "./modules/dynamo_db"
   table_name                  = "DocumentReferenceMetadata"
+  hash_key                    = "ID"
+  deletion_protection_enabled = false
+  stream_enabled              = false
+  ttl_enabled                 = false
+
+  attributes = [
+    {
+      name = "ID"
+      type = "S"
+    },
+    {
+      name = "FileLocation"
+      type = "S"
+    },
+    {
+      name = "NhsNumber"
+      type = "S"
+    }
+  ]
+
+  global_secondary_indexes = [
+    {
+      name            = "FileLocationsIndex"
+      hash_key        = "FileLocation"
+      projection_type = "ALL"
+    },
+    {
+      name            = "NhsNumberIndex"
+      hash_key        = "NhsNumber"
+      projection_type = "ALL"
+    }
+  ]
+
+  environment = var.environment
+  owner       = var.owner
+}
+
+module "lloyd_george_reference_dynamodb_table" {
+  source                      = "./modules/dynamo_db"
+  table_name                  = "LloydGeorgeReferenceMetadata"
   hash_key                    = "ID"
   deletion_protection_enabled = false
   stream_enabled              = false
