@@ -17,7 +17,7 @@ resource "aws_ecs_service" "ndr_ecs_service" {
     container_port   = var.container_port
   }
 
-  depends_on = [aws_lb_target_group.ecs_lb_tg, var.api_resource]
+  depends_on = [aws_lb_target_group.ecs_lb_tg]
 
   tags = {
     Name        = "${terraform.workspace}-ecs"

@@ -28,12 +28,6 @@ resource "aws_ecs_task_definition" "nsr_ecs_task" {
           "awslogs-stream-prefix" : terraform.workspace
         }
       }
-      environment : [
-        {
-          "name" : "api_endpoint",
-          "value" : try(var.api_resource.invoke_url, null)
-        }
-      ],
     }
   ])
 }
