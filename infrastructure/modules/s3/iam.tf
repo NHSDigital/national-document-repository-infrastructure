@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "s3_document_data_policy" {
-  name = "${terraform.workspace}_get_document_data_policy"
+  name = "${terraform.workspace}_${var.bucket_name}_get_document_data_policy"
 
   policy = jsonencode({
     "Version" : "2012-10-17",
