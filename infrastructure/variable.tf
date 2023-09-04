@@ -12,6 +12,24 @@ variable "docstore_bucket_name" {
   type    = string
   default = "document-store"
 }
+
+variable "lloyd_george_bucket_name" {
+  type    = string
+  default = "lloyd-george-store"
+}
+
+# DynamoDB Table Variables
+variable "docstore_dynamodb_table_name" {
+  type    = string
+  default = "DocumentReferenceMetadata"
+}
+
+variable "lloyd_george_dynamodb_table_name" {
+  type    = string
+  default = "LloydGeorgeReferenceMetadata"
+}
+
+
 # Gateway Variables
 variable "cors_require_credentials" {
   type        = bool

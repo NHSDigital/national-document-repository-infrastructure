@@ -1,6 +1,6 @@
 module "document_reference_dynamodb_table" {
   source                      = "./modules/dynamo_db"
-  table_name                  = "DocumentReferenceMetadata"
+  table_name                  = var.docstore_dynamodb_table_name
   hash_key                    = "ID"
   deletion_protection_enabled = false
   stream_enabled              = false
@@ -40,7 +40,7 @@ module "document_reference_dynamodb_table" {
 
 module "lloyd_george_reference_dynamodb_table" {
   source                      = "./modules/dynamo_db"
-  table_name                  = "LloydGeorgeReferenceMetadata"
+  table_name                  = var.lloyd_george_dynamodb_table_name
   hash_key                    = "ID"
   deletion_protection_enabled = false
   stream_enabled              = false

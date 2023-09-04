@@ -24,7 +24,7 @@ module "ndr-document-store" {
 # Lloyd George Store Bucket
 module "ndr-lloyd-george-store" {
   source                    = "./modules/s3/"
-  bucket_name               = "lloyd-george-store"
+  bucket_name               = var.lloyd_george_bucket_name
   enable_cors_configuration = true
   environment               = var.environment
   owner                     = var.owner
