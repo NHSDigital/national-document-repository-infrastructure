@@ -13,6 +13,11 @@ variable "docstore_bucket_name" {
   default = "document-store"
 }
 
+variable "zip_store_bucket_name" {
+  type    = string
+  default = "zip-request-store"
+}
+
 variable "lloyd_george_bucket_name" {
   type    = string
   default = "lloyd-george-store"
