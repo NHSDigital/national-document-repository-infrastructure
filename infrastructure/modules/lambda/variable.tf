@@ -35,3 +35,7 @@ variable "lambda_timeout" {
   type    = number
   default = 30
 }
+
+output "invoke_arn" {
+  value = aws_lambda_function.lambda.invoke_arn
+}
