@@ -15,6 +15,8 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_api_endpoint_url_ssm_parameter"></a> [api\_endpoint\_url\_ssm\_parameter](#module\_api\_endpoint\_url\_ssm\_parameter) | ./modules/ssm_parameter | n/a |
+| <a name="module_authoriser-lambda"></a> [authoriser-lambda](#module\_authoriser-lambda) | ./modules/lambda | n/a |
+| <a name="module_cis2_auth_session"></a> [cis2\_auth\_session](#module\_cis2\_auth\_session) | ./modules/dynamo_db | n/a |
 | <a name="module_create-doc-ref-gateway"></a> [create-doc-ref-gateway](#module\_create-doc-ref-gateway) | ./modules/gateway | n/a |
 | <a name="module_create-doc-ref-lambda"></a> [create-doc-ref-lambda](#module\_create-doc-ref-lambda) | ./modules/lambda | n/a |
 | <a name="module_document_reference_dynamodb_table"></a> [document\_reference\_dynamodb\_table](#module\_document\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
@@ -36,6 +38,7 @@
 
 | Name | Type |
 |------|------|
+| [aws_api_gateway_authorizer.cis2_authoriser](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer) | resource |
 | [aws_api_gateway_deployment.ndr_api_deploy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_deployment) | resource |
 | [aws_api_gateway_gateway_response.bad_gateway_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_gateway_response) | resource |
 | [aws_api_gateway_gateway_response.unauthorised_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_gateway_response) | resource |
@@ -46,7 +49,18 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_NHS_CIS2_ENVIRONMENT"></a> [NHS\_CIS2\_ENVIRONMENT](#input\_NHS\_CIS2\_ENVIRONMENT) | n/a | `string` | `""` | no |
 | <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | This is a list that specifies all the Availability Zones that will have a pair of public and private subnets | `list(string)` | <pre>[<br>  "eu-west-2a",<br>  "eu-west-2b",<br>  "eu-west-2c"<br>]</pre> | no |
+| <a name="input_cis2_auth_session_table_name"></a> [cis2\_auth\_session\_table\_name](#input\_cis2\_auth\_session\_table\_name) | n/a | `string` | `"CIS2AuthSession"` | no |
+| <a name="input_cis2_client_callback_urls"></a> [cis2\_client\_callback\_urls](#input\_cis2\_client\_callback\_urls) | n/a | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
+| <a name="input_cis2_client_signout_urls"></a> [cis2\_client\_signout\_urls](#input\_cis2\_client\_signout\_urls) | n/a | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
+| <a name="input_cis2_provider_authorize_url"></a> [cis2\_provider\_authorize\_url](#input\_cis2\_provider\_authorize\_url) | n/a | `string` | `""` | no |
+| <a name="input_cis2_provider_client_id"></a> [cis2\_provider\_client\_id](#input\_cis2\_provider\_client\_id) | n/a | `string` | `"0000"` | no |
+| <a name="input_cis2_provider_client_secret"></a> [cis2\_provider\_client\_secret](#input\_cis2\_provider\_client\_secret) | n/a | `string` | `"0000"` | no |
+| <a name="input_cis2_provider_jwks_uri"></a> [cis2\_provider\_jwks\_uri](#input\_cis2\_provider\_jwks\_uri) | n/a | `string` | `""` | no |
+| <a name="input_cis2_provider_oidc_issuer"></a> [cis2\_provider\_oidc\_issuer](#input\_cis2\_provider\_oidc\_issuer) | n/a | `string` | `""` | no |
+| <a name="input_cis2_provider_token_url"></a> [cis2\_provider\_token\_url](#input\_cis2\_provider\_token\_url) | n/a | `string` | `""` | no |
+| <a name="input_cis2_provider_user_info_url"></a> [cis2\_provider\_user\_info\_url](#input\_cis2\_provider\_user\_info\_url) | n/a | `string` | `""` | no |
 | <a name="input_cors_require_credentials"></a> [cors\_require\_credentials](#input\_cors\_require\_credentials) | Sets the value of 'Access-Control-Allow-Credentials' which controls whether auth cookies are needed | `bool` | `true` | no |
 | <a name="input_docstore_bucket_name"></a> [docstore\_bucket\_name](#input\_docstore\_bucket\_name) | Bucket Variables | `string` | `"document-store"` | no |
 | <a name="input_docstore_dynamodb_table_name"></a> [docstore\_dynamodb\_table\_name](#input\_docstore\_dynamodb\_table\_name) | DynamoDB Table Variables | `string` | `"DocumentReferenceMetadata"` | no |
@@ -59,6 +73,7 @@
 | <a name="input_lloyd_george_dynamodb_table_name"></a> [lloyd\_george\_dynamodb\_table\_name](#input\_lloyd\_george\_dynamodb\_table\_name) | n/a | `string` | `"LloydGeorgeReferenceMetadata"` | no |
 | <a name="input_num_private_subnets"></a> [num\_private\_subnets](#input\_num\_private\_subnets) | Sets the number of private subnets, one per availability zone | `number` | `3` | no |
 | <a name="input_num_public_subnets"></a> [num\_public\_subnets](#input\_num\_public\_subnets) | Sets the number of public subnets, one per availability zone | `number` | `3` | no |
+| <a name="input_oidc_providers"></a> [oidc\_providers](#input\_oidc\_providers) | CIS2 Authoriser variables | `list(string)` | `[]` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
 | <a name="input_zip_store_bucket_name"></a> [zip\_store\_bucket\_name](#input\_zip\_store\_bucket\_name) | n/a | `string` | `"zip-request-store"` | no |
 | <a name="input_zip_store_dynamodb_table_name"></a> [zip\_store\_dynamodb\_table\_name](#input\_zip\_store\_dynamodb\_table\_name) | n/a | `string` | `"ZipStoreReferenceMetadata"` | no |

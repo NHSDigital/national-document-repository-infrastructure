@@ -86,3 +86,60 @@ variable "enable_dns_hostnames" {
 variable "domain" {
   type = string
 }
+
+
+# CIS2 Authoriser variables
+variable "oidc_providers" {
+  type    = list(string)
+  default = []
+}
+
+variable "cis2_provider_client_id" {
+  type    = string
+  default = "0000"
+}
+
+variable "cis2_provider_client_secret" {
+  type    = string
+  default = "0000"
+}
+
+variable "cis2_provider_oidc_issuer" {
+  type    = string
+  default = ""
+}
+
+variable "NHS_CIS2_ENVIRONMENT" {
+  type    = string
+  default = ""
+}
+
+variable "cis2_provider_authorize_url" {
+  type    = string
+  default = ""
+}
+
+variable "cis2_provider_token_url" {
+  type    = string
+  default = ""
+}
+
+variable "cis2_provider_user_info_url" {
+  type    = string
+  default = ""
+}
+
+variable "cis2_provider_jwks_uri" {
+  type    = string
+  default = ""
+}
+
+variable "cis2_client_callback_urls" {
+  type    = list(string)
+  default = [""]
+}
+
+variable "cis2_client_signout_urls" {
+  type    = list(string)
+  default = [""]
+}
