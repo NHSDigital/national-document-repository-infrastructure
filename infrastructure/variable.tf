@@ -34,6 +34,10 @@ variable "lloyd_george_dynamodb_table_name" {
   default = "LloydGeorgeReferenceMetadata"
 }
 
+variable "zip_store_dynamodb_table_name" {
+  type    = string
+  default = "ZipStoreReferenceMetadata"
+}
 
 # Gateway Variables
 variable "cors_require_credentials" {
