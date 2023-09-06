@@ -31,13 +31,6 @@ module "ndr-zip-request-store" {
   force_destroy             = contains(["ndra", "ndrb", "ndr-test"], terraform.workspace)
   cors_rules = [
     {
-      allowed_headers = ["*"]
-      allowed_methods = ["POST", "DELETE"]
-      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
-      expose_headers  = ["ETag"]
-      max_age_seconds = 3000
-    },
-    {
       allowed_methods = ["GET"]
       allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
     }
