@@ -60,7 +60,7 @@ jobs:
       shell: bash
     
     - name: Terraform Destroy 
-      run: terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraformVars }}"
+      run: debug terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraformVars }}"
       working-directory: ./infrastructure
         
         
