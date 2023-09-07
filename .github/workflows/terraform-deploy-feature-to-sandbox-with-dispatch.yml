@@ -1,13 +1,28 @@
 # .github/workflows/terraform-dev
-name: 'Development CI Feature to Main'
+name: 'Deploy Feature Branch to Sandbox with Dispatch'
 
 on:
-  push:
-    branches:
-    - main
-  pull_request:
-    branches:
-    - main
+  workflow_dispatch:
+    inputs:
+      buildBranch:
+        default: "main"
+        description: "Feature branch to push to sandbox."
+        required: true
+        type: "string"
+      sandboxWorkspace:
+        description: "Which Sandbox to push to."
+        required: true
+        type: "string"
+      terraformVars:
+        default: "dev.tfvars"
+        description: "Which vars file is required? For test, change to test.tfvars"
+        required: true
+        type: "string"
+      environment:
+        default: "development"
+        description: "This is the environement the aciton will run in, for ndr-test, set to 'test'"
+        required: true
+        type: "string"
 
 permissions:
   pull-requests: write
@@ -17,12 +32,14 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: development
+    environment: ${{ github.event.inputs.environment}}
 
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.buildBranch}}
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -49,7 +66,7 @@ jobs:
 
     - name: Terraform Set Workspace
       id: workspace
-      run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
+      run:  terraform workspace select ${{ github.event.inputs.sandboxWorkspace}}
       working-directory: ./infrastructure 
       shell: bash
       
@@ -65,10 +82,24 @@ jobs:
       working-directory: ./infrastructure
       shell: bash
     
-    # Terraform apply will only occur on a push (merge request completion)
     - name: Terraform Apply 
-      if: github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve -input=false tf.plan
       working-directory: ./infrastructure
+
+  dispatch_to_main_repo:
+    runs-on: ubuntu-latest
+    environment: development
+
+    steps:
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: nhsconnect/national-document-repository
+          event-type: full-deploy-dispatch-event
+          client-payload: '{"environment": "${{ github.event.inputs.environment }}", "sandbox":"${{ github.event.inputs.sandboxWorkspace }}"}'
+
+
         
         
