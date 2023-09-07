@@ -15,11 +15,6 @@ variable "hash_key" {
   default = null
 }
 
-variable "range_key" {
-  type    = string
-  default = null
-}
-
 variable "billing_mode" {
   type    = string
   default = "PAY_PER_REQUEST"
