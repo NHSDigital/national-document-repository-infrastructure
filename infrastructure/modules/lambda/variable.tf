@@ -16,7 +16,13 @@ variable "rest_api_id" {
 }
 
 variable "resource_id" {
-  type = string
+  type    = string
+  default = ""
+}
+
+variable "is_gateway_integration_needed" {
+  type    = bool
+  default = true
 }
 
 variable "http_method" {

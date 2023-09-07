@@ -13,8 +13,8 @@ module "authoriser-lambda" {
     WORKSPACE         = terraform.workspace
     DYNAMODB_ENDPOINT = var.cis2_auth_session_table_name
   }
-  http_method = "GET"
-  resource_id = ""
+  http_method                   = "GET"
+  is_gateway_integration_needed = false
 }
 
 resource "aws_api_gateway_authorizer" "repo_authoriser" {
