@@ -2,7 +2,7 @@ name: 'Destroy (Dev Account) Environment CRON'
 
 on: 
   schedule:
-    - cron: 1 19 * * 1-5  
+    - cron: 59 17 * * 1-5  #utc time
 
 permissions:
   pull-requests: write
