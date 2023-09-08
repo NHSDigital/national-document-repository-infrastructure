@@ -6,7 +6,7 @@ module "authoriser-lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.cis2_auth_session.dynamodb_policy,
-    aws_iam_policy.ssm_policy.arn
+    aws_iam_policy.ssm_policy_authoriser.arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
@@ -27,8 +27,8 @@ resource "aws_api_gateway_authorizer" "repo_authoriser" {
   #   authorizer_credentials           = aws_iam_role.authoriser_execution.arn
 }
 
-resource "aws_iam_policy" "ssm_policy" {
-  name = "ssm_token_policy"
+resource "aws_iam_policy" "ssm_policy_authoriser" {
+  name = "${terraform.workspace}_ssm_public_token_policy"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
