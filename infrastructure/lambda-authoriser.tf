@@ -5,7 +5,8 @@ module "authoriser-lambda" {
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    module.cis2_auth_session.dynamodb_policy
+    module.cis2_auth_session.dynamodb_policy,
+    aws_iam_policy.ssm_policy.arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
@@ -24,4 +25,23 @@ resource "aws_api_gateway_authorizer" "repo_authoriser" {
   rest_api_id     = aws_api_gateway_rest_api.ndr_doc_store_api.id
   authorizer_uri  = module.authoriser-lambda.invoke_arn
   #   authorizer_credentials           = aws_iam_role.authoriser_execution.arn
+}
+
+resource "aws_iam_policy" "ssm_policy" {
+  name = "ssm_token_policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParametersByPath"
+        ],
+        Resource = [
+          "arn:aws:ssm:*:*:parameter/jwt_token_public_key",
+        ]
+      }
+    ]
+  })
 }
