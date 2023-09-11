@@ -40,7 +40,7 @@ variable "enable_sse" {
 variable "enable_deduplication" {
   type        = bool
   default     = false
-  description = "Prevent content based duplication in notification queue"
+  description = "Prevent content based duplication in queue"
 
 }
 
