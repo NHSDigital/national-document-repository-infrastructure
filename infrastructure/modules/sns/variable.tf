@@ -32,14 +32,13 @@ variable "delivery_policy" {
 EOF
 }
 
-variable "fifo" {
+variable "enable_fifo" {
   type        = bool
   default     = false
   description = "Attach first in first out policy to notification queue"
-
 }
 
-variable "content_based_deduplication" {
+variable "enable_deduplication" {
   type        = bool
   default     = false
   description = "Prevent content based duplication in notification queue"
