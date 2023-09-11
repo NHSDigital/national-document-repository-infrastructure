@@ -1,6 +1,6 @@
 
 resource "aws_sqs_queue" "sqs_queue" {
-  name                       = var.name
+  name                       = "${terraform.workspace}-${var.name}"
   delay_seconds              = var.delay
   visibility_timeout_seconds = var.max_visibility
   max_message_size           = var.max_message
