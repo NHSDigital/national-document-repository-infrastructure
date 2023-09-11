@@ -10,8 +10,7 @@ module "authoriser-lambda" {
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    WORKSPACE         = terraform.workspace
-    DYNAMODB_ENDPOINT = var.cis2_auth_session_table_name
+    WORKSPACE = terraform.workspace
   }
   http_method                   = "GET"
   is_gateway_integration_needed = false

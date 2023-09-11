@@ -20,11 +20,13 @@ module "create-token-lambda" {
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_token.arn
   ]
-  rest_api_id                  = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id                  = module.create-doc-ref-gateway.gateway_resource_id
-  http_method                  = "POST"
-  api_execution_arn            = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  lambda_environment_variables = {}
+  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id       = module.create-doc-ref-gateway.gateway_resource_id
+  http_method       = "POST"
+  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  lambda_environment_variables = {
+    WORKSPACE = terraform.workspace
+  }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
   ]
