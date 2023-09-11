@@ -1,5 +1,5 @@
 
-resource "aws_sqs_queue" "sh_queue" {
+resource "aws_sqs_queue" "sqs_queue" {
   name                       = var.name
   delay_seconds              = var.delay
   visibility_timeout_seconds = var.max_visibility
