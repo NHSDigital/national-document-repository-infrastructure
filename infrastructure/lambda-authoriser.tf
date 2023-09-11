@@ -5,7 +5,6 @@ module "authoriser-lambda" {
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    module.cis2_auth_session.dynamodb_policy,
     aws_iam_policy.ssm_policy_authoriser.arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id

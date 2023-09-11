@@ -42,6 +42,11 @@ variable "lambda_timeout" {
   default = 30
 }
 
+variable "memory_size" {
+  type    = number
+  default = 128
+}
+
 output "invoke_arn" {
   value = aws_lambda_function.lambda.invoke_arn
 }

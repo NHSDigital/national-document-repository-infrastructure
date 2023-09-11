@@ -28,6 +28,7 @@ module "create-token-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
   ]
+  memory_size = 256
 }
 
 resource "aws_iam_policy" "ssm_policy_token" {
