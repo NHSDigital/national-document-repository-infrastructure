@@ -5,7 +5,7 @@ module "document-manifest-by-nhs-gateway" {
   parent_id                = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
   http_method              = "GET"
   authorization            = "NONE" // "CUSTOM"
-  gateway_path             = "DocumentManiestByNHSNumber"
+  gateway_path             = "DocumentManfiestByNHSNumber"
   authorizer_id            = null
   cors_require_credentials = var.cors_require_credentials
   origin                   = "'https://${terraform.workspace}.${var.domain}'"
@@ -22,7 +22,7 @@ module "document-manifest-by-nhs-gateway" {
 
 module "document-manifest-by-nhs-number-lambda" {
   source  = "./modules/lambda"
-  name    = "DocumentManiestByNHSNumberLambda"
+  name    = "DocumentManifestByNHSNumberLambda"
   handler = "handlers.document_manifest_by_nhs_number_handler.lambda_handler"
   iam_role_policies = [
     module.document_reference_dynamodb_table.dynamodb_policy,
