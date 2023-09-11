@@ -23,7 +23,7 @@ module "document-manifest-by-nhs-gateway" {
 module "document-manifest-by-nhs-number-lambda" {
   source  = "./modules/lambda"
   name    = "DocumentManiestByNHSNumberLambda"
-  handler = "handlers.document_manifest_by_nhs_number.lambda_handler"
+  handler = "handlers.document_manifest_by_nhs_number_handler.lambda_handler"
   iam_role_policies = [
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
