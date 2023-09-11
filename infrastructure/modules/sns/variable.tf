@@ -1,13 +1,16 @@
 variable "topic_name" {
   type = string
+  description = "Name of the SNS topic"
 }
 
 variable "protocol" {
   type = string
+  description = "SNS protocol type, most commonly https or lambda"
 }
 
 variable "delivery_policy" {
   type    = string
+  description = "Attach delivery or IAM policy"
   default = <<EOF
 {
   "http": {
@@ -32,9 +35,18 @@ EOF
 variable "fifo" {
   type    = bool
   default = false
+  description="Attach first in first out policy to notification queue"
+
 }
 
 variable "content_based_deduplication" {
   type    = bool
   default = false
+  description="Prevent content based duplication in notification queue"
+
+}
+
+variable "function_arn" {
+  type=string
+  description="Provide the AWS ARN to link the SNS module to the path of the Lambda / Service"
 }
