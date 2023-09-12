@@ -1,5 +1,5 @@
 
-module "5xx-alarm" {
+module "error-5xx-alarm" {
   source        = "./modules/alarm"
   alarm_name    = "5xx_error"
   alarm_description = "Triggers when a 5xx status code has been returned by the DocStoreAPI." 
