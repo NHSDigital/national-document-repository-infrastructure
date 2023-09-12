@@ -30,8 +30,10 @@ module "create-token-lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
+    aws_api_gateway_method.token_request_proxy_method
   ]
-  memory_size = 256
+  memory_size                   = 256
+  is_gateway_integration_needed = false
 }
 
 resource "aws_iam_policy" "ssm_policy_token" {

@@ -32,10 +32,11 @@ module "login_redirect_lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     aws_api_gateway_resource.login_resource
   ]
+  is_gateway_integration_needed = false
 }
 
 resource "aws_iam_policy" "ssm_policy_oidc" {
-  name = "${terraform.workspace}_ssm_token_private_policy"
+  name = "${terraform.workspace}_ssm_oidc_policy"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
