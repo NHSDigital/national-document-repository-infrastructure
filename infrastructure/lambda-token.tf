@@ -27,6 +27,7 @@ module "create-token-lambda" {
   lambda_environment_variables = {
     WORKSPACE                       = terraform.workspace
     SSM_PARAM_JWT_TOKEN_PRIVATE_KEY = "jwt_token_private_key"
+    OIDC_CALLBACK_URL               = "https://${terraform.workspace}.${var.domain}/auth-callback"
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
@@ -44,10 +45,11 @@ resource "aws_iam_policy" "ssm_policy_token" {
         Effect = "Allow",
         Action = [
           "ssm:GetParameter",
+          "ssm:GetParameters",
           "ssm:GetParametersByPath"
         ],
         Resource = [
-          "arn:aws:ssm:*:*:parameter/jwt_token_private_key",
+          "arn:aws:ssm:*:*:parameter/*",
         ]
       }
     ]
