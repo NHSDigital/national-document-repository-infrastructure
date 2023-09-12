@@ -4,7 +4,7 @@ module "error-5xx-alarm" {
   alarm_name    = "5xx_error"
   alarm_description = "Triggers when a 5xx status code has been returned by the DocStoreAPI." 
   namespace = "AWS/ApiGateway"
-  api_name = module.aws_api_gateway_rest_api.lambda_api.name
+  api_name = aws_api_gateway_rest_api.ndr_doc_store_api.name
   metric_name = "5XXError"
   alarm_actions = [aws_sns_topic.repo_alarm_notifications.arn] 
   ok_actions = [aws_sns_topic.repo_alarm_notifications.arn] 
@@ -24,7 +24,7 @@ resource "aws_sns_topic" "repo_alarm_notifications" {
         "Action" : "SNS:Publish",
         "Condition" : {
           "ArnLike" : {
-            "aws:SourceArn" : "arn:aws:cloudwatch:${var.region}:${var.account_id}:alarm:*"
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
           }
         }
         "Resource" : "*"
@@ -34,23 +34,23 @@ resource "aws_sns_topic" "repo_alarm_notifications" {
 }
 
 
-resource "aws_kms_key" "alarm_notification_encryption_key" {
-  description         = "Custom KMS Key to enable server side encryption for alarm notifications"
-  policy              = data.aws_iam_policy_document.alarm_notification_kms_key_policy_doc.json
-  enable_key_rotation = true
-}
+# resource "aws_kms_key" "alarm_notification_encryption_key" {
+#   description         = "Custom KMS Key to enable server side encryption for alarm notifications"
+#   policy              = data.aws_iam_policy_document.alarm_notification_kms_key_policy_doc.json
+#   enable_key_rotation = true
+# }
 
-resource "aws_kms_alias" "alarm_notification_encryption_key_alias" {
-  name          = "alias/alarm-notification-encryption-key-kms-${terraform.workspace}"
-  target_key_id = aws_kms_key.alarm_notification_encryption_key.id
-}
+# resource "aws_kms_alias" "alarm_notification_encryption_key_alias" {
+#   name          = "alias/alarm-notification-encryption-key-kms-${terraform.workspace}"
+#   target_key_id = aws_kms_key.alarm_notification_encryption_key.id
+# }
 
 
 data "aws_iam_policy_document" "alarm_notification_kms_key_policy_doc" {
   statement {
     effect = "Allow"
     principals {
-      identifiers = ["arn:aws:iam::${var.account_id}:root"]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
       type        = "AWS"
     }
     actions   = ["kms:*"]
