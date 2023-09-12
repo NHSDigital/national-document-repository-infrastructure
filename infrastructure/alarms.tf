@@ -15,6 +15,49 @@ resource "aws_cloudwatch_metric_alarm" "repo_alarm" {
   unit                = "Count"
 }
 
+/**
+
+Module required to create gateway alarm subscription below. 
+As there is no notification provider such as email, 
+phone number or sqs queue planned yet the code is commented
+
+**/
+
+# module "sns_gateway_alarms_topic" {
+#   source         = "./modules/sns"
+#   topic_name     = "gateway-alarms-topic"
+#   topic_protocol = "application"
+#   topic_endpoint = "arn:aws:apigateway:eu-west-2:${data.aws_caller_identity.current.account_id}:/apis/${aws_api_gateway_rest_api.ndr_doc_store_api.id}/routes/*"
+#   depends_on     = [aws_api_gateway_rest_api.ndr_doc_store_api]
+#   delivery_policy = jsonencode({
+#     "Version" : "2012-10-17",
+#     "Statement" : [
+#       {
+#         "Effect" : "Allow",
+#         "Principal" : {
+#           "Service" : "cloudwatch.amazonaws.com"
+#         },
+#         "Action" : [
+#           "SNS:Publish",
+#         ],
+#         "Condition" : {
+#           "ArnLike" : {
+#             "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+#           }
+#         }
+#         "Resource" : "*"
+#       }
+#     ]
+#   })
+# }
+
+/**
+
+Resources required to create alarm notification encryption below,
+as there is no kms key per ndr environment currently added.
+
+**/
+
 # resource "aws_kms_key" "alarm_notification_encryption_key" {
 #   description         = "Custom KMS Key to enable server side encryption for alarm notifications"
 #   policy              = data.aws_iam_policy_document.alarm_notification_kms_key_policy_doc.json
