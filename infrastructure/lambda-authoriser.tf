@@ -11,6 +11,7 @@ module "authoriser-lambda" {
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     WORKSPACE = terraform.workspace
+    SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
   }
   http_method                   = "GET"
   is_gateway_integration_needed = false

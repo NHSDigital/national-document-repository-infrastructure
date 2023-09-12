@@ -26,6 +26,7 @@ module "create-token-lambda" {
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     WORKSPACE = terraform.workspace
+    SSM_PARAM_JWT_TOKEN_PRIVATE_KEY = "jwt_token_private_key"
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
