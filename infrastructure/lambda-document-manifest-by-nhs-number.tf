@@ -27,6 +27,7 @@ module "document-manifest-by-nhs-number-lambda" {
   iam_role_policies = [
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
+    module.ndr-document-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
   ]
@@ -34,8 +35,12 @@ module "document-manifest-by-nhs-number-lambda" {
   resource_id       = module.document-manifest-by-nhs-gateway.gateway_resource_id
   http_method       = "GET"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  lambda_environment_variables = {
+    DOCUMENT_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.docstore_bucket_name}"
+    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_DocumentReferenceMetadata"
+  }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.document-manifest-by-nhs-gateway
+    module.document-manifest-by-nhs-gateway,
   ]
 }
