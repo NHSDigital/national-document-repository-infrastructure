@@ -23,7 +23,6 @@ resource "aws_sns_topic" "repo_alarm_notifications" {
         },
         "Action" : [
           "SNS:Publish",
-          "SNS:CreateTopic"
         ],
         "Condition" : {
           "ArnLike" : {
