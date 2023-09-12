@@ -18,8 +18,9 @@ resource "aws_cloudwatch_metric_alarm" "repo_alarm" {
 }
 
 module "sns_alarms_topic" {
-  source     = "./modules/sns"
-  topic_name = "alarms-notifications-topic"
+  source         = "./modules/sns"
+  topic_name     = "alarms-notifications-topic"
+  topic_protocol = "sqs"
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
