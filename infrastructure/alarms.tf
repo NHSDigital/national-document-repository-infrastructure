@@ -21,7 +21,10 @@ resource "aws_sns_topic" "repo_alarm_notifications" {
         "Principal" : {
           "Service" : "cloudwatch.amazonaws.com"
         },
-        "Action" : "SNS:Publish",
+        "Action" : [
+          "SNS:Publish",
+          "SNS:CreateTopic"
+        ],
         "Condition" : {
           "ArnLike" : {
             "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
