@@ -4,9 +4,9 @@ module "create-doc-ref-gateway" {
   api_gateway_id           = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id                = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
   http_method              = "POST"
-  authorization            = "NONE" // "CUSTOM"
+  authorization            = "CUSTOM"
   gateway_path             = "DocumentReference"
-  authorizer_id            = null
+  authorizer_id            = aws_api_gateway_authorizer.repo_authoriser.id
   cors_require_credentials = var.cors_require_credentials
   origin                   = "'https://${terraform.workspace}.${var.domain}'"
 
