@@ -8,6 +8,7 @@ resource "aws_lambda_function" "lambda" {
   source_code_hash = data.archive_file.lambda.output_base64sha256
   runtime          = "python3.11"
   timeout          = var.lambda_timeout
+  memory_size      = var.memory_size
 
   environment {
     variables = var.lambda_environment_variables
@@ -15,6 +16,7 @@ resource "aws_lambda_function" "lambda" {
 }
 
 resource "aws_api_gateway_integration" "lambda_integration" {
+  count                   = var.is_gateway_integration_needed ? 1 : 0
   rest_api_id             = var.rest_api_id
   resource_id             = var.resource_id
   http_method             = var.http_method
