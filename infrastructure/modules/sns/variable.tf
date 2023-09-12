@@ -25,6 +25,7 @@ variable "topic_protocol" {
   type = string
 }
 
+
 variable "topic_endpoint" {
   type = string
 }

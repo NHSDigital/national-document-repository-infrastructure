@@ -12,14 +12,14 @@ resource "aws_cloudwatch_metric_alarm" "repo_alarm" {
   evaluation_periods  = "1"
   statistic           = "Sum"
   actions_enabled     = "true"
-  alarm_actions       = [module.sns_alarms_topic.arn]
-  ok_actions          = [module.sns_alarms_topic.arn]
-  depends_on          = [module.sns_alarms_topic, aws_api_gateway_rest_api.ndr_doc_store_api]
+  alarm_actions       = [module.sns_gateway_alarms_topic.arn]
+  ok_actions          = [module.sns_gateway_alarms_topic.arn]
+  depends_on          = [module.sns_gateway_alarms_topic, aws_api_gateway_rest_api.ndr_doc_store_api]
 }
 
-module "sns_alarms_topic" {
+module "sns_gateway_alarms_topic" {
   source         = "./modules/sns"
-  topic_name     = "alarms-notifications-topic"
+  topic_name     = "gateway-alarms-topic"
   topic_protocol = "sqs"
   topic_endpoint = aws_api_gateway_rest_api.ndr_doc_store_api.arn
   depends_on     = [aws_api_gateway_rest_api.ndr_doc_store_api]
@@ -44,8 +44,6 @@ module "sns_alarms_topic" {
     ]
   })
 }
-
-
 
 # resource "aws_kms_key" "alarm_notification_encryption_key" {
 #   description         = "Custom KMS Key to enable server side encryption for alarm notifications"

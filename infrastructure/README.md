@@ -17,7 +17,8 @@
 | <a name="module_api_endpoint_url_ssm_parameter"></a> [api\_endpoint\_url\_ssm\_parameter](#module\_api\_endpoint\_url\_ssm\_parameter) | ./modules/ssm_parameter | n/a |
 | <a name="module_create-doc-ref-gateway"></a> [create-doc-ref-gateway](#module\_create-doc-ref-gateway) | ./modules/gateway | n/a |
 | <a name="module_create-doc-ref-lambda"></a> [create-doc-ref-lambda](#module\_create-doc-ref-lambda) | ./modules/lambda | n/a |
-| <a name="module_create_alarm"></a> [create\_alarm](#module\_create\_alarm) | ./modules/alarm | n/a |
+| <a name="module_create_doc_alarm"></a> [create\_doc\_alarm](#module\_create\_doc\_alarm) | ./modules/alarm | n/a |
+| <a name="module_create_doc_alarm_topic"></a> [create\_doc\_alarm\_topic](#module\_create\_doc\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_document-manifest-by-nhs-gateway"></a> [document-manifest-by-nhs-gateway](#module\_document-manifest-by-nhs-gateway) | ./modules/gateway | n/a |
 | <a name="module_document-manifest-by-nhs-number-lambda"></a> [document-manifest-by-nhs-number-lambda](#module\_document-manifest-by-nhs-number-lambda) | ./modules/lambda | n/a |
 | <a name="module_document_reference_dynamodb_table"></a> [document\_reference\_dynamodb\_table](#module\_document\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
@@ -33,7 +34,7 @@
 | <a name="module_search-document-references-lambda"></a> [search-document-references-lambda](#module\_search-document-references-lambda) | ./modules/lambda | n/a |
 | <a name="module_search-patient-details-gateway"></a> [search-patient-details-gateway](#module\_search-patient-details-gateway) | ./modules/gateway | n/a |
 | <a name="module_search-patient-details-lambda"></a> [search-patient-details-lambda](#module\_search-patient-details-lambda) | ./modules/lambda | n/a |
-| <a name="module_sns_alarms_topic"></a> [sns\_alarms\_topic](#module\_sns\_alarms\_topic) | ./modules/sns | n/a |
+| <a name="module_sns_gateway_alarms_topic"></a> [sns\_gateway\_alarms\_topic](#module\_sns\_gateway\_alarms\_topic) | ./modules/sns | n/a |
 | <a name="module_sqs-splunk-queue"></a> [sqs-splunk-queue](#module\_sqs-splunk-queue) | ./modules/sqs | n/a |
 | <a name="module_zip_store_reference_dynamodb_table"></a> [zip\_store\_reference\_dynamodb\_table](#module\_zip\_store\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 

@@ -20,17 +20,43 @@ module "create-doc-ref-gateway" {
   ]
 }
 
-module "create_alarm" {
+module "create_doc_alarm" {
   source               = "./modules/alarm"
   lambda_function_name = module.create-doc-ref-lambda.function_name
   lambda_timeout       = module.create-doc-ref-lambda.timeout
   lambda_name          = "create_document_reference_handler"
   namespace            = "AWS/Lambda"
-  topic_protocol       = "lambda"
-  topic_endpoint       = module.create-doc-ref-lambda.endpoint
-  alarm_actions        = [module.sns_alarms_topic.arn]
-  ok_actions           = [module.sns_alarms_topic.arn]
-  depends_on           = [module.create-doc-ref-lambda, module.sns_alarms_topic]
+  alarm_actions        = [module.create_doc_alarm_topic.arn]
+  ok_actions           = [module.create_doc_alarm_topic.arn]
+  depends_on           = [module.create-doc-ref-lambda, module.create_doc_alarm_topic]
+}
+
+
+module "create_doc_alarm_topic" {
+  source         = "./modules/sns"
+  topic_name     = "create_doc-alarms-topic"
+  topic_protocol = "lambda"
+  topic_endpoint = module.create-doc-ref-lambda.endpoint
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
 }
 
 
