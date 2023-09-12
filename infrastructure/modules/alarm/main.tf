@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "repo_alarm" {
-  alarm_name        = "${terraform.workspace}_repo_${var.alarm_name}"   
+  alarm_name        = "${terraform.workspace}_repo_${var.alarm_name}"
   alarm_description = var.alarm_description
   namespace         = "AWS/ApiGateway"
   dimensions = {

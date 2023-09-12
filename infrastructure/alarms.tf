@@ -1,13 +1,13 @@
 
 module "error-5xx-alarm" {
-  source        = "./modules/alarm"
-  alarm_name    = "5xx_error"
-  alarm_description = "Triggers when a 5xx status code has been returned by the DocStoreAPI." 
-  namespace = "AWS/ApiGateway"
-  api_name = aws_api_gateway_rest_api.ndr_doc_store_api.name
-  metric_name = "5XXError"
-  alarm_actions = [aws_sns_topic.repo_alarm_notifications.arn] 
-  ok_actions = [aws_sns_topic.repo_alarm_notifications.arn] 
+  source            = "./modules/alarm"
+  alarm_name        = "5xx_error"
+  alarm_description = "Triggers when a 5xx status code has been returned by the DocStoreAPI."
+  namespace         = "AWS/ApiGateway"
+  api_name          = aws_api_gateway_rest_api.ndr_doc_store_api.name
+  metric_name       = "5XXError"
+  alarm_actions     = [aws_sns_topic.repo_alarm_notifications.arn]
+  ok_actions        = [aws_sns_topic.repo_alarm_notifications.arn]
 }
 
 
