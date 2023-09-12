@@ -21,8 +21,8 @@ module "login_redirect_lambda" {
     aws_iam_policy.ssm_policy_oidc.arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = module.create-doc-ref-gateway.gateway_resource_id
-  http_method       = "POST"
+  resource_id       = aws_api_gateway_resource.login_resource.id
+  http_method       = "GET"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     WORKSPACE         = terraform.workspace
@@ -32,7 +32,6 @@ module "login_redirect_lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     aws_api_gateway_resource.login_resource
   ]
-  is_gateway_integration_needed = false
 }
 
 resource "aws_iam_policy" "ssm_policy_oidc" {

@@ -21,8 +21,8 @@ module "create-token-lambda" {
     aws_iam_policy.ssm_policy_token.arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = module.create-doc-ref-gateway.gateway_resource_id
-  http_method       = "POST"
+  resource_id       = aws_api_gateway_resource.token_request_resource.id
+  http_method       = "GET"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     WORKSPACE                       = terraform.workspace
@@ -32,8 +32,7 @@ module "create-token-lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     aws_api_gateway_method.token_request_proxy_method
   ]
-  memory_size                   = 256
-  is_gateway_integration_needed = false
+  memory_size = 256
 }
 
 resource "aws_iam_policy" "ssm_policy_token" {
