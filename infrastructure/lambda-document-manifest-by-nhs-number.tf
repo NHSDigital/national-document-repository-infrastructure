@@ -20,6 +20,45 @@ module "document-manifest-by-nhs-gateway" {
   ]
 }
 
+module "document_manifest_alarm" {
+  source               = "./modules/alarm"
+  lambda_function_name = module.document-manifest-by-nhs-number-lambda.function_name
+  lambda_timeout       = module.document-manifest-by-nhs-number-lambda.timeout
+  lambda_name          = "create_document_manifest_handler"
+  namespace            = "AWS/Lambda"
+  alarm_actions        = [module.document_manifest_alarm_topic.arn]
+  ok_actions           = [module.document_manifest_alarm_topic.arn]
+  depends_on           = [module.document-manifest-by-nhs-number-lambda, module.document_manifest_alarm_topic]
+}
+
+
+module "document_manifest_alarm_topic" {
+  source         = "./modules/sns"
+  topic_name     = "create_doc_manifest-alarms-topic"
+  topic_protocol = "lambda"
+  topic_endpoint = module.document-manifest-by-nhs-number-lambda.endpoint
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+}
+
 module "document-manifest-by-nhs-number-lambda" {
   source  = "./modules/lambda"
   name    = "DocumentManifestByNHSNumberLambda"
