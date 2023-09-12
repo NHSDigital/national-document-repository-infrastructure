@@ -117,4 +117,3 @@ module "zip_store_reference_dynamodb_table" {
   environment = var.environment
   owner       = var.owner
 }
-
