@@ -20,3 +20,11 @@ variable "enable_deduplication" {
   description = "Prevent content based duplication in notification queue"
 
 }
+
+variable "topic_protocol" {
+  type = string
+}
+
+variable "topic_endpoint" {
+  type = string
+}

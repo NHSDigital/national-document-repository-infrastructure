@@ -69,3 +69,7 @@ output "function_name" {
 output "timeout" {
   value = aws_lambda_function.lambda.timeout
 }
+
+output "endpoint" {
+  value = aws_lambda_function.lambda.arn
+}

@@ -26,6 +26,8 @@ module "create_alarm" {
   lambda_timeout       = module.create-doc-ref-lambda.timeout
   lambda_name          = "create_document_reference_handler"
   namespace            = "AWS/Lambda"
+  topic_protocol       = "lambda"
+  topic_endpoint       = module.create-doc-ref-lambda.endpoint
   alarm_actions        = [module.sns_alarms_topic.arn]
   ok_actions           = [module.sns_alarms_topic.arn]
   depends_on           = [module.create-doc-ref-lambda, module.sns_alarms_topic]
