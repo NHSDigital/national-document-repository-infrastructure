@@ -6,43 +6,13 @@ resource "aws_cloudwatch_metric_alarm" "repo_alarm" {
     ApiName = aws_api_gateway_rest_api.ndr_doc_store_api.name
   }
   metric_name         = "5XXError"
-  comparison_operator = "GreaterThanThreshold"
-  threshold           = "0"
-  period              = "300"
-  evaluation_periods  = "1"
+  treat_missing_data  = "notBreaching"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  threshold           = 0.05
+  period              = 60
+  evaluation_periods  = 2
   statistic           = "Sum"
-  actions_enabled     = "true"
-  alarm_actions       = [module.sns_gateway_alarms_topic.arn]
-  ok_actions          = [module.sns_gateway_alarms_topic.arn]
-  depends_on          = [module.sns_gateway_alarms_topic, aws_api_gateway_rest_api.ndr_doc_store_api]
-}
-
-module "sns_gateway_alarms_topic" {
-  source         = "./modules/sns"
-  topic_name     = "gateway-alarms-topic"
-  topic_protocol = "application"
-  topic_endpoint = aws_api_gateway_rest_api.ndr_doc_store_api.arn
-  depends_on     = [aws_api_gateway_rest_api.ndr_doc_store_api]
-  delivery_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Principal" : {
-          "Service" : "cloudwatch.amazonaws.com"
-        },
-        "Action" : [
-          "SNS:Publish",
-        ],
-        "Condition" : {
-          "ArnLike" : {
-            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
-          }
-        }
-        "Resource" : "*"
-      }
-    ]
-  })
+  unit                = "Count"
 }
 
 # resource "aws_kms_key" "alarm_notification_encryption_key" {
