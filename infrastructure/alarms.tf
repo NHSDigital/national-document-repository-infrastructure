@@ -1,19 +1,26 @@
-
-module "error-5xx-alarm" {
-  source            = "./modules/alarm"
-  alarm_name        = "5xx_error"
-  alarm_description = "Triggers when a 5xx status code has been returned by the DocStoreAPI."
+resource "aws_cloudwatch_metric_alarm" "repo_alarm" {
+  alarm_name        = "${terraform.workspace}_repo_5xx_alert"
+  alarm_description = "Triggers when a 5xx error is detected on the Api Gateway"
   namespace         = "AWS/ApiGateway"
-  api_name          = aws_api_gateway_rest_api.ndr_doc_store_api.name
-  metric_name       = "5XXError"
-  alarm_actions     = [aws_sns_topic.repo_alarm_notifications.arn]
-  ok_actions        = [aws_sns_topic.repo_alarm_notifications.arn]
+  dimensions = {
+    ApiName = aws_api_gateway_rest_api.ndr_doc_store_api.name
+  }
+  metric_name         = "5XXError"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = "0"
+  period              = "300"
+  evaluation_periods  = "1"
+  statistic           = "Sum"
+  actions_enabled     = "true"
+  alarm_actions       = [module.sns_alarms_topic.arn]
+  ok_actions          = [module.sns_alarms_topic.arn]
+  depends_on          = [module.sns_alarms_topic, aws_api_gateway_rest_api.ndr_doc_store_api]
 }
 
-
-resource "aws_sns_topic" "repo_alarm_notifications" {
-  name = "alarms-notifications-topic"
-  policy = jsonencode({
+module "sns_alarms_topic" {
+  source     = "./modules/sns"
+  topic_name = "alarms-notifications-topic"
+  delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {
@@ -34,6 +41,7 @@ resource "aws_sns_topic" "repo_alarm_notifications" {
     ]
   })
 }
+
 
 
 # resource "aws_kms_key" "alarm_notification_encryption_key" {

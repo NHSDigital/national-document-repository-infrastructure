@@ -20,6 +20,18 @@ module "create-doc-ref-gateway" {
   ]
 }
 
+module "create_alarm" {
+  source               = "./modules/alarm"
+  lambda_function_name = module.create-doc-ref-lambda.function_name
+  lambda_timeout       = module.create-doc-ref-lambda.timeout
+  lambda_name          = "create_document_reference_handler"
+  namespace            = "AWS/Lambda"
+  alarm_actions        = [module.sns_alarms_topic.arn]
+  ok_actions           = [module.sns_alarms_topic.arn]
+  depends_on           = [module.create-doc-ref-lambda, module.sns_alarms_topic]
+}
+
+
 module "create-doc-ref-lambda" {
   source  = "./modules/lambda"
   name    = "CreateDocRefLambda"
