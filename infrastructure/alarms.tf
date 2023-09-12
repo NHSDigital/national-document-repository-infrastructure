@@ -21,6 +21,8 @@ module "sns_alarms_topic" {
   source         = "./modules/sns"
   topic_name     = "alarms-notifications-topic"
   topic_protocol = "sqs"
+  topic_endpoint = aws_api_gateway_rest_api.ndr_doc_store_api.arn
+  depends_on     = [aws_api_gateway_rest_api.ndr_doc_store_api]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
