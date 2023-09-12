@@ -20,7 +20,7 @@ resource "aws_cloudwatch_metric_alarm" "repo_alarm" {
 module "sns_gateway_alarms_topic" {
   source         = "./modules/sns"
   topic_name     = "gateway-alarms-topic"
-  topic_protocol = "sqs"
+  topic_protocol = "application"
   topic_endpoint = aws_api_gateway_rest_api.ndr_doc_store_api.arn
   depends_on     = [aws_api_gateway_rest_api.ndr_doc_store_api]
   delivery_policy = jsonencode({
