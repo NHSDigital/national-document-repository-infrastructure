@@ -68,6 +68,8 @@ module "document-manifest-by-nhs-number-lambda" {
     module.ndr-document-store.s3_object_access_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.ndr-lloyd-george-store.s3_object_access_policy,
+    module.zip_store_reference_dynamodb_table.dynamodb_policy,
+    module.ndr-zip-request-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
   ]
@@ -80,6 +82,8 @@ module "document-manifest-by-nhs-number-lambda" {
     DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     LLOYD_GEORGE_BUCKET_NAME     = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    ZIPPED_STORE_BUCKET_NAME     = "${terraform.workspace}-${var.zip_store_bucket_name}"
+    ZIPPED_STORE_DYNAMODB_NAME   = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
