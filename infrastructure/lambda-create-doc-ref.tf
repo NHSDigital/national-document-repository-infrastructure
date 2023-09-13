@@ -67,6 +67,8 @@ module "create-doc-ref-lambda" {
   iam_role_policies = [
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.ndr-document-store.s3_object_access_policy,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
+    module.ndr-lloyd-george-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
   ]
@@ -77,7 +79,8 @@ module "create-doc-ref-lambda" {
   lambda_environment_variables = {
     DOCUMENT_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.docstore_bucket_name}"
     DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_DocumentReferenceMetadata"
-  }
+    LLOYD_GEORGE_BUCKET_NAME     = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
+    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"  }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.document_reference_dynamodb_table,
