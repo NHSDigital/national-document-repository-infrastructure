@@ -8,9 +8,9 @@ module "sqs-nems-queue" {
   name   = "nems-queue"
 }
 
-module "sqs-nems-queue-subscription" {
+module "sqs-nems-queue-topic" {
   source         = "./modules/sns"
-  topic_name     = "create_doc-alarms-topic"
+  topic_name     = "nems-queue-topic"
   topic_protocol = "sqs"
   topic_endpoint = module.sqs-nems-queue.endpoint
   delivery_policy = jsonencode({
