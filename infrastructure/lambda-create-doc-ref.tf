@@ -20,7 +20,7 @@ module "create-doc-ref-gateway" {
   ]
 }
 
-module "create_doc_alarm" {
+module "create-doc-alarm" {
   source               = "./modules/alarm"
   lambda_function_name = module.create-doc-ref-lambda.function_name
   lambda_timeout       = module.create-doc-ref-lambda.timeout
@@ -32,7 +32,7 @@ module "create_doc_alarm" {
 }
 
 
-module "create_doc_alarm_topic" {
+module "create-doc-alarm-subscription" {
   source         = "./modules/sns"
   topic_name     = "create_doc-alarms-topic"
   topic_protocol = "lambda"
