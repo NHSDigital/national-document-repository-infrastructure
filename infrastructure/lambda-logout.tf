@@ -26,8 +26,8 @@ module "logout_redirect_lambda" {
   http_method       = "GET"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    WORKSPACE          = terraform.workspace
-    AUTH_DYNAMODB_NAME = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
+    WORKSPACE                      = terraform.workspace
+    AUTH_DYNAMODB_NAME             = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
 
   }
