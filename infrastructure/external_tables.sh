@@ -5,7 +5,7 @@
 $WORKSPACE = $(terraform workspace show)
 cat <<EOF
 {
-  "DOCUMENT_STORE_DYNAMODB_NAME": "$WORKSPACE_DocumentReferenceMetadata",
-  "LLOYD_GEORGE_DYNAMODB_NAME": "$WORKSPACE_LloydGeorgeReferenceMetadata"
+  "DYNAMODB_DOCUMENT_STORE": "ndra_DocumentReferenceMetadata",
+  "DYNAMODB_LLOYD_GEORGE": "ndra_LloydGeorgeReferenceMetadata"
 }
 EOF
