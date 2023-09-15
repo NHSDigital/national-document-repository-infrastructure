@@ -30,8 +30,8 @@ module "create-token-lambda" {
     WORKSPACE                       = terraform.workspace
     SSM_PARAM_JWT_TOKEN_PRIVATE_KEY = "jwt_token_private_key"
     OIDC_CALLBACK_URL               = "https://${terraform.workspace}.${var.domain}/auth-callback"
-    AUTH_STATE_TABLE_NAME           = var.auth_state_dynamodb_table_name
-    AUTH_SESSION_TABLE_NAME         = var.auth_session_dynamodb_table_name
+    AUTH_STATE_TABLE_NAME           = "${terraform.workspace}_${var.auth_state_dynamodb_table_name}"
+    AUTH_SESSION_TABLE_NAME         = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
