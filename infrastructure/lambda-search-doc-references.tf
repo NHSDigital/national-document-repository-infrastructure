@@ -74,12 +74,10 @@ module "search-document-references-lambda" {
   resource_id       = module.search-document-references-gateway.gateway_resource_id
   http_method       = "GET"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  lambda_environment_variables = {
-    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
-    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-  }
+  lambda_environment_variables = data.external.dynamo_tables.result
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.search-document-references-gateway
+    module.search-document-references-gateway,
+    data.external.dynamo_tables
   ]
 }
