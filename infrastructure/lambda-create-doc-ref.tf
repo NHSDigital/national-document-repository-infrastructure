@@ -59,7 +59,6 @@ module "create_doc_alarm_topic" {
   })
 }
 
-
 module "create-doc-ref-lambda" {
   source  = "./modules/lambda"
   name    = "CreateDocRefLambda"
