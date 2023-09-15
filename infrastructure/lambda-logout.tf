@@ -11,7 +11,7 @@ resource "aws_api_gateway_method" "logout_proxy_method" {
   authorization = "NONE"
 }
 
-module "login_redirect_lambda" {
+module "logout_redirect_lambda" {
   source  = "./modules/lambda"
   name    = "LogoutHandler"
   handler = "handlers.logout_handler.lambda_handler"
