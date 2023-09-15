@@ -70,10 +70,10 @@ module "search-document-references-lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
   ]
-  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = module.search-document-references-gateway.gateway_resource_id
-  http_method       = "GET"
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  rest_api_id                  = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id                  = module.search-document-references-gateway.gateway_resource_id
+  http_method                  = "GET"
+  api_execution_arn            = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = data.external.dynamo_tables.result
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
