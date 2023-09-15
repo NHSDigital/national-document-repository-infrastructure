@@ -18,7 +18,9 @@ module "create-token-lambda" {
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    aws_iam_policy.ssm_policy_token.arn
+    aws_iam_policy.ssm_policy_token.arn,
+    module.auth_session_dynamodb_table.dynamodb_policy,
+    module.auth_state_dynamodb_table.dynamodb_policy
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = aws_api_gateway_resource.token_request_resource.id
@@ -28,6 +30,8 @@ module "create-token-lambda" {
     WORKSPACE                       = terraform.workspace
     SSM_PARAM_JWT_TOKEN_PRIVATE_KEY = "jwt_token_private_key"
     OIDC_CALLBACK_URL               = "https://${terraform.workspace}.${var.domain}/auth-callback"
+    AUTH_STATE_TABLE_NAME           = var.auth_state_dynamodb_table_name
+    AUTH_SESSION_TABLE_NAME         = var.auth_session_dynamodb_table_name
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
