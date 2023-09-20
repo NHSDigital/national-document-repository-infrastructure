@@ -22,6 +22,7 @@ module "create-token-lambda" {
     module.auth_session_dynamodb_table.dynamodb_policy,
     module.auth_state_dynamodb_table.dynamodb_policy
   ]
+
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = aws_api_gateway_resource.token_request_resource.id
   http_method       = "GET"
@@ -35,7 +36,10 @@ module "create-token-lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    aws_api_gateway_method.token_request_proxy_method
+    aws_api_gateway_method.token_request_proxy_method,
+    aws_iam_policy.ssm_policy_token,
+    module.auth_session_dynamodb_table,
+    module.auth_state_dynamodb_table
   ]
   memory_size = 256
 }

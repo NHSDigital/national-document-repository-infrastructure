@@ -8,6 +8,10 @@ module "authoriser-lambda" {
     aws_iam_policy.ssm_policy_authoriser.arn,
     module.auth_session_dynamodb_table.dynamodb_policy,
   ]
+  depends_on = [
+    aws_iam_policy.ssm_policy_authoriser,
+    module.auth_session_dynamodb_table
+  ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
