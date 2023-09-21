@@ -28,7 +28,7 @@ module "login_redirect_lambda" {
   lambda_environment_variables = {
     WORKSPACE          = terraform.workspace
     OIDC_CALLBACK_URL  = "https://${terraform.workspace}.${var.domain}/auth-callback"
-    AUTH_DYNAMODB_NAME = "${terraform.workspace}_${var.auth_dynamodb_table_name}"
+    AUTH_DYNAMODB_NAME = "${terraform.workspace}_${var.auth_state_dynamodb_table_name}"
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
@@ -45,6 +45,7 @@ resource "aws_iam_policy" "ssm_policy_oidc" {
         Effect = "Allow",
         Action = [
           "ssm:GetParameters",
+          "ssm:GetParameter",
           "ssm:GetParametersByPath"
         ],
         Resource = [

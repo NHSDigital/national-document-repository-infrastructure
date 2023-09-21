@@ -1,9 +1,3 @@
-resource "aws_api_gateway_resource" "auth_resource" {
-  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id   = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
-  path_part   = "Auth"
-}
-
 module "authoriser-lambda" {
   source  = "./modules/lambda"
   name    = "AuthoriserLambda"
@@ -11,13 +5,19 @@ module "authoriser-lambda" {
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    aws_iam_policy.ssm_policy_authoriser.arn
+    aws_iam_policy.ssm_policy_authoriser.arn,
+    module.auth_session_dynamodb_table.dynamodb_policy,
+  ]
+  depends_on = [
+    aws_iam_policy.ssm_policy_authoriser,
+    module.auth_session_dynamodb_table
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     WORKSPACE                      = terraform.workspace
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
+    AUTH_SESSION_TABLE_NAME        = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
   }
   http_method                   = "GET"
   is_gateway_integration_needed = false
