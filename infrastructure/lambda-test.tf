@@ -74,7 +74,7 @@ module "test-document-references-lambda" {
   resource_id                  = module.test-document-references-gateway.gateway_resource_id
   http_method                  = "GET"
   api_execution_arn            = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  lambda_environment_variables = jsonencode(data.external.dynamo_tables.result)
+  lambda_environment_variables = data.external.dynamo_tables.result
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.test-document-references-gateway,
