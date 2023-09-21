@@ -44,6 +44,10 @@
 | <a name="module_sqs-nems-queue"></a> [sqs-nems-queue](#module\_sqs-nems-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-nems-queue-topic"></a> [sqs-nems-queue-topic](#module\_sqs-nems-queue-topic) | ./modules/sns | n/a |
 | <a name="module_sqs-splunk-queue"></a> [sqs-splunk-queue](#module\_sqs-splunk-queue) | ./modules/sqs | n/a |
+| <a name="module_test-document-references-gateway"></a> [test-document-references-gateway](#module\_test-document-references-gateway) | ./modules/gateway | n/a |
+| <a name="module_test-document-references-lambda"></a> [test-document-references-lambda](#module\_test-document-references-lambda) | ./modules/lambda | n/a |
+| <a name="module_test_doc_alarm"></a> [test\_doc\_alarm](#module\_test\_doc\_alarm) | ./modules/alarm | n/a |
+| <a name="module_test_doc_alarm_topic"></a> [test\_doc\_alarm\_topic](#module\_test\_doc\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_zip_store_reference_dynamodb_table"></a> [zip\_store\_reference\_dynamodb\_table](#module\_zip\_store\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 
 ## Resources

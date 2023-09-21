@@ -122,7 +122,10 @@ module "zip_store_reference_dynamodb_table" {
 # Run the script to get the environment variables of interest.
 # This is a data source, so it will run at plan time.
 data "external" "dynamo_tables" {
-  program = ["sh", "${path.module}/external_tables.sh"]
+  program = ["sh", "${path.module}/dynamo_tables.sh"]
+  query = {
+    dynamo_env = "lloydGeorge"
+  }
 
   # For Windows (or Powershell core on MacOS and Linux),
   # run a Powershell script instead
