@@ -5,7 +5,7 @@ module "document-manifest-by-nhs-gateway" {
   parent_id                = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
   http_method              = "GET"
   authorization            = "NONE" // "CUSTOM"
-  gateway_path             = "DocumentManfiestByNHSNumber"
+  gateway_path             = "DocumentManifestByNHSNumber"
   authorizer_id            = null
   cors_require_credentials = var.cors_require_credentials
   origin                   = "'https://${terraform.workspace}.${var.domain}'"
@@ -60,9 +60,11 @@ module "document_manifest_alarm_topic" {
 }
 
 module "document-manifest-by-nhs-number-lambda" {
-  source  = "./modules/lambda"
-  name    = "DocumentManifestByNHSNumberLambda"
-  handler = "handlers.document_manifest_by_nhs_number_handler.lambda_handler"
+  source                   = "./modules/lambda"
+  name                     = "DocumentManifestByNHSNumberLambda"
+  handler                  = "handlers.document_manifest_by_nhs_number_handler.lambda_handler"
+  lambda_timeout           = 900
+  lambda_ephemeral_storage = 512
   iam_role_policies = [
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.ndr-document-store.s3_object_access_policy,

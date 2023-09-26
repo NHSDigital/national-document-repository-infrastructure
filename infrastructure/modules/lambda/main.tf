@@ -8,6 +8,9 @@ resource "aws_lambda_function" "lambda" {
   source_code_hash = data.archive_file.lambda.output_base64sha256
   runtime          = "python3.11"
   timeout          = var.lambda_timeout
+  ephemeral_storage {
+    size = var.lambda_ephemeral_storage
+  }
 
   environment {
     variables = var.lambda_environment_variables
