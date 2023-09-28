@@ -27,7 +27,11 @@ on:
       AWS_ASSUME_ROLE:
         required: true
 
-permissions: write-all
+permissions:
+  pull-requests: write
+  id-token: write # This is required for requesting the JWT
+  contents: write  # This is required for actions/checkout
+  repository-projects: write
     
 jobs:
   terraform_process:
@@ -119,4 +123,5 @@ jobs:
         workflow: new_full-deploy.yml
         repo: nhsconnect/national-document-repository
         inputs: '{ "build_branch": "main", "sandbox": "${{ inputs.sandbox }}", "environment": "${{ inputs.environment }}" }'
+        token: ${{ secrets.GIT_PAT }}
         
