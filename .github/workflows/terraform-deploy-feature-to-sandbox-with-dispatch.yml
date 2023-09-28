@@ -101,31 +101,14 @@ jobs:
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
   
-  # run_main_repo_deploy_ui:
-  #   name: Deploy UI
-  #   needs: ['terraform_process']
-  #   uses: nhsconnect/national-document-repository/.github/workflows/new-ui-deploy-feature-to-sandbox-manual.yml@main
-  #   with:
-  #     build_branch: nhsconnect/national-document-repository/main
-  #     sandbox: ${{ inputs.sandbox }}
-  #     environment: ${{ inputs.environment }}
-  #   secrets:
-  #     AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+  run_main_repo_deploy_ui:
+    name: Deploy UI
+    needs: ['terraform_process']
+    uses: nhsconnect/national-document-repository/.github/workflows/new-ui-deploy-feature-to-sandbox-manual.yml@prmdr_explicit_repo_on_axtion_checkout
+    with:
+      build_branch: main
+      sandbox: ${{ inputs.sandbox }}
+      environment: ${{ inputs.environment }}
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
-  # run_main_repo_deploy_lambdas:
-  #   runs-on: ubuntu-latest
-  #   environment: ${{ github.event.inputs.environment}}
-
-  #   steps:
-  #   - name: Run Auth
-  #     run: |
-  #       curl -X POST -H \"Accept: application/vnd.github.v3+json\"  -H 'Authorization: token ${{ secrets.GIT_PAT }}' https://api.github.com/repos/myprofile/myrepo/actions/runners/registration-token
-
-  #   - name: Invoke workflow in another repo with inputs
-  #     uses: benc-uk/workflow-dispatch@v1
-  #     with:
-  #       workflow: new_full-deploy.yml
-  #       repo: nhsconnect/national-document-repository
-  #       inputs: '{ "build_branch": "main", "sandbox": "${{ inputs.sandbox }}", "environment": "${{ inputs.environment }}" }'
-  #       token: ${{ secrets.GIT_PAT }}
-        
