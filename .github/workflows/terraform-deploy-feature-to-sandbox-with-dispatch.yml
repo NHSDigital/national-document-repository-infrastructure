@@ -91,7 +91,7 @@ jobs:
 
   run_main_repo_deploy:
     name: Deploy UI
-    uses: nhsconnect/national-document-repository/.github/workflows/new_full-deploy.yml
+    uses: nhsconnect/national-document-repository/.github/workflows/new_full-deploy.yml@main
     with:
       build_branch: ${{ inputs.build_branch }}
       sandbox: ${{ inputs.sandbox }}
