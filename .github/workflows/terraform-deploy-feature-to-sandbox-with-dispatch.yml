@@ -27,11 +27,7 @@ on:
       AWS_ASSUME_ROLE:
         required: true
 
-permissions:
-  pull-requests: write
-  id-token: write # This is required for requesting the JWT
-  contents: write  # This is required for actions/checkout
-  repository-projects: write
+permissions: write-all
     
 jobs:
   terraform_process:
