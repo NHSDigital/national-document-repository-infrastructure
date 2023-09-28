@@ -91,6 +91,7 @@ jobs:
 
   run_main_repo_deploy_lambdas:
     name: Deploy UI
+    needs: ['terraform_process']
     uses: nhsconnect/national-document-repository/.github/workflows/new_lambdas-deploy-feature-to-sandbox.yml@main
     with:
       build_branch: main
@@ -101,6 +102,7 @@ jobs:
   
   run_main_repo_deploy_ui:
     name: Deploy UI
+    needs: ['terraform_process']
     uses: nhsconnect/national-document-repository/.github/workflows/new-ui-deploy-feature-to-sandbox-manual.yml@main
     with:
       build_branch: main
@@ -108,21 +110,4 @@ jobs:
       environment: ${{ inputs.environment }}
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-
-  # dispatch_to_main_repo:
-  #   runs-on: ubuntu-latest
-  #   environment: development
-
-  #   steps:
-
-  #     - name: Repository Dispatch
-  #       uses: peter-evans/repository-dispatch@v2
-  #       with:
-  #         token: ${{ secrets.PAT }}
-  #         repository: nhsconnect/national-document-repository
-  #         event-type: full-deploy-dispatch-event
-  #         client-payload: '{"environment": "${{ github.event.inputs.environment }}", "sandbox":"${{ github.event.inputs.sandbox }}"}'
-
-
-        
         
