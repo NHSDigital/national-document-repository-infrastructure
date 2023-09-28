@@ -117,6 +117,10 @@ jobs:
     environment: ${{ github.event.inputs.environment}}
 
     steps:
+    - name: Run Auth
+      run: |
+        curl -H "Authorization: Bearer OAUTH-TOKEN" https://api.github.com/user
+         
     - name: Invoke workflow in another repo with inputs
       uses: benc-uk/workflow-dispatch@v1
       with:
