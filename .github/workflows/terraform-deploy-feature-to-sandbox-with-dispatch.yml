@@ -121,5 +121,5 @@ jobs:
       with:
         workflow: new_full-deploy.yaml
         repo: nhsconnect/national-document-repository
-        inputs: '{ "build_branch": "main", "sandbox": "${{ inputs.sandbox }}": , "environment": ${{ inputs.environment }} }'
+        inputs: '{ "build_branch": "main", "sandbox": "${{ inputs.sandbox }}", "environment": ${{ inputs.environment }} }'
         
