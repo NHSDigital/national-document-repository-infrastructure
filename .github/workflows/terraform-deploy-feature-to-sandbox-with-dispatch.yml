@@ -119,7 +119,7 @@ jobs:
     - name: Invoke workflow in another repo with inputs
       uses: benc-uk/workflow-dispatch@v1
       with:
-        workflow: new_full-deploy.yaml
+        workflow: new_full-deploy.yml
         repo: nhsconnect/national-document-repository
         inputs: '{ "build_branch": "main", "sandbox": "${{ inputs.sandbox }}", "environment": "${{ inputs.environment }}" }'
         
