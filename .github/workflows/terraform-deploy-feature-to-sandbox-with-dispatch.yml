@@ -95,7 +95,7 @@ jobs:
     needs: ['terraform_process']
     uses: nhsconnect/national-document-repository/.github/workflows/new_lambdas-deploy-feature-to-sandbox.yml@prmdr_explicit_repo_on_axtion_checkout
     with:
-      build_branch: nhsconnect/national-document-repository/main
+      build_branch: main
       sandbox: ${{ inputs.sandbox }}
       environment: ${{ inputs.environment }}
     secrets:
