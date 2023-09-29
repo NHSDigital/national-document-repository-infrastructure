@@ -78,8 +78,8 @@ jobs:
     uses: nhsconnect/national-document-repository/.github/workflows/new_lambdas-deploy-feature-to-sandbox.yml@main
     with:
       build_branch: main
-      sandbox: ${{ inputs.sandbox }}
-      environment: ${{ inputs.environment }}
+      sandbox: ndr-dev
+      environment: development
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
   
@@ -90,8 +90,8 @@ jobs:
     uses: nhsconnect/national-document-repository/.github/workflows/new-ui-deploy-feature-to-sandbox-manual.yml@main
     with:
       build_branch: main
-      sandbox: ${{ inputs.sandbox }}
-      environment: ${{ inputs.environment }}
+      sandbox: ndr-dev
+      environment: development
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
         
