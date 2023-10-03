@@ -2,7 +2,7 @@ module "token-gateway" {
   # Gateway Variables
   source                   = "./modules/gateway"
   api_gateway_id           = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id                = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
+  parent_id                = aws_api_gateway_resource.auth_resource.id
   http_method              = "GET"
   authorization            = "CUSTOM"
   gateway_path             = "Auth/TokenRequest"
