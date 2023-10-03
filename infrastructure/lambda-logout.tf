@@ -41,5 +41,5 @@ module "logout_lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-module.logout-gateway  ]
+  module.logout-gateway]
 }
