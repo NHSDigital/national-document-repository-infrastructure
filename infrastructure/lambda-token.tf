@@ -1,14 +1,13 @@
 module "token-gateway" {
   # Gateway Variables
-  source                   = "./modules/gateway"
-  api_gateway_id           = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id                = aws_api_gateway_resource.auth_resource.id
-  http_method              = "GET"
-  authorization            = "CUSTOM"
-  gateway_path             = "TokenRequest"
-  authorizer_id            = aws_api_gateway_authorizer.repo_authoriser.id
-  cors_require_credentials = var.cors_require_credentials
-  origin                   = "'https://${terraform.workspace}.${var.domain}'"
+  source              = "./modules/gateway"
+  api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  parent_id           = aws_api_gateway_resource.auth_resource.id
+  http_method         = "GET"
+  authorization       = "NONE"
+  gateway_path        = "TokenRequest"
+  require_credentials = false
+  origin              = "'https://${terraform.workspace}.${var.domain}'"
   # Lambda Variables
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   owner             = var.owner

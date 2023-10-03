@@ -54,14 +54,6 @@ variable "auth_session_dynamodb_table_name" {
   description = "The name of dynamodb table to store user login sessions"
   default     = "AuthSessionReferenceMetadata"
 }
-
-# Gateway Variables
-variable "cors_require_credentials" {
-  type        = bool
-  description = "Sets the value of 'Access-Control-Allow-Credentials' which controls whether auth cookies are needed"
-  default     = true
-}
-
 # VPC Variables
 variable "availability_zones" {
   type        = list(string)
