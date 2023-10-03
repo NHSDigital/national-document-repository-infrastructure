@@ -32,7 +32,7 @@ resource "aws_api_gateway_method_response" "preflight_method_response" {
     "method.response.header.Access-Control-Allow-Headers"     = true,
     "method.response.header.Access-Control-Allow-Methods"     = true,
     "method.response.header.Access-Control-Allow-Origin"      = true
-    "method.response.header.Access-Control-Allow-Credentials" = true
+    "method.response.header.Access-Control-Allow-Credentials" = var.cors_require_credentials
 
   }
   depends_on = [aws_api_gateway_method.preflight_method, aws_api_gateway_resource.gateway_resource]
@@ -62,7 +62,7 @@ resource "aws_api_gateway_integration_response" "preflight_integration_response"
     "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,Cookie,X-Api-Key,X-Amz-Security-Token,X-Auth-Cookie,Accept'",
     "method.response.header.Access-Control-Allow-Methods"     = "'${var.http_method}'",
     "method.response.header.Access-Control-Allow-Origin"      = var.origin,
-    "method.response.header.Access-Control-Allow-Credentials" = "'true'"
+    "method.response.header.Access-Control-Allow-Credentials" = "'${var.cors_require_credentials}'"
 
   }
   depends_on = [aws_api_gateway_method_response.preflight_method_response, aws_api_gateway_resource.gateway_resource]
