@@ -5,7 +5,7 @@ module "logout-gateway" {
   parent_id                = aws_api_gateway_resource.auth_resource.id
   http_method              = "GET"
   authorization            = "CUSTOM"
-  gateway_path             = "Auth/Logout"
+  gateway_path             = "Logout"
   authorizer_id            = aws_api_gateway_authorizer.repo_authoriser.id
   cors_require_credentials = var.cors_require_credentials
   origin                   = "'https://${terraform.workspace}.${var.domain}'"
