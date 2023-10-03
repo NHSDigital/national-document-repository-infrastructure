@@ -8,10 +8,6 @@ module "authoriser-lambda" {
     aws_iam_policy.ssm_policy_authoriser.arn,
     module.auth_session_dynamodb_table.dynamodb_policy,
   ]
-  depends_on = [
-    aws_iam_policy.ssm_policy_authoriser,
-    module.auth_session_dynamodb_table
-  ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
@@ -21,6 +17,53 @@ module "authoriser-lambda" {
   }
   http_method                   = "GET"
   is_gateway_integration_needed = false
+
+  depends_on = [
+    aws_iam_policy.ssm_policy_authoriser,
+    module.auth_session_dynamodb_table,
+    aws_api_gateway_rest_api.ndr_doc_store_api
+  ]
+}
+
+module "authoriser-alarm" {
+  source               = "./modules/alarm"
+  lambda_function_name = module.authoriser-lambda.function_name
+  lambda_timeout       = module.authoriser-lambda.timeout
+  lambda_name          = "authoriser_handler"
+  namespace            = "AWS/Lambda"
+  alarm_actions        = [module.authoriser-alarm-topic.arn]
+  ok_actions           = [module.authoriser-alarm-topic.arn]
+  depends_on           = [module.authoriser-lambda, module.authoriser-alarm-topic]
+}
+
+
+module "authoriser-alarm-topic" {
+  source         = "./modules/sns"
+  topic_name     = "create_doc-alarms-topic"
+  topic_protocol = "lambda"
+  topic_endpoint = module.authoriser-lambda.endpoint
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+
+  depends_on = [module.authoriser-lambda]
 }
 
 resource "aws_api_gateway_authorizer" "repo_authoriser" {
@@ -49,3 +92,4 @@ resource "aws_iam_policy" "ssm_policy_authoriser" {
     ]
   })
 }
+

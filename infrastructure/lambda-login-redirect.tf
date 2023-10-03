@@ -32,8 +32,51 @@ module "login_redirect_lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    aws_api_gateway_resource.login_resource
+    aws_api_gateway_resource.login_resource,
+    aws_iam_policy.ssm_policy_oidc,
+    module.auth_state_dynamodb_table
   ]
+}
+
+module "login_redirect_alarm" {
+  source               = "./modules/alarm"
+  lambda_function_name = module.login_redirect_lambda.function_name
+  lambda_timeout       = module.login_redirect_lambda.timeout
+  lambda_name          = "authoriser_handler"
+  namespace            = "AWS/Lambda"
+  alarm_actions        = [module.login_redirect-alarm_topic.arn]
+  ok_actions           = [module.login_redirect-alarm_topic.arn]
+  depends_on           = [module.login_redirect_lambda, module.login_redirect-alarm_topic]
+}
+
+
+module "login_redirect-alarm_topic" {
+  source         = "./modules/sns"
+  topic_name     = "login_redirect-alarms-topic"
+  topic_protocol = "lambda"
+  topic_endpoint = module.login_redirect_lambda.endpoint
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+
+  depends_on = [module.login_redirect_lambda]
 }
 
 resource "aws_iam_policy" "ssm_policy_oidc" {

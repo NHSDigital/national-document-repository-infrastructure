@@ -41,5 +41,48 @@ module "logout_lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
+    aws_iam_policy.ssm_policy_oidc,
+    module.auth_session_dynamodb_table,
   module.logout-gateway]
+}
+
+module "logout_alarm" {
+  source               = "./modules/alarm"
+  lambda_function_name = module.logout_lambda.function_name
+  lambda_timeout       = module.logout_lambda.timeout
+  lambda_name          = "logout_handler"
+  namespace            = "AWS/Lambda"
+  alarm_actions        = [module.logout-alarm_topic.arn]
+  ok_actions           = [module.logout-alarm_topic.arn]
+  depends_on           = [module.logout_lambda, module.logout-alarm_topic]
+}
+
+
+module "logout-alarm_topic" {
+  source         = "./modules/sns"
+  topic_name     = "logout-alarms-topic"
+  topic_protocol = "lambda"
+  topic_endpoint = module.logout_lambda.endpoint
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+
+  depends_on = [module.logout_lambda]
 }

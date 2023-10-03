@@ -16,6 +16,7 @@ module "token-gateway" {
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
+    aws_api_gateway_authorizer.repo_authoriser
   ]
 }
 
@@ -50,6 +51,47 @@ module "create-token-lambda" {
     module.token-gateway
   ]
   memory_size = 256
+}
+
+module "create_token-alarm" {
+  source               = "./modules/alarm"
+  lambda_function_name = module.create-token-lambda.function_name
+  lambda_timeout       = module.create-token-lambda.timeout
+  lambda_name          = "token_handler"
+  namespace            = "AWS/Lambda"
+  alarm_actions        = [module.create_token-alarm_topic.arn]
+  ok_actions           = [module.create_token-alarm_topic.arn]
+  depends_on           = [module.create-token-lambda, module.create_token-alarm_topic]
+}
+
+
+module "create_token-alarm_topic" {
+  source         = "./modules/sns"
+  topic_name     = "logout-alarms-topic"
+  topic_protocol = "lambda"
+  topic_endpoint = module.create-token-lambda.endpoint
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+
+  depends_on = [module.create-token-lambda]
 }
 
 resource "aws_iam_policy" "ssm_policy_token" {
