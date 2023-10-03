@@ -30,7 +30,7 @@ No modules.
 | <a name="input_api_execution_arn"></a> [api\_execution\_arn](#input\_api\_execution\_arn) | n/a | `string` | n/a | yes |
 | <a name="input_api_gateway_id"></a> [api\_gateway\_id](#input\_api\_gateway\_id) | n/a | `string` | n/a | yes |
 | <a name="input_authorization"></a> [authorization](#input\_authorization) | n/a | `string` | n/a | yes |
-| <a name="input_authorizer_id"></a> [authorizer\_id](#input\_authorizer\_id) | Required resource id when setting authorization to 'CUSTOM' | `string || null` | `null` | no |
+| <a name="input_authorizer_id"></a> [authorizer\_id](#input\_authorizer\_id) | Required resource id when setting authorization to 'CUSTOM' | `string` | `""` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
 | <a name="input_gateway_path"></a> [gateway\_path](#input\_gateway\_path) | n/a | `string` | n/a | yes |
 | <a name="input_http_method"></a> [http\_method](#input\_http\_method) | n/a | `string` | n/a | yes |

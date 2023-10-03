@@ -20,7 +20,7 @@ variable "authorization" {
 
 variable "authorizer_id" {
   description = "Required resource id when setting authorization to 'CUSTOM'"
-  type        = string 
+  type        = string
   default     = ""
 }
 
