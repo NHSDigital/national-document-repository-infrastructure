@@ -19,7 +19,9 @@ variable "authorization" {
 }
 
 variable "authorizer_id" {
-  type = string
+  description = "Required resource id when setting authorization to 'CUSTOM'"
+  type        = string 
+  default     = ""
 }
 
 variable "owner" {
