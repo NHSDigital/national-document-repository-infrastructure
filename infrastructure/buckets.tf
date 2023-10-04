@@ -67,7 +67,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "ndr-lifecycle-rules" {
     status = "Enabled"
 
     expiration {
-      expired_object_delete_marker = "true"
+      days = 1
     }
 
     filter {
