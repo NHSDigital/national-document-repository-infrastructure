@@ -6,7 +6,7 @@ module "lloyd-george-stitch-gateway" {
   http_method         = "GET"
   authorization       = "CUSTOM"
   gateway_path        = "LloydGeorgeStitch"
-  authorizer_id       = null
+  authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
   origin              = "'https://${terraform.workspace}.${var.domain}'"
 
