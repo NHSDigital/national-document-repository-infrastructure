@@ -57,7 +57,6 @@ resource "aws_iam_policy" "dynamodb_policy" {
         "Effect" : "Allow",
         "Action" : [
           "dynamodb:Query",
-          "dynamodb:Scan",
           "dynamodb:GetItem",
           "dynamodb:PutItem",
           "dynamodb:UpdateItem",
