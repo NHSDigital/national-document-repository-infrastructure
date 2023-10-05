@@ -10,7 +10,7 @@ brew install terraform-docs
 ```
 - [findutils](https://www.gnu.org/software/findutils/) - Needed for scripts running on MacOSX
 ```bash
-brew intsall findutils
+brew install findutils
 ```
 
 ## Repository best practices
