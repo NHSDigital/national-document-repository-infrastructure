@@ -79,6 +79,7 @@ module "lloyd-george-stitch-lambda" {
   LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}" }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
+    module.ndr-lloyd-george-store,
     module.lloyd_george_reference_dynamodb_table,
     module.lloyd-george-stitch-gateway
   ]
