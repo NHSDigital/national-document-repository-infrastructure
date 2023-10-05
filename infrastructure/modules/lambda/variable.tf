@@ -16,7 +16,13 @@ variable "rest_api_id" {
 }
 
 variable "resource_id" {
-  type = string
+  type    = string
+  default = ""
+}
+
+variable "is_gateway_integration_needed" {
+  type    = bool
+  default = true
 }
 
 variable "http_method" {
@@ -39,4 +45,13 @@ variable "lambda_timeout" {
 variable "lambda_ephemeral_storage" {
   type    = number
   default = 512
+}
+
+variable "memory_size" {
+  type    = number
+  default = 128
+}
+
+output "invoke_arn" {
+  value = aws_lambda_function.lambda.invoke_arn
 }
