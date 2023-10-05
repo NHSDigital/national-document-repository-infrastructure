@@ -9,7 +9,6 @@ module "document-manifest-by-nhs-gateway" {
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
   origin              = "'https://${terraform.workspace}.${var.domain}'"
-  cors_require_credentials = var.cors_require_credentials
 
   # Lambda Variables
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
