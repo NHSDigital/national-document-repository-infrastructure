@@ -5,7 +5,7 @@ module "ndr-document-store" {
   enable_cors_configuration = true
   environment               = var.environment
   owner                     = var.owner
-  force_destroy             = contains(["ndra", "ndrb", "ndr-test"], terraform.workspace)
+  force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
   cors_rules = [
     {
       allowed_headers = ["*"]
@@ -28,7 +28,7 @@ module "ndr-zip-request-store" {
   enable_cors_configuration = true
   environment               = var.environment
   owner                     = var.owner
-  force_destroy             = contains(["ndra", "ndrb", "ndr-test"], terraform.workspace)
+  force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
   cors_rules = [
     {
       allowed_methods = ["GET"]
@@ -44,7 +44,7 @@ module "ndr-lloyd-george-store" {
   enable_cors_configuration = true
   environment               = var.environment
   owner                     = var.owner
-  force_destroy             = contains(["ndra", "ndrb", "ndr-test"], terraform.workspace)
+  force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
   cors_rules = [
     {
       allowed_headers = ["*"]
@@ -77,4 +77,14 @@ resource "aws_s3_bucket_lifecycle_configuration" "ndr-lifecycle-rules" {
       }
     }
   }
+}
+
+# Staging Bucket for bulk uploads
+module "ndr-bulk-staging-store" {
+  source                    = "./modules/s3/"
+  bucket_name               = var.staging_store_bucket_name
+  environment               = var.environment
+  owner                     = var.owner
+  force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+  enable_cors_configuration = false
 }
