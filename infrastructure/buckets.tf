@@ -78,3 +78,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "ndr-lifecycle-rules" {
     }
   }
 }
+
+# Staging Bucket for bulk uploads
+module "ndr-bulk-staging-store" {
+  source                    = "./modules/s3/"
+  bucket_name               = var.staging_store_bucket_name
+  environment               = var.environment
+  owner                     = var.owner
+  force_destroy             = contains(["ndra", "ndrb", "ndr-test"], terraform.workspace)
+  enable_cors_configuration = false
+}
