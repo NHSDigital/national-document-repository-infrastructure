@@ -8,6 +8,17 @@ module "sqs-nems-queue" {
   name   = "nems-queue"
 }
 
+
+module "sqs-lg-bulk-upload-metadata-queue" {
+  source = "./modules/sqs"
+  name   = "lg-bulk-upload-metadata-queue"
+}
+
+module "sqs-lg-bulk-upload-invalid-queue" {
+  source = "./modules/sqs"
+  name   = "lg-bulk-upload-invalid-queue"
+}
+
 module "sqs-nems-queue-topic" {
   source         = "./modules/sns"
   topic_name     = "nems-queue-topic"
