@@ -60,3 +60,21 @@ module "ndr-lloyd-george-store" {
   ]
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "ndr-lifecycle-rules" {
+  bucket = module.ndr-lloyd-george-store.bucket_id
+  rule {
+    id     = "Delete stitched LG records"
+    status = "Enabled"
+
+    expiration {
+      days = 1
+    }
+
+    filter {
+      tag {
+        key   = "autodelete"
+        value = "true"
+      }
+    }
+  }
+}
