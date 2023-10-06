@@ -39,3 +39,4 @@ No modules.
 |------|-------------|
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | n/a |
 | <a name="output_sqs_policy"></a> [sqs\_policy](#output\_sqs\_policy) | n/a |
+| <a name="output_sqs_url"></a> [sqs\_url](#output\_sqs\_url) | n/a |

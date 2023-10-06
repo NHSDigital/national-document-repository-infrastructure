@@ -58,3 +58,7 @@ output "endpoint" {
 output "sqs_policy" {
   value = aws_iam_policy.sqs_queue_policy.arn
 }
+
+output "sqs_url" {
+  value = aws_sqs_queue.sqs_queue.url
+}

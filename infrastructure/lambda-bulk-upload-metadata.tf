@@ -11,8 +11,9 @@ module "bulk-upload-metadata-lambda" {
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    WORKSPACE                  = terraform.workspace
-    DOCUMENT_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    WORKSPACE                 = terraform.workspace
+    STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    METADATA_SQS_QUEUE_URL    = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
   }
   is_gateway_integration_needed = false
 
