@@ -50,3 +50,11 @@ variable "enable_fifo" {
   description = "Attach first in first out policy to sqs"
 
 }
+
+output "endpoint" {
+  value = aws_sqs_queue.sqs_queue.arn
+}
+
+output "sqs_policy" {
+  value = aws_iam_policy.sqs_queue_policy.arn
+}
