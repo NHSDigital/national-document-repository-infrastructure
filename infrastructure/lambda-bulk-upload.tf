@@ -12,11 +12,14 @@ module "bulk-upload-lambda" {
   rest_api_id       = null
   api_execution_arn = null
   lambda_environment_variables = {
-    WORKSPACE                 = terraform.workspace
-    STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    METADATA_SQS_QUEUE_URL    = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
-    INVALID_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-invalid-queue.sqs_url
+    WORKSPACE                  = terraform.workspace
+    STAGING_STORE_BUCKET_NAME  = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
+    INVALID_SQS_QUEUE_URL      = module.sqs-lg-bulk-upload-invalid-queue.sqs_url
+    LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
   }
+
   is_gateway_integration_needed = false
 
   depends_on = [
