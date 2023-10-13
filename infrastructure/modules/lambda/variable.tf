@@ -26,7 +26,8 @@ variable "is_gateway_integration_needed" {
 }
 
 variable "http_method" {
-  type = string
+  type    = string
+  default = "GET"
 }
 
 variable "api_execution_arn" {
@@ -54,4 +55,16 @@ variable "memory_size" {
 
 output "invoke_arn" {
   value = aws_lambda_function.lambda.invoke_arn
+}
+
+output "function_name" {
+  value = aws_lambda_function.lambda.function_name
+}
+
+output "timeout" {
+  value = aws_lambda_function.lambda.timeout
+}
+
+output "endpoint" {
+  value = aws_lambda_function.lambda.arn
 }

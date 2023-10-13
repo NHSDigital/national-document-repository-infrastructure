@@ -19,6 +19,11 @@ variable "zip_store_bucket_name" {
   default = "zip-request-store"
 }
 
+variable "staging_store_bucket_name" {
+  type    = string
+  default = "staging-bulk-store"
+}
+
 variable "lloyd_george_bucket_name" {
   type        = string
   description = "The name of S3 bucket to store Lloyd George documents"
