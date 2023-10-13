@@ -1,11 +1,11 @@
-module "logout-gateway" {
+module "back-channel-logout-gateway" {
   # Gateway Variables
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_resource.auth_resource.id
-  http_method         = "GET"
+  http_method         = "POST"
   authorization       = "NONE"
-  gateway_path        = "Logout"
+  gateway_path        = "BackChannelLogout"
   require_credentials = false
   origin              = "'https://${terraform.workspace}.${var.domain}'"
   # Lambda Variables
@@ -18,10 +18,10 @@ module "logout-gateway" {
   ]
 }
 
-module "logout_lambda" {
+module "back_channel_logout_lambda" {
   source  = "./modules/lambda"
-  name    = "LogoutHandler"
-  handler = "handlers.logout_handler.lambda_handler"
+  name    = "BackChannelLogoutHandler"
+  handler = "handlers.back_channel_logout_handler.lambda_handler"
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
@@ -29,8 +29,8 @@ module "logout_lambda" {
     module.auth_session_dynamodb_table.dynamodb_policy
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = module.logout-gateway.gateway_resource_id
-  http_method       = "GET"
+  resource_id       = module.back-channel-logout-gateway.gateway_resource_id
+  http_method       = "POST"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     WORKSPACE                      = terraform.workspace
@@ -42,26 +42,26 @@ module "logout_lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     aws_iam_policy.ssm_policy_oidc,
     module.auth_session_dynamodb_table,
-  module.logout-gateway]
+  module.back-channel-logout-gateway]
 }
 
-module "logout_alarm" {
+module "back_channel_logout_alarm" {
   source               = "./modules/alarm"
-  lambda_function_name = module.logout_lambda.function_name
-  lambda_timeout       = module.logout_lambda.timeout
+  lambda_function_name = module.back_channel_logout_lambda.function_name
+  lambda_timeout       = module.back_channel_logout_lambda.timeout
   lambda_name          = "logout_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.logout-alarm_topic.arn]
-  ok_actions           = [module.logout-alarm_topic.arn]
-  depends_on           = [module.logout_lambda, module.logout-alarm_topic]
+  alarm_actions        = [module.back-channel-logout-alarm-topic.arn]
+  ok_actions           = [module.back-channel-logout-alarm-topic.arn]
+  depends_on           = [module.back_channel_logout_lambda, module.back-channel-logout-alarm_topic]
 }
 
 
-module "logout-alarm_topic" {
+module "back-channel-logout-alarm-topic" {
   source         = "./modules/sns"
-  topic_name     = "logout-alarms-topic"
+  topic_name     = "back-channel-logout-alarms-topic"
   topic_protocol = "lambda"
-  topic_endpoint = module.logout_lambda.endpoint
+  topic_endpoint = module.back_channel_logout_lambda.endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -83,5 +83,5 @@ module "logout-alarm_topic" {
     ]
   })
 
-  depends_on = [module.logout_lambda]
+  depends_on = [module.back_channel_logout_lambda]
 }
