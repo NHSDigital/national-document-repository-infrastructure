@@ -53,11 +53,11 @@ module "back_channel_logout_alarm" {
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.back-channel-logout-alarm-topic.arn]
   ok_actions           = [module.back-channel-logout-alarm-topic.arn]
-  depends_on           = [module.back_channel_logout_lambda, module.back-channel-logout-alarm-topic]
+  depends_on           = [module.back_channel_logout_lambda, module.back_channel_logout_alarm_topic]
 }
 
 
-module "back-channel-logout-alarm-topic" {
+module "back_channel_logout_alarm_topic" {
   source         = "./modules/sns"
   topic_name     = "back-channel-logout-alarms-topic"
   topic_protocol = "lambda"

@@ -53,11 +53,11 @@ module "logout_alarm" {
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.logout-alarm_topic.arn]
   ok_actions           = [module.logout-alarm_topic.arn]
-  depends_on           = [module.logout_lambda, module.logout-alarm_topic]
+  depends_on           = [module.logout_lambda, module.logout_alarm_topic]
 }
 
 
-module "logout-alarm_topic" {
+module "logout_alarm_topic" {
   source         = "./modules/sns"
   topic_name     = "logout-alarms-topic"
   topic_protocol = "lambda"
