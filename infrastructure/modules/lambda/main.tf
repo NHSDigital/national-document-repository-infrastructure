@@ -29,6 +29,7 @@ resource "aws_api_gateway_integration" "lambda_integration" {
 }
 
 resource "aws_lambda_permission" "lambda_permission" {
+  count         = var.is_gateway_integration_needed ? 1 : 0
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda.arn

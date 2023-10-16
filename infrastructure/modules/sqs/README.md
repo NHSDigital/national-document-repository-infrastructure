@@ -37,6 +37,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | n/a |
-| <a name="output_sqs_policy"></a> [sqs\_policy](#output\_sqs\_policy) | n/a |
+| <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Same as sqs queue arn. For use when setting the queue as endpoint of sns topic |
+| <a name="output_sqs_arn"></a> [sqs\_arn](#output\_sqs\_arn) | n/a |
+| <a name="output_sqs_policy"></a> [sqs\_policy](#output\_sqs\_policy) | Arn for the iam policy for accessing this queue |
 | <a name="output_sqs_url"></a> [sqs\_url](#output\_sqs\_url) | n/a |

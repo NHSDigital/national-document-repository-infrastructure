@@ -18,7 +18,9 @@ resource "aws_iam_policy" "sqs_queue_policy" {
       "Effect" = "Allow",
       "Action" = [
         "sqs:SendMessage",
-        "sqs:ReceiveMessage"
+        "sqs:ReceiveMessage",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes"
       ],
       "Resource" = [
         aws_sqs_queue.sqs_queue.arn

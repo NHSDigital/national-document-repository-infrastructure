@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.14.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.12.0 |
 
 ## Modules
 
@@ -20,6 +20,7 @@
 | <a name="module_authoriser-alarm"></a> [authoriser-alarm](#module\_authoriser-alarm) | ./modules/alarm | n/a |
 | <a name="module_authoriser-alarm-topic"></a> [authoriser-alarm-topic](#module\_authoriser-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_authoriser-lambda"></a> [authoriser-lambda](#module\_authoriser-lambda) | ./modules/lambda | n/a |
+| <a name="module_bulk-upload-lambda"></a> [bulk-upload-lambda](#module\_bulk-upload-lambda) | ./modules/lambda | n/a |
 | <a name="module_bulk-upload-metadata-lambda"></a> [bulk-upload-metadata-lambda](#module\_bulk-upload-metadata-lambda) | ./modules/lambda | n/a |
 | <a name="module_create-doc-ref-gateway"></a> [create-doc-ref-gateway](#module\_create-doc-ref-gateway) | ./modules/gateway | n/a |
 | <a name="module_create-doc-ref-lambda"></a> [create-doc-ref-lambda](#module\_create-doc-ref-lambda) | ./modules/lambda | n/a |
@@ -85,6 +86,7 @@
 | [aws_iam_policy.ssm_policy_authoriser](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ssm_policy_oidc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ssm_policy_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_lambda_event_source_mapping.bulk_upload_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_s3_bucket_lifecycle_configuration.ndr-lifecycle-rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.alarm_notification_kms_key_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |

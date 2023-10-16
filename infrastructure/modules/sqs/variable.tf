@@ -52,11 +52,19 @@ variable "enable_fifo" {
 }
 
 output "endpoint" {
+  value       = aws_sqs_queue.sqs_queue.arn
+  description = "Same as sqs queue arn. For use when setting the queue as endpoint of sns topic"
+}
+
+
+output "sqs_arn" {
   value = aws_sqs_queue.sqs_queue.arn
 }
 
+
 output "sqs_policy" {
-  value = aws_iam_policy.sqs_queue_policy.arn
+  value       = aws_iam_policy.sqs_queue_policy.arn
+  description = "Arn for the iam policy for accessing this queue"
 }
 
 output "sqs_url" {
