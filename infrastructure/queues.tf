@@ -8,7 +8,6 @@ module "sqs-nems-queue" {
   name   = "nems-queue"
 }
 
-
 module "sqs-lg-bulk-upload-metadata-queue" {
   source            = "./modules/sqs"
   name              = "lg-bulk-upload-metadata-queue"
