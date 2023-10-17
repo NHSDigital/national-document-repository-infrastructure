@@ -17,6 +17,7 @@ module "authoriser-lambda" {
   }
   http_method                   = "GET"
   is_gateway_integration_needed = false
+  is_invoked_from_gateway       = true
 
   depends_on = [
     aws_iam_policy.ssm_policy_authoriser,
