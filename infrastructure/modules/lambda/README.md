@@ -31,7 +31,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_api_execution_arn"></a> [api\_execution\_arn](#input\_api\_execution\_arn) | n/a | `string` | n/a | yes |
 | <a name="input_handler"></a> [handler](#input\_handler) | n/a | `string` | n/a | yes |
-| <a name="input_http_method"></a> [http\_method](#input\_http\_method) | n/a | `string` | n/a | yes |
+| <a name="input_http_method"></a> [http\_method](#input\_http\_method) | n/a | `string` | `"GET"` | no |
 | <a name="input_iam_role_policies"></a> [iam\_role\_policies](#input\_iam\_role\_policies) | n/a | `list(string)` | n/a | yes |
 | <a name="input_is_gateway_integration_needed"></a> [is\_gateway\_integration\_needed](#input\_is\_gateway\_integration\_needed) | n/a | `bool` | `true` | no |
 | <a name="input_lambda_environment_variables"></a> [lambda\_environment\_variables](#input\_lambda\_environment\_variables) | n/a | `map(string)` | `{}` | no |
