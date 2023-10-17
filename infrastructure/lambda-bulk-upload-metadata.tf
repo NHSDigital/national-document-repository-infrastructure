@@ -16,6 +16,7 @@ module "bulk-upload-metadata-lambda" {
     METADATA_SQS_QUEUE_URL    = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
   }
   is_gateway_integration_needed = false
+  is_invoked_from_gateway       = false
 
   depends_on = [
     module.ndr-bulk-staging-store,
