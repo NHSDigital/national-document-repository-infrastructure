@@ -21,8 +21,15 @@ variable "resource_id" {
 }
 
 variable "is_gateway_integration_needed" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
+  description = "Indicate whether the lambda need an aws_api_gateway_integration resource block"
+}
+
+variable "is_invoked_from_gateway" {
+  type        = bool
+  default     = true
+  description = "Indicate whether the lambda is supposed to be invoked by API gateway. Should be true for authoriser lambda."
 }
 
 variable "http_method" {
