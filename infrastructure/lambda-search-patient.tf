@@ -68,9 +68,12 @@ module "search-patient-details-lambda" {
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_pds.arn
   ]
-  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = module.search-patient-details-gateway.gateway_resource_id
-  http_method       = "GET"
+  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id = module.search-patient-details-gateway.gateway_resource_id
+  http_method = "GET"
+  lambda_environment_variables = {
+    "PDS_FHIR_IS_STUBBED" = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+  }
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
