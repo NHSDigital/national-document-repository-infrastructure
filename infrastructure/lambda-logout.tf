@@ -51,8 +51,8 @@ module "logout_alarm" {
   lambda_timeout       = module.logout_lambda.timeout
   lambda_name          = "logout_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.logout-alarm_topic.arn]
-  ok_actions           = [module.logout-alarm_topic.arn]
+  alarm_actions        = [module.logout_alarm_topic.arn]
+  ok_actions           = [module.logout_alarm_topic.arn]
   depends_on           = [module.logout_lambda, module.logout_alarm_topic]
 }
 
