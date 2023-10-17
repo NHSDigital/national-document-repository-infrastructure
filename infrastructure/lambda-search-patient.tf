@@ -65,7 +65,8 @@ module "search-patient-details-lambda" {
   handler = "handlers.search_patient_details_handler.lambda_handler"
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
+    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    aws_iam_policy.ssm_policy_pds.arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.search-patient-details-gateway.gateway_resource_id
@@ -75,4 +76,25 @@ module "search-patient-details-lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.search-patient-details-gateway
   ]
+}
+
+resource "aws_iam_policy" "ssm_policy_pds" {
+  name = "${terraform.workspace}_ssm_pds_parameters"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters",
+          "ssm:PutParameter"
+
+        ],
+        Resource = [
+          "arn:aws:ssm:*:*:parameter/*",
+        ]
+      }
+    ]
+  })
 }
