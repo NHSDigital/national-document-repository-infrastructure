@@ -92,7 +92,6 @@ resource "aws_iam_policy" "ssm_policy_pds" {
           "ssm:GetParameter",
           "ssm:GetParameters",
           "ssm:PutParameter"
-
         ],
         Resource = [
           "arn:aws:ssm:*:*:parameter/*",
