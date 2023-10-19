@@ -99,3 +99,7 @@ variable "enable_dns_hostnames" {
 variable "domain" {
   type = string
 }
+
+variable "certificate_domain" {
+  type = string
+}
