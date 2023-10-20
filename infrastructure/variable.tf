@@ -59,6 +59,13 @@ variable "auth_session_dynamodb_table_name" {
   description = "The name of dynamodb table to store user login sessions"
   default     = "AuthSessionReferenceMetadata"
 }
+
+variable "bulk_upload_dynamodb_table_name" {
+  type        = string
+  description = "The name of dynamodb table to store user login sessions"
+  default     = "BulkUploadMetaData"
+}
+
 # VPC Variables
 variable "availability_zones" {
   type        = list(string)
