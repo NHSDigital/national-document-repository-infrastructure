@@ -9,7 +9,7 @@ Navigate to the Terraform folder
 `./virusscanner/terraform`
 
 awsume into your role 
-`awsume nhse-dev`
+`awsume {role name}`
 
 init your Terraform
 `terraform init --var-file=dev.tfvars -backend-config=dev.s3.tfbackend`

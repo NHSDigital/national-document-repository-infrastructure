@@ -7,6 +7,10 @@ variable "environment" {
   type = string
 }
 
+variable "owner" {
+  type = string
+}
+
 variable "black_hole_address" {
   type = string
   default = "198.51.100.0/24"

@@ -13,9 +13,11 @@ provider "aws" {
 }
 
 resource "aws_vpc" "virus_scanning_vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "10.0.0.0/26"
   tags = {
     Name = "Virus scanning VPC"
+    Environment = var.environment
+    Owner = var.owner
   }
 }
 
@@ -26,6 +28,8 @@ resource "aws_subnet" "virus_scanning_subnet1" {
 
   tags = {
     Name = "Virus scanning subnet for eu-west-2a"
+    Environment = var.environment
+    Owner = var.owner
   }
 }
 
@@ -36,6 +40,8 @@ resource "aws_subnet" "virus_scanning_subnet2" {
 
   tags = {
     Name = "Virus scanning subnet for eu-west-2b"
+    Environment = var.environment
+    Owner = var.owner
   }
 }
 
@@ -44,6 +50,8 @@ resource "aws_internet_gateway" "virus_scanning_internet_gateway" {
 
   tags = {
     Name = "Virus scanning internet gateway"
+    Environment = var.environment
+    Owner = var.owner
   }
 }
 
@@ -57,21 +65,39 @@ resource "aws_route_table" "virus_scanning_route_table" {
 
   tags = {
     Name = "Virus scanning route table"
+    Environment = var.environment
+    Owner = var.owner
   }
 }
 
 resource "aws_route_table_association" "virus_scanning_subnet1_route_table_association" {
   subnet_id      = aws_subnet.virus_scanning_subnet1.id
   route_table_id = aws_route_table.virus_scanning_route_table.id
+  tags = {
+    Name = "Virus scanning route table association 1"
+    Environment = var.environment
+    Owner = var.owner
+  }
 }
 
 resource "aws_route_table_association" "virus_scanning_subnet2_route_table_association" {
   subnet_id      = aws_subnet.virus_scanning_subnet2.id
   route_table_id = aws_route_table.virus_scanning_route_table.id
+  tags = {
+    Name = "Virus scanning route table association 2"
+    Environment = var.environment
+    Owner = var.owner
+  }
 }
 
 data "aws_ssm_parameter" "cloud_security_admin_email" {
   name = "/prs/${var.environment}/user-input/cloud-security-admin-email"
+  tags = {
+    Name = "Virus scanning admin email"
+    Environment = var.environment
+    Description = "This email address will be used to send the initial admin password, which must then be changed"
+    Owner = var.owner
+  }
 }
 
 resource "aws_cloudformation_stack" "s3_virus_scanning_stack" {
@@ -90,6 +116,11 @@ resource "aws_cloudformation_stack" "s3_virus_scanning_stack" {
   timeouts {
     create = "60m"
     delete = "2h"
+  }
+  tags = {
+    Name = "Virus scanner for Repository"
+    Environment = var.environment
+    Owner = var.owner
   }
   template_url = "https://css-cft.s3.amazonaws.com/ConsoleCloudFormationTemplate.yaml"
   capabilities = ["CAPABILITY_NAMED_IAM"]
