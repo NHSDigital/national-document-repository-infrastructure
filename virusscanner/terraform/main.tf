@@ -12,8 +12,12 @@ provider "aws" {
   region = var.region
 }
 
+data "aws_vpc" "vpc" {
+  most_recent = true
+}
+
 resource "aws_vpc" "virus_scanning_vpc" {
-  cidr_block = "10.0.0.0/26"
+  cidr_block = data.aws_vpc.vpc.cidr_block
   tags = {
     Name = "Virus scanning VPC"
     Environment = var.environment
