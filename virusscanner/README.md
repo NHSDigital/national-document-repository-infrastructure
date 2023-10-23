@@ -12,24 +12,38 @@ destroying the Virus Scanner simultaneously and causing problems.
 First, create the following in your AWS environment:
 
 S3 bucket:
+
 `virus-scanner-terraform-state`
 
 DynamoDB table:
+
 `virus-scanner-terraform-lock`
+
+## Configuration
+
+The virus scanner will inhabit the same VPC as other resources for the project.
+You will need to add the ID of the VPC you want to use to the relevant `tfvars` file
+
+`vpc_id      = "vpc-0123456789abcdef"`
 
 ## Deployment
 
 Navigate to the Terraform folder
+
 `./virusscanner/terraform`
 
 awsume into your role 
+
 `awsume {role name}`
 
 init your Terraform
+
 `terraform init --var-file=dev.tfvars -backend-config=dev.s3.tfbackend`
 
 Plan the Terraform
+
 `terraform plan --var-file=dev.tfvars -out=virusscanner.tfplan`
 
 Deploy the Terraform
+
 `terraform apply "virusscanner.tfplan"`

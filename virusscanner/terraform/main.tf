@@ -13,7 +13,7 @@ provider "aws" {
 }
 
 data "aws_vpc" "vpc" {
-  most_recent = true
+  id = 	var.vpc_id
 }
 
 resource "aws_vpc" "virus_scanning_vpc" {
@@ -77,31 +77,15 @@ resource "aws_route_table" "virus_scanning_route_table" {
 resource "aws_route_table_association" "virus_scanning_subnet1_route_table_association" {
   subnet_id      = aws_subnet.virus_scanning_subnet1.id
   route_table_id = aws_route_table.virus_scanning_route_table.id
-  tags = {
-    Name = "Virus scanning route table association 1"
-    Environment = var.environment
-    Owner = var.owner
-  }
 }
 
 resource "aws_route_table_association" "virus_scanning_subnet2_route_table_association" {
   subnet_id      = aws_subnet.virus_scanning_subnet2.id
   route_table_id = aws_route_table.virus_scanning_route_table.id
-  tags = {
-    Name = "Virus scanning route table association 2"
-    Environment = var.environment
-    Owner = var.owner
-  }
 }
 
 data "aws_ssm_parameter" "cloud_security_admin_email" {
   name = "/prs/${var.environment}/user-input/cloud-security-admin-email"
-  tags = {
-    Name = "Virus scanning admin email"
-    Environment = var.environment
-    Description = "This email address will be used to send the initial admin password, which must then be changed"
-    Owner = var.owner
-  }
 }
 
 resource "aws_cloudformation_stack" "s3_virus_scanning_stack" {
