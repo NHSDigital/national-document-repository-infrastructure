@@ -60,7 +60,8 @@ module "ndr-lloyd-george-store" {
   ]
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "ndr-lifecycle-rules" {
+# Lifecycle Rules
+resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   bucket = module.ndr-lloyd-george-store.bucket_id
   rule {
     id     = "Delete stitched LG records"
@@ -73,6 +74,70 @@ resource "aws_s3_bucket_lifecycle_configuration" "ndr-lifecycle-rules" {
     filter {
       tag {
         key   = "autodelete"
+        value = "true"
+      }
+    }
+  }
+  rule {
+    id     = "Delete LG records after soft delete"
+    status = "Enabled"
+
+    expiration {
+      days = 56
+    }
+
+    filter {
+      tag {
+        key   = "soft-delete"
+        value = "true"
+      }
+    }
+  }
+  rule {
+    id     = "Delete LG records after death"
+    status = "Enabled"
+
+    expiration {
+      days = 3650
+    }
+
+    filter {
+      tag {
+        key   = "patient-death"
+        value = "true"
+      }
+    }
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
+  bucket = module.ndr-document-store.bucket_id
+  rule {
+    id     = "Delete DS records after soft delete"
+    status = "Enabled"
+
+    expiration {
+      days = 56
+    }
+
+    filter {
+      tag {
+        key   = "soft-delete"
+        value = "true"
+      }
+    }
+  }
+  rule {
+    id     = "Delete DS records after death"
+    status = "Enabled"
+
+    expiration {
+      days = 3650
+    }
+
+    filter {
+      tag {
+        key   = "patient-death"
         value = "true"
       }
     }
