@@ -26,6 +26,7 @@
 | <a name="module_back_channel_logout_lambda"></a> [back\_channel\_logout\_lambda](#module\_back\_channel\_logout\_lambda) | ./modules/lambda | n/a |
 | <a name="module_bulk-upload-lambda"></a> [bulk-upload-lambda](#module\_bulk-upload-lambda) | ./modules/lambda | n/a |
 | <a name="module_bulk-upload-metadata-lambda"></a> [bulk-upload-metadata-lambda](#module\_bulk-upload-metadata-lambda) | ./modules/lambda | n/a |
+| <a name="module_bulk-upload-report-lambda"></a> [bulk-upload-report-lambda](#module\_bulk-upload-report-lambda) | ./modules/lambda | n/a |
 | <a name="module_bulk_upload_dynamodb_table"></a> [bulk\_upload\_dynamodb\_table](#module\_bulk\_upload\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_create-doc-ref-gateway"></a> [create-doc-ref-gateway](#module\_create-doc-ref-gateway) | ./modules/gateway | n/a |
 | <a name="module_create-doc-ref-lambda"></a> [create-doc-ref-lambda](#module\_create-doc-ref-lambda) | ./modules/lambda | n/a |

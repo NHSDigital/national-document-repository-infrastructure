@@ -1,4 +1,4 @@
-module "bulk-upload-metadata-lambda" {
+module "bulk-upload-report-lambda" {
   source  = "./modules/lambda"
   name    = "BulkUploadReportLambda"
   handler = "handlers.bulk_upload_report_handler.lambda_handler"
