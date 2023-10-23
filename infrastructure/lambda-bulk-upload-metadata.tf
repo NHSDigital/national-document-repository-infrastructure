@@ -19,7 +19,7 @@ module "bulk-upload-metadata-lambda" {
   is_invoked_from_gateway       = false
 
   depends_on = [
-    aws_api_gateway_rest_api,
+    aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-bulk-staging-store,
     module.sqs-lg-bulk-upload-metadata-queue,
   ]
