@@ -10,6 +10,7 @@ module "bulk-upload-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_policy,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_policy,
+    aws_iam_policy.ssm_policy_pds.arn
   ]
   rest_api_id       = null
   api_execution_arn = null
