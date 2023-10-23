@@ -36,6 +36,7 @@ resource "aws_dynamodb_table" "ndr_dynamodb_table" {
     Workspace   = terraform.workspace
   }
 }
+
 resource "aws_iam_policy" "dynamodb_policy" {
   name = "${terraform.workspace}_${var.table_name}_policy"
   path = "/"
