@@ -13,15 +13,15 @@ provider "aws" {
 }
 
 data "aws_vpc" "vpc" {
-  id = 	var.vpc_id
+  id = var.vpc_id
 }
 
 resource "aws_vpc" "virus_scanning_vpc" {
   cidr_block = data.aws_vpc.vpc.cidr_block
   tags = {
-    Name = "Virus scanning VPC"
+    Name        = "Virus scanning VPC"
     Environment = var.environment
-    Owner = var.owner
+    Owner       = var.owner
   }
 }
 
@@ -31,9 +31,9 @@ resource "aws_subnet" "virus_scanning_subnet1" {
   cidr_block        = "10.0.1.0/24"
 
   tags = {
-    Name = "Virus scanning subnet for eu-west-2a"
+    Name        = "Virus scanning subnet for eu-west-2a"
     Environment = var.environment
-    Owner = var.owner
+    Owner       = var.owner
   }
 }
 
@@ -43,9 +43,9 @@ resource "aws_subnet" "virus_scanning_subnet2" {
   cidr_block        = "10.0.2.0/24"
 
   tags = {
-    Name = "Virus scanning subnet for eu-west-2b"
+    Name        = "Virus scanning subnet for eu-west-2b"
     Environment = var.environment
-    Owner = var.owner
+    Owner       = var.owner
   }
 }
 
@@ -53,9 +53,9 @@ resource "aws_internet_gateway" "virus_scanning_internet_gateway" {
   vpc_id = aws_vpc.virus_scanning_vpc.id
 
   tags = {
-    Name = "Virus scanning internet gateway"
+    Name        = "Virus scanning internet gateway"
     Environment = var.environment
-    Owner = var.owner
+    Owner       = var.owner
   }
 }
 
@@ -68,9 +68,9 @@ resource "aws_route_table" "virus_scanning_route_table" {
   }
 
   tags = {
-    Name = "Virus scanning route table"
+    Name        = "Virus scanning route table"
     Environment = var.environment
-    Owner = var.owner
+    Owner       = var.owner
   }
 }
 
@@ -106,9 +106,9 @@ resource "aws_cloudformation_stack" "s3_virus_scanning_stack" {
     delete = "2h"
   }
   tags = {
-    Name = "Virus scanner for Repository"
+    Name        = "Virus scanner for Repository"
     Environment = var.environment
-    Owner = var.owner
+    Owner       = var.owner
   }
   template_url = "https://css-cft.s3.amazonaws.com/ConsoleCloudFormationTemplate.yaml"
   capabilities = ["CAPABILITY_NAMED_IAM"]
