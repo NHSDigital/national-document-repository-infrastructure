@@ -4,7 +4,8 @@ module "document_reference_dynamodb_table" {
   hash_key                    = "ID"
   deletion_protection_enabled = false
   stream_enabled              = false
-  ttl_enabled                 = false
+  ttl_enabled                 = true
+  ttl_attribute_name          = "TTL"
 
   attributes = [
     {
@@ -44,7 +45,8 @@ module "lloyd_george_reference_dynamodb_table" {
   hash_key                    = "ID"
   deletion_protection_enabled = false
   stream_enabled              = false
-  ttl_enabled                 = false
+  ttl_enabled                 = true
+  ttl_attribute_name          = "TTL"
 
   attributes = [
     {
