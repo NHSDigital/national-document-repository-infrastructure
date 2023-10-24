@@ -1,2 +1,2 @@
-environment         = "dev"
-owner               = "nhse/ndr-team"
+environment = "dev"
+owner       = "nhse/ndr-team"
