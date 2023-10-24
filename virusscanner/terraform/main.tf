@@ -13,22 +13,15 @@ provider "aws" {
 }
 
 data "aws_vpc" "vpc" {
-  id = 	var.vpc_id
-}
-
-resource "aws_vpc" "virus_scanning_vpc" {
-  cidr_block = data.aws_vpc.vpc.cidr_block
   tags = {
-    Name = "Virus scanning VPC"
-    Environment = var.environment
-    Owner = var.owner
+    Name = "${terraform.workspace}-vpc"
   }
 }
 
 resource "aws_subnet" "virus_scanning_subnet1" {
   availability_zone = "eu-west-2a"
-  vpc_id            = aws_vpc.virus_scanning_vpc.id
-  cidr_block        = "10.0.1.0/24"
+  vpc_id            = data.aws_vpc.vpc.id
+  cidr_block        = "10.0.64.0/24"
 
   tags = {
     Name = "Virus scanning subnet for eu-west-2a"
@@ -39,8 +32,8 @@ resource "aws_subnet" "virus_scanning_subnet1" {
 
 resource "aws_subnet" "virus_scanning_subnet2" {
   availability_zone = "eu-west-2b"
-  vpc_id            = aws_vpc.virus_scanning_vpc.id
-  cidr_block        = "10.0.2.0/24"
+  vpc_id            = data.aws_vpc.vpc.id
+  cidr_block        = "10.0.128.0/24"
 
   tags = {
     Name = "Virus scanning subnet for eu-west-2b"
@@ -49,22 +42,18 @@ resource "aws_subnet" "virus_scanning_subnet2" {
   }
 }
 
-resource "aws_internet_gateway" "virus_scanning_internet_gateway" {
-  vpc_id = aws_vpc.virus_scanning_vpc.id
-
+data "aws_internet_gateway" "ig" {
   tags = {
-    Name = "Virus scanning internet gateway"
-    Environment = var.environment
-    Owner = var.owner
+    Name = "${terraform.workspace}-vpc-internet-gateway"
   }
 }
 
 resource "aws_route_table" "virus_scanning_route_table" {
-  vpc_id = aws_vpc.virus_scanning_vpc.id
+  vpc_id = data.aws_vpc.vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.virus_scanning_internet_gateway.id
+    gateway_id = data.aws_internet_gateway.ig.id
   }
 
   tags = {
@@ -91,10 +80,10 @@ data "aws_ssm_parameter" "cloud_security_admin_email" {
 resource "aws_cloudformation_stack" "s3_virus_scanning_stack" {
   name = "s3-virus-scanning-cloudformation-stack"
   parameters = {
-    VPC                                = aws_vpc.virus_scanning_vpc.id
+    VPC                                = data.aws_vpc.vpc.id
     SubnetA                            = aws_subnet.virus_scanning_subnet1.id
     SubnetB                            = aws_subnet.virus_scanning_subnet2.id
-    ConsoleSecurityGroupCidrBlock      = var.public_address
+    ConsoleSecurityGroupCidrBlock      = var.black_hole_address
     Email                              = data.aws_ssm_parameter.cloud_security_admin_email.value
     OnlyScanWhenQueueThresholdExceeded = "Yes"
     MinRunningAgents                   = 0
