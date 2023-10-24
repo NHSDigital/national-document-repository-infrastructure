@@ -35,7 +35,7 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_report_schedule" {
 
 resource "aws_cloudwatch_event_target" "bulk_upload_report_schedule_event" {
   rule      = aws_cloudwatch_event_rule.bulk_upload_report_schedule.name
-  target_id = "processing_lambda"
+  target_id = "bulk_upload_report_schedule"
   arn       = module.bulk-upload-report-lambda.endpoint
   depends_on = [
     module.bulk-upload-report-lambda,
