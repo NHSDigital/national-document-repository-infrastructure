@@ -62,8 +62,8 @@ variable "auth_session_dynamodb_table_name" {
 
 variable "bulk_upload_dynamodb_table_name" {
   type        = string
-  description = "The name of dynamodb table to store user login sessions"
-  default     = "BulkUploadMetaData"
+  description = "The name of dynamodb table to store bulk upload status"
+  default     = "BulkUploadReport"
 }
 
 # VPC Variables

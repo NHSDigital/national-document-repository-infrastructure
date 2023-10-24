@@ -8,6 +8,7 @@ module "bulk-upload-lambda" {
     module.ndr-bulk-staging-store.s3_object_access_policy,
     module.ndr-lloyd-george-store.s3_object_access_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
+    module.bulk_upload_dynamodb_table.dynamodb_policy,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_policy,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_policy,
   ]
@@ -18,6 +19,7 @@ module "bulk-upload-lambda" {
     STAGING_STORE_BUCKET_NAME  = "${terraform.workspace}-${var.staging_store_bucket_name}"
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    BULK_UPLOAD_DYNAMODB_NAME  = "${terraform.workspace}_${var.bulk_upload_dynamodb_table_name}"
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
     INVALID_SQS_QUEUE_URL      = module.sqs-lg-bulk-upload-invalid-queue.sqs_url
   }
@@ -31,6 +33,7 @@ module "bulk-upload-lambda" {
     module.sqs-lg-bulk-upload-invalid-queue,
     module.ndr-lloyd-george-store,
     module.lloyd_george_reference_dynamodb_table,
+    module.bulk_upload_dynamodb_table
   ]
 }
 
