@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "bulk_upload_metadata_schedule" {
   name                = "${terraform.workspace}_bulk_upload_metadata_schedule"
   description         = "Schedule for Lambda Function"
-  schedule_expression = "cron(0 19 ? * MON-FRI *)"
+  schedule_expression = "cron(0 19 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_metadata_schedule_event" {
