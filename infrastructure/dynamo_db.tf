@@ -194,6 +194,10 @@ module "bulk_upload_dynamodb_table" {
     {
       name = "Timestamp"
       type = "S"
+    },
+    {
+      name = "Date"
+      type = "S"
     }
   ]
 
@@ -205,7 +209,8 @@ module "bulk_upload_dynamodb_table" {
     },
     {
       name            = "TimestampIndex"
-      hash_key        = "Timestamp"
+      hash_key        = "Date"
+      range_key       = "Timestamp"
       projection_type = "ALL"
     }
   ]
