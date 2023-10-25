@@ -21,10 +21,11 @@ DynamoDB table:
 
 ## Configuration
 
-The virus scanner will inhabit the same VPC as other resources for the project.
-You will need to add the ID of the VPC you want to use to the relevant `tfvars` file
+The virus scanner will inhabit the same VPC and Internet Gateway as other resources for the project.
+The Terraform should pick this up if you've configured your Terraform Workspace correctly:
 
-`vpc_id      = "vpc-0123456789abcdef"`
+`terraform workspace new ndr-dev`
+
 
 ## Deployment
 
@@ -47,3 +48,7 @@ Plan the Terraform
 Deploy the Terraform
 
 `terraform apply "virusscanner.tfplan"`
+
+Tear it down if necessary
+
+`terraform destroy --var-file=dev.tfvars`

@@ -7,22 +7,18 @@ variable "environment" {
   type = string
 }
 
-variable "vpc_id" {
-  type = string
-}
-
 variable "owner" {
   type = string
 }
 
 variable "black_hole_address" {
-  type = string
-  default = "198.51.100.0/24"
+  type        = string
+  default     = "198.51.100.0/24"
   description = "using reserved address that does not lead anywhere to make sure CloudStorageSecurity console is not available"
 }
 
 variable "public_address" {
-  type = string
-  default = "0.0.0.0/0"
+  type        = string
+  default     = "0.0.0.0/0"
   description = "using public address to make sure CloudStorageSecurity console is available"
 }
