@@ -26,6 +26,7 @@ resource "aws_dynamodb_table" "ndr_dynamodb_table" {
       name            = global_secondary_index.value.name
       hash_key        = global_secondary_index.value.hash_key
       projection_type = global_secondary_index.value.projection_type
+      range_key       = lookup(global_secondary_index.value, "range_key", null)
     }
   }
 

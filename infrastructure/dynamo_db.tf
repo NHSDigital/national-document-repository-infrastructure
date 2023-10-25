@@ -188,24 +188,29 @@ module "bulk_upload_dynamodb_table" {
       type = "S"
     },
     {
-      name = "FileLocation"
+      name = "NhsNumber"
       type = "S"
     },
     {
-      name = "NhsNumber"
+      name = "Timestamp"
+      type = "N"
+    },
+    {
+      name = "Date"
       type = "S"
     }
   ]
 
   global_secondary_indexes = [
     {
-      name            = "FileLocationsIndex"
-      hash_key        = "FileLocation"
+      name            = "NhsNumberIndex"
+      hash_key        = "NhsNumber"
       projection_type = "ALL"
     },
     {
-      name            = "NhsNumberIndex"
-      hash_key        = "NhsNumber"
+      name            = "TimestampIndex"
+      hash_key        = "Date"
+      range_key       = "Timestamp"
       projection_type = "ALL"
     }
   ]
