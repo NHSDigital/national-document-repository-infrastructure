@@ -59,4 +59,5 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_dns_name"></a> [dns\_name](#output\_dns\_name) | n/a |
+| <a name="output_load_balancer_arn"></a> [load\_balancer\_arn](#output\_load\_balancer\_arn) | The arn of the load balancer |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | n/a |
