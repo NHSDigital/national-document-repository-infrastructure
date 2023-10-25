@@ -1,5 +1,7 @@
 locals {
 
+  image_regex = "^\\/images(\\/\\w+)+\\/$"
+
   waf_rules = [
     {
       name                    = "AWSCoreRuleSet"
