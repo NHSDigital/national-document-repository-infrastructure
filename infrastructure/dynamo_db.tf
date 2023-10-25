@@ -193,7 +193,7 @@ module "bulk_upload_dynamodb_table" {
     },
     {
       name = "Timestamp"
-      type = "S"
+      type = "N"
     },
     {
       name = "Date"
