@@ -56,3 +56,7 @@ variable "owner" {
 output "dynamodb_policy" {
   value = aws_iam_policy.dynamodb_policy.arn
 }
+
+output "dynamodb_table_arn" {
+  value = aws_dynamodb_table.ndr_dynamodb_table.arn
+}

@@ -6,7 +6,8 @@ module "bulk-upload-report-lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-bulk-staging-store.s3_object_access_policy,
-    module.bulk_upload_dynamodb_table.dynamodb_policy
+    module.bulk_upload_dynamodb_table.dynamodb_policy,
+    aws_iam_policy.dynamodb_policy_scan_bulk_report.arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
@@ -24,3 +25,25 @@ module "bulk-upload-report-lambda" {
     module.bulk_upload_dynamodb_table
   ]
 }
+
+resource "aws_iam_policy" "dynamodb_policy_scan_bulk_report" {
+  name = "${terraform.workspace}_${var.bulk_upload_dynamodb_table_name}_policy"
+  path = "/"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:Scan",
+        ],
+        "Resource" : [
+          module.bulk_upload_dynamodb_table.dynamodb_table_arn,
+        ]
+      }
+    ]
+  })
+}
+
