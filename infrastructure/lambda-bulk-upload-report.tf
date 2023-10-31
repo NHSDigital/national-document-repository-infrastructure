@@ -27,7 +27,7 @@ module "bulk-upload-report-lambda" {
 }
 
 resource "aws_iam_policy" "dynamodb_policy_scan_bulk_report" {
-  name = "${terraform.workspace}_${var.bulk_upload_dynamodb_table_name}_policy"
+  name = "${terraform.workspace}_${var.bulk_upload_dynamodb_table_name}_scan_policy"
   path = "/"
 
   policy = jsonencode({
