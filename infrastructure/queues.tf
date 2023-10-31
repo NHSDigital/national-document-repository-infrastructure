@@ -2,12 +2,16 @@ module "sqs-splunk-queue" {
   source            = "./modules/sqs"
   name              = "splunk-queue"
   enable_in_sandbox = !local.is_sandbox
+  environment       = var.environment
+  owner             = var.owner
 }
 
 module "sqs-nems-queue" {
   source            = "./modules/sqs"
   name              = "nems-queue"
   enable_in_sandbox = !local.is_sandbox
+  environment       = var.environment
+  owner             = var.owner
 }
 
 module "sqs-lg-bulk-upload-metadata-queue" {
@@ -15,6 +19,8 @@ module "sqs-lg-bulk-upload-metadata-queue" {
   name              = "lg-bulk-upload-metadata-queue"
   max_message       = 256 * 1024        # allow message size up to 256 KB
   message_retention = 60 * 60 * 24 * 14 # 14 days
+  environment       = var.environment
+  owner             = var.owner
 }
 
 module "sqs-lg-bulk-upload-invalid-queue" {
@@ -22,6 +28,8 @@ module "sqs-lg-bulk-upload-invalid-queue" {
   name              = "lg-bulk-upload-invalid-queue"
   max_message       = 256 * 1024        # 256 KB
   message_retention = 60 * 60 * 24 * 14 # 14 days
+  environment       = var.environment
+  owner             = var.owner
 }
 
 module "sqs-nems-queue-topic" {
