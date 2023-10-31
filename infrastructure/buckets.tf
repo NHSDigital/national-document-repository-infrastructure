@@ -5,7 +5,7 @@ module "ndr-document-store" {
   enable_cors_configuration = true
   environment               = var.environment
   owner                     = var.owner
-  force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+  force_destroy             = local.is_force_destroy
   cors_rules = [
     {
       allowed_headers = ["*"]
@@ -28,7 +28,7 @@ module "ndr-zip-request-store" {
   enable_cors_configuration = true
   environment               = var.environment
   owner                     = var.owner
-  force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+  force_destroy             = local.is_force_destroy
   cors_rules = [
     {
       allowed_methods = ["GET"]
@@ -44,7 +44,7 @@ module "ndr-lloyd-george-store" {
   enable_cors_configuration = true
   environment               = var.environment
   owner                     = var.owner
-  force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+  force_destroy             = local.is_force_destroy
   cors_rules = [
     {
       allowed_headers = ["*"]
@@ -150,6 +150,6 @@ module "ndr-bulk-staging-store" {
   bucket_name               = var.staging_store_bucket_name
   environment               = var.environment
   owner                     = var.owner
-  force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+  force_destroy             = local.is_force_destroy
   enable_cors_configuration = false
 }

@@ -1,6 +1,11 @@
 variable "name" {
   type = string
 }
+
+variable "enable_in_sandbox" {
+  type    = bool
+  default = true
+}
 variable "delay" {
   description = "The time in seconds that the delivery of all messages in the queue will be delayed"
   type        = number

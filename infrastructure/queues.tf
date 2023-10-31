@@ -1,11 +1,13 @@
 module "sqs-splunk-queue" {
-  source = "./modules/sqs"
-  name   = "splunk-queue"
+  source            = "./modules/sqs"
+  name              = "splunk-queue"
+  enable_in_sandbox = !local.is_sandbox
 }
 
 module "sqs-nems-queue" {
-  source = "./modules/sqs"
-  name   = "nems-queue"
+  source            = "./modules/sqs"
+  name              = "nems-queue"
+  enable_in_sandbox = !local.is_sandbox
 }
 
 module "sqs-lg-bulk-upload-metadata-queue" {

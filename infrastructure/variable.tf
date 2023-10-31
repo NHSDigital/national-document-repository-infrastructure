@@ -110,3 +110,8 @@ variable "domain" {
 variable "certificate_domain" {
   type = string
 }
+
+locals {
+  is_sandbox       = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
+  is_force_destroy = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+}

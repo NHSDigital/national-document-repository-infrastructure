@@ -23,7 +23,7 @@ module "bulk-upload-lambda" {
     BULK_UPLOAD_DYNAMODB_NAME  = "${terraform.workspace}_${var.bulk_upload_dynamodb_table_name}"
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
     INVALID_SQS_QUEUE_URL      = module.sqs-lg-bulk-upload-invalid-queue.sqs_url
-    PDS_FHIR_IS_STUBBED        = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
+    PDS_FHIR_IS_STUBBED        = local.is_sandbox
   }
 
   is_gateway_integration_needed = false
