@@ -65,30 +65,12 @@ resource "aws_s3_bucket_intelligent_tiering_configuration" "lg-tiering-entire-bu
   bucket = module.ndr-lloyd-george-store.bucket_id
   name   = "LgTieringEntireBucket"
   count  = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace) ? 0 : 1
-
-  tiering {
-    access_tier = "DEEP_ARCHIVE_ACCESS"
-    days        = 180
-  }
-  tiering {
-    access_tier = "ARCHIVE_ACCESS"
-    days        = 90
-  }
 }
 
 resource "aws_s3_bucket_intelligent_tiering_configuration" "doc-store-tiering-entire-bucket" {
   bucket = module.ndr-document-store.bucket_id
   name   = "DocStoreTieringEntireBucket"
   count  = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace) ? 0 : 1
-
-  tiering {
-    access_tier = "DEEP_ARCHIVE_ACCESS"
-    days        = 180
-  }
-  tiering {
-    access_tier = "ARCHIVE_ACCESS"
-    days        = 90
-  }
 }
 
 # Lifecycle Rules
