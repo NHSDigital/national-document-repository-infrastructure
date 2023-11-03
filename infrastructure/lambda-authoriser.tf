@@ -68,11 +68,12 @@ module "authoriser-alarm-topic" {
 }
 
 resource "aws_api_gateway_authorizer" "repo_authoriser" {
-  name            = "${terraform.workspace}_repo_authoriser"
-  type            = "TOKEN"
-  identity_source = "method.request.header.Authorization"
-  rest_api_id     = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  authorizer_uri  = module.authoriser-lambda.invoke_arn
+  name                             = "${terraform.workspace}_repo_authoriser"
+  type                             = "TOKEN"
+  identity_source                  = "method.request.header.Authorization"
+  rest_api_id                      = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  authorizer_uri                   = module.authoriser-lambda.invoke_arn
+  authorizer_result_ttl_in_seconds = 0
 }
 
 resource "aws_iam_policy" "ssm_policy_authoriser" {

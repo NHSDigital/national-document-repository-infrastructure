@@ -72,7 +72,8 @@ module "search-patient-details-lambda" {
   resource_id = module.search-patient-details-gateway.gateway_resource_id
   http_method = "GET"
   lambda_environment_variables = {
-    "PDS_FHIR_IS_STUBBED" = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
+    "PDS_FHIR_IS_STUBBED"            = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
+    "SSM_PARAM_JWT_TOKEN_PUBLIC_KEY" = "jwt_token_public_key"
   }
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   depends_on = [
