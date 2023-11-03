@@ -28,7 +28,6 @@ resource "aws_iam_policy" "s3_document_data_policy" {
           "s3:GetObjectTagging",
           "s3:PutObjectTagging",
           "s3:GetObjectVersion",
-          "s3:PutIntelligentTieringConfiguration"
         ],
         "Resource" : ["${aws_s3_bucket.bucket.arn}/*", "${aws_s3_bucket.bucket.arn}/*"]
       }
