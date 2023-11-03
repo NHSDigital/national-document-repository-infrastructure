@@ -67,7 +67,7 @@ resource "aws_s3_bucket_intelligent_tiering_configuration" "lg-tiering-entire-bu
 
   tiering {
     access_tier = "DEEP_ARCHIVE_ACCESS"
-    days        = 120
+    days        = 180
   }
   tiering {
     access_tier = "ARCHIVE_ACCESS"
@@ -81,7 +81,7 @@ resource "aws_s3_bucket_intelligent_tiering_configuration" "doc-store-tiering-en
 
   tiering {
     access_tier = "DEEP_ARCHIVE_ACCESS"
-    days        = 120
+    days        = 180
   }
   tiering {
     access_tier = "ARCHIVE_ACCESS"
