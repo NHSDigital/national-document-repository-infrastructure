@@ -60,6 +60,35 @@ module "ndr-lloyd-george-store" {
   ]
 }
 
+# S3 Intelligent-Tiering
+resource "aws_s3_bucket_intelligent_tiering_configuration" "lg-tiering-entire-bucket" {
+  bucket = module.ndr-lloyd-george-store.bucket_id
+  name   = "LgTieringEntireBucket"
+
+  tiering {
+    access_tier = "DEEP_ARCHIVE_ACCESS"
+    days        = 90
+  }
+  tiering {
+    access_tier = "ARCHIVE_ACCESS"
+    days        = 60
+  }
+}
+
+resource "aws_s3_bucket_intelligent_tiering_configuration" "doc-store-tiering-entire-bucket" {
+  bucket = module.ndr-document-store.bucket_id
+  name   = "DocStoreTieringEntireBucket"
+
+  tiering {
+    access_tier = "DEEP_ARCHIVE_ACCESS"
+    days        = 90
+  }
+  tiering {
+    access_tier = "ARCHIVE_ACCESS"
+    days        = 60
+  }
+}
+
 # Lifecycle Rules
 resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   bucket = module.ndr-lloyd-george-store.bucket_id
