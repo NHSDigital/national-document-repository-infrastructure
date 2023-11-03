@@ -1,7 +1,8 @@
 module "bulk-upload-metadata-lambda" {
-  source  = "./modules/lambda"
-  name    = "BulkUploadMetadataLambda"
-  handler = "handlers.bulk_upload_metadata_handler.lambda_handler"
+  source         = "./modules/lambda"
+  name           = "BulkUploadMetadataLambda"
+  handler        = "handlers.bulk_upload_metadata_handler.lambda_handler"
+  lambda_timeout = 900
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
