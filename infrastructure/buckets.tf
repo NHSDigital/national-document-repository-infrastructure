@@ -111,6 +111,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   rule {
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
+    transition {
+      storage_class = "INTELLIGENT_TIERING"
+    }
   }
 }
 
@@ -149,6 +152,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
   rule {
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
+    transition {
+      storage_class = "INTELLIGENT_TIERING"
+    }
   }
 }
 
