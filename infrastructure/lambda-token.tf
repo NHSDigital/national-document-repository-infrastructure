@@ -23,15 +23,13 @@ module "create-token-lambda" {
   source  = "./modules/lambda"
   name    = "TokenRequestHandler"
   handler = "handlers.token_handler.lambda_handler"
-  iam_role_policies = compact([
+  iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_token.arn,
     module.auth_session_dynamodb_table.dynamodb_policy,
     module.auth_state_dynamodb_table.dynamodb_policy,
-    try(aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0].arn, null),
-  ])
-
+  ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.token-gateway.gateway_resource_id
   http_method       = "GET"
@@ -115,4 +113,10 @@ resource "aws_iam_policy" "ssm_policy_token" {
       }
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "policy_audit_token_lambda" {
+  count      = local.is_sandbox ? 0 : 1
+  role       = module.create-token-lambda.lambda_execution_role_name
+  policy_arn = try(aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0].arn, null)
 }

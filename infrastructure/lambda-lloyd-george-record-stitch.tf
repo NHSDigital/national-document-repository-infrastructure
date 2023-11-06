@@ -64,13 +64,12 @@ module "lloyd-george-stitch-lambda" {
   source  = "./modules/lambda"
   name    = "LloydGeorgeStitchLambda"
   handler = "handlers.lloyd_george_record_stitch_handler.lambda_handler"
-  iam_role_policies = compact([
+  iam_role_policies = [
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.ndr-lloyd-george-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    local.is_sandbox ? null : aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0].arn,
-  ])
+  ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.lloyd-george-stitch-gateway.gateway_resource_id
   http_method       = "GET"
@@ -87,4 +86,10 @@ module "lloyd-george-stitch-lambda" {
     module.lloyd-george-stitch-gateway,
     aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0]
   ]
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_stitch-lambda" {
+  count      = local.is_sandbox ? 0 : 1
+  role       = module.lloyd-george-stitch-lambda.lambda_execution_role_name
+  policy_arn = try(aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0].arn, null)
 }
