@@ -55,7 +55,7 @@ module "create-token-lambda" {
 }
 
 module "create_token-alarm" {
-  source               = "./modules/alarm"
+  source               = "modules/lambda_alarms"
   lambda_function_name = module.create-token-lambda.function_name
   lambda_timeout       = module.create-token-lambda.timeout
   lambda_name          = "token_handler"

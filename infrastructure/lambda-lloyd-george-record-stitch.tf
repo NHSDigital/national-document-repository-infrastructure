@@ -21,7 +21,7 @@ module "lloyd-george-stitch-gateway" {
 }
 
 module "lloyd-george-stitch_alarm" {
-  source               = "./modules/alarm"
+  source               = "modules/lambda_alarms"
   lambda_function_name = module.lloyd-george-stitch-lambda.function_name
   lambda_timeout       = module.lloyd-george-stitch-lambda.timeout
   lambda_name          = "lloyd_george_record_stitch_handler"
