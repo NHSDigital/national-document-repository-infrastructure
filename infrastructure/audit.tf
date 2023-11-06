@@ -20,7 +20,7 @@ resource "aws_iam_role" "splunk_sqs_forwarder" {
   assume_role_policy = data.aws_iam_policy_document.splunk_trust_policy.json
   inline_policy {
     name = "${terraform.workspace}_splunk_access_policy"
-    policy = jsondecode({
+    policy = jsonencode({
       Version = "2012-10-17"
       Statement = [
         {
