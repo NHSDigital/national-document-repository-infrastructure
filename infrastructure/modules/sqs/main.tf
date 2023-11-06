@@ -1,5 +1,4 @@
 resource "aws_sqs_queue" "sqs_queue" {
-  count                       = var.enable_in_sandbox ? 1 : 0
   name                        = "${terraform.workspace}-${var.name}"
   delay_seconds               = var.delay
   visibility_timeout_seconds  = var.max_visibility
@@ -30,7 +29,7 @@ resource "aws_iam_policy" "sqs_queue_policy" {
         "sqs:GetQueueAttributes"
       ],
       "Resource" = [
-        aws_sqs_queue.sqs_queue[0].arn
+        aws_sqs_queue.sqs_queue.arn
       ]
   }] })
 }

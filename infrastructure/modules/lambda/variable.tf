@@ -75,3 +75,7 @@ output "timeout" {
 output "endpoint" {
   value = aws_lambda_function.lambda.arn
 }
+
+output "lambda_execution_role_name" {
+  value = aws_iam_role.lambda_execution_role.name
+}

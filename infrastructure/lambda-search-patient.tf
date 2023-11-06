@@ -67,7 +67,6 @@ module "search-patient-details-lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_pds.arn,
-    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy.arn
   ]
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id = module.search-patient-details-gateway.gateway_resource_id
@@ -75,12 +74,13 @@ module "search-patient-details-lambda" {
   lambda_environment_variables = {
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
     PDS_FHIR_IS_STUBBED            = local.is_sandbox,
-    SPLUNK_SQS_QUEUE_URL           = module.sqs-splunk-queue.sqs_url
+    SPLUNK_SQS_QUEUE_URL           = try(module.sqs-splunk-queue[0].sqs_url, null)
   }
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.search-patient-details-gateway
+    module.search-patient-details-gateway,
+    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0]
   ]
 }
 
@@ -102,4 +102,10 @@ resource "aws_iam_policy" "ssm_policy_pds" {
       }
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "policy_audit_search-patient-details-lambda" {
+  count      = local.is_sandbox ? 0 : 1
+  role       = module.search-patient-details-lambda.lambda_execution_role_name
+  policy_arn = try(aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0].arn, null)
 }
