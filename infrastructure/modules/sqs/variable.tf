@@ -1,6 +1,11 @@
 variable "name" {
   type = string
 }
+
+variable "enable_in_sandbox" {
+  type    = bool
+  default = true
+}
 variable "delay" {
   description = "The time in seconds that the delivery of all messages in the queue will be delayed"
   type        = number
@@ -50,17 +55,23 @@ variable "enable_fifo" {
   description = "Attach first in first out policy to sqs"
 
 }
+# Tags
+variable "environment" {
+  type = string
+}
+
+variable "owner" {
+  type = string
+}
 
 output "endpoint" {
-  value       = aws_sqs_queue.sqs_queue.arn
+  value       = aws_sqs_queue.sqs_queue[0].arn
   description = "Same as sqs queue arn. For use when setting the queue as endpoint of sns topic"
 }
 
-
 output "sqs_arn" {
-  value = aws_sqs_queue.sqs_queue.arn
+  value = aws_sqs_queue.sqs_queue[0].arn
 }
-
 
 output "sqs_policy" {
   value       = aws_iam_policy.sqs_queue_policy.arn
@@ -68,5 +79,5 @@ output "sqs_policy" {
 }
 
 output "sqs_url" {
-  value = aws_sqs_queue.sqs_queue.url
+  value = aws_sqs_queue.sqs_queue[0].url
 }

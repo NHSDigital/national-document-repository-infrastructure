@@ -28,7 +28,8 @@ module "create-token-lambda" {
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_token.arn,
     module.auth_session_dynamodb_table.dynamodb_policy,
-    module.auth_state_dynamodb_table.dynamodb_policy
+    module.auth_state_dynamodb_table.dynamodb_policy,
+    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy.arn
   ]
 
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -41,6 +42,8 @@ module "create-token-lambda" {
     OIDC_CALLBACK_URL               = "https://${terraform.workspace}.${var.domain}/auth-callback"
     AUTH_STATE_TABLE_NAME           = "${terraform.workspace}_${var.auth_state_dynamodb_table_name}"
     AUTH_SESSION_TABLE_NAME         = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
+    SPLUNK_SQS_QUEUE_URL            = module.sqs-splunk-queue.sqs_url
+
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
