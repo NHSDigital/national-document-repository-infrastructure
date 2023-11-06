@@ -65,17 +65,17 @@ module "document-manifest-by-nhs-number-lambda" {
   handler                  = "handlers.document_manifest_by_nhs_number_handler.lambda_handler"
   lambda_timeout           = 900
   lambda_ephemeral_storage = 512
-  iam_role_policies = [
+  iam_role_policies = compact([
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.ndr-document-store.s3_object_access_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.ndr-lloyd-george-store.s3_object_access_policy,
     module.zip_store_reference_dynamodb_table.dynamodb_policy,
     module.ndr-zip-request-store.s3_object_access_policy,
-    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy.arn,
+    try(aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0].arn, null),
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
-  ]
+  ])
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.document-manifest-by-nhs-gateway.gateway_resource_id
   http_method       = "GET"
@@ -87,11 +87,12 @@ module "document-manifest-by-nhs-number-lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     ZIPPED_STORE_BUCKET_NAME     = "${terraform.workspace}-${var.zip_store_bucket_name}"
     ZIPPED_STORE_DYNAMODB_NAME   = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
-    SPLUNK_SQS_QUEUE_URL         = module.sqs-splunk-queue.sqs_url
+    SPLUNK_SQS_QUEUE_URL         = try(module.sqs-splunk-queue[0].sqs_url, null)
 
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.document-manifest-by-nhs-gateway,
+    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0]
   ]
 }

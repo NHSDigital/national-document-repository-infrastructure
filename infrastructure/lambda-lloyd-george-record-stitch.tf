@@ -64,13 +64,13 @@ module "lloyd-george-stitch-lambda" {
   source  = "./modules/lambda"
   name    = "LloydGeorgeStitchLambda"
   handler = "handlers.lloyd_george_record_stitch_handler.lambda_handler"
-  iam_role_policies = [
+  iam_role_policies = compact([
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.ndr-lloyd-george-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy.arn
-  ]
+    local.is_sandbox ? null : aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0].arn,
+  ])
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.lloyd-george-stitch-gateway.gateway_resource_id
   http_method       = "GET"
@@ -78,12 +78,13 @@ module "lloyd-george-stitch-lambda" {
   lambda_environment_variables = {
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    SPLUNK_SQS_QUEUE_URL       = module.sqs-splunk-queue.sqs_url
+    SPLUNK_SQS_QUEUE_URL       = try(module.sqs-splunk-queue[0].sqs_url, null)
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-lloyd-george-store,
     module.lloyd_george_reference_dynamodb_table,
-    module.lloyd-george-stitch-gateway
+    module.lloyd-george-stitch-gateway,
+    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0]
   ]
 }

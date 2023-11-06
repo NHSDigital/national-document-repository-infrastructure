@@ -1,17 +1,17 @@
 module "sqs-splunk-queue" {
-  source            = "./modules/sqs"
-  name              = "splunk-queue"
-  enable_in_sandbox = !local.is_sandbox
-  environment       = var.environment
-  owner             = var.owner
+  source      = "./modules/sqs"
+  name        = "splunk-queue"
+  count       = local.is_sandbox ? 0 : 1
+  environment = var.environment
+  owner       = var.owner
 }
 
 module "sqs-nems-queue" {
-  source            = "./modules/sqs"
-  name              = "nems-queue"
-  enable_in_sandbox = !local.is_sandbox
-  environment       = var.environment
-  owner             = var.owner
+  source      = "./modules/sqs"
+  name        = "nems-queue"
+  count       = local.is_sandbox ? 0 : 1
+  environment = var.environment
+  owner       = var.owner
 }
 
 module "sqs-lg-bulk-upload-metadata-queue" {
@@ -33,10 +33,11 @@ module "sqs-lg-bulk-upload-invalid-queue" {
 }
 
 module "sqs-nems-queue-topic" {
+  count          = local.is_sandbox ? 0 : 1
   source         = "./modules/sns"
   topic_name     = "nems-queue-topic"
   topic_protocol = "sqs"
-  topic_endpoint = module.sqs-nems-queue.endpoint
+  topic_endpoint = module.sqs-nems-queue[0].endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

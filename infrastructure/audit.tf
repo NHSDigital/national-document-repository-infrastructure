@@ -24,8 +24,8 @@ resource "aws_iam_role" "splunk_sqs_forwarder" {
       Version = "2012-10-17"
       Statement = [
         {
-          effect = "Allow"
-          actions = [
+          Effect = "Allow"
+          Action = [
             "sqs:GetQueueAttributes",
             "sqs:ListQueues",
             "sqs:ReceiveMessage",
@@ -33,17 +33,18 @@ resource "aws_iam_role" "splunk_sqs_forwarder" {
             "sqs:SendMessage",
             "sqs:DeleteMessage"
           ]
-          resources = [
-            module.sqs-splunk-queue.sqs_arn,
-            module.sqs-nems-queue.sqs_arn
+          Resource = [
+            module.sqs-splunk-queue[0].sqs_arn,
+            module.sqs-nems-queue[0].sqs_arn
           ]
-        }
+        },
       ]
     })
   }
 }
 
 resource "aws_iam_policy" "lambda_audit_splunk_sqs_queue_send_policy" {
+  count = local.is_sandbox ? 0 : 1
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -53,7 +54,7 @@ resource "aws_iam_policy" "lambda_audit_splunk_sqs_queue_send_policy" {
         "sqs:SendMessage",
       ],
       "Resource" = [
-        module.sqs-splunk-queue.sqs_arn
+        module.sqs-splunk-queue[0].sqs_arn
       ]
   }] })
 }

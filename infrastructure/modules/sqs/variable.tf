@@ -2,10 +2,6 @@ variable "name" {
   type = string
 }
 
-variable "enable_in_sandbox" {
-  type    = bool
-  default = true
-}
 variable "delay" {
   description = "The time in seconds that the delivery of all messages in the queue will be delayed"
   type        = number
@@ -65,12 +61,12 @@ variable "owner" {
 }
 
 output "endpoint" {
-  value       = aws_sqs_queue.sqs_queue[0].arn
+  value       = aws_sqs_queue.sqs_queue.arn
   description = "Same as sqs queue arn. For use when setting the queue as endpoint of sns topic"
 }
 
 output "sqs_arn" {
-  value = aws_sqs_queue.sqs_queue[0].arn
+  value = aws_sqs_queue.sqs_queue.arn
 }
 
 output "sqs_policy" {
@@ -79,5 +75,5 @@ output "sqs_policy" {
 }
 
 output "sqs_url" {
-  value = aws_sqs_queue.sqs_queue[0].url
+  value = aws_sqs_queue.sqs_queue.url
 }
