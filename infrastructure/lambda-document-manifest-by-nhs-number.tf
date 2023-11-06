@@ -72,6 +72,7 @@ module "document-manifest-by-nhs-number-lambda" {
     module.ndr-lloyd-george-store.s3_object_access_policy,
     module.zip_store_reference_dynamodb_table.dynamodb_policy,
     module.ndr-zip-request-store.s3_object_access_policy,
+    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy.arn,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
   ]
@@ -86,6 +87,8 @@ module "document-manifest-by-nhs-number-lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     ZIPPED_STORE_BUCKET_NAME     = "${terraform.workspace}-${var.zip_store_bucket_name}"
     ZIPPED_STORE_DYNAMODB_NAME   = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
+    SPLUNK_SQS_QUEUE_URL         = module.sqs-splunk-queue.sqs_url
+
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

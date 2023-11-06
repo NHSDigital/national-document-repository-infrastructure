@@ -66,14 +66,16 @@ module "search-patient-details-lambda" {
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    aws_iam_policy.ssm_policy_pds.arn
+    aws_iam_policy.ssm_policy_pds.arn,
+    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy.arn
   ]
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id = module.search-patient-details-gateway.gateway_resource_id
   http_method = "GET"
   lambda_environment_variables = {
-    "PDS_FHIR_IS_STUBBED"            = local.is_sandbox
-    "SSM_PARAM_JWT_TOKEN_PUBLIC_KEY" = "jwt_token_public_key"
+    SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
+    PDS_FHIR_IS_STUBBED  = local.is_sandbox,
+    SPLUNK_SQS_QUEUE_URL = module.sqs-splunk-queue.sqs_url
   }
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   depends_on = [

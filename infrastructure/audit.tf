@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "splunk_trust_policy" {
 
 resource "aws_iam_role" "splunk_sqs_forwarder" {
   count              = local.is_sandbox ? 0 : 1
-  name               = "${terraform.workspace}_SplunkSqsForwarder"
+  name               = "${terraform.workspace}_splunk_sqs_forwarder_role"
   description        = "Role to allow ARF to integrate with Splunk"
   assume_role_policy = data.aws_iam_policy_document.splunk_trust_policy.json
   inline_policy {
@@ -41,4 +41,19 @@ resource "aws_iam_role" "splunk_sqs_forwarder" {
       ]
     })
   }
+}
+
+resource "aws_iam_policy" "lambda_audit_splunk_sqs_queue_send_policy" {
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      "Sid"    = "shsqsstatement",
+      "Effect" = "Allow",
+      "Action" = [
+        "sqs:SendMessage",
+      ],
+      "Resource" = [
+        module.sqs-splunk-queue.sqs_arn
+      ]
+  }] })
 }
