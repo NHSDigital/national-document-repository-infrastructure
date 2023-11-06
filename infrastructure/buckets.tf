@@ -60,19 +60,6 @@ module "ndr-lloyd-george-store" {
   ]
 }
 
-# S3 Intelligent-Tiering
-resource "aws_s3_bucket_intelligent_tiering_configuration" "lg-tiering-entire-bucket" {
-  bucket = module.ndr-lloyd-george-store.bucket_id
-  name   = "LgTieringEntireBucket"
-  count  = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace) ? 0 : 1
-}
-
-resource "aws_s3_bucket_intelligent_tiering_configuration" "doc-store-tiering-entire-bucket" {
-  bucket = module.ndr-document-store.bucket_id
-  name   = "DocStoreTieringEntireBucket"
-  count  = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace) ? 0 : 1
-}
-
 # Lifecycle Rules
 resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   bucket = module.ndr-lloyd-george-store.bucket_id
@@ -121,6 +108,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
       }
     }
   }
+  rule {
+    count  = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace) ? 0 : 1
+    id     = "default-to-intelligent-tiering"
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
@@ -154,6 +146,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
         value = "true"
       }
     }
+  }
+  rule {
+    #    count  = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace) ? 0 : 1
+    id     = "default-to-intelligent-tiering"
+    status = "Enabled"
   }
 }
 
