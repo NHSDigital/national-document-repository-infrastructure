@@ -65,12 +65,12 @@ variable "owner" {
 }
 
 output "endpoint" {
-  value       = aws_sqs_queue.sqs_queue.arn
+  value       = aws_sqs_queue.sqs_queue[0].arn
   description = "Same as sqs queue arn. For use when setting the queue as endpoint of sns topic"
 }
 
 output "sqs_arn" {
-  value = aws_sqs_queue.sqs_queue.arn
+  value = aws_sqs_queue.sqs_queue[0].arn
 }
 
 output "sqs_policy" {
@@ -79,5 +79,5 @@ output "sqs_policy" {
 }
 
 output "sqs_url" {
-  value = aws_sqs_queue.sqs_queue.url
+  value = aws_sqs_queue.sqs_queue[0].url
 }
