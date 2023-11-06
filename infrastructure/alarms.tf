@@ -15,6 +15,43 @@ resource "aws_cloudwatch_metric_alarm" "repo_alarm" {
   unit                = "Count"
 }
 
+resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_4XX" {
+  alarm_name          = "4XX-status-${aws_api_gateway_rest_api.ndr_doc_store_api.name}"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  namespace           = "AWS/ApiGateway"
+  metric_name         = "HTTPCode_Target_4XX_Count"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "20"
+
+  dimensions = {
+    ApiName = aws_api_gateway_rest_api.ndr_doc_store_api.name
+    stage   = "prod"
+  }
+
+  alarm_description = "This alarm indicates that at least 20 4XX statuses have occured on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} in a minute."
+  alarm_actions     = var.alarm_actions_arn_list
+}
+
+resource "aws_cloudwatch_metric_alarm" "gateway_alarm_5XX" {
+  alarm_name          = "5XX-status-${aws_api_gateway_rest_api.ndr_doc_store_api.name}"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  namespace           = "AWS/APIGateway"
+  metric_name         = "API_Gateway_5xx_Error"
+  period              = "300"
+  statistic           = "Average"
+  threshold           = "5"
+
+  dimensions = {
+    ApiName = aws_api_gateway_rest_api.ndr_doc_store_api.name
+    stage   = "prod"
+  }
+
+  alarm_description = "This alarm indicates that at least 5 5XX statuses have occured on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} within 5 minutes."
+  alarm_actions     = var.alarm_actions_arn_list
+}
 /**
 
 Module required to create gateway alarm subscription below. 

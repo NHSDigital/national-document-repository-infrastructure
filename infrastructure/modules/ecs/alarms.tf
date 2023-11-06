@@ -22,7 +22,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
   evaluation_periods  = "1"
   namespace           = "AWS/ApplicationELB"
   metric_name         = "HTTPCode_Target_5XX_Count"
-  period              = "600"
+  period              = "300"
   statistic           = "Average"
   threshold           = "5"
 
@@ -30,6 +30,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
     AutoScalingGroupName = aws_lb.ecs_lb.arn_suffix
   }
 
-  alarm_description = "This alarm indicates that at least 5 5XX statuses have occurred on ${aws_lb.ecs_lb.name} in 5 minutes."
+  alarm_description = "This alarm indicates that at least 5 5XX statuses have occurred on ${aws_lb.ecs_lb.name} within 5 minutes."
   alarm_actions     = var.alarm_actions_arn_list
 }

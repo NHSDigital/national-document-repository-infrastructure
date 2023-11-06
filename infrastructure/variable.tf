@@ -7,6 +7,11 @@ variable "owner" {
   type = string
 }
 
+# Alarm variables
+variable "alarm_actions_arn_list" {
+  type = list(string)
+}
+
 # Bucket Variables
 variable "docstore_bucket_name" {
   type        = string
