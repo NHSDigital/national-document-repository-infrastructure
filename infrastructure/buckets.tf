@@ -109,7 +109,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
     }
   }
   rule {
-    count  = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace) ? 0 : 1
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
   }
@@ -148,7 +147,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
     }
   }
   rule {
-    #    count  = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace) ? 0 : 1
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
   }
