@@ -31,7 +31,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_4XX" {
   }
 
   alarm_description = "This alarm indicates that at least 20 4XX statuses have occured on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} in a minute."
-  alarm_actions     = var.alarm_actions_arn_list
+  alarm_actions     = [module.sns_gateway_alarms_topic.arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "gateway_alarm_5XX" {
