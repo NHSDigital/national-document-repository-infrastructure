@@ -6,9 +6,10 @@ resource "aws_sns_topic" "sns_topic" {
 }
 
 resource "aws_sns_topic_subscription" "sns_subscription" {
+  for_each  = var.topic_endpoint
   topic_arn = aws_sns_topic.sns_topic.arn
   protocol  = var.topic_protocol
-  endpoint  = var.topic_endpoint
+  endpoint  = each.key
 }
 
 output "arn" {

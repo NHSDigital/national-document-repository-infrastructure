@@ -37,7 +37,8 @@ module "sqs-nems-queue-topic" {
   source         = "./modules/sns"
   topic_name     = "nems-queue-topic"
   topic_protocol = "sqs"
-  topic_endpoint = module.sqs-nems-queue[0].endpoint
+  depends_on     = [module.sqs-nems-queue]
+  topic_endpoint = toset([module.sqs-nems-queue[0].endpoint])
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

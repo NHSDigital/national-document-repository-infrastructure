@@ -70,7 +70,7 @@ module "create_token-alarm_topic" {
   source         = "./modules/sns"
   topic_name     = "logout-alarms-topic"
   topic_protocol = "lambda"
-  topic_endpoint = module.create-token-lambda.endpoint
+  topic_endpoint = toset([module.create-token-lambda.endpoint])
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

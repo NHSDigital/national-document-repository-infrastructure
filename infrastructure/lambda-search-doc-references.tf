@@ -36,7 +36,7 @@ module "search_doc_alarm_topic" {
   source         = "./modules/sns"
   topic_name     = "search_doc_references-alarms-topic"
   topic_protocol = "lambda"
-  topic_endpoint = module.search-document-references-lambda.endpoint
+  topic_endpoint = toset([module.search-document-references-lambda.endpoint])
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

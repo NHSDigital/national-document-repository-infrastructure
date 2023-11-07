@@ -27,5 +27,5 @@ variable "topic_protocol" {
 
 
 variable "topic_endpoint" {
-  type = string
+  type = set(string)
 }

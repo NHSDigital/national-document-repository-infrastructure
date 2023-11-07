@@ -36,7 +36,7 @@ module "create_doc_alarm_topic" {
   source         = "./modules/sns"
   topic_name     = "create_doc-alarms-topic"
   topic_protocol = "lambda"
-  topic_endpoint = module.create-doc-ref-lambda.endpoint
+  topic_endpoint = toset([module.create-doc-ref-lambda.endpoint])
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

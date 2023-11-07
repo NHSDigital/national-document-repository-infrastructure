@@ -36,7 +36,7 @@ module "search_patient_alarm_topic" {
   source         = "./modules/sns"
   topic_name     = "search_patient_details_alarms-topic"
   topic_protocol = "lambda"
-  topic_endpoint = module.search-patient-details-lambda.endpoint
+  topic_endpoint = toset([module.search-patient-details-lambda.endpoint])
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

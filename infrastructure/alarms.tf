@@ -51,7 +51,6 @@ resource "aws_cloudwatch_metric_alarm" "gateway_alarm_5XX" {
 
   alarm_description = "This alarm indicates that at least 5 5XX statuses have occured on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} within 5 minutes."
   alarm_actions     = [module.sns_gateway_alarms_topic.arn]
-
 }
 /**
 
@@ -64,8 +63,8 @@ phone number or sqs queue planned yet the code is commented
 module "sns_gateway_alarms_topic" {
   source         = "./modules/sns"
   topic_name     = "gateway-alarms-topic"
-  topic_protocol = "application"
-  topic_endpoint = "arn:aws:apigateway:eu-west-2:${data.aws_caller_identity.current.account_id}:/apis/${aws_api_gateway_rest_api.ndr_doc_store_api.id}/routes/*"
+  topic_protocol = "email"
+  topic_endpoint = toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
   depends_on     = [aws_api_gateway_rest_api.ndr_doc_store_api]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -87,13 +86,6 @@ module "sns_gateway_alarms_topic" {
       }
     ]
   })
-}
-
-resource "aws_sns_topic_subscription" "proactive_notifications_sns_topic_subscription" {
-  for_each  = toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
-  endpoint  = each.value
-  protocol  = "email"
-  topic_arn = module.sns_gateway_alarms_topic.arn
 }
 
 data "aws_ssm_parameter" "cloud_security_notification_email_list" {

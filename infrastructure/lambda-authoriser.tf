@@ -42,7 +42,7 @@ module "authoriser-alarm-topic" {
   source         = "./modules/sns"
   topic_name     = "create_doc-alarms-topic"
   topic_protocol = "lambda"
-  topic_endpoint = module.authoriser-lambda.endpoint
+  topic_endpoint = toset([module.authoriser-lambda.endpoint])
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

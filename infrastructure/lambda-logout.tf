@@ -61,7 +61,7 @@ module "logout_alarm_topic" {
   source         = "./modules/sns"
   topic_name     = "logout-alarms-topic"
   topic_protocol = "lambda"
-  topic_endpoint = module.logout_lambda.endpoint
+  topic_endpoint = toset([module.logout_lambda.endpoint])
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
