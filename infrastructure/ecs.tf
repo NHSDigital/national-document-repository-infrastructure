@@ -13,5 +13,5 @@ module "ndr-ecs-fargate" {
   domain                   = var.domain
   certificate_domain       = var.certificate_domain
   container_port           = 80
-  alarm_actions_arn_list   = []
+  alarm_actions_arn_list   = [module.sns_gateway_alarms_topic.arn]
 }
