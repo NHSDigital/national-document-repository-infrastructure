@@ -50,4 +50,5 @@ No modules.
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | n/a |
 | <a name="output_function_name"></a> [function\_name](#output\_function\_name) | n/a |
 | <a name="output_invoke_arn"></a> [invoke\_arn](#output\_invoke\_arn) | n/a |
+| <a name="output_lambda_execution_role_name"></a> [lambda\_execution\_role\_name](#output\_lambda\_execution\_role\_name) | n/a |
 | <a name="output_timeout"></a> [timeout](#output\_timeout) | n/a |
