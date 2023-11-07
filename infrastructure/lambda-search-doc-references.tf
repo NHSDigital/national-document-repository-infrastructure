@@ -21,7 +21,7 @@ module "search-document-references-gateway" {
 }
 
 module "search_doc_alarm" {
-  source               = "modules/lambda_alarms"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.search-document-references-lambda.function_name
   lambda_timeout       = module.search-document-references-lambda.timeout
   lambda_name          = "search_document_references_handler"

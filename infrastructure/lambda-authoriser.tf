@@ -27,7 +27,7 @@ module "authoriser-lambda" {
 }
 
 module "authoriser-alarm" {
-  source               = "modules/lambda_alarms"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.authoriser-lambda.function_name
   lambda_timeout       = module.authoriser-lambda.timeout
   lambda_name          = "authoriser_handler"

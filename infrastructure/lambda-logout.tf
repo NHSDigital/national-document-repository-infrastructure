@@ -46,7 +46,7 @@ module "logout_lambda" {
 }
 
 module "logout_alarm" {
-  source               = "modules/lambda_alarms"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.logout_lambda.function_name
   lambda_timeout       = module.logout_lambda.timeout
   lambda_name          = "logout_handler"

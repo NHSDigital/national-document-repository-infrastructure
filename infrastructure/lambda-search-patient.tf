@@ -21,7 +21,7 @@ module "search-patient-details-gateway" {
 }
 
 module "search_patient_alarm" {
-  source               = "modules/lambda_alarms"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.search-patient-details-lambda.function_name
   lambda_timeout       = module.search-patient-details-lambda.timeout
   lambda_name          = "search_patient_details_handler"
