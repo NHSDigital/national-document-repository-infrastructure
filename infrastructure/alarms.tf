@@ -35,7 +35,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_4XX" {
   alarm_actions     = [aws_sns_topic.alarm_notifications_topic.arn]
 }
 
-resource "aws_cloudwatch_metric_alarm" "gateway_alarm_5XX" {
+resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
   alarm_name          = "5XX-status-${aws_api_gateway_rest_api.ndr_doc_store_api.name}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -91,7 +91,7 @@ phone number or sqs queue planned yet the code is commented
 #}
 
 resource "aws_sns_topic" "alarm_notifications_topic" {
-  name              = "alarms-notifications-topic"
+  name              = "alarms-notifications-topic-${terraform.workspace}"
   kms_master_key_id = aws_kms_key.alarm_notification_encryption_key.id
   policy = jsonencode({
     "Version" : "2012-10-17",
