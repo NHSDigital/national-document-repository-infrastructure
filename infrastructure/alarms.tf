@@ -108,14 +108,6 @@ resource "aws_sns_topic" "alarm_notifications_topic" {
           }
         }
         "Resource" : "*"
-      },
-      {
-        "Effect" : "Allow",
-        "Principal" : {
-          "Service" : "sns.amazonaws.com"
-        },
-        "Actions" : ["kms:Decrypt", "kms:GenerateDataKey*"],
-        "Resource" : "*"
       }
     ]
   })
@@ -160,6 +152,18 @@ data "aws_iam_policy_document" "alarm_notification_kms_key_policy_doc" {
       type        = "AWS"
     }
     actions   = ["kms:*"]
+    resources = ["*"]
+  }
+  statement {
+    effect = "Allow"
+    principals {
+      identifiers = ["sns.amazonaws.com"]
+      type        = "Service"
+    }
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey*"
+    ]
     resources = ["*"]
   }
   statement {
