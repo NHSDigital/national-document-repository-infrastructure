@@ -161,8 +161,11 @@ data "aws_iam_policy_document" "alarm_notification_kms_key_policy_doc" {
       type        = "Service"
     }
     actions = [
+      "kms:Encrypt",
       "kms:Decrypt",
-      "kms:GenerateDataKey*"
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
     ]
     resources = ["*"]
   }
