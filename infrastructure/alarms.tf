@@ -1,29 +1,13 @@
-resource "aws_cloudwatch_metric_alarm" "repo_alarm" {
-  alarm_name        = "${terraform.workspace}_repo_5xx_alert"
-  alarm_description = "Triggers when a 5xx error is detected on the Api Gateway"
-  namespace         = "AWS/ApiGateway"
-  dimensions = {
-    ApiName = aws_api_gateway_rest_api.ndr_doc_store_api.name
-  }
-  metric_name         = "5XXError"
-  treat_missing_data  = "notBreaching"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  threshold           = 0.05
-  period              = 60
-  evaluation_periods  = 2
-  statistic           = "Sum"
-  unit                = "Count"
-}
-
 resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_4XX" {
   alarm_name          = "4XX-status-${aws_api_gateway_rest_api.ndr_doc_store_api.name}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   namespace           = "AWS/ApiGateway"
   metric_name         = "4XXError"
-  period              = "60"
-  statistic           = "Average"
-  threshold           = "20"
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 20
+  treat_missing_data  = "notBreaching"
 
   dimensions = {
     ApiName = aws_api_gateway_rest_api.ndr_doc_store_api.name
@@ -41,9 +25,10 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
   evaluation_periods  = "1"
   namespace           = "AWS/APIGateway"
   metric_name         = "5XXError"
-  period              = "300"
-  statistic           = "Average"
-  threshold           = "5"
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 5
+  treat_missing_data  = "notBreaching"
 
   dimensions = {
     ApiName = aws_api_gateway_rest_api.ndr_doc_store_api.name

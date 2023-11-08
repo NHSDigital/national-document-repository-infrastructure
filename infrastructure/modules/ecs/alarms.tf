@@ -4,9 +4,10 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_4XX" {
   evaluation_periods  = "1"
   namespace           = "AWS/ApplicationELB"
   metric_name         = "HTTPCode_Target_4XX_Count"
-  period              = "60"
-  statistic           = "Average"
-  threshold           = "20"
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 20
+  treat_missing_data  = "notBreaching"
 
   dimensions = {
     AutoScalingGroupName = aws_lb.ecs_lb.arn_suffix
@@ -23,9 +24,10 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
   evaluation_periods  = "1"
   namespace           = "AWS/ApplicationELB"
   metric_name         = "HTTPCode_Target_5XX_Count"
-  period              = "300"
-  statistic           = "Average"
-  threshold           = "5"
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 5
+  treat_missing_data  = "notBreaching"
 
   dimensions = {
     AutoScalingGroupName = aws_lb.ecs_lb.arn_suffix
