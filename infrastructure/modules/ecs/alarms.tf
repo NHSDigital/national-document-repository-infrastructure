@@ -3,7 +3,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_4XX" {
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   namespace           = "AWS/ApplicationELB"
-  metric_name         = "API_Gateway_4XX_Error"
+  metric_name         = "HTTPCode_Target_4XX_Count"
   period              = "60"
   statistic           = "Average"
   threshold           = "20"
