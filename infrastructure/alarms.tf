@@ -91,7 +91,8 @@ phone number or sqs queue planned yet the code is commented
 #}
 
 resource "aws_sns_topic" "alarm_notifications_topic" {
-  name = "alarms-notifications-topic"
+  name              = "alarms-notifications-topic"
+  kms_master_key_id = aws_kms_key.alarm_notification_encryption_key.id
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -131,16 +132,16 @@ as there is no kms key per ndr environment currently added.
 
 **/
 
-# resource "aws_kms_key" "alarm_notification_encryption_key" {
-#   description         = "Custom KMS Key to enable server side encryption for alarm notifications"
-#   policy              = data.aws_iam_policy_document.alarm_notification_kms_key_policy_doc.json
-#   enable_key_rotation = true
-# }
+resource "aws_kms_key" "alarm_notification_encryption_key" {
+  description         = "Custom KMS Key to enable server side encryption for alarm notifications"
+  policy              = data.aws_iam_policy_document.alarm_notification_kms_key_policy_doc.json
+  enable_key_rotation = true
+}
 
-# resource "aws_kms_alias" "alarm_notification_encryption_key_alias" {
-#   name          = "alias/alarm-notification-encryption-key-kms-${terraform.workspace}"
-#   target_key_id = aws_kms_key.alarm_notification_encryption_key.id
-# }
+resource "aws_kms_alias" "alarm_notification_encryption_key_alias" {
+  name          = "alias/alarm-notification-encryption-key-kms-${terraform.workspace}"
+  target_key_id = aws_kms_key.alarm_notification_encryption_key.id
+}
 
 
 data "aws_iam_policy_document" "alarm_notification_kms_key_policy_doc" {
