@@ -36,7 +36,7 @@ module "document_manifest_alarm_topic" {
   source         = "./modules/sns"
   topic_name     = "create_doc_manifest-alarms-topic"
   topic_protocol = "lambda"
-  topic_endpoint = toset([module.document-manifest-by-nhs-number-lambda.endpoint])
+  topic_endpoint = module.document-manifest-by-nhs-number-lambda.endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

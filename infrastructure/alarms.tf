@@ -31,7 +31,8 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_4XX" {
   }
 
   alarm_description = "This alarm indicates that at least 20 4XX statuses have occured on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} in a minute."
-  alarm_actions     = [module.sns_gateway_alarms_topic.arn]
+  actions_enabled   = "true"
+  alarm_actions     = [aws_sns_topic.alarm_notifications_topic.arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "gateway_alarm_5XX" {
@@ -50,7 +51,8 @@ resource "aws_cloudwatch_metric_alarm" "gateway_alarm_5XX" {
   }
 
   alarm_description = "This alarm indicates that at least 5 5XX statuses have occured on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} within 5 minutes."
-  alarm_actions     = [module.sns_gateway_alarms_topic.arn]
+  actions_enabled   = "true"
+  alarm_actions     = [aws_sns_topic.alarm_notifications_topic.arn]
 }
 /**
 
@@ -60,13 +62,37 @@ phone number or sqs queue planned yet the code is commented
 
 **/
 
-module "sns_gateway_alarms_topic" {
-  source         = "./modules/sns"
-  topic_name     = "gateway-alarms-topic"
-  topic_protocol = "email"
-  topic_endpoint = toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
-  depends_on     = [aws_api_gateway_rest_api.ndr_doc_store_api]
-  delivery_policy = jsonencode({
+#module "alarm_notifications_topic" {
+#  source         = "./modules/sns"
+#  topic_name     = "alarm_notifications-topic"
+#  topic_protocol = "email"
+#  topic_endpoint = toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
+#  depends_on     = [aws_api_gateway_rest_api.ndr_doc_store_api]
+#  delivery_policy = jsonencode({
+#    "Version" : "2012-10-17",
+#    "Statement" : [
+#      {
+#        "Effect" : "Allow",
+#        "Principal" : {
+#          "Service" : "cloudwatch.amazonaws.com"
+#        },
+#        "Action" : [
+#          "SNS:Publish",
+#        ],
+#        "Condition" : {
+#          "ArnLike" : {
+#            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+#          }
+#        }
+#        "Resource" : "*"
+#      }
+#    ]
+#  })
+#}
+
+resource "aws_sns_topic" "alarm_notifications_topic" {
+  name = "alarms-notifications-topic"
+  policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {
@@ -74,9 +100,7 @@ module "sns_gateway_alarms_topic" {
         "Principal" : {
           "Service" : "cloudwatch.amazonaws.com"
         },
-        "Action" : [
-          "SNS:Publish",
-        ],
+        "Action" : "SNS:Publish",
         "Condition" : {
           "ArnLike" : {
             "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
@@ -87,6 +111,14 @@ module "sns_gateway_alarms_topic" {
     ]
   })
 }
+
+resource "aws_sns_topic_subscription" "proactive_notifications_sns_topic_subscription" {
+  for_each  = toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
+  endpoint  = each.value
+  protocol  = "email"
+  topic_arn = aws_sns_topic.alarm_notifications_topic.arn
+}
+
 
 data "aws_ssm_parameter" "cloud_security_notification_email_list" {
   name = "/prs/${var.environment}/user-input/cloud-security-notification-email-list"

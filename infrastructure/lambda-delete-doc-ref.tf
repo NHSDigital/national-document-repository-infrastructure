@@ -35,7 +35,7 @@ module "delete_doc_alarm_topic" {
   source         = "./modules/sns"
   topic_name     = "delete_doc-alarms-topic"
   topic_protocol = "lambda"
-  topic_endpoint = toset([module.delete-doc-ref-lambda.endpoint])
+  topic_endpoint = module.delete-doc-ref-lambda.endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

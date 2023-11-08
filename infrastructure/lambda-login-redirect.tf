@@ -54,7 +54,7 @@ module "login_redirect-alarm_topic" {
   source         = "./modules/sns"
   topic_name     = "login_redirect-alarms-topic"
   topic_protocol = "lambda"
-  topic_endpoint = toset([module.login_redirect_lambda.endpoint])
+  topic_endpoint = module.login_redirect_lambda.endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

@@ -13,6 +13,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_4XX" {
   }
 
   alarm_description = "This alarm indicates that at least 20 4XX statuses have occurred on ${aws_lb.ecs_lb.name} in a minute."
+  actions_enabled   = "true"
   alarm_actions     = var.alarm_actions_arn_list
 }
 
@@ -31,5 +32,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
   }
 
   alarm_description = "This alarm indicates that at least 5 5XX statuses have occurred on ${aws_lb.ecs_lb.name} within 5 minutes."
+  actions_enabled   = "true"
   alarm_actions     = var.alarm_actions_arn_list
 }
