@@ -33,10 +33,11 @@ module "search_doc_alarm" {
 
 
 module "search_doc_alarm_topic" {
-  source         = "./modules/sns"
-  topic_name     = "search_doc_references-alarms-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.search-document-references-lambda.endpoint
+  source             = "./modules/sns"
+  current_account_id = data.aws_caller_identity.current.account_id
+  topic_name         = "search_doc_references-alarms-topic"
+  topic_protocol     = "lambda"
+  topic_endpoint     = toset([module.search-document-references-lambda.endpoint])
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

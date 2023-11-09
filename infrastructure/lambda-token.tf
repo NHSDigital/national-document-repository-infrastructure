@@ -67,10 +67,11 @@ module "create_token-alarm" {
 
 
 module "create_token-alarm_topic" {
-  source         = "./modules/sns"
-  topic_name     = "logout-alarms-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.create-token-lambda.endpoint
+  source             = "./modules/sns"
+  current_account_id = data.aws_caller_identity.current.account_id
+  topic_name         = "logout-alarms-topic"
+  topic_protocol     = "lambda"
+  topic_endpoint     = toset([module.create-token-lambda.endpoint])
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

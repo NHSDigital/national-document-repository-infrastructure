@@ -27,5 +27,10 @@ variable "topic_protocol" {
 
 
 variable "topic_endpoint" {
+  type    = set(string)
+  default = []
+}
+
+variable "current_account_id" {
   type = string
 }

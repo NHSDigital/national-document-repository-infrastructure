@@ -58,10 +58,11 @@ module "back_channel_logout_alarm" {
 
 
 module "back_channel_logout_alarm_topic" {
-  source         = "./modules/sns"
-  topic_name     = "back-channel-logout-alarms-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.back_channel_logout_lambda.endpoint
+  source             = "./modules/sns"
+  current_account_id = data.aws_caller_identity.current.account_id
+  topic_name         = "back-channel-logout-alarms-topic"
+  topic_protocol     = "lambda"
+  topic_endpoint     = toset([module.back_channel_logout_lambda.endpoint])
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
