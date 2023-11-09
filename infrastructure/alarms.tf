@@ -23,7 +23,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
   alarm_name          = "5XX-status-${aws_api_gateway_rest_api.ndr_doc_store_api.name}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
-  namespace           = "AWS/APIGateway"
+  namespace           = "AWS/ApiGateway"
   metric_name         = "5XXError"
   period              = 300
   statistic           = "Sum"
