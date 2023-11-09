@@ -76,7 +76,7 @@ phone number or sqs queue planned yet the code is commented
 #}
 
 resource "aws_sns_topic" "alarm_notifications_topic" {
-  name              = "${terraform.workspace}-alarms-notifications-topic"
+  name_prefix = "${terraform.workspace}-alarms-notification-topic-"
   kms_master_key_id = aws_kms_key.alarm_notification_encryption_key.id
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -100,8 +100,8 @@ resource "aws_sns_topic" "alarm_notifications_topic" {
 
 resource "aws_sns_topic_subscription" "alarm_notifications_sns_topic_subscription" {
   #  for_each  = toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
-  for_each  = toset(["abbas.khan10@nhs.net", "rachel.howell6@nhs.net"])
-  endpoint  = each.value
+  # for_each  = toset(["abbas.khan10@nhs.net", "rachel.howell6@nhs.net"])
+  endpoint  = "abbas.khan10@nhs.net"
   protocol  = "email"
   topic_arn = aws_sns_topic.alarm_notifications_topic.arn
 }
