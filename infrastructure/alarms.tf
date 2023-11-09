@@ -76,7 +76,7 @@ phone number or sqs queue planned yet the code is commented
 #}
 
 resource "aws_sns_topic" "alarm_notifications_topic" {
-  name_prefix = "${terraform.workspace}-alarms-notification-topic-"
+  name_prefix       = "${terraform.workspace}-alarms-notification-topic-"
   kms_master_key_id = aws_kms_key.alarm_notification_encryption_key.id
   policy = jsonencode({
     "Version" : "2012-10-17",
