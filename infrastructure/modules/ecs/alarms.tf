@@ -3,7 +3,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_4XX" {
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   namespace           = "AWS/ApplicationELB"
-  metric_name         = "HTTPCode_Target_4XX_Count"
+  metric_name         = "HTTPCode_ELB_4XX_Count"
   period              = 60
   statistic           = "Sum"
   threshold           = 20
@@ -23,7 +23,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   namespace           = "AWS/ApplicationELB"
-  metric_name         = "HTTPCode_Target_5XX_Count"
+  metric_name         = "HTTPCode_ELB_4XX_Count"
   period              = 300
   statistic           = "Sum"
   threshold           = 5
