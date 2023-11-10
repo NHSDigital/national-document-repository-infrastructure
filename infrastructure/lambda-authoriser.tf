@@ -39,11 +39,12 @@ module "authoriser-alarm" {
 
 
 module "authoriser-alarm-topic" {
-  source             = "./modules/sns"
-  current_account_id = data.aws_caller_identity.current.account_id
-  topic_name         = "create_doc-alarms-topic"
-  topic_protocol     = "lambda"
-  topic_endpoint     = toset([module.authoriser-lambda.endpoint])
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "create_doc-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.authoriser-lambda.endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -65,7 +66,7 @@ module "authoriser-alarm-topic" {
     ]
   })
 
-  depends_on = [module.authoriser-lambda]
+  depends_on = [module.authoriser-lambda, module.sns_encryption_key]
 }
 
 resource "aws_api_gateway_authorizer" "repo_authoriser" {

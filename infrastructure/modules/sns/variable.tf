@@ -27,10 +27,13 @@ variable "topic_protocol" {
 
 
 variable "topic_endpoint" {
-  type    = set(string)
-  default = []
+  type = any
 }
 
 variable "current_account_id" {
+  type = string
+}
+
+variable "sns_encryption_key_id" {
   type = string
 }

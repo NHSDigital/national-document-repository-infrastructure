@@ -33,13 +33,14 @@ module "sqs-lg-bulk-upload-invalid-queue" {
 }
 
 module "sqs-nems-queue-topic" {
-  count              = local.is_sandbox ? 0 : 1
-  source             = "./modules/sns"
-  current_account_id = data.aws_caller_identity.current.account_id
-  topic_name         = "nems-queue-topic"
-  topic_protocol     = "sqs"
-  depends_on         = [module.sqs-nems-queue]
-  topic_endpoint     = toset([module.sqs-nems-queue[0].endpoint])
+  count                 = local.is_sandbox ? 0 : 1
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "nems-queue-topic"
+  topic_protocol        = "sqs"
+  depends_on            = [module.sqs-nems-queue, module.sns_encryption_key]
+  topic_endpoint        = module.sqs-nems-queue[0].endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

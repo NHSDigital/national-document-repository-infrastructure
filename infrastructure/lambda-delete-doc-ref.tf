@@ -32,11 +32,13 @@ module "delete_doc_alarm" {
 }
 
 module "delete_doc_alarm_topic" {
-  source             = "./modules/sns"
-  current_account_id = data.aws_caller_identity.current.account_id
-  topic_name         = "delete_doc-alarms-topic"
-  topic_protocol     = "lambda"
-  topic_endpoint     = toset([module.delete-doc-ref-lambda.endpoint])
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "delete_doc-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.delete-doc-ref-lambda.endpoint
+  depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
