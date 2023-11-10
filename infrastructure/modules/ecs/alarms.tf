@@ -11,6 +11,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_4XX" {
 
   dimensions = {
     AutoScalingGroupName = aws_lb.ecs_lb.arn_suffix
+    LoadBalancer         = aws_lb.ecs_lb.arn_suffix
   }
 
   alarm_description = "This alarm indicates that at least 20 4XX statuses have occurred on ${aws_lb.ecs_lb.name} in a minute."
@@ -31,6 +32,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
 
   dimensions = {
     AutoScalingGroupName = aws_lb.ecs_lb.arn_suffix
+    LoadBalancer         = aws_lb.ecs_lb.arn_suffix
   }
 
   alarm_description = "This alarm indicates that at least 5 5XX statuses have occurred on ${aws_lb.ecs_lb.name} within 5 minutes."
