@@ -14,13 +14,6 @@ resource "aws_kms_key" "encryption_key" {
 resource "aws_kms_alias" "encryption_key_alias" {
   name          = var.kms_key_name
   target_key_id = aws_kms_key.encryption_key.id
-
-  tags = {
-    Name        = "${var.kms_key_name}_alias"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
-  }
 }
 
 output "id" {
