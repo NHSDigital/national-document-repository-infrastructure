@@ -2,11 +2,25 @@ resource "aws_kms_key" "encryption_key" {
   description         = var.kms_key_description
   policy              = data.aws_iam_policy_document.kms_key_policy_doc.json
   enable_key_rotation = var.kms_key_rotation_enabled
+
+  tags = {
+    Name        = var.kms_key_name
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+  }
 }
 
 resource "aws_kms_alias" "encryption_key_alias" {
   name          = var.kms_key_name
   target_key_id = aws_kms_key.encryption_key.id
+
+  tags = {
+    Name        = "${var.kms_key_name}_alias"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+  }
 }
 
 output "id" {

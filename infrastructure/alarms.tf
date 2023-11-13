@@ -16,6 +16,13 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_4XX" {
 
   alarm_description = "This alarm indicates that at least 20 4XX statuses have occured on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} in a minute."
   alarm_actions     = [aws_sns_topic.alarm_notifications_topic.arn]
+
+  tags = {
+    Name        = "4XX-status-${aws_api_gateway_rest_api.ndr_doc_store_api.name}"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
@@ -36,6 +43,13 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
 
   alarm_description = "This alarm indicates that at least 5 5XX statuses have occured on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} within 5 minutes."
   alarm_actions     = [aws_sns_topic.alarm_notifications_topic.arn]
+
+  tags = {
+    Name        = "5XX-status-${aws_api_gateway_rest_api.ndr_doc_store_api.name}"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+  }
 }
 
 resource "aws_sns_topic" "alarm_notifications_topic" {

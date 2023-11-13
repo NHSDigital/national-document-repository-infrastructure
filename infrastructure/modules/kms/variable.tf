@@ -14,3 +14,11 @@ variable "kms_key_rotation_enabled" {
   type    = bool
   default = true
 }
+
+variable "environment" {
+  type = string
+}
+
+variable "owner" {
+  type = string
+}
