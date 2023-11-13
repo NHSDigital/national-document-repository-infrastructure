@@ -21,6 +21,8 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_4XX" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
+
+  count = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace) ? 0 : 1
 }
 
 resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
@@ -46,4 +48,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
+
+  count = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace) ? 0 : 1
 }
