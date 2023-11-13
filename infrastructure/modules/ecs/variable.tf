@@ -57,3 +57,8 @@ variable "container_port" {
 variable "alarm_actions_arn_list" {
   type = list(string)
 }
+
+locals {
+  is_sandbox       = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
+  is_force_destroy = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+}
