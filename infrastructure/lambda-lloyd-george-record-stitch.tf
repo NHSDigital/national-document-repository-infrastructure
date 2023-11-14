@@ -21,7 +21,7 @@ module "lloyd-george-stitch-gateway" {
 }
 
 module "lloyd-george-stitch_alarm" {
-  source               = "./modules/alarm"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.lloyd-george-stitch-lambda.function_name
   lambda_timeout       = module.lloyd-george-stitch-lambda.timeout
   lambda_name          = "lloyd_george_record_stitch_handler"
@@ -33,10 +33,13 @@ module "lloyd-george-stitch_alarm" {
 
 
 module "lloyd-george-stitch_topic" {
-  source         = "./modules/sns"
-  topic_name     = "lloyd-george-stitch-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.lloyd-george-stitch-lambda.endpoint
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "lloyd-george-stitch-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.lloyd-george-stitch-lambda.endpoint
+  depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

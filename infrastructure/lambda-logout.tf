@@ -46,7 +46,7 @@ module "logout_lambda" {
 }
 
 module "logout_alarm" {
-  source               = "./modules/alarm"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.logout_lambda.function_name
   lambda_timeout       = module.logout_lambda.timeout
   lambda_name          = "logout_handler"
@@ -58,10 +58,12 @@ module "logout_alarm" {
 
 
 module "logout_alarm_topic" {
-  source         = "./modules/sns"
-  topic_name     = "logout-alarms-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.logout_lambda.endpoint
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "logout-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.logout_lambda.endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -83,5 +85,5 @@ module "logout_alarm_topic" {
     ]
   })
 
-  depends_on = [module.logout_lambda]
+  depends_on = [module.logout_lambda, module.sns_encryption_key]
 }

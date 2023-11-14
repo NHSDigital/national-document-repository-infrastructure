@@ -26,7 +26,6 @@ No modules.
 | <a name="input_delay"></a> [delay](#input\_delay) | The time in seconds that the delivery of all messages in the queue will be delayed | `number` | `0` | no |
 | <a name="input_enable_deduplication"></a> [enable\_deduplication](#input\_enable\_deduplication) | Prevent content based duplication in queue | `bool` | `false` | no |
 | <a name="input_enable_fifo"></a> [enable\_fifo](#input\_enable\_fifo) | Attach first in first out policy to sqs | `bool` | `false` | no |
-| <a name="input_enable_in_sandbox"></a> [enable\_in\_sandbox](#input\_enable\_in\_sandbox) | n/a | `bool` | `true` | no |
 | <a name="input_enable_sse"></a> [enable\_sse](#input\_enable\_sse) | Enable server-side encryption (SSE) of message content with SQS-owned encryption keys, requires kms resource for queue | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Tags | `string` | n/a | yes |
 | <a name="input_max_message"></a> [max\_message](#input\_max\_message) | Max message size in bytes before sqs rejects the message | `number` | `2048` | no |

@@ -21,7 +21,7 @@ module "search-patient-details-gateway" {
 }
 
 module "search_patient_alarm" {
-  source               = "./modules/alarm"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.search-patient-details-lambda.function_name
   lambda_timeout       = module.search-patient-details-lambda.timeout
   lambda_name          = "search_patient_details_handler"
@@ -33,10 +33,13 @@ module "search_patient_alarm" {
 
 
 module "search_patient_alarm_topic" {
-  source         = "./modules/sns"
-  topic_name     = "search_patient_details_alarms-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.search-patient-details-lambda.endpoint
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "search_patient_details_alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.search-patient-details-lambda.endpoint
+  depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

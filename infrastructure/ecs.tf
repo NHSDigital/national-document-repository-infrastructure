@@ -13,4 +13,5 @@ module "ndr-ecs-fargate" {
   domain                   = var.domain
   certificate_domain       = var.certificate_domain
   container_port           = 80
+  alarm_actions_arn_list   = local.is_sandbox ? [] : [aws_sns_topic.alarm_notifications_topic[0].arn]
 }

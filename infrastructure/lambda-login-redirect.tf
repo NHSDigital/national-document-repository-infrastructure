@@ -39,7 +39,7 @@ module "login_redirect_lambda" {
 }
 
 module "login_redirect_alarm" {
-  source               = "./modules/alarm"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.login_redirect_lambda.function_name
   lambda_timeout       = module.login_redirect_lambda.timeout
   lambda_name          = "authoriser_handler"
@@ -51,10 +51,12 @@ module "login_redirect_alarm" {
 
 
 module "login_redirect-alarm_topic" {
-  source         = "./modules/sns"
-  topic_name     = "login_redirect-alarms-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.login_redirect_lambda.endpoint
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "login_redirect-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.login_redirect_lambda.endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -76,7 +78,7 @@ module "login_redirect-alarm_topic" {
     ]
   })
 
-  depends_on = [module.login_redirect_lambda]
+  depends_on = [module.login_redirect_lambda, module.sns_encryption_key]
 }
 
 resource "aws_iam_policy" "ssm_policy_oidc" {

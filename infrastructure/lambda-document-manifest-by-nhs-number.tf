@@ -21,7 +21,7 @@ module "document-manifest-by-nhs-gateway" {
 }
 
 module "document_manifest_alarm" {
-  source               = "./modules/alarm"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.document-manifest-by-nhs-number-lambda.function_name
   lambda_timeout       = module.document-manifest-by-nhs-number-lambda.timeout
   lambda_name          = "create_document_manifest_handler"
@@ -33,10 +33,13 @@ module "document_manifest_alarm" {
 
 
 module "document_manifest_alarm_topic" {
-  source         = "./modules/sns"
-  topic_name     = "create_doc_manifest-alarms-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.document-manifest-by-nhs-number-lambda.endpoint
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "create_doc_manifest-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.document-manifest-by-nhs-number-lambda.endpoint
+  depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

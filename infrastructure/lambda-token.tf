@@ -55,7 +55,7 @@ module "create-token-lambda" {
 }
 
 module "create_token-alarm" {
-  source               = "./modules/alarm"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.create-token-lambda.function_name
   lambda_timeout       = module.create-token-lambda.timeout
   lambda_name          = "token_handler"
@@ -67,10 +67,12 @@ module "create_token-alarm" {
 
 
 module "create_token-alarm_topic" {
-  source         = "./modules/sns"
-  topic_name     = "logout-alarms-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.create-token-lambda.endpoint
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "logout-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.create-token-lambda.endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -92,7 +94,7 @@ module "create_token-alarm_topic" {
     ]
   })
 
-  depends_on = [module.create-token-lambda]
+  depends_on = [module.create-token-lambda, module.sns_encryption_key]
 }
 
 resource "aws_iam_policy" "ssm_policy_token" {

@@ -21,7 +21,7 @@ module "create-doc-ref-gateway" {
 }
 
 module "create_doc_alarm" {
-  source               = "./modules/alarm"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.create-doc-ref-lambda.function_name
   lambda_timeout       = module.create-doc-ref-lambda.timeout
   lambda_name          = "create_document_reference_handler"
@@ -33,10 +33,13 @@ module "create_doc_alarm" {
 
 
 module "create_doc_alarm_topic" {
-  source         = "./modules/sns"
-  topic_name     = "create_doc-alarms-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.create-doc-ref-lambda.endpoint
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "create_doc-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.create-doc-ref-lambda.endpoint
+  depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

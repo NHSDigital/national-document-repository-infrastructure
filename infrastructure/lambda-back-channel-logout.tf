@@ -46,7 +46,7 @@ module "back_channel_logout_lambda" {
 }
 
 module "back_channel_logout_alarm" {
-  source               = "./modules/alarm"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.back_channel_logout_lambda.function_name
   lambda_timeout       = module.back_channel_logout_lambda.timeout
   lambda_name          = "logout_handler"
@@ -58,10 +58,12 @@ module "back_channel_logout_alarm" {
 
 
 module "back_channel_logout_alarm_topic" {
-  source         = "./modules/sns"
-  topic_name     = "back-channel-logout-alarms-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.back_channel_logout_lambda.endpoint
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "back-channel-logout-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.back_channel_logout_lambda.endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -83,5 +85,5 @@ module "back_channel_logout_alarm_topic" {
     ]
   })
 
-  depends_on = [module.back_channel_logout_lambda]
+  depends_on = [module.back_channel_logout_lambda, module.sns_encryption_key]
 }
