@@ -23,7 +23,6 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_4XX" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
-
   count = local.is_sandbox ? 0 : 1
 }
 
@@ -52,7 +51,6 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
-
   count = local.is_sandbox ? 0 : 1
 }
 
@@ -77,6 +75,7 @@ resource "aws_sns_topic" "alarm_notifications_topic" {
       }
     ]
   })
+  count = local.is_sandbox ? 0 : 1
 }
 
 resource "aws_sns_topic_subscription" "alarm_notifications_sns_topic_subscription" {

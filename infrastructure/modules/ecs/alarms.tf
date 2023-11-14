@@ -21,7 +21,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_4XX" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
-
   count = local.is_sandbox ? 0 : 1
 }
 
@@ -48,6 +47,5 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
-
   count = local.is_sandbox ? 0 : 1
 }
