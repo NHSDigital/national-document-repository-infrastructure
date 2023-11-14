@@ -14,8 +14,8 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_4XX" {
     stage   = var.environment
   }
 
-  alarm_description = "This alarm indicates that at least 20 4XX statuses have occured on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} in a minute."
-  alarm_actions     = [aws_sns_topic.alarm_notifications_topic.arn]
+  alarm_description = "This alarm indicates that at least 20 4XX statuses have occurred on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} in a minute."
+  alarm_actions     = [aws_sns_topic.alarm_notifications_topic[0].arn]
 
   tags = {
     Name        = "4XX-status-${aws_api_gateway_rest_api.ndr_doc_store_api.name}"
@@ -42,8 +42,8 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
     stage   = var.environment
   }
 
-  alarm_description = "This alarm indicates that at least 5 5XX statuses have occured on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} within 5 minutes."
-  alarm_actions     = [aws_sns_topic.alarm_notifications_topic.arn]
+  alarm_description = "This alarm indicates that at least 5 5XX statuses have occurred on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} within 5 minutes."
+  alarm_actions     = [aws_sns_topic.alarm_notifications_topic[0].arn]
 
   tags = {
     Name        = "5XX-status-${aws_api_gateway_rest_api.ndr_doc_store_api.name}"
@@ -79,10 +79,10 @@ resource "aws_sns_topic" "alarm_notifications_topic" {
 }
 
 resource "aws_sns_topic_subscription" "alarm_notifications_sns_topic_subscription" {
-  for_each  = toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
+  for_each  = local.is_sandbox ? [] : toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
   endpoint  = each.value
   protocol  = "email"
-  topic_arn = aws_sns_topic.alarm_notifications_topic.arn
+  topic_arn = local.is_sandbox ? "" : aws_sns_topic.alarm_notifications_topic[0].arn
 }
 
 data "aws_ssm_parameter" "cloud_security_notification_email_list" {

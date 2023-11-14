@@ -15,11 +15,11 @@ data "aws_iam_policy_document" "splunk_trust_policy" {
 
 resource "aws_iam_role" "splunk_sqs_forwarder" {
   count              = local.is_sandbox ? 0 : 1
-  name               = "${terraform.workspace}_splunk_sqs_forwarder_role"
+  name               = "${var.environment}_splunk_sqs_forwarder_role"
   description        = "Role to allow ARF to integrate with Splunk"
   assume_role_policy = data.aws_iam_policy_document.splunk_trust_policy.json
   inline_policy {
-    name = "${terraform.workspace}_splunk_access_policy"
+    name = "${var.environment}_splunk_access_policy"
     policy = jsonencode({
       Version = "2012-10-17"
       Statement = [

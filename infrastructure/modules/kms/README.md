@@ -26,6 +26,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_current_account_id"></a> [current\_account\_id](#input\_current\_account\_id) | n/a | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
+| <a name="input_identifiers"></a> [identifiers](#input\_identifiers) | n/a | `list(string)` | n/a | yes |
 | <a name="input_kms_key_description"></a> [kms\_key\_description](#input\_kms\_key\_description) | n/a | `string` | n/a | yes |
 | <a name="input_kms_key_name"></a> [kms\_key\_name](#input\_kms\_key\_name) | n/a | `string` | n/a | yes |
 | <a name="input_kms_key_rotation_enabled"></a> [kms\_key\_rotation\_enabled](#input\_kms\_key\_rotation\_enabled) | n/a | `bool` | `true` | no |

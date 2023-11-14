@@ -33,19 +33,7 @@ data "aws_iam_policy_document" "kms_key_policy_doc" {
   statement {
     effect = "Allow"
     principals {
-      identifiers = ["sns.amazonaws.com"]
-      type        = "Service"
-    }
-    actions = [
-      "kms:Decrypt",
-      "kms:GenerateDataKey*"
-    ]
-    resources = ["*"]
-  }
-  statement {
-    effect = "Allow"
-    principals {
-      identifiers = ["cloudwatch.amazonaws.com"]
+      identifiers = var.identifiers
       type        = "Service"
     }
     actions = [

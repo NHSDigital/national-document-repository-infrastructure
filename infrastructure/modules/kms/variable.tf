@@ -22,3 +22,7 @@ variable "environment" {
 variable "owner" {
   type = string
 }
+
+variable "identifiers" {
+  type = list(string)
+}
