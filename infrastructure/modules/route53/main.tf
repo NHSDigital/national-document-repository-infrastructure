@@ -21,3 +21,17 @@ resource "aws_route53_record" "ndr_fargate_record" {
   zone_id = var.using_arf_hosted_zone ? data.aws_route53_zone.ndr_zone[0].zone_id : aws_route53_zone.ndr_zone[0].zone_id
   ttl     = 300
 }
+
+
+resource "aws_route53_record" "ndr_gateway_api_record" {
+  count   = var.is_sandbox ? 0 : 1
+  name    = "api-${var.environment}"  
+  type    = "A"
+  zone_id = var.using_arf_hosted_zone ? data.aws_route53_zone.ndr_zone[0].zone_id : aws_route53_zone.ndr_zone[0].zone_id
+
+  alias {
+    name                   = var.api_gateway_custom_domain_name
+    zone_id                = var.api_gateway_zone_id
+    evaluate_target_health = true
+  }
+}

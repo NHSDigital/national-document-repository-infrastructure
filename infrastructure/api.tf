@@ -11,6 +11,16 @@ resource "aws_api_gateway_rest_api" "ndr_doc_store_api" {
   }
 }
 
+resource "aws_api_gateway_domain_name" "custom_api_domain" {
+  count   = local.is_sandbox ? 0 : 1
+  domain_name              = "api-${var.environment}"
+  regional_certificate_arn = module.ndr-ecs-fargate.certificate_arn
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+}
+
 resource "aws_api_gateway_resource" "auth_resource" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id   = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id

@@ -10,3 +10,8 @@ output "load_balancer_arn" {
   description = "The arn of the load balancer"
   value       = aws_lb.ecs_lb.arn
 }
+
+output "certificate_arn" {
+  description = "The arn of certificate that load balancer is using"
+  value = data.aws_acm_certificate.amazon_issued.arn
+}
