@@ -13,12 +13,18 @@ resource "aws_api_gateway_rest_api" "ndr_doc_store_api" {
 
 resource "aws_api_gateway_domain_name" "custom_api_domain" {
   count   = local.is_sandbox ? 0 : 1
-  domain_name              = "api-${var.environment}"
+  domain_name              = local.api_gateway_domain_name
   regional_certificate_arn = module.ndr-ecs-fargate.certificate_arn
 
   endpoint_configuration {
     types = ["REGIONAL"]
   }
+}
+
+resource "aws_api_gateway_base_path_mapping" "api_mapping" {
+  api_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  stage_name  = var.environment
+  domain_name = local.api_gateway_domain_name
 }
 
 resource "aws_api_gateway_resource" "auth_resource" {
