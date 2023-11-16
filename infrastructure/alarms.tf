@@ -11,7 +11,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_4XX" {
 
   dimensions = {
     ApiName = aws_api_gateway_rest_api.ndr_doc_store_api.name
-    stage   = var.environment
+    Stage   = var.environment
   }
 
   alarm_description = "This alarm indicates that at least 20 4XX statuses have occurred on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} in a minute."
@@ -39,7 +39,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
 
   dimensions = {
     ApiName = aws_api_gateway_rest_api.ndr_doc_store_api.name
-    stage   = var.environment
+    Stage   = var.environment
   }
 
   alarm_description = "This alarm indicates that at least 5 5XX statuses have occurred on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} within 5 minutes."
