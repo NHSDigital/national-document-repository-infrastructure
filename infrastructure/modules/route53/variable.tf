@@ -23,11 +23,6 @@ variable "using_arf_hosted_zone" {
   default = true
 }
 
-variable "is_sandbox" {
-  type = bool
-  default = false
-}
-
 variable "api_gateway_subdomain_name" {
   description = "Subdomain name for api gateway custom domain. Example: api-dev"
   type = string

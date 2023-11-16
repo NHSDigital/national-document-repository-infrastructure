@@ -24,7 +24,6 @@ resource "aws_route53_record" "ndr_fargate_record" {
 
 
 resource "aws_route53_record" "ndr_gateway_api_record" {
-  count   = var.is_sandbox ? 0 : 1
   name    = var.api_gateway_subdomain_name  
   type    = "A"
   zone_id = var.using_arf_hosted_zone ? data.aws_route53_zone.ndr_zone[0].zone_id : aws_route53_zone.ndr_zone[0].zone_id
