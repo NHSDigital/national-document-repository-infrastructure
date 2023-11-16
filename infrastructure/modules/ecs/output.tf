@@ -13,5 +13,5 @@ output "load_balancer_arn" {
 
 output "certificate_arn" {
   description = "The arn of certificate that load balancer is using"
-  value = data.aws_acm_certificate.amazon_issued.arn
+  value       = data.aws_acm_certificate.amazon_issued.arn
 }

@@ -25,7 +25,7 @@ resource "aws_api_gateway_base_path_mapping" "api_mapping" {
   stage_name  = var.environment
   domain_name = local.api_gateway_full_domain_name
 
-  depends_on = [ aws_api_gateway_deployment.ndr_api_deploy , aws_api_gateway_rest_api.ndr_doc_store_api]
+  depends_on = [aws_api_gateway_deployment.ndr_api_deploy, aws_api_gateway_rest_api.ndr_doc_store_api]
 }
 
 resource "aws_api_gateway_resource" "auth_resource" {
