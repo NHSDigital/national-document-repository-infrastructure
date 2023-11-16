@@ -49,3 +49,45 @@ resource "aws_lambda_event_source_mapping" "bulk_upload_lambda" {
     module.sqs-lg-bulk-upload-metadata-queue
   ]
 }
+
+module "bulk_upload_alarm" {
+  source               = "./modules/lambda_alarms"
+  lambda_function_name = module.bulk-upload-lambda.function_name
+  lambda_timeout       = module.bulk-upload-lambda.timeout
+  lambda_name          = "bulk_upload_handler"
+  namespace            = "AWS/Lambda"
+  alarm_actions        = [module.bulk_upload_alarm_topic.arn]
+  ok_actions           = [module.bulk_upload_alarm_topic.arn]
+  depends_on           = [module.bulk-upload-lambda, module.bulk_upload_alarm_topic]
+}
+
+module "bulk_upload_alarm_topic" {
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "bulk-upload-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.bulk-upload-lambda.endpoint
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+
+  depends_on = [module.bulk-upload-lambda, module.sns_encryption_key]
+}
