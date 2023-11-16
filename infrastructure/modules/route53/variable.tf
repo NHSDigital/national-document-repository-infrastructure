@@ -28,10 +28,18 @@ variable "is_sandbox" {
   default = false
 }
 
-variable "api_gateway_custom_domain_name" {
+variable "api_gateway_subdomain_name" {
+  description = "Subdomain name for api gateway custom domain. Example: api-dev"
+  type = string
+}
+
+variable "api_gateway_full_domain_name" {
+  description = "Full domain name for api gateway custom domain. Example: api-dev.access-request-fulfilment.patient-deductions.nhs.uk"
   type = string
 }
 
 variable "api_gateway_zone_id" {
+  description = "Zone Id for api gateway custom domain"
   type = string
 }
+
