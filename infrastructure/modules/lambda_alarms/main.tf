@@ -38,8 +38,8 @@ resource "aws_cloudwatch_metric_alarm" "lambda_memory_alarm" {
     function_name = var.lambda_function_name
   }
   threshold           = 80
-  namespace           = "LambdaInsights"
-  metric_name         = "memory_utilization"
+  namespace           = "AWS/ECS"
+  metric_name         = "MemoryUtilization"
   comparison_operator = "GreaterThanThreshold"
   period              = "300"
   evaluation_periods  = "1"
