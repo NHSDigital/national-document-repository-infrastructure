@@ -50,18 +50,18 @@ resource "aws_lambda_event_source_mapping" "bulk_upload_lambda" {
   ]
 }
 
-module "bulk_upload_alarm" {
+module "bulk-upload-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.bulk-upload-lambda.function_name
   lambda_timeout       = module.bulk-upload-lambda.timeout
   lambda_name          = "bulk_upload_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.bulk_upload_alarm_topic.arn]
-  ok_actions           = [module.bulk_upload_alarm_topic.arn]
-  depends_on           = [module.bulk-upload-lambda, module.bulk_upload_alarm_topic]
+  alarm_actions        = [module.bulk-upload-alarm-topic.arn]
+  ok_actions           = [module.bulk-upload-alarm-topic.arn]
+  depends_on           = [module.bulk-upload-lambda, module.bulk-upload-alarm-topic]
 }
 
-module "bulk_upload_alarm_topic" {
+module "bulk-upload-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   current_account_id    = data.aws_caller_identity.current.account_id
