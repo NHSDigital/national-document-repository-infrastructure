@@ -47,3 +47,55 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
   }
   count = local.is_sandbox ? 0 : 1
 }
+
+resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_high_alarm" {
+  alarm_name          = "${var.ecs_cluster_service_name}-cpu-utilization-high"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  namespace           = "AWS/ECS"
+  metric_name         = "CPUUtilization"
+  period              = 60
+  statistic           = "Average"
+  threshold           = 85
+
+  dimensions = {
+    ClusterName = aws_ecs_cluster.ndr_esc_cluster.name
+    ServiceName = aws_ecs_service.ndr_ecs_service.name
+  }
+
+  alarm_description = "The CPU usage for ${var.ecs_cluster_service_name} is currently above 85%, the autoscaling will begin scaling up."
+  alarm_actions     = concat(var.alarm_actions_arn_list, [aws_appautoscaling_policy.ndr_ecs_service_autoscale_up.arn])
+
+  tags = {
+    Name        = "${var.ecs_cluster_service_name}-cpu-utilization-high"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_low_alarm" {
+  alarm_name          = "${var.ecs_cluster_service_name}-cpu-utilization-low"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  namespace           = "AWS/ECS"
+  metric_name         = "CPUUtilization"
+  period              = 60
+  statistic           = "Average"
+  threshold           = 15
+
+  dimensions = {
+    ClusterName = aws_ecs_cluster.ndr_esc_cluster.name
+    ServiceName = aws_ecs_service.ndr_ecs_service.name
+  }
+
+  alarm_description = "The CPU usage for ${var.ecs_cluster_service_name} is currently belowe 15%, the autoscaling will begin scaling down."
+  alarm_actions     = concat(var.alarm_actions_arn_list, [aws_appautoscaling_policy.ndr_ecs_service_autoscale_down.arn])
+
+  tags = {
+    Name        = "${var.ecs_cluster_service_name}-cpu-utilization-low"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+  }
+}
