@@ -37,6 +37,13 @@ locals {
       cloudwatch_metrics_name = "AWS-linux-operations"
       excluded_rules          = []
       bypass                  = []
+    },
+    {
+      name                    = "AWSBotControl"
+      managed_rule_name       = "AWSManagedRulesBotControlRuleSet"
+      cloudwatch_metrics_name = "AWS-Bot-Control"
+      excluded_rules          = []
+      bypass                  = []
     }
   ]
 
