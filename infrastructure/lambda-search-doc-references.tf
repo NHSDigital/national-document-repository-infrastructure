@@ -79,6 +79,7 @@ module "search-document-references-lambda" {
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     DYNAMODB_TABLE_LIST = "[\u0022${terraform.workspace}_${var.docstore_dynamodb_table_name}\u0022, \u0022${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}\u0022]"
+    WORKSPACE           = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

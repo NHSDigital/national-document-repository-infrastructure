@@ -78,6 +78,7 @@ module "search-patient-details-lambda" {
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
     PDS_FHIR_IS_STUBBED            = local.is_sandbox,
     SPLUNK_SQS_QUEUE_URL           = try(module.sqs-splunk-queue[0].sqs_url, null)
+    WORKSPACE                      = terraform.workspace
   }
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   depends_on = [

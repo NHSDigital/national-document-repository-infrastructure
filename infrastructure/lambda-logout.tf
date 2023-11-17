@@ -36,7 +36,6 @@ module "logout_lambda" {
     WORKSPACE                      = terraform.workspace
     AUTH_DYNAMODB_NAME             = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
-
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

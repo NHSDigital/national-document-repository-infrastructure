@@ -90,7 +90,7 @@ module "document-manifest-by-nhs-number-lambda" {
     ZIPPED_STORE_BUCKET_NAME     = "${terraform.workspace}-${var.zip_store_bucket_name}"
     ZIPPED_STORE_DYNAMODB_NAME   = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
     SPLUNK_SQS_QUEUE_URL         = try(module.sqs-splunk-queue[0].sqs_url, null)
-
+    WORKSPACE                    = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

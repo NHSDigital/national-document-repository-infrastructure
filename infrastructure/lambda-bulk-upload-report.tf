@@ -47,3 +47,44 @@ resource "aws_iam_policy" "dynamodb_policy_scan_bulk_report" {
   })
 }
 
+module "bulk-upload-report-alarm" {
+  source               = "./modules/lambda_alarms"
+  lambda_function_name = module.bulk-upload-report-lambda.function_name
+  lambda_timeout       = module.bulk-upload-report-lambda.timeout
+  lambda_name          = "bulk_upload_report_handler"
+  namespace            = "AWS/Lambda"
+  alarm_actions        = [module.bulk-upload-report-alarm-topic.arn]
+  ok_actions           = [module.bulk-upload-report-alarm-topic.arn]
+  depends_on           = [module.bulk-upload-report-lambda, module.bulk-upload-report-alarm-topic]
+}
+
+module "bulk-upload-report-alarm-topic" {
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "bulk-upload-report-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.bulk-upload-report-lambda.endpoint
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+
+  depends_on = [module.bulk-upload-report-lambda, module.sns_encryption_key]
+}

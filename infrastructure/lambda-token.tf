@@ -41,7 +41,6 @@ module "create-token-lambda" {
     AUTH_STATE_TABLE_NAME           = "${terraform.workspace}_${var.auth_state_dynamodb_table_name}"
     AUTH_SESSION_TABLE_NAME         = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     SPLUNK_SQS_QUEUE_URL            = try(module.sqs-splunk-queue[0].sqs_url, null)
-
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
