@@ -86,7 +86,4 @@ module "delete-doc-ref-lambda" {
     module.document_reference_dynamodb_table,
     module.delete-doc-ref-gateway
   ]
-  layers = [
-    "arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:38"
-  ]
 }
