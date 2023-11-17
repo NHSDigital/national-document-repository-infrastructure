@@ -42,7 +42,11 @@ module "logout_lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     aws_iam_policy.ssm_policy_oidc,
     module.auth_session_dynamodb_table,
-  module.logout-gateway]
+    module.logout-gateway
+  ]
+  layers = [
+    "arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:38"
+  ]
 }
 
 module "logout_alarm" {

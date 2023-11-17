@@ -36,6 +36,9 @@ module "login_redirect_lambda" {
     aws_iam_policy.ssm_policy_oidc,
     module.auth_state_dynamodb_table
   ]
+  layers = [
+    "arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:38"
+  ]
 }
 
 module "login_redirect_alarm" {

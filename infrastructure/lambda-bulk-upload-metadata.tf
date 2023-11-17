@@ -24,6 +24,9 @@ module "bulk-upload-metadata-lambda" {
     module.ndr-bulk-staging-store,
     module.sqs-lg-bulk-upload-metadata-queue,
   ]
+  layers = [
+    "arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:38"
+  ]
 }
 
 module "bulk-upload-metadata-alarm" {
