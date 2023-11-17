@@ -6,7 +6,7 @@ module "document_reference_dynamodb_table" {
   stream_enabled                 = false
   ttl_enabled                    = true
   ttl_attribute_name             = "TTL"
-  point_in_time_recovery_enabled = true
+  point_in_time_recovery_enabled = !local.is_sandbox
 
   attributes = [
     {
@@ -48,7 +48,7 @@ module "lloyd_george_reference_dynamodb_table" {
   stream_enabled                 = false
   ttl_enabled                    = true
   ttl_attribute_name             = "TTL"
-  point_in_time_recovery_enabled = true
+  point_in_time_recovery_enabled = !local.is_sandbox
 
   attributes = [
     {
@@ -183,7 +183,7 @@ module "bulk_upload_report_dynamodb_table" {
   deletion_protection_enabled    = false
   stream_enabled                 = false
   ttl_enabled                    = false
-  point_in_time_recovery_enabled = true
+  point_in_time_recovery_enabled = !local.is_sandbox
 
   attributes = [
     {
