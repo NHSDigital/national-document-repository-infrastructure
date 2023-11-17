@@ -36,6 +36,10 @@ resource "aws_dynamodb_table" "ndr_dynamodb_table" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
+
+  point_in_time_recovery {
+    enabled = var.point_in_time_recovery_enabled
+  }
 }
 
 resource "aws_iam_policy" "dynamodb_policy" {

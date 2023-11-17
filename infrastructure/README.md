@@ -27,7 +27,7 @@
 | <a name="module_bulk-upload-lambda"></a> [bulk-upload-lambda](#module\_bulk-upload-lambda) | ./modules/lambda | n/a |
 | <a name="module_bulk-upload-metadata-lambda"></a> [bulk-upload-metadata-lambda](#module\_bulk-upload-metadata-lambda) | ./modules/lambda | n/a |
 | <a name="module_bulk-upload-report-lambda"></a> [bulk-upload-report-lambda](#module\_bulk-upload-report-lambda) | ./modules/lambda | n/a |
-| <a name="module_bulk_upload_dynamodb_table"></a> [bulk\_upload\_dynamodb\_table](#module\_bulk\_upload\_dynamodb\_table) | ./modules/dynamo_db | n/a |
+| <a name="module_bulk_upload_report_dynamodb_table"></a> [bulk\_upload\_report\_dynamodb\_table](#module\_bulk\_upload\_report\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_create-doc-ref-gateway"></a> [create-doc-ref-gateway](#module\_create-doc-ref-gateway) | ./modules/gateway | n/a |
 | <a name="module_create-doc-ref-lambda"></a> [create-doc-ref-lambda](#module\_create-doc-ref-lambda) | ./modules/lambda | n/a |
 | <a name="module_create-token-lambda"></a> [create-token-lambda](#module\_create-token-lambda) | ./modules/lambda | n/a |
@@ -133,7 +133,7 @@
 | <a name="input_auth_session_dynamodb_table_name"></a> [auth\_session\_dynamodb\_table\_name](#input\_auth\_session\_dynamodb\_table\_name) | The name of dynamodb table to store user login sessions | `string` | `"AuthSessionReferenceMetadata"` | no |
 | <a name="input_auth_state_dynamodb_table_name"></a> [auth\_state\_dynamodb\_table\_name](#input\_auth\_state\_dynamodb\_table\_name) | The name of dynamodb table to store the state values (for CIS2 authorisation) | `string` | `"AuthStateReferenceMetadata"` | no |
 | <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | This is a list that specifies all the Availability Zones that will have a pair of public and private subnets | `list(string)` | <pre>[<br>  "eu-west-2a",<br>  "eu-west-2b",<br>  "eu-west-2c"<br>]</pre> | no |
-| <a name="input_bulk_upload_dynamodb_table_name"></a> [bulk\_upload\_dynamodb\_table\_name](#input\_bulk\_upload\_dynamodb\_table\_name) | The name of dynamodb table to store bulk upload status | `string` | `"BulkUploadReport"` | no |
+| <a name="input_bulk_upload_report_dynamodb_table_name"></a> [bulk\_upload\_report\_dynamodb\_table\_name](#input\_bulk\_upload\_report\_dynamodb\_table\_name) | The name of dynamodb table to store bulk upload status | `string` | `"BulkUploadReport"` | no |
 | <a name="input_certificate_domain"></a> [certificate\_domain](#input\_certificate\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_cloud_only_service_instances"></a> [cloud\_only\_service\_instances](#input\_cloud\_only\_service\_instances) | n/a | `number` | `1` | no |
 | <a name="input_docstore_bucket_name"></a> [docstore\_bucket\_name](#input\_docstore\_bucket\_name) | The name of S3 bucket to store ARF documents | `string` | `"document-store"` | no |
