@@ -167,3 +167,33 @@ module "ndr-bulk-staging-store" {
   force_destroy             = local.is_force_destroy
   enable_cors_configuration = false
 }
+
+resource "aws_s3_bucket" "logs_bucket" {
+  bucket        = "${terraform.workspace}-load-balancer-logs"
+  force_destroy = local.is_force_destroy
+
+  tags = {
+    Name        = "${terraform.workspace}-load-balancer-logs"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+  }
+}
+
+resource "aws_s3_bucket_policy" "logs_bucket_policy" {
+  bucket = aws_s3_bucket.logs_bucket.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Principal" : {
+          "AWS" : data.aws_elb_service_account.main.arn
+        },
+        "Action" : "s3:PutObject",
+        "Resource" : "${aws_s3_bucket.logs_bucket.arn}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
+        "Effect" : "Allow",
+      }
+    ]
+  })
+  depends_on = [aws_s3_bucket.logs_bucket]
+}

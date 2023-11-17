@@ -7,6 +7,11 @@ resource "aws_lb" "ecs_lb" {
   enable_deletion_protection = local.is_production
   drop_invalid_header_fields = true
 
+  access_logs {
+    bucket  = var.logs_bucket
+    enabled = true
+  }
+
   tags = {
     Name        = "${terraform.workspace}-lb-${var.ecs_cluster_name}"
     Owner       = var.owner
