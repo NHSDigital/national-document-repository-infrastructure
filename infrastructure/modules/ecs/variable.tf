@@ -60,5 +60,5 @@ variable "alarm_actions_arn_list" {
 
 locals {
   is_sandbox = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
-  is_production = contains(["prod", "pre-prod", "production"], terraform.workspace)
+  is_production = contains(["pre-prod"], terraform.workspace)
 }
