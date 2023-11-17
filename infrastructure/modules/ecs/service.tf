@@ -60,13 +60,6 @@ resource "aws_appautoscaling_policy" "ndr_ecs_service_autoscale_up" {
       scaling_adjustment          = 1
     }
   }
-
-  tags = {
-    Name        = "${terraform.workspace}-ecs-service-autoscale-up-policy"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
-  }
 }
 
 resource "aws_appautoscaling_policy" "ndr_ecs_service_autoscale_down" {
@@ -85,12 +78,5 @@ resource "aws_appautoscaling_policy" "ndr_ecs_service_autoscale_down" {
       metric_interval_upper_bound = 0
       scaling_adjustment          = -1
     }
-  }
-
-  tags = {
-    Name        = "${terraform.workspace}-ecs-service-autoscale-down-policy"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
   }
 }
