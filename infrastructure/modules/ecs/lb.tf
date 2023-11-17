@@ -4,6 +4,8 @@ resource "aws_lb" "ecs_lb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.ndr_ecs_sg.id]
   subnets            = [for subnet in var.public_subnets : subnet]
+  enable_deletion_protection = !local.is_sandbox
+  drop_invalid_header_fields = true
 
   tags = {
     Name        = "${terraform.workspace}-lb-${var.ecs_cluster_name}"
