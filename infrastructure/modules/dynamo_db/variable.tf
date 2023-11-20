@@ -53,6 +53,11 @@ variable "owner" {
   type = string
 }
 
+variable "point_in_time_recovery_enabled" {
+  type    = bool
+  default = false
+}
+
 output "dynamodb_policy" {
   value = aws_iam_policy.dynamodb_policy.arn
 }
