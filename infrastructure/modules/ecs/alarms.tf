@@ -64,7 +64,7 @@ resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_high_alarm" {
   }
 
   alarm_description = "The CPU usage for ${var.ecs_cluster_service_name} is currently above 85%, the autoscaling will begin scaling up."
-  alarm_actions     = concat(var.alarm_actions_arn_list, [aws_appautoscaling_policy.ndr_ecs_service_autoscale_up.arn])
+  alarm_actions     = concat(var.alarm_actions_arn_list, [aws_appautoscaling_policy.ndr_ecs_service_autoscale_up[0].arn])
 
   tags = {
     Name        = "${var.ecs_cluster_service_name}-cpu-utilization-high"
@@ -72,6 +72,7 @@ resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_high_alarm" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
+  count = local.is_sandbox ? 0 : 1
 }
 
 resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_low_alarm" {
@@ -90,7 +91,7 @@ resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_low_alarm" {
   }
 
   alarm_description = "The CPU usage for ${var.ecs_cluster_service_name} is currently belowe 15%, the autoscaling will begin scaling down."
-  alarm_actions     = concat(var.alarm_actions_arn_list, [aws_appautoscaling_policy.ndr_ecs_service_autoscale_down.arn])
+  alarm_actions     = concat(var.alarm_actions_arn_list, [aws_appautoscaling_policy.ndr_ecs_service_autoscale_down[0].arn])
 
   tags = {
     Name        = "${var.ecs_cluster_service_name}-cpu-utilization-low"
@@ -98,4 +99,5 @@ resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_low_alarm" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
+  count = local.is_sandbox ? 0 : 1
 }
