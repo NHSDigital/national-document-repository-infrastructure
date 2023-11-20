@@ -120,6 +120,6 @@ variable "cloud_only_service_instances" {
 locals {
   is_sandbox                   = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
   is_force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
-  api_gateway_subdomain_name   = "api-${terraform.workspace}"
-  api_gateway_full_domain_name = "api-${terraform.workspace}.${var.domain}"
+  api_gateway_subdomain_name   = "api.${terraform.workspace}"
+  api_gateway_full_domain_name = "api.${terraform.workspace}.${var.domain}"
 }
