@@ -8,9 +8,9 @@ variable "owner" {
 }
 
 variable "certificate_subdomain_name_prefix" {
-  type = string
+  type        = string
   description = "Prefix to add to subdomains on certification configurations, dev envs use api-{env}, prod envs use api.{env}"
-  default = "api-"
+  default     = "api-"
 }
 
 # Bucket Variables
