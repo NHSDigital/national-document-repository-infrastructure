@@ -7,6 +7,12 @@ variable "owner" {
   type = string
 }
 
+variable "certificate_subdomain_name_prefix" {
+  type        = string
+  description = "Prefix to add to subdomains on certification configurations, dev envs use api-{env}, prod envs use api.{env}"
+  default     = "api-"
+}
+
 # Bucket Variables
 variable "docstore_bucket_name" {
   type        = string
@@ -116,10 +122,9 @@ variable "cloud_only_service_instances" {
   default = 1
 }
 
-
 locals {
   is_sandbox                   = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
   is_force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
-  api_gateway_subdomain_name   = "api.${terraform.workspace}"
-  api_gateway_full_domain_name = "api.${terraform.workspace}.${var.domain}"
+  api_gateway_subdomain_name   = "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
+  api_gateway_full_domain_name = "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
 }
