@@ -83,7 +83,7 @@ data "aws_ssm_parameter" "cloud_security_admin_email" {
 }
 
 data "aws_ssm_parameter" "virus_scanning_subnet_cidr_range" {
-  name = "/prs/${var.environment}/virus-scanner-subnet-cidr-range"
+  name = "/prs/virus-scanner/subnet-cidr-range"
 }
 
 resource "aws_cloudformation_stack" "s3_virus_scanning_stack" {
