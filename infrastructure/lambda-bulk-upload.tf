@@ -15,7 +15,7 @@ module "bulk-upload-lambda" {
   ]
   rest_api_id       = null
   api_execution_arn = null
-  memory_size       = 256
+  memory_size       = 512
   lambda_timeout    = 900
   lambda_environment_variables = {
     WORKSPACE                  = terraform.workspace
