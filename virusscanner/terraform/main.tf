@@ -18,10 +18,15 @@ data "aws_vpc" "vpc" {
   }
 }
 
+locals {
+  subnet_1_cidr_block = tolist(data.aws_ssm_parameter.virus_scanning_subnet_cidr_range)[0]
+  subnet_2_cidr_block = tolist(data.aws_ssm_parameter.virus_scanning_subnet_cidr_range)[1]
+}
+
 resource "aws_subnet" "virus_scanning_subnet1" {
   availability_zone = "eu-west-2a"
   vpc_id            = data.aws_vpc.vpc.id
-  cidr_block        = "10.0.64.0/24"
+  cidr_block        = local.subnet_1_cidr_block
 
   tags = {
     Name        = "Virus scanning subnet for eu-west-2a"
@@ -33,7 +38,7 @@ resource "aws_subnet" "virus_scanning_subnet1" {
 resource "aws_subnet" "virus_scanning_subnet2" {
   availability_zone = "eu-west-2b"
   vpc_id            = data.aws_vpc.vpc.id
-  cidr_block        = "10.0.128.0/24"
+  cidr_block        = local.subnet_2_cidr_block
 
   tags = {
     Name        = "Virus scanning subnet for eu-west-2b"
@@ -75,6 +80,10 @@ resource "aws_route_table_association" "virus_scanning_subnet2_route_table_assoc
 
 data "aws_ssm_parameter" "cloud_security_admin_email" {
   name = "/prs/${var.environment}/user-input/cloud-security-admin-email"
+}
+
+data "aws_ssm_parameter" "virus_scanning_subnet_cidr_range" {
+  name = "/prs/virus-scanner/subnet-cidr-range"
 }
 
 resource "aws_cloudformation_stack" "s3_virus_scanning_stack" {
