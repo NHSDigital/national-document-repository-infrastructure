@@ -60,6 +60,12 @@ variable "memory_size" {
   default = 128
 }
 
+variable "reserved_concurrent_executions" {
+  type        = number
+  description = "The number of concurrent execution allowed for lambda. A value of 0 will stop lambda from running, and -1 removes any concurrency limitations. Default to -1."
+  default     = -1
+}
+
 output "invoke_arn" {
   value = aws_lambda_function.lambda.invoke_arn
 }
