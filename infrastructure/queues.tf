@@ -22,8 +22,10 @@ module "sqs-lg-bulk-upload-metadata-queue" {
   environment       = var.environment
   owner             = var.owner
   max_visibility    = 1020
-  enable_fifo = true
+  enable_fifo       = true
   enable_deduplication = true
+
+
 }
 
 module "sqs-lg-bulk-upload-invalid-queue" {
