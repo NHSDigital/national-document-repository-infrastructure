@@ -2,7 +2,7 @@ module "document_reference_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.docstore_dynamodb_table_name
   hash_key                       = "ID"
-  deletion_protection_enabled    = false
+  deletion_protection_enabled    = local.is_production
   stream_enabled                 = false
   ttl_enabled                    = true
   ttl_attribute_name             = "TTL"
@@ -44,7 +44,7 @@ module "lloyd_george_reference_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.lloyd_george_dynamodb_table_name
   hash_key                       = "ID"
-  deletion_protection_enabled    = false
+  deletion_protection_enabled    = local.is_production
   stream_enabled                 = false
   ttl_enabled                    = true
   ttl_attribute_name             = "TTL"
@@ -180,7 +180,7 @@ module "bulk_upload_report_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.bulk_upload_report_dynamodb_table_name
   hash_key                       = "ID"
-  deletion_protection_enabled    = false
+  deletion_protection_enabled    = local.is_production
   stream_enabled                 = false
   ttl_enabled                    = false
   point_in_time_recovery_enabled = !local.is_sandbox
