@@ -50,7 +50,11 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
       module.search-document-references-lambda,
       module.login_redirect_lambda,
       module.authoriser-lambda,
-      module.create-token-lambda
+      module.create-token-lambda,
+      module.delete-doc-ref-lambda,
+      module.lloyd-george-stitch-lambda,
+      module.logout_lambda,
+      module.back_channel_logout_lambda
     ]))
   }
 
@@ -64,7 +68,11 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.search-document-references-lambda,
     module.login_redirect_lambda,
     module.authoriser-lambda,
-    module.create-token-lambda
+    module.create-token-lambda,
+    module.delete-doc-ref-lambda,
+    module.lloyd-george-stitch-lambda,
+    module.logout_lambda,
+    module.back_channel_logout_lambda
   ]
 }
 
