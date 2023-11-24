@@ -77,6 +77,10 @@ module "lloyd-george-stitch-lambda" {
   resource_id       = module.lloyd-george-stitch-gateway.gateway_resource_id
   http_method       = "GET"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+
+  memory_size    = 512
+  lambda_timeout = 450
+
   lambda_environment_variables = {
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"

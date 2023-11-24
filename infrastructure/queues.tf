@@ -21,6 +21,7 @@ module "sqs-lg-bulk-upload-metadata-queue" {
   message_retention = 60 * 60 * 24 * 14 # 14 days
   environment       = var.environment
   owner             = var.owner
+  max_visibility    = 1020
 }
 
 module "sqs-lg-bulk-upload-invalid-queue" {
@@ -30,6 +31,7 @@ module "sqs-lg-bulk-upload-invalid-queue" {
   message_retention = 60 * 60 * 24 * 14 # 14 days
   environment       = var.environment
   owner             = var.owner
+  max_visibility    = 1020
 }
 
 module "sqs-nems-queue-topic" {

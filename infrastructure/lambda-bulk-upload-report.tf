@@ -18,6 +18,8 @@ module "bulk-upload-report-lambda" {
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
+  memory_size                   = 512
+  lambda_timeout                = 45
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
