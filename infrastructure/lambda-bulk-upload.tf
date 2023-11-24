@@ -27,10 +27,10 @@ module "bulk-upload-lambda" {
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
   }
 
-  is_gateway_integration_needed = false
-  is_invoked_from_gateway       = false
-  memory_size                   = 512
-  lambda_timeout                = 900
+  is_gateway_integration_needed  = false
+  is_invoked_from_gateway        = false
+  memory_size                    = 512
+  lambda_timeout                 = 900
   reserved_concurrent_executions = local.bulk_upload_lambda_concurrent_limit
 
   depends_on = [

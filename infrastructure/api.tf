@@ -74,6 +74,10 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.logout_lambda,
     module.back_channel_logout_lambda
   ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response" {
