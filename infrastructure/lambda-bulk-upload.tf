@@ -31,7 +31,7 @@ module "bulk-upload-lambda" {
   is_invoked_from_gateway       = false
   memory_size                   = 512
   lambda_timeout                = 900
-  reserved_concurrent_executions = locals.bulk_upload_lambda_concurrent_limit
+  reserved_concurrent_executions = local.bulk_upload_lambda_concurrent_limit
 
   depends_on = [
     module.ndr-bulk-staging-store,
@@ -50,7 +50,7 @@ resource "aws_lambda_event_source_mapping" "bulk_upload_lambda" {
   function_name    = module.bulk-upload-lambda.endpoint
 
   scaling_config {
-    maximum_concurrency = locals.bulk_upload_lambda_concurrent_limit
+    maximum_concurrency = local.bulk_upload_lambda_concurrent_limit
   }
 
   depends_on = [
