@@ -68,3 +68,13 @@ resource "aws_s3_bucket_cors_configuration" "document_store_bucket_cors_config" 
   }
   depends_on = [aws_s3_bucket.bucket, aws_s3_bucket_acl.bucket_acl]
 }
+
+resource "aws_s3_bucket_versioning" "bucket_versioning" {
+  count  = var.enable_bucket_versioning ? 1 : 0
+  bucket = aws_s3_bucket.bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+
+  depends_on = [aws_s3_bucket.bucket]
+}

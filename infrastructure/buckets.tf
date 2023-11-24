@@ -3,6 +3,7 @@ module "ndr-document-store" {
   source                    = "./modules/s3/"
   bucket_name               = var.docstore_bucket_name
   enable_cors_configuration = true
+  enable_bucket_versioning  = true
   environment               = var.environment
   owner                     = var.owner
   force_destroy             = local.is_force_destroy
@@ -42,6 +43,7 @@ module "ndr-lloyd-george-store" {
   source                    = "./modules/s3/"
   bucket_name               = var.lloyd_george_bucket_name
   enable_cors_configuration = true
+  enable_bucket_versioning  = true
   environment               = var.environment
   owner                     = var.owner
   force_destroy             = local.is_force_destroy
