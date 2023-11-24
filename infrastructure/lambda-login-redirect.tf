@@ -42,7 +42,7 @@ module "login_redirect_alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.login_redirect_lambda.function_name
   lambda_timeout       = module.login_redirect_lambda.timeout
-  lambda_name          = "authoriser_handler"
+  lambda_name          = "login_redirect_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.login_redirect-alarm_topic.arn]
   ok_actions           = [module.login_redirect-alarm_topic.arn]
