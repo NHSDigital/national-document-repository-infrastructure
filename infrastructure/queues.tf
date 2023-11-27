@@ -1,9 +1,9 @@
 module "sqs-splunk-queue" {
-  source               = "./modules/sqs"
-  name                 = "splunk-queue"
-  count                = local.is_sandbox ? 0 : 1
-  environment          = var.environment
-  owner                = var.owner
+  source      = "./modules/sqs"
+  name        = "splunk-queue"
+  count       = local.is_sandbox ? 0 : 1
+  environment = var.environment
+  owner       = var.owner
 }
 
 module "sqs-nems-queue" {
