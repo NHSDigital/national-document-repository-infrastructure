@@ -1,11 +1,9 @@
 module "sqs-splunk-queue" {
   source               = "./modules/sqs"
-  name                 = "splunk-queue.fifo"
+  name                 = "splunk-queue"
   count                = local.is_sandbox ? 0 : 1
   environment          = var.environment
   owner                = var.owner
-  enable_fifo          = true
-  enable_deduplication = true
 }
 
 module "sqs-nems-queue" {
