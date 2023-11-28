@@ -123,9 +123,12 @@ variable "cloud_only_service_instances" {
 }
 
 locals {
-  is_sandbox                   = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
-  is_production                = contains(["pre-prod", "prod"], terraform.workspace)
-  is_force_destroy             = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+  is_sandbox       = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
+  is_production    = contains(["pre-prod", "prod"], terraform.workspace)
+  is_force_destroy = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+
+  bulk_upload_lambda_concurrent_limit = 5
+
   api_gateway_subdomain_name   = "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
   api_gateway_full_domain_name = "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
 }

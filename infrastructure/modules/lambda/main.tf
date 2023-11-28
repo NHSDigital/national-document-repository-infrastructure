@@ -1,14 +1,15 @@
 resource "aws_lambda_function" "lambda" {
   # If the file is not in the current working directory you will need to include a
   # path.module in the filename.
-  filename         = data.archive_file.lambda.output_path
-  function_name    = "${terraform.workspace}_${var.name}"
-  role             = aws_iam_role.lambda_execution_role.arn
-  handler          = var.handler
-  source_code_hash = data.archive_file.lambda.output_base64sha256
-  runtime          = "python3.11"
-  timeout          = var.lambda_timeout
-  memory_size      = var.memory_size
+  filename                       = data.archive_file.lambda.output_path
+  function_name                  = "${terraform.workspace}_${var.name}"
+  role                           = aws_iam_role.lambda_execution_role.arn
+  handler                        = var.handler
+  source_code_hash               = data.archive_file.lambda.output_base64sha256
+  runtime                        = "python3.11"
+  timeout                        = var.lambda_timeout
+  memory_size                    = var.memory_size
+  reserved_concurrent_executions = var.reserved_concurrent_executions
   ephemeral_storage {
     size = var.lambda_ephemeral_storage
   }
