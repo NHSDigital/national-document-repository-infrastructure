@@ -4,7 +4,7 @@ resource "aws_backup_vault" "backup_vault" {
 }
 
 resource "aws_kms_key" "encryption_key" {
-  description             = "KMS key for encrypting backups"
+  description         = "KMS key for encrypting backups"
   enable_key_rotation = true
 }
 
