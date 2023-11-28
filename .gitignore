@@ -1,7 +1,7 @@
 **/.DS_Store
 
 # Local .terraform directories
-**/.terraform/*
+backup-vault/teraform/.terraform/*
 
 # .tfstate files
 *.tfstate
