@@ -39,7 +39,7 @@ resource "aws_backup_vault_policy" "backup_policy" {
           "Action": "backup:CopyIntoBackupVault",
           "Resource": "*",
           "Principal": {
-            "AWS": "arn:aws:iam::${data.aws_ssm_parameter.backup-target-account}:root"
+            "AWS": "arn:aws:iam::${data.aws_ssm_parameter.backup-source-account}:root"
           }
         }
       ]
@@ -47,6 +47,7 @@ resource "aws_backup_vault_policy" "backup_policy" {
   )
 }
 
-data "aws_ssm_parameter" "backup-target-account" {
+data "aws_ssm_parameter" "backup-source-account" {
   name = "backup-target-account"
 }
+
