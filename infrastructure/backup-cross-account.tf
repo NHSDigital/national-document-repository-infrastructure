@@ -3,7 +3,8 @@ resource "aws_backup_plan" "cross_account_backup_schedule" {
 
   rule {
     rule_name         = "CrossAccount6pmBackup"
-    target_vault_name = "${terraform.workspace}_backup_vault"
+#    target_vault_name = "${terraform.workspace}_backup_vault"
+    target_vault_name = "pre-prod_backup_vault"
     #    schedule          = "cron(0 18 * * *)"
     schedule = "cron(45 15 * * ? *)"
 
