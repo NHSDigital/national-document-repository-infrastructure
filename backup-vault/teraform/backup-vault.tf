@@ -18,18 +18,18 @@ resource "aws_backup_vault_policy" "backup_policy" {
 
   policy = jsonencode(
     {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Sid": "Allow ${data.aws_ssm_parameter.backup-source-account.value} to copy into pre-prod_s3_backup_vault",
-                "Effect": "Allow",
-                "Principal": {
-                    "AWS": "arn:aws:iam::${data.aws_ssm_parameter.backup-source-account.value}:root"
-                },
-                "Action": "backup:CopyIntoBackupVault",
-                "Resource": "*"
-            }
-        ]
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Sid" : "Allow ${data.aws_ssm_parameter.backup-source-account.value} to copy into pre-prod_s3_backup_vault",
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : "arn:aws:iam::${data.aws_ssm_parameter.backup-source-account.value}:root"
+          },
+          "Action" : "backup:CopyIntoBackupVault",
+          "Resource" : "*"
+        }
+      ]
     }
   )
 }
