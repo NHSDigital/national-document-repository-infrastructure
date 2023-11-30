@@ -22,19 +22,6 @@ data "aws_ssm_parameter" "backup_target_account" {
   name = "backup-target-account"
 }
 
-data "aws_iam_policy_document" "cross_account_backup_assume_role" {
-  statement = {
-    sid : "Allow ${data.aws_ssm_parameter.backup_target_account.value} to copy into pre-prod_s3_backup_vault",
-    effect : "Allow",
-    action : "backup:CopyIntoBackupVault",
-    resource : data.aws_ssm_parameter.target_backup_vault_arn.value,
-    principal : {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_ssm_parameter.backup_target_account.value}:root"]
-    }
-  }
-}
-
 resource "aws_iam_policy" "copy_policy" {
   name        = "${terraform.workspace}_cross_account_copy_policy"
   description = "Permissions required to copy to another accounts backup vault"
