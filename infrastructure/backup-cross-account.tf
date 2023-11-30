@@ -4,11 +4,11 @@ resource "aws_backup_plan" "cross_account_backup_schedule" {
   rule {
     rule_name         = "CrossAccount6pmBackup"
     target_vault_name = "${terraform.workspace}_backup_vault"
-#    schedule          = "cron(0 18 * * *)"
-    schedule          = "cron(20 15 * * *)"
+    #    schedule          = "cron(0 18 * * *)"
+    schedule = "cron(20 15 * * *)"
 
     lifecycle {
-      delete_after = 35
+      delete_after       = 35
       cold_storage_after = 0
     }
   }
@@ -24,26 +24,26 @@ data "aws_ssm_parameter" "backup_target_account" {
 
 data "aws_iam_policy_document" "cross_account_backup_assume_role" {
   statement = [
-      {
-        effect = "Allow"
+    {
+      effect = "Allow"
 
-        principals = {
-          type        = "Service"
-          identifiers = ["backup.amazonaws.com"]
-        }
-
-        actions = ["sts:AssumeRole"]
-      },
-      {
-        sid: "Allow 694282683086 to copy into pre-prod_s3_backup_vault",
-        effect: "Allow",
-        action: "backup:CopyIntoBackupVault",
-        resource: data.aws_ssm_parameter.target_backup_vault_arn.value,
-        principal: {
-          type        = "AWS"
-          identifiers = ["arn:aws:iam::${data.aws_ssm_parameter.backup_target_account.value}:root"]
-        }
+      principals = {
+        type        = "Service"
+        identifiers = ["backup.amazonaws.com"]
       }
+
+      actions = ["sts:AssumeRole"]
+    },
+    {
+      sid : "Allow 694282683086 to copy into pre-prod_s3_backup_vault",
+      effect : "Allow",
+      action : "backup:CopyIntoBackupVault",
+      resource : data.aws_ssm_parameter.target_backup_vault_arn.value,
+      principal : {
+        type        = "AWS"
+        identifiers = ["arn:aws:iam::${data.aws_ssm_parameter.backup_target_account.value}:root"]
+      }
+    }
   ]
 }
 
@@ -51,15 +51,15 @@ resource "aws_iam_policy" "copy_policy" {
   name        = "${terraform.workspace}_cross_account_copy_policy"
   description = "Permissions required to copy to another accounts backup vault"
   policy = jsonencode({
-      "Version": "2012-10-17",
-      "Statement": [
-          {
-              "Sid": "Allow user to copy into backup account",
-              "Effect": "Allow",
-              "Action": "backup:CopyIntoBackupVault",
-              "Resource": data.aws_ssm_parameter.target_backup_vault_arn.value
-          }
-      ]
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid" : "Allow user to copy into backup account",
+        "Effect" : "Allow",
+        "Action" : "backup:CopyIntoBackupVault",
+        "Resource" : data.aws_ssm_parameter.target_backup_vault_arn.value
+      }
+    ]
   })
 }
 resource "aws_iam_role_policy_attachment" "s3_cross_account_copy_policy" {
