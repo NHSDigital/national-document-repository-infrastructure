@@ -33,7 +33,6 @@ resource "aws_iam_policy" "copy_policy" {
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [{
-      "Sid" : "Allow-user-to-copy-into-backup-account",
       "Effect" : "Allow",
       "Action" : ["backup:CopyIntoBackupVault"],
       "Resource" : data.aws_ssm_parameter.backup_target_account.value
