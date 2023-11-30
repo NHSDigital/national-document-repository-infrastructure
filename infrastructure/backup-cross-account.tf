@@ -35,7 +35,7 @@ resource "aws_iam_policy" "copy_policy" {
     "Statement" : [{
       "Effect" : "Allow",
       "Action" : ["backup:CopyIntoBackupVault"],
-      "Resource" : data.aws_ssm_parameter.backup_target_account.value
+      "Resource" : data.aws_ssm_parameter.target_backup_vault_arn.value
     }]
   })
 }
