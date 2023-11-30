@@ -8,7 +8,7 @@ resource "aws_backup_plan" "cross_account_backup_schedule" {
     #    schedule          = "cron(0 18 * * *)"
     schedule = "cron(45 15 * * ? *)"
     copy_action {
-      destination_vault_arn = data.aws_ssm_parameter.target_backup_vault_arn
+      destination_vault_arn = data.aws_ssm_parameter.target_backup_vault_arn.value
 
       lifecycle {
         delete_after       = 35
