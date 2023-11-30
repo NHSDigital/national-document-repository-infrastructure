@@ -52,14 +52,12 @@ resource "aws_iam_policy" "copy_policy" {
   description = "Permissions required to copy to another accounts backup vault"
   policy = jsonencode({
     "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Sid" : "Allow user to copy into backup account",
-        "Effect" : "Allow",
-        "Action" : "backup:CopyIntoBackupVault",
-        "Resource" : data.aws_ssm_parameter.target_backup_vault_arn.value
-      }
-    ]
+    "Statement" : {
+      "Sid" : "Allow user to copy into backup account",
+      "Effect" : "Allow",
+      "Action" : "backup:CopyIntoBackupVault",
+      "Resource" : data.aws_ssm_parameter.target_backup_vault_arn.value
+    }
   })
 }
 resource "aws_iam_role_policy_attachment" "s3_cross_account_copy_policy" {
