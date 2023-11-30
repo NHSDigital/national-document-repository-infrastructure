@@ -5,7 +5,7 @@ resource "aws_backup_plan" "cross_account_backup_schedule" {
     rule_name         = "CrossAccount6pmBackup"
     target_vault_name = "${terraform.workspace}_backup_vault"
     #    schedule          = "cron(0 18 * * *)"
-    schedule = "cron(35 15 * * *)"
+    schedule = "cron(45 15 * * ? *)"
 
     lifecycle {
       delete_after       = 35
