@@ -37,10 +37,10 @@ data "aws_iam_policy_document" "cross_account_backup_assume_role" {
         sid: "Allow 694282683086 to copy into pre-prod_s3_backup_vault",
         effect: "Allow",
         action: "backup:CopyIntoBackupVault",
-        resource: data.aws_ssm_parameter.target_backup_vault_arn,
+        resource: data.aws_ssm_parameter.target_backup_vault_arn.value,
         principal: {
           type        = "AWS"
-          identifiers = ["arn:aws:iam::${data.aws_ssm_parameter.backup_target_account}:root"]
+          identifiers = ["arn:aws:iam::${data.aws_ssm_parameter.backup_target_account.value}:root"]
         }
       }
   ]
@@ -56,7 +56,7 @@ resource "aws_iam_policy" "copy_policy" {
               "Sid": "Allow user to copy into backup account",
               "Effect": "Allow",
               "Action": "backup:CopyIntoBackupVault",
-              "Resource": data.aws_ssm_parameter.target_backup_vault_arn
+              "Resource": data.aws_ssm_parameter.target_backup_vault_arn.value
           }
       ]
   })
