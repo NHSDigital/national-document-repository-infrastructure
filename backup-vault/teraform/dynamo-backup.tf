@@ -4,6 +4,7 @@ resource "aws_dynamodb_table" "ehr_backup_table" {
 
 resource "aws_dynamodb_table" "lg_backup_table" {
   name = "lloyd_george_backup"
+
 }
 
 resource "aws_dynamodb_table" "bulk_upload_report_backup_table" {

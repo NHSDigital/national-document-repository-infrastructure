@@ -12,7 +12,7 @@ resource "aws_kms_alias" "encryption_key_alias" {
   target_key_id = aws_kms_key.encryption_key.id
 }
 
-resource "aws_backup_plan" "example" {
+resource "aws_backup_plan" "backup_schedule" {
   name = "tf_example_backup_plan"
 
   rule {
