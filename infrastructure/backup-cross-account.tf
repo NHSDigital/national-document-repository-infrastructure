@@ -4,13 +4,17 @@ resource "aws_backup_plan" "cross_account_backup_schedule" {
   rule {
     rule_name = "CrossAccount6pmBackup"
     #    target_vault_name = "${terraform.workspace}_backup_vault"
-    target_vault_name = "pre-prod_backup_vault"
+    target_vault_name = aws_backup_vault.s3_backup_vault.name
     #    schedule          = "cron(0 18 * * *)"
     schedule = "cron(45 15 * * ? *)"
+    copy_action {
+      destination_vault_arn = data.aws_ssm_parameter.target_backup_vault_arn
 
-    lifecycle {
-      delete_after       = 35
-      cold_storage_after = 0
+      lifecycle {
+        delete_after       = 35
+        cold_storage_after = 0
+      }
+
     }
   }
 }
