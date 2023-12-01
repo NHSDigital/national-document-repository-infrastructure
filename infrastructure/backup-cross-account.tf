@@ -6,7 +6,7 @@ resource "aws_backup_plan" "cross_account_backup_schedule" {
   rule {
     rule_name         = "CrossAccount6pmBackup"
     target_vault_name = aws_backup_vault.backup_vault.name
-    schedule          = "cron(20 12 * * ? *)"
+    schedule          = "cron(0 18 * * ? *)"
     copy_action {
       destination_vault_arn = data.aws_ssm_parameter.target_backup_vault_arn.value
       lifecycle {
