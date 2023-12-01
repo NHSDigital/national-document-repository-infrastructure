@@ -1,6 +1,8 @@
 resource "aws_backup_plan" "cross_account_backup_schedule" {
   name = "${terraform.workspace}-cross-account-backup-plan"
 
+  count = local.is_production ? 1 : 0
+
   rule {
     rule_name = "CrossAccount6pmBackup"
     target_vault_name = aws_backup_vault.backup_vault.name
@@ -26,6 +28,8 @@ data "aws_ssm_parameter" "backup_target_account" {
 
 resource "aws_iam_policy" "copy_policy" {
   name        = "${terraform.workspace}_cross_account_copy_policy"
+  count = local.is_production ? 1 : 0
+
   description = "Permissions required to copy to another accounts backup vault"
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -37,11 +41,13 @@ resource "aws_iam_policy" "copy_policy" {
   })
 }
 resource "aws_iam_role_policy_attachment" "cross_account_copy_policy" {
+  count = local.is_production ? 1 : 0
   role       = aws_iam_role.cross_account_backup_iam_role.name
   policy_arn = aws_iam_policy.copy_policy.arn
 }
 
 resource "aws_backup_selection" "cross_account_backup_selection" {
+  count = local.is_production ? 1 : 0
   iam_role_arn = aws_iam_role.cross_account_backup_iam_role.arn
   name         = "${terraform.workspace}_cross_account_backup_selection"
   plan_id      = aws_backup_plan.cross_account_backup_schedule.id
@@ -56,31 +62,35 @@ resource "aws_backup_selection" "cross_account_backup_selection" {
 }
 
 resource "aws_iam_role" "cross_account_backup_iam_role" {
+  count = local.is_production ? 1 : 0
   name               = "${terraform.workspace}_cross_account_backup_iam_role"
   assume_role_policy = data.aws_iam_policy_document.backup_assume_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "cross_account_backup_policy" {
+  count = local.is_production ? 1 : 0
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
   role       = aws_iam_role.cross_account_backup_iam_role.name
   depends_on = [aws_iam_role.cross_account_backup_iam_role]
 }
 
 resource "aws_iam_role_policy_attachment" "cross_account_restore_policy" {
+  count = local.is_production ? 1 : 0
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForRestores"
   role       = aws_iam_role.cross_account_backup_iam_role.name
   depends_on = [aws_iam_role.cross_account_backup_iam_role]
 }
 
 resource "aws_iam_role_policy_attachment" "cross_account_s3_backup_policy" {
+  count = local.is_production ? 1 : 0
   policy_arn = "arn:aws:iam::aws:policy/AWSBackupServiceRolePolicyForS3Backup"
   role       = aws_iam_role.cross_account_backup_iam_role.name
   depends_on = [aws_iam_role.cross_account_backup_iam_role]
 }
 
 resource "aws_iam_role_policy_attachment" "s3_cross_account_restore_policy" {
+  count = local.is_production ? 1 : 0
   policy_arn = "arn:aws:iam::aws:policy/AWSBackupServiceRolePolicyForS3Restore"
   role       = aws_iam_role.cross_account_backup_iam_role.name
   depends_on = [aws_iam_role.cross_account_backup_iam_role]
 }
-
