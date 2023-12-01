@@ -1,5 +1,5 @@
-resource "aws_backup_vault" "s3_backup_vault" {
-  name          = "${terraform.workspace}_s3_backup_vault"
+resource "aws_backup_vault" "backup_vault" {
+  name          = "${terraform.workspace}_backup_vault"
   force_destroy = local.is_sandbox
 }
 
@@ -9,7 +9,7 @@ resource "aws_backup_plan" "s3_continuous_backup" {
   rule {
     enable_continuous_backup = true
     rule_name                = "S3BucketContinousBackups"
-    target_vault_name        = aws_backup_vault.s3_backup_vault.name
+    target_vault_name        = aws_backup_vault.backup_vault.name
     lifecycle {
       cold_storage_after = 0
       delete_after       = 35

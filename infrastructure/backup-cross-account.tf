@@ -3,13 +3,10 @@ resource "aws_backup_plan" "cross_account_backup_schedule" {
 
   rule {
     rule_name = "CrossAccount6pmBackup"
-    #    target_vault_name = "${terraform.workspace}_backup_vault"
-    target_vault_name = aws_backup_vault.s3_backup_vault.name
-    #    schedule          = "cron(0 18 * * *)"
-    schedule = "cron(45 15 * * ? *)"
+    target_vault_name = aws_backup_vault.backup_vault.name
+    schedule          = "cron(0 18 * * ? *)"
     copy_action {
       destination_vault_arn = data.aws_ssm_parameter.target_backup_vault_arn.value
-
       lifecycle {
         delete_after       = 35
         cold_storage_after = 0
@@ -39,48 +36,51 @@ resource "aws_iam_policy" "copy_policy" {
     }]
   })
 }
-resource "aws_iam_role_policy_attachment" "s3_cross_account_copy_policy" {
-  role       = aws_iam_role.s3_cross_account_backup_iam_role.name
+resource "aws_iam_role_policy_attachment" "cross_account_copy_policy" {
+  role       = aws_iam_role.cross_account_backup_iam_role.name
   policy_arn = aws_iam_policy.copy_policy.arn
 }
 
-resource "aws_backup_selection" "s3_cross_account_backup_selection" {
-  iam_role_arn = aws_iam_role.s3_cross_account_backup_iam_role.arn
-  name         = "${terraform.workspace}_s3_cross_account_backup_selection"
+resource "aws_backup_selection" "cross_account_backup_selection" {
+  iam_role_arn = aws_iam_role.cross_account_backup_iam_role.arn
+  name         = "${terraform.workspace}_cross_account_backup_selection"
   plan_id      = aws_backup_plan.cross_account_backup_schedule.id
 
   resources = [
     module.ndr-document-store.bucket_arn,
-    module.ndr-lloyd-george-store.bucket_arn
+    module.ndr-lloyd-george-store.bucket_arn,
+    module.document_reference_dynamodb_table.dynamodb_table_arn,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_table_arn,
+    module.bulk_upload_report_dynamodb_table.dynamodb_table_arn 
   ]
 }
 
-resource "aws_iam_role" "s3_cross_account_backup_iam_role" {
-  name               = "${terraform.workspace}_s3_cross_account_backup_iam_role"
+resource "aws_iam_role" "cross_account_backup_iam_role" {
+  name               = "${terraform.workspace}_cross_account_backup_iam_role"
   assume_role_policy = data.aws_iam_policy_document.backup_assume_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "cross_account_backup_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
-  role       = aws_iam_role.s3_cross_account_backup_iam_role.name
-  depends_on = [aws_iam_role.s3_cross_account_backup_iam_role]
+  role       = aws_iam_role.cross_account_backup_iam_role.name
+  depends_on = [aws_iam_role.cross_account_backup_iam_role]
 }
 
 resource "aws_iam_role_policy_attachment" "cross_account_restore_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForRestores"
-  role       = aws_iam_role.s3_cross_account_backup_iam_role.name
-  depends_on = [aws_iam_role.s3_cross_account_backup_iam_role]
+  role       = aws_iam_role.cross_account_backup_iam_role.name
+  depends_on = [aws_iam_role.cross_account_backup_iam_role]
 }
 
 resource "aws_iam_role_policy_attachment" "cross_account_s3_backup_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AWSBackupServiceRolePolicyForS3Backup"
-  role       = aws_iam_role.s3_cross_account_backup_iam_role.name
-  depends_on = [aws_iam_role.s3_cross_account_backup_iam_role]
+  role       = aws_iam_role.cross_account_backup_iam_role.name
+  depends_on = [aws_iam_role.cross_account_backup_iam_role]
 }
 
 resource "aws_iam_role_policy_attachment" "s3_cross_account_restore_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AWSBackupServiceRolePolicyForS3Restore"
-  role       = aws_iam_role.s3_cross_account_backup_iam_role.name
-  depends_on = [aws_iam_role.s3_cross_account_backup_iam_role]
+  role       = aws_iam_role.cross_account_backup_iam_role.name
+  depends_on = [aws_iam_role.cross_account_backup_iam_role]
 }
 
