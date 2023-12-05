@@ -24,6 +24,7 @@ module "sqs-lg-bulk-upload-metadata-queue" {
   max_visibility       = 1020
   enable_fifo          = true
   enable_deduplication = true
+  delay                = 60
 }
 
 module "sqs-lg-bulk-upload-invalid-queue" {
