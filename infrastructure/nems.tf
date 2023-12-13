@@ -1,5 +1,5 @@
 module "nems_sns_sns_queue" {
-  source = "./modules/sns"
+  source             = "./modules/sns"
   current_account_id = data.aws_caller_identity.current.account_id
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -22,7 +22,7 @@ module "nems_sns_sns_queue" {
     ]
   })
   sns_encryption_key_id = module.sns_encryption_key.id
-  topic_endpoint = module.sqs-nems-queue[0].endpoint
-  topic_name = "nems_events_topic"
-  topic_protocol = "sqs"
+  topic_endpoint        = module.sqs-nems-queue[0].endpoint
+  topic_name            = "nems_events_topic"
+  topic_protocol        = "sqs"
 }
