@@ -68,6 +68,7 @@ resource "aws_iam_policy" "dynamodb_policy" {
           "dynamodb:PutItem",
           "dynamodb:UpdateItem",
           "dynamodb:DeleteItem",
+          "dynamodb:BatchWriteItem",
         ],
         "Resource" : [
           aws_dynamodb_table.ndr_dynamodb_table.arn,
