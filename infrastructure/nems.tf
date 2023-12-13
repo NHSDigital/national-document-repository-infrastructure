@@ -9,7 +9,7 @@ module "nems_sns_sns_queue" {
         "Principal" : {
           "Service" : "cloudwatch.amazonaws.com"
         },
-        "Action" : [
+        "Action" : [cd
           "SNS:Publish",
         ],
         "Condition" : {
