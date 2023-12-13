@@ -23,6 +23,6 @@ module "nems_sns_sns_queue" {
   })
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_endpoint = module.sqs-nems-queue[0].endpoint
-  topic_name = "sns_nems_queue"
+  topic_name = "nems_events_topic"
   topic_protocol = "sqs"
 }
