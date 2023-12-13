@@ -122,6 +122,60 @@ variable "cloud_only_service_instances" {
   default = 1
 }
 
+variable "aws_region" {
+  type    = string
+  default = "eu-west-2"
+}
+
+variable "mesh_url" {
+  type        = string
+  description = "URL of MESH service"
+}
+
+variable "mesh_mailbox_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH mailbox name"
+}
+
+variable "mesh_password_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH mailbox password"
+}
+
+variable "mesh_shared_key_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH shared key"
+}
+
+variable "mesh_client_cert_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH client certificate"
+}
+
+variable "mesh_client_key_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH client key"
+}
+
+variable "mesh_ca_cert_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH CA certificate"
+}
+
+variable "disable_message_header_validation" {
+  type        = string
+  description = "if true then relaxes the restrictions on MESH message headers"
+  default     = false
+}
+
+variable "message_destination" {
+  default = ""
+}
+
+variable "cloudwatch_alarm_evaluation_periods" {}
+
+variable "poll_frequency" {}
+
 locals {
   is_sandbox       = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
   is_production    = contains(["pre-prod", "prod"], terraform.workspace)
@@ -131,4 +185,18 @@ locals {
 
   api_gateway_subdomain_name   = "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
   api_gateway_full_domain_name = "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
+  account_id                   = data.aws_caller_identity.current.account_id
+  mesh_ecs_environment_variables = [
+    { name : "MESH_URL", value : var.mesh_url },
+    { name : "MESH_MAILBOX_SSM_PARAM_NAME", value : var.mesh_mailbox_ssm_param_name },
+    { name : "MESH_PASSWORD_SSM_PARAM_NAME", value : var.mesh_password_ssm_param_name },
+    { name : "MESH_SHARED_KEY_SSM_PARAM_NAME", value : var.mesh_shared_key_ssm_param_name },
+    { name : "MESH_CLIENT_CERT_SSM_PARAM_NAME", value : var.mesh_client_cert_ssm_param_name },
+    { name : "MESH_CLIENT_KEY_SSM_PARAM_NAME", value : var.mesh_client_key_ssm_param_name },
+    { name : "MESH_CA_CERT_SSM_PARAM_NAME", value : var.mesh_ca_cert_ssm_param_name },
+    { name : "SNS_TOPIC_ARN", value : "aws_sns_topic.nems_events.arn" },
+    { name : "MESSAGE_DESTINATION", value : "var.message_destination" },
+    { name : "DISABLE_MESSAGE_HEADER_VALIDATION", value : false },
+    { name : "POLL_FREQUENCY", value : var.poll_frequency }
+  ]
 }
