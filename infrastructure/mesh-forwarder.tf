@@ -89,7 +89,7 @@ data "aws_iam_policy_document" "ecr_policy_doc" {
     ]
 
     resources = [
-      "arn:aws:ecr:${var.aws_region}:${local.account_id}:repository/deductions/mesh-forwarder"
+      "arn:aws:ecr:${var.aws_region}:${local.account_id}:repository/deductions/mesh_forwarder"
     ]
   }
 
@@ -97,11 +97,14 @@ data "aws_iam_policy_document" "ecr_policy_doc" {
     actions = [
       "ecr:GetAuthorizationToken"
     ]
+
     resources = [
       "*"
     ]
   }
+}
 
+data "aws_iam_policy_document" "logs_policy_doc" {
   statement {
     actions = [
       "logs:CreateLogStream",
@@ -109,10 +112,12 @@ data "aws_iam_policy_document" "ecr_policy_doc" {
     ]
 
     resources = [
-      aws_cloudwatch_log_group.aws-logs-ndr-ecs-mesh-forwarder.arn
+      "arn:aws:logs:${var.aws_region}:${local.account_id}:log-group:/nhs/deductions/${var.environment}-${local.account_id}/mesh_forwarder:*"
     ]
   }
+}
 
+data "aws_iam_policy_document" "ssm_policy_doc" {
   statement {
     actions = [
       "ssm:Get*"
@@ -121,15 +126,17 @@ data "aws_iam_policy_document" "ecr_policy_doc" {
       "arn:aws:ssm:${var.aws_region}:${local.account_id}:parameter/repo/${var.environment}/user-input/external/mesh-mailbox*",
     ]
   }
+}
 
-  #  statement {
-  #    actions = [
-  #      "sns:Publish"
-  #    ]
-  #    resources = [
-  #      aws_sns_topic.nems_events.arn,
-  #    ]
-  #  }
+data "aws_iam_policy_document" "sns_policy_doc" {
+  statement {
+    actions = [
+      "sns:Publish"
+    ]
+    resources = [
+      module.sqs-nems-queue-topic.arn,
+    ]
+  }
 }
 
 data "aws_iam_policy_document" "kms_policy_doc" {
@@ -144,27 +151,22 @@ data "aws_iam_policy_document" "kms_policy_doc" {
 }
 
 resource "aws_iam_role" "mesh_forwarder" {
-  name               = "${var.environment}-mesh-forwarder-EcsTaskRole"
+  name               = "${var.environment}-mesh_forwarder-EcsTaskRole"
   assume_role_policy = data.aws_iam_policy_document.ecs-assume-role-policy.json
-  description        = "Role assumed by mesh-forwarder ECS task"
+  description        = "Role assumed by mesh_forwarder ECS task"
 
   tags = {
-    Name        = "${var.environment}-mesh-forwarder"
     Environment = var.environment
-    Workspace   = terraform.workspace
   }
 }
 
 resource "aws_iam_role" "sns_failure_feedback_role" {
-  name               = "${var.environment}-mesh-forwarder-sns-failure-feedback-role"
+  name               = "${var.environment}-mesh_forwarder-sns-failure-feedback-role"
   assume_role_policy = data.aws_iam_policy_document.sns_service_assume_role_policy.json
-  description        = "Allows logging of SNS delivery failures in mesh-forwarder"
+  description        = "Allows logging of SNS delivery failures in mesh_forwarder"
 
   tags = {
     Environment = var.environment
-    Name        = "${var.environment}-mesh-forwarder"
-    Environment = var.environment
-    Workspace   = terraform.workspace
   }
 }
 
@@ -197,7 +199,7 @@ data "aws_iam_policy_document" "sns_failure_feedback_policy" {
 }
 
 resource "aws_iam_policy" "sns_failure_feedback_policy" {
-  name   = "${var.environment}-mesh-forwarder-sns-failure-feedback"
+  name   = "${var.environment}-mesh_forwarder-sns-failure-feedback"
   policy = data.aws_iam_policy_document.sns_failure_feedback_policy.json
 }
 
@@ -207,12 +209,27 @@ resource "aws_iam_role_policy_attachment" "sns_failure_feedback_policy_attachmen
 }
 
 resource "aws_iam_policy" "mesh_forwarder_ecr" {
-  name   = "${var.environment}-mesh-forwarder-ecr"
+  name   = "${var.environment}-mesh_forwarder-ecr"
   policy = data.aws_iam_policy_document.ecr_policy_doc.json
 }
 
+resource "aws_iam_policy" "mesh_forwarder_logs" {
+  name   = "${var.environment}-mesh_forwarder-logs"
+  policy = data.aws_iam_policy_document.logs_policy_doc.json
+}
+
+resource "aws_iam_policy" "mesh_forwarder_ssm" {
+  name   = "${var.environment}-mesh_forwarder-ssm"
+  policy = data.aws_iam_policy_document.ssm_policy_doc.json
+}
+
+resource "aws_iam_policy" "mesh_forwarder_sns" {
+  name   = "${var.environment}-mesh_forwarder-sns"
+  policy = data.aws_iam_policy_document.sns_policy_doc.json
+}
+
 resource "aws_iam_policy" "mesh_forwarder_kms" {
-  name   = "${var.environment}-mesh-forwarder-kms"
+  name   = "${var.environment}-mesh_forwarder-kms"
   policy = data.aws_iam_policy_document.kms_policy_doc.json
 }
 
@@ -221,21 +238,40 @@ resource "aws_iam_role_policy_attachment" "mesh_forwarder_ecr" {
   policy_arn = aws_iam_policy.mesh_forwarder_ecr.arn
 }
 
-#resource "aws_iam_role_policy_attachment" "mesh_forwarder_sns" {
-#  role       = aws_iam_role.mesh_forwarder.name
-#  policy_arn = aws_iam_policy.mesh_forwarder_sns.arn
-#}
+resource "aws_iam_role_policy_attachment" "mesh_forwarder_ssm" {
+  role       = aws_iam_role.mesh_forwarder.name
+  policy_arn = aws_iam_policy.mesh_forwarder_ssm.arn
+}
+
+resource "aws_iam_role_policy_attachment" "mesh_forwarder_sns" {
+  role       = aws_iam_role.mesh_forwarder.name
+  policy_arn = aws_iam_policy.mesh_forwarder_sns.arn
+}
 
 resource "aws_iam_role_policy_attachment" "mesh_forwarder_kms" {
   role       = aws_iam_role.mesh_forwarder.name
   policy_arn = aws_iam_policy.mesh_forwarder_kms.arn
 }
 
+resource "aws_iam_role_policy_attachment" "mesh_forwarder_logs" {
+  role       = aws_iam_role.mesh_forwarder.name
+  policy_arn = aws_iam_policy.mesh_forwarder_logs.arn
+}
+
 resource "aws_iam_role" "ecs_execution" {
   name               = "${var.environment}-deductions-mesh-forwarder-task"
   description        = "ECS task role for launching mesh s3 forwarder"
-  assume_role_policy = data.aws_iam_policy_document.ecs_execution.json
+  assume_role_policy = data.aws_iam_policy_document.ecs-assume-role-policy.json
+}
 
+resource "aws_iam_role_policy_attachment" "ecs_execution" {
+  role       = aws_iam_role.ecs_execution.name
+  policy_arn = aws_iam_policy.ecs_execution.arn
+}
+
+resource "aws_iam_policy" "ecs_execution" {
+  name   = "${var.environment}-mesh_forwarder-ecs-execution"
+  policy = data.aws_iam_policy_document.ecs_execution.json
 }
 
 data "aws_iam_policy_document" "ecs_execution" {
@@ -271,6 +307,4 @@ data "aws_iam_policy_document" "ecs_execution" {
       "${aws_cloudwatch_log_group.aws-logs-ndr-ecs-mesh-forwarder.arn}:*"
     ]
   }
-
-  depends_on = [data.aws_ecr_repository.mesh-forwarder-ecr, aws_cloudwatch_log_group.aws-logs-ndr-ecs-mesh-forwarder]
 }
