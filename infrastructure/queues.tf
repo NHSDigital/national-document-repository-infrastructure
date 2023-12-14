@@ -9,7 +9,7 @@ module "sqs-splunk-queue" {
 module "sqs-nems-queue" {
   source      = "./modules/sqs"
   name        = "nems-queue"
-  count       = local.is_sandbox ? 0 : 1
+  count       = 1
   environment = var.environment
   owner       = var.owner
 }
@@ -37,8 +37,8 @@ module "sqs-lg-bulk-upload-invalid-queue" {
   max_visibility    = 1020
 }
 
-module "sqs-nems-queue-topic" {
-  count                 = local.is_sandbox ? 0 : 1
+module "sns-nems-queue-topic" {
+  count                 = 2
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   current_account_id    = data.aws_caller_identity.current.account_id

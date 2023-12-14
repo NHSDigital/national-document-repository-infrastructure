@@ -134,7 +134,7 @@ data "aws_iam_policy_document" "sns_policy_doc" {
       "sns:Publish"
     ]
     resources = [
-      module.sqs-nems-queue-topic.arn,
+      module.sns-nems-queue-topic[0].arn,
     ]
   }
 }
