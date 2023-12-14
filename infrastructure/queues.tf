@@ -69,10 +69,10 @@ module "sqs-nems-queue-topic" {
 }
 
 module "mesh_sns_queue" {
-  source             = "./modules/sns"
+  source                = "./modules/sns"
   count                 = local.is_sandbox ? 0 : 1
   sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id = data.aws_caller_identity.current.account_id
+  current_account_id    = data.aws_caller_identity.current.account_id
   depends_on            = [module.sqs-nems-queue, module.sns_encryption_key]
   topic_endpoint        = module.sqs-nems-queue[0].endpoint
   topic_name            = "nems_events_topic"
