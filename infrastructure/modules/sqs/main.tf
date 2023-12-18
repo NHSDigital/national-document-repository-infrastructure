@@ -8,6 +8,7 @@ resource "aws_sqs_queue" "sqs_queue" {
   sqs_managed_sse_enabled     = var.enable_sse
   fifo_queue                  = var.enable_fifo
   content_based_deduplication = var.enable_deduplication
+  kms_master_key_id           = var.kms_master_key_id
   tags = {
     Name        = "${terraform.workspace}-${var.name}"
     Owner       = var.owner

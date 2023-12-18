@@ -7,6 +7,11 @@ variable "owner" {
   type = string
 }
 
+variable "region" {
+  type    = string
+  default = "eu-west-2"
+}
+
 variable "certificate_subdomain_name_prefix" {
   type        = string
   description = "Prefix to add to subdomains on certification configurations, dev envs use api-{env}, prod envs use api.{env}"
@@ -121,6 +126,66 @@ variable "cloud_only_service_instances" {
   type    = number
   default = 1
 }
+
+
+variable "mesh_component_name" {
+  type    = string
+  default = "mesh-forwarder"
+}
+
+variable "poll_frequency" {}
+
+variable "log_level" {
+  type    = string
+  default = "debug"
+}
+
+variable "mesh_url" {
+  type        = string
+  description = "URL of MESH service"
+}
+
+variable "mesh_mailbox_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH mailbox name"
+}
+
+variable "mesh_password_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH mailbox password"
+}
+
+variable "mesh_shared_key_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH shared key"
+}
+
+variable "mesh_client_cert_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH client certificate"
+}
+
+variable "mesh_client_key_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH client key"
+}
+
+variable "mesh_ca_cert_ssm_param_name" {
+  type        = string
+  description = "Name of SSM parameter containing MESH CA certificate"
+}
+
+variable "disable_message_header_validation" {
+  type        = string
+  description = "if true then relaxes the restrictions on MESH message headers"
+  default     = "true"
+}
+
+variable "message_destination" {
+  default = "sns"
+}
+
+variable "cloudwatch_alarm_evaluation_periods" {}
 
 locals {
   is_sandbox       = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)

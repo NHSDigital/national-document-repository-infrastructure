@@ -16,9 +16,6 @@ resource "aws_kms_alias" "encryption_key_alias" {
   target_key_id = aws_kms_key.encryption_key.id
 }
 
-output "id" {
-  value = aws_kms_key.encryption_key.id
-}
 
 data "aws_iam_policy_document" "kms_key_policy_doc" {
   statement {

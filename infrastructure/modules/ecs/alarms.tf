@@ -59,7 +59,7 @@ resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_high_alarm" {
   threshold           = 85
 
   dimensions = {
-    ClusterName = aws_ecs_cluster.ndr_esc_cluster.name
+    ClusterName = aws_ecs_cluster.ndr_ecs_cluster.name
     ServiceName = aws_ecs_service.ndr_ecs_service.name
   }
 
@@ -86,7 +86,7 @@ resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_low_alarm" {
   threshold           = 15
 
   dimensions = {
-    ClusterName = aws_ecs_cluster.ndr_esc_cluster.name
+    ClusterName = aws_ecs_cluster.ndr_ecs_cluster.name
     ServiceName = aws_ecs_service.ndr_ecs_service.name
   }
 
