@@ -15,3 +15,8 @@ output "certificate_arn" {
   description = "The arn of certificate that load balancer is using"
   value       = data.aws_acm_certificate.amazon_issued.arn
 }
+
+output "container_port" {
+  description = "The container port number of docker image, which was provided as input variable of this module"
+  value       = var.container_port
+}
