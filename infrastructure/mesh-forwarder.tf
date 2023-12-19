@@ -140,7 +140,7 @@ resource "aws_iam_role" "mesh_forwarder" {
   }
   inline_policy {
     name   = "${var.environment}-${var.mesh_component_name}-sns"
-    policy = data.aws_iam_policy_document.sns_policy_doc.json
+    policy = data.aws_iam_policy_document.sns_policy_doc[0].json
   }
 }
 
@@ -212,7 +212,7 @@ resource "aws_iam_role" "ecs_execution" {
   assume_role_policy = data.aws_iam_policy_document.ecs-assume-role-policy.json
   inline_policy {
     name   = "${var.environment}-${var.mesh_component_name}-ecs-execution"
-    policy = data.aws_iam_policy_document.ecs_execution.json
+    policy = data.aws_iam_policy_document.ecs_execution[0].json
   }
 }
 
@@ -292,7 +292,7 @@ data "aws_iam_policy_document" "sqs_policy_doc" {
 resource "aws_sqs_queue_policy" "nems_events_subscription" {
   count     = local.is_mesh_forwarder_enable ? 1 : 0
   queue_url = module.sqs-nems-queue[0].sqs_id
-  policy    = data.aws_iam_policy_document.sqs_policy_doc.json
+  policy    = data.aws_iam_policy_document.sqs_policy_doc[0].json
 }
 
 # SNS
