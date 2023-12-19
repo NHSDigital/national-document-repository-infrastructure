@@ -1,4 +1,5 @@
 locals {
+  is_mesh_forwarder_enable         = false
   inbox_message_count_metric_name  = "MeshInboxMessageCount"
   error_logs_metric_name           = "ErrorCountInLogs"
   sns_topic_error_logs_metric_name = "NumberOfNotificationsFailed"
@@ -25,7 +26,7 @@ locals {
 
 # ECS
 resource "aws_ecs_service" "mesh_forwarder" {
-  count           = local.is_sandbox ? 1 : 1
+  count           = local.is_mesh_forwarder_enable ? 1 : 0
   name            = "${var.environment}-${var.mesh_component_name}-service"
   cluster         = local.ecs_cluster_id
   task_definition = aws_ecs_task_definition.forwarder[0].arn
@@ -40,7 +41,7 @@ resource "aws_ecs_service" "mesh_forwarder" {
 
 resource "aws_ecs_cluster" "mesh-forwarder-ecs-cluster" {
   name  = "${var.environment}-${var.mesh_component_name}-ecs-cluster"
-  count = local.is_sandbox ? 1 : 1
+  count = local.is_mesh_forwarder_enable ? 1 : 0
 
   setting {
     name  = "containerInsights"
@@ -55,7 +56,7 @@ resource "aws_ecs_cluster" "mesh-forwarder-ecs-cluster" {
 }
 
 resource "aws_ecs_task_definition" "forwarder" {
-  count = local.is_sandbox ? 1 : 1
+  count = local.is_mesh_forwarder_enable ? 1 : 0
 
   family = var.mesh_component_name
   container_definitions = jsonencode([
@@ -117,7 +118,7 @@ data "aws_iam_policy_document" "ecr_policy_doc" {
 
 # ECS IAM roles
 resource "aws_iam_role" "mesh_forwarder" {
-  count              = local.is_sandbox ? 1 : 1
+  count              = local.is_mesh_forwarder_enable ? 1 : 0
   name               = "${var.environment}-${var.mesh_component_name}-EcsTaskRole"
   assume_role_policy = data.aws_iam_policy_document.ecs-assume-role-policy.json
   description        = "Role assumed by ${var.mesh_component_name} ECS task"
@@ -204,7 +205,7 @@ data "aws_iam_policy_document" "kms_policy_doc" {
 }
 
 resource "aws_iam_role" "ecs_execution" {
-  count              = local.is_sandbox ? 1 : 1
+  count              = local.is_mesh_forwarder_enable ? 1 : 0
   name               = "${var.environment}-deductions-mesh-forwarder-task"
   description        = "ECS task role for launching mesh s3 forwarder"
   assume_role_policy = data.aws_iam_policy_document.ecs-assume-role-policy.json
@@ -253,7 +254,7 @@ data "aws_iam_policy_document" "ecs_execution" {
 module "sqs-nems-queue" {
   source            = "./modules/sqs"
   name              = "${var.mesh_component_name}_name-nems-queue"
-  count             = local.is_sandbox ? 1 : 1
+  count             = local.is_mesh_forwarder_enable ? 1 : 0
   environment       = var.environment
   owner             = var.owner
   message_retention = 1800
@@ -286,14 +287,14 @@ data "aws_iam_policy_document" "sqs_policy_doc" {
 }
 
 resource "aws_sqs_queue_policy" "nems_events_subscription" {
-  count     = local.is_sandbox ? 1 : 1
+  count     = local.is_mesh_forwarder_enable ? 1 : 0
   queue_url = module.sqs-nems-queue[0].sqs_id
   policy    = data.aws_iam_policy_document.sqs_policy_doc.json
 }
 
 # SNS
 module "sns-nems-queue-topic" {
-  count                 = local.is_sandbox ? 1 : 1
+  count                 = local.is_mesh_forwarder_enable ? 1 : 0
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   current_account_id    = data.aws_caller_identity.current.account_id
@@ -326,7 +327,7 @@ module "sns-nems-queue-topic" {
 }
 
 resource "aws_iam_role" "sns_failure_feedback_role" {
-  count              = local.is_sandbox ? 1 : 1
+  count              = local.is_mesh_forwarder_enable ? 1 : 0
   name               = "${var.environment}-${var.mesh_component_name}-sns-failure-feedback-role"
   assume_role_policy = data.aws_iam_policy_document.sns_service_assume_role_policy.json
   description        = "Allows logging of SNS delivery failures in ${var.mesh_component_name}"
@@ -366,7 +367,7 @@ data "aws_iam_policy_document" "sns_failure_feedback_policy" {
 
 # CloudWatch groups
 resource "aws_cloudwatch_log_group" "mesh_log_group" {
-  count = local.is_sandbox ? 1 : 1
+  count = local.is_mesh_forwarder_enable ? 1 : 0
   name  = "/nhs/deductions/${var.environment}/${var.mesh_component_name}"
 
   tags = {
@@ -388,7 +389,7 @@ resource "aws_cloudwatch_log_group" "mesh_log_group" {
 #}
 
 resource "aws_cloudwatch_metric_alarm" "inbox-messages-not-consumed" {
-  count               = local.is_sandbox ? 1 : 1
+  count               = local.is_mesh_forwarder_enable ? 1 : 0
   alarm_name          = "${var.environment}-mesh-inbox-messages-not-consumed"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.cloudwatch_alarm_evaluation_periods
@@ -418,7 +419,7 @@ resource "aws_cloudwatch_metric_alarm" "inbox-messages-not-consumed" {
 #}
 
 resource "aws_cloudwatch_metric_alarm" "error_log_alarm" {
-  count               = local.is_sandbox ? 1 : 1
+  count               = local.is_mesh_forwarder_enable ? 1 : 0
   alarm_name          = "${var.environment}-${var.mesh_component_name}-error-logs"
   comparison_operator = "GreaterThanThreshold"
   threshold           = "0"
@@ -435,7 +436,7 @@ resource "aws_cloudwatch_metric_alarm" "error_log_alarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "sns_topic_error_log_alarm" {
-  count               = local.is_sandbox ? 1 : 1
+  count               = local.is_mesh_forwarder_enable ? 1 : 0
   alarm_name          = "${local.mesh_forwarder_sns_topic_name}-error-logs"
   comparison_operator = "GreaterThanThreshold"
   threshold           = "0"
@@ -468,7 +469,7 @@ resource "aws_ssm_parameter" "sns_sqs_kms_key_id" {
 }
 
 resource "aws_ssm_parameter" "nems_events_topic_arn" {
-  count = local.is_sandbox ? 1 : 1
+  count = local.is_mesh_forwarder_enable ? 1 : 0
   name  = "/repo/${var.environment}/output/${var.mesh_component_name}/nems-events-topic-arn"
   type  = "String"
   value = module.sns-nems-queue-topic[0].arn
@@ -481,7 +482,7 @@ resource "aws_ssm_parameter" "nems_events_topic_arn" {
 }
 
 resource "aws_ssm_parameter" "nems_events_observability" {
-  count = local.is_sandbox ? 1 : 1
+  count = local.is_mesh_forwarder_enable ? 1 : 0
   name  = "/repo/${var.environment}/output/${var.mesh_component_name}/nems-events-observability"
   type  = "String"
   value = module.sqs-nems-queue[0].sqs_arn
