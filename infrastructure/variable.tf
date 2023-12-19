@@ -17,7 +17,7 @@ variable "certificate_subdomain_name_prefix" {
 variable "docstore_bucket_name" {
   type        = string
   description = "The name of S3 bucket to store ARF documents"
-  default     = "document-store"
+  default     = "ndr-document-store"
 }
 
 variable "zip_store_bucket_name" {

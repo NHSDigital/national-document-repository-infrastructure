@@ -1,7 +1,7 @@
 # Document Store Bucket
 module "ndr-document-store" {
   source                    = "./modules/s3/"
-  bucket_name               = "${var.docstore_bucket_name}-00805753c8731e"
+  bucket_name               = "${var.docstore_bucket_name}"
   enable_cors_configuration = true
   enable_bucket_versioning  = true
   environment               = var.environment
@@ -171,11 +171,11 @@ module "ndr-bulk-staging-store" {
 }
 
 resource "aws_s3_bucket" "logs_bucket" {
-  bucket        = "${terraform.workspace}-load-balancer-logs-00805753c8731e"
+  bucket        = "${terraform.workspace}-load-balancer-logs-487224344892"
   force_destroy = local.is_force_destroy
 
   tags = {
-    Name        = "${terraform.workspace}-load-balancer-logs-00805753c8731e"
+    Name        = "${terraform.workspace}-load-balancer-logs-487224344892"
     Owner       = var.owner
     Environment = var.environment
     Workspace   = terraform.workspace
