@@ -21,7 +21,7 @@ locals {
     { "name" : "DISABLE_MESSAGE_HEADER_VALIDATION", "value" : var.disable_message_header_validation },
     { "name" : "POLL_FREQUENCY", "value" : var.poll_frequency }
   ]
-  ecs_cluster_id = aws_ecs_cluster.mesh-forwarder-ecs-cluster[0].id
+  ecs_cluster_id = try(aws_ecs_cluster.mesh-forwarder-ecs-cluster[0].id, null)
 }
 
 # ECS
@@ -183,12 +183,13 @@ data "aws_iam_policy_document" "ssm_policy_doc" {
 }
 
 data "aws_iam_policy_document" "sns_policy_doc" {
+  count = local.is_mesh_forwarder_enable ? 1 : 0
   statement {
     actions = [
       "sns:Publish"
     ]
     resources = [
-      module.sns-nems-queue-topic[0].arn,
+      try(module.sns-nems-queue-topic[0].arn, null)
     ]
   }
 }
@@ -216,6 +217,7 @@ resource "aws_iam_role" "ecs_execution" {
 }
 
 data "aws_iam_policy_document" "ecs_execution" {
+  count = local.is_mesh_forwarder_enable ? 1 : 0
   statement {
     sid = "GetEcrAuthToken"
     actions = [
@@ -263,6 +265,7 @@ module "sqs-nems-queue" {
 }
 
 data "aws_iam_policy_document" "sqs_policy_doc" {
+  count = local.is_mesh_forwarder_enable ? 1 : 0
   statement {
     effect = "Allow"
     actions = [
