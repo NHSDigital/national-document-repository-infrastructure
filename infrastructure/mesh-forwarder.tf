@@ -460,6 +460,7 @@ resource "aws_cloudwatch_metric_alarm" "sns_topic_error_log_alarm" {
 
 # Output SSM Mesh forwarder
 resource "aws_ssm_parameter" "sns_sqs_kms_key_id" {
+  count = local.is_mesh_forwarder_enable ? 1 : 0
   name  = "/repo/${var.environment}/output/${var.mesh_component_name}/sns-sqs-kms-key-id"
   type  = "String"
   value = module.sns_encryption_key.id
