@@ -1,7 +1,7 @@
 resource "aws_ecs_service" "ndr_ecs_service" {
   name            = var.ecs_cluster_service_name
   cluster         = aws_ecs_cluster.ndr_ecs_cluster.id
-  task_definition = aws_ecs_task_definition.nsr_ecs_task.arn
+  task_definition = aws_ecs_task_definition.ndr_ecs_task.arn
   desired_count   = 3
   launch_type     = var.ecs_launch_type
 
