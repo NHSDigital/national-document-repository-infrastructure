@@ -6,7 +6,7 @@ locals {
   mesh_forwarder_metric_namespace  = "MeshForwarder"
   sns_topic_namespace              = "AWS/SNS"
   mesh_forwarder_sns_topic_name    = "${var.environment}-mesh-forwarder-nems-events-sns-topic"
-  alarm_actions                    = [aws_sns_topic.alarm_notifications_topic[0].arn]
+  alarm_actions                    = [try(aws_sns_topic.alarm_notifications_topic[0].arn, null)]
   account_id                       = data.aws_caller_identity.current.account_id
   environment_variables = [
     { "name" : "MESH_URL", "value" : var.mesh_url },
