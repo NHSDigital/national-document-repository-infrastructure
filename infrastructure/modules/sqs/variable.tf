@@ -69,6 +69,10 @@ output "sqs_arn" {
   value = aws_sqs_queue.sqs_queue.arn
 }
 
+output "sqs_id" {
+  value = aws_sqs_queue.sqs_queue.id
+}
+
 output "sqs_policy" {
   value       = aws_iam_policy.sqs_queue_policy.arn
   description = "Arn for the iam policy for accessing this queue"
@@ -76,4 +80,10 @@ output "sqs_policy" {
 
 output "sqs_url" {
   value = aws_sqs_queue.sqs_queue.url
+}
+
+variable "kms_master_key_id" {
+  description = "The ID of an AWS-managed customer master key (CMK) for Amazon SQS or a custom CMK"
+  type        = string
+  default     = null
 }

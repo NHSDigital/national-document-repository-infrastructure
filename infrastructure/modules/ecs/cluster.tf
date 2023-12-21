@@ -1,4 +1,4 @@
-resource "aws_ecs_cluster" "ndr_esc_cluster" {
+resource "aws_ecs_cluster" "ndr_ecs_cluster" {
   name = "${terraform.workspace}-${var.ecs_cluster_name}"
 
   configuration {

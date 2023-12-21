@@ -1,7 +1,7 @@
 resource "aws_ecs_service" "ndr_ecs_service" {
   name            = var.ecs_cluster_service_name
-  cluster         = aws_ecs_cluster.ndr_esc_cluster.id
-  task_definition = aws_ecs_task_definition.nsr_ecs_task.arn
+  cluster         = aws_ecs_cluster.ndr_ecs_cluster.id
+  task_definition = aws_ecs_task_definition.ndr_ecs_task.arn
   desired_count   = 3
   launch_type     = var.ecs_launch_type
 
@@ -29,11 +29,11 @@ resource "aws_ecs_service" "ndr_ecs_service" {
 resource "aws_appautoscaling_target" "ndr_ecs_service_autoscale_target" {
   max_capacity       = 6
   min_capacity       = 3
-  resource_id        = "service/${aws_ecs_cluster.ndr_esc_cluster.name}/${aws_ecs_service.ndr_ecs_service.name}"
+  resource_id        = "service/${aws_ecs_cluster.ndr_ecs_cluster.name}/${aws_ecs_service.ndr_ecs_service.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
 
-  depends_on = [aws_ecs_cluster.ndr_esc_cluster, aws_ecs_service.ndr_ecs_service]
+  depends_on = [aws_ecs_cluster.ndr_ecs_cluster, aws_ecs_service.ndr_ecs_service]
 
   tags = {
     Name        = "${terraform.workspace}-ecs-service-autoscale-target"
