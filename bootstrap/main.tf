@@ -13,13 +13,13 @@ provider "aws" {
 }
 
 resource "aws_kms_key" "ndr_state_key" {
-  description             = "ndr-dev-terraform-state-key"
+  description             = "ndr-${var.environment}-terraform-state-key"
   deletion_window_in_days = 10
   enable_key_rotation     = true
 }
 
 resource "aws_s3_bucket" "ndr_lock_bucket" {
-  bucket = "ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}"
+  bucket = "ndr-${var.environment}-terraform-state-${data.aws_caller_identity.current.account_id}"
 
   lifecycle {
     prevent_destroy = true
