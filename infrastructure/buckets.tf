@@ -171,11 +171,11 @@ module "ndr-bulk-staging-store" {
 }
 
 resource "aws_s3_bucket" "logs_bucket" {
-  bucket        = "${terraform.workspace}-load-balancer-logs-487224344892"
+  bucket        = "${terraform.workspace}-load-balancer-logs-${data.aws_caller_identity.current.account_id}"
   force_destroy = local.is_force_destroy
 
   tags = {
-    Name        = "${terraform.workspace}-load-balancer-logs-487224344892"
+    Name        = "${terraform.workspace}-load-balancer-logs-${data.aws_caller_identity.current.account_id}"
     Owner       = var.owner
     Environment = var.environment
     Workspace   = terraform.workspace
