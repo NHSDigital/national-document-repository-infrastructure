@@ -1,4 +1,4 @@
-resource "aws_ecs_task_definition" "nsr_ecs_task" {
+resource "aws_ecs_task_definition" "ndr_ecs_task" {
   family                   = "${terraform.workspace}-ndr-service-task"
   execution_role_arn       = aws_iam_role.task_exec.arn
   network_mode             = "awsvpc"

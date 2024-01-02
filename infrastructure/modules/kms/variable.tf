@@ -26,3 +26,11 @@ variable "owner" {
 variable "identifiers" {
   type = list(string)
 }
+
+output "kms_arn" {
+  value = aws_kms_key.encryption_key.arn
+}
+
+output "id" {
+  value = aws_kms_key.encryption_key.id
+}

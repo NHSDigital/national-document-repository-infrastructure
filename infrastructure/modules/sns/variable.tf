@@ -3,7 +3,6 @@ variable "topic_name" {
   description = "Name of the SNS topic"
 }
 
-
 variable "delivery_policy" {
   type        = string
   description = "Attach delivery or IAM policy"
@@ -18,13 +17,11 @@ variable "enable_deduplication" {
   type        = bool
   default     = false
   description = "Prevent content based duplication in notification queue"
-
 }
 
 variable "topic_protocol" {
   type = string
 }
-
 
 variable "topic_endpoint" {
   type = any
@@ -36,4 +33,14 @@ variable "current_account_id" {
 
 variable "sns_encryption_key_id" {
   type = string
+}
+
+variable "sqs_feedback" {
+  description = "Map of IAM role ARNs and sample rate for success and failure feedback"
+  type        = map(string)
+  default     = {}
+}
+
+variable "raw_message_delivery" {
+  default = false
 }

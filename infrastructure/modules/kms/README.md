@@ -37,3 +37,4 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_id"></a> [id](#output\_id) | n/a |
+| <a name="output_kms_arn"></a> [kms\_arn](#output\_kms\_arn) | n/a |

@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "splunk_trust_policy" {
 resource "aws_iam_role" "splunk_sqs_forwarder" {
   count              = local.is_sandbox ? 0 : 1
   name               = "${var.environment}_splunk_sqs_forwarder_role"
-  description        = "Role to allow ARF to integrate with Splunk"
+  description        = "Role to allow Repo to integrate with Splunk"
   assume_role_policy = data.aws_iam_policy_document.splunk_trust_policy.json
   inline_policy {
     name = "${var.environment}_splunk_access_policy"
@@ -35,7 +35,6 @@ resource "aws_iam_role" "splunk_sqs_forwarder" {
           ]
           Resource = [
             module.sqs-splunk-queue[0].sqs_arn,
-            module.sqs-nems-queue[0].sqs_arn
           ]
         },
       ]

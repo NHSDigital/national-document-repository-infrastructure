@@ -16,3 +16,15 @@ module "ndr-ecs-fargate" {
   alarm_actions_arn_list   = local.is_sandbox ? [] : [aws_sns_topic.alarm_notifications_topic[0].arn]
   logs_bucket              = aws_s3_bucket.logs_bucket.bucket
 }
+
+
+module "ndr-ecs-container-port-ssm-parameter" {
+  source              = "./modules/ssm_parameter"
+  name                = "container_port"
+  description         = "Docker container port number for ${var.environment}"
+  resource_depends_on = module.ndr-ecs-fargate
+  value               = module.ndr-ecs-fargate.container_port
+  type                = "SecureString"
+  owner               = var.owner
+  environment         = var.environment
+}
