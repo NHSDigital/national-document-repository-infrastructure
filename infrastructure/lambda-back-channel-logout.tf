@@ -34,7 +34,7 @@ module "back_channel_logout_lambda" {
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     WORKSPACE                      = terraform.workspace
-    ENVIRONMENT                    = terraform.environment
+    ENVIRONMENT                    = var.environment
     AUTH_DYNAMODB_NAME             = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
     OIDC_CALLBACK_URL              = "https://${terraform.workspace}.${var.domain}/auth-callback"
