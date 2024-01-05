@@ -43,7 +43,6 @@ resource "aws_vpc_endpoint" "ndr_interface_vpc_endpoint" {
   private_dns_enabled = true
   subnet_ids          = [for subnet in aws_subnet.private_subnets : subnet.id]
 
-
   service_name = "com.amazonaws.eu-west-2.${var.endpoint_interface_services[count.index]}"
   tags = {
     Name        = "${terraform.workspace}-${var.endpoint_interface_services[count.index]}-vpc"

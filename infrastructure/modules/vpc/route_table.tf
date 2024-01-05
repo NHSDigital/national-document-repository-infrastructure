@@ -49,3 +49,27 @@ resource "aws_route_table_association" "private" {
   subnet_id      = element(aws_subnet.private_subnets[*].id, count.index)
   route_table_id = aws_route_table.private[0].id
 }
+
+resource "aws_nat_gateway" "public" {
+  count             = local.is_sandbox ? 0 : 1
+  allocation_id     = aws_eip.eip[0].id
+  subnet_id         = aws_subnet.public_subnets[1].id
+  connectivity_type = "public"
+  tags = {
+    Name = "gw NAT"
+  }
+  depends_on = [aws_internet_gateway.ig, aws_subnet.public_subnets[1]]
+}
+
+resource "aws_eip" "eip" {
+  count  = local.is_sandbox ? 0 : 1
+  domain = "vpc"
+}
+
+resource "aws_route" "nat_route" {
+  count                  = local.is_sandbox ? 0 : 1
+  route_table_id         = aws_route_table.private[0].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.public[0].id
+  depends_on             = [aws_route_table.private[0]]
+}

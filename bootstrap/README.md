@@ -33,6 +33,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment to bootstrap | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The region to be used for bootstrapping | `string` | `"eu-west-2"` | no |
 
 ## Outputs
