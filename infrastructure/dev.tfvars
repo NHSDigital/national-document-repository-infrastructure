@@ -5,7 +5,7 @@ certificate_domain                = "access-request-fulfilment.patient-deduction
 certificate_subdomain_name_prefix = "api-"
 
 cloudwatch_alarm_evaluation_periods = 5
-poll_frequency                      = "10"
+poll_frequency                      = "3600"
 
 mesh_url                        = "https://msg.intspineservices.nhs.uk"
 mesh_mailbox_ssm_param_name     = "/repo/dev/user-input/external/mesh-mailbox-id"

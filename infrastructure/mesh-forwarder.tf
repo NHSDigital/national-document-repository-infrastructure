@@ -1,5 +1,5 @@
 locals {
-  is_mesh_forwarder_enable         = false
+  is_mesh_forwarder_enable         = !contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
   inbox_message_count_metric_name  = "MeshInboxMessageCount"
   error_logs_metric_name           = "ErrorCountInLogs"
   sns_topic_error_logs_metric_name = "NumberOfNotificationsFailed"
@@ -34,7 +34,7 @@ resource "aws_ecs_service" "mesh_forwarder" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    security_groups = [module.ndr-ecs-fargate.security_group_id]
+    security_groups = [aws_security_group.ndr_mesh_sg.id]
     subnets         = [for subnet in module.ndr-vpc-ui.private_subnets : subnet]
   }
 }
@@ -379,17 +379,17 @@ resource "aws_cloudwatch_log_group" "mesh_log_group" {
   }
 }
 
-#resource "aws_cloudwatch_log_metric_filter" "inbox_message_count" {
-#  name           = "${var.environment}-mesh-inbox-message-count"
-#  pattern        = "{ $.event = \"COUNT_MESSAGES\" }"
-#  log_group_name = aws_cloudwatch_log_group.log_group.name
-#
-#  metric_transformation {
-#    name      = local.inbox_message_count_metric_name
-#    namespace = local.mesh_forwarder_metric_namespace
-#    value     = "$.inboxMessageCount"
-#  }
-#}
+resource "aws_cloudwatch_log_metric_filter" "inbox_message_count" {
+  name           = "${var.environment}-mesh-inbox-message-count"
+  pattern        = "{ $.event = \"COUNT_MESSAGES\" }"
+  log_group_name = aws_cloudwatch_log_group.mesh_log_group[0].name
+
+  metric_transformation {
+    name      = local.inbox_message_count_metric_name
+    namespace = local.mesh_forwarder_metric_namespace
+    value     = "$.inboxMessageCount"
+  }
+}
 
 resource "aws_cloudwatch_metric_alarm" "inbox-messages-not-consumed" {
   count               = local.is_mesh_forwarder_enable ? 1 : 0
@@ -408,18 +408,18 @@ resource "aws_cloudwatch_metric_alarm" "inbox-messages-not-consumed" {
   ok_actions          = local.alarm_actions
 }
 
-#resource "aws_cloudwatch_log_metric_filter" "error_log_metric_filter" {
-#  name           = "${var.environment}-${var.mesh_component_name}-error-logs"
-#  pattern        = "{ $.error = * }"
-#  log_group_name = aws_cloudwatch_log_group.log_group.name
-#
-#  metric_transformation {
-#    name          = local.error_logs_metric_name
-#    namespace     = local.mesh_forwarder_metric_namespace
-#    value         = 1
-#    default_value = 0
-#  }
-#}
+resource "aws_cloudwatch_log_metric_filter" "error_log_metric_filter" {
+  name           = "${var.environment}-${var.mesh_component_name}-error-logs"
+  pattern        = "{ $.error = * }"
+  log_group_name = aws_cloudwatch_log_group.mesh_log_group[0].name
+
+  metric_transformation {
+    name          = local.error_logs_metric_name
+    namespace     = local.mesh_forwarder_metric_namespace
+    value         = 1
+    default_value = 0
+  }
+}
 
 resource "aws_cloudwatch_metric_alarm" "error_log_alarm" {
   count               = local.is_mesh_forwarder_enable ? 1 : 0
@@ -495,4 +495,46 @@ resource "aws_ssm_parameter" "nems_events_observability" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
+}
+
+resource "aws_security_group" "ndr_mesh_sg" {
+  name        = "mesh-forwarder-sg"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = module.ndr-vpc-ui.vpc_id
+  tags = {
+    Name        = "${terraform.workspace}-mesh-forwarder-sg"
+    Environment = terraform.workspace
+  }
+}
+
+resource "aws_vpc_security_group_egress_rule" "ndr_ecs_sg_egress_http" {
+  security_group_id = aws_security_group.ndr_mesh_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ndr_ecs_sg_ingress_http" {
+  security_group_id = aws_security_group.ndr_mesh_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
+}
+
+resource "aws_vpc_security_group_egress_rule" "ndr_ecs_sg_egress_https" {
+  security_group_id = aws_security_group.ndr_mesh_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 443
+  ip_protocol       = "tcp"
+  to_port           = 443
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ndr_ecs_sg_ingress_https" {
+  security_group_id = aws_security_group.ndr_mesh_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 443
+  ip_protocol       = "tcp"
+  to_port           = 443
 }
