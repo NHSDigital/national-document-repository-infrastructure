@@ -73,6 +73,7 @@ module "send-feedback-lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_pds.arn,
+    aws_iam_policy.ses_send_email_policy.arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.send-feedback-gateway.gateway_resource_id
@@ -88,3 +89,20 @@ module "send-feedback-lambda" {
   ]
 }
 
+resource "aws_iam_policy" "ses_send_email_policy" {
+  name = "${terraform.workspace}_ses_send_email_policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ses:SendEmail",
+        ],
+        Resource = [
+          "arn:aws:ses:::/*",
+        ]
+      }
+    ]
+  })
+}
