@@ -38,3 +38,10 @@ variable "api_gateway_zone_id" {
   type        = string
 }
 
+locals {
+  zone_id = var.using_arf_hosted_zone ? data.aws_route53_zone.ndr_zone[0].zone_id : aws_route53_zone.ndr_zone[0].zone_id
+}
+
+output "zone_id" {
+  value = local.zone_id
+}
