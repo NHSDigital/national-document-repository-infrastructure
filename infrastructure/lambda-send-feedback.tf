@@ -80,16 +80,10 @@ module "send-feedback-lambda" {
   http_method       = "POST"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    WORKSPACE = terraform.workspace,
-    FROM_EMAIL_ADDRESS = (local.is_sandbox_or_test
-      ? "feedback@mailing.ndr-dev.${var.domain}"
-      : "feedback@${module.ndr-feedback-mailbox.mail_from_domain_name}"
-    )
-    EMAIL_SUBJECT = "Digitised Lloyd George feedback"
-    EMAIL_RECIPIENT_SSM_PARAM_KEY = (local.is_sandbox_or_test
-      ? "/prs/dev/user-input/feedback-recipient-email-list"
-      : "/prs/${var.environment}/user-input/feedback-recipient-email-list"
-    )
+    WORKSPACE                     = terraform.workspace,
+    FROM_EMAIL_ADDRESS            = local.ses_feedback_sender_email_address
+    EMAIL_SUBJECT                 = "Digitised Lloyd George feedback"
+    EMAIL_RECIPIENT_SSM_PARAM_KEY = local.feedback_recipient_list_ssm_param_key
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
@@ -109,7 +103,7 @@ resource "aws_iam_policy" "ses_send_email_policy" {
           "ses:SendEmail",
         ],
         Resource = [
-          "arn:aws:ses:*:*:*/*",
+          local.ses_send_feedback_email_resource_arn,
         ]
       }
     ]
