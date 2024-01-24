@@ -3,7 +3,7 @@ resource "aws_ses_domain_identity" "ndr_ses" {
   count  = var.enable ? 1 : 0
 }
 
-resource "aws_ses_domain_dkim" "ndr_domain_key_identified_mail" {
+resource "aws_ses_domain_dkim" "ndr_dkin" {
   domain = aws_ses_domain_identity.ndr_ses[0].domain
   count  = var.enable ? 1 : 0
 }
@@ -17,10 +17,10 @@ resource "aws_ses_domain_identity_verification" "ndr_ses_domain_verification" {
 resource "aws_route53_record" "ndr_ses_dkim_record" {
   count   = var.enable ? 3 : 0
   zone_id = var.zone_id
-  name    = "${aws_ses_domain_dkim.ndr_domain_key_identified_mail[0].dkim_tokens[count.index]}._domainkey"
+  name    = "${aws_ses_domain_dkim.ndr_dkin[0].dkim_tokens[count.index]}._domainkey"
   type    = "CNAME"
   ttl     = 600
-  records = ["${aws_ses_domain_dkim.ndr_domain_key_identified_mail[0].dkim_tokens[count.index]}.dkim.amazonses.com"]
+  records = ["${aws_ses_domain_dkim.ndr_dkin[0].dkim_tokens[count.index]}.dkim.amazonses.com"]
 }
 
 resource "aws_route53_record" "ndr_amazonses_verification_record" {
