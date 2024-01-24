@@ -80,12 +80,14 @@ module "send-feedback-lambda" {
   http_method       = "POST"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    WORKSPACE = terraform.workspace
-
+    WORKSPACE = terraform.workspace,
+    FROM_EMAIL_ADDRESS = "feedback@${module.ndr-feedback-mailbox.mail_from_domain_name}"
+    EMAIL_SUBJECT = "Digitised Lloyd George feedback"
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.send-feedback-gateway
+    module.send-feedback-gateway,
+    module.ndr-feedback-mailbox
   ]
 }
 
