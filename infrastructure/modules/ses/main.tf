@@ -8,6 +8,12 @@ resource "aws_ses_domain_dkim" "ndr_dkin" {
   count  = var.enable ? 1 : 0
 }
 
+resource "aws_ses_domain_identity_verification" "ndr_ses_domain_verification" {
+  domain = aws_ses_domain_identity.ndr_ses[0].domain
+
+  depends_on = [aws_route53_record.ndr_ses_dkim_record]
+}
+
 resource "aws_route53_record" "ndr_ses_dkim_record" {
   count   = var.enable ? 3 : 0
   zone_id = var.zone_id
