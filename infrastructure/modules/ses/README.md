@@ -34,4 +34,6 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_mail_from_domain_name"></a> [mail\_from\_domain\_name](#output\_mail\_from\_domain\_name) | n/a |
