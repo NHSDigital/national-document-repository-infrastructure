@@ -37,4 +37,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_is_enable"></a> [is\_enable](#output\_is\_enable) | n/a |
 | <a name="output_mail_from_domain_name"></a> [mail\_from\_domain\_name](#output\_mail\_from\_domain\_name) | n/a |
+| <a name="output_ses_domain_identity_arn"></a> [ses\_domain\_identity\_arn](#output\_ses\_domain\_identity\_arn) | n/a |

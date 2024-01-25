@@ -202,14 +202,17 @@ locals {
   current_region     = data.aws_region.current.name
   current_account_id = data.aws_caller_identity.current.account_id
 
-  ses_feedback_sender_email_address = (local.is_sandbox_or_test
-    ? "feedback@mailing.ndr-dev.${var.domain}"
-    : "feedback@${module.ndr-feedback-mailbox.mail_from_domain_name}"
+  ses_feedback_sender_email_address = (module.ndr-feedback-mailbox.is_enable
+    ? "feedback@${module.ndr-feedback-mailbox.mail_from_domain_name}"
+    : "feedback@mailing.ndr-dev.${var.domain}"
   )
   feedback_recipient_list_ssm_param_key = (local.is_sandbox_or_test
     ? "/prs/dev/user-input/feedback-recipient-email-list"
     : "/prs/${var.environment}/user-input/feedback-recipient-email-list"
   )
-  ses_send_feedback_email_resource_arn = "arn:aws:ses:${local.current_region}:${local.current_account_id}:identity/*"
+  ses_send_feedback_email_resource_arn = (module.ndr-feedback-mailbox.is_enable
+    ? module.ndr-feedback-mailbox.ses_domain_identity_arn
+    : "arn:aws:ses:${local.current_region}:${local.current_account_id}:identity/*"
+  )
 
 }
