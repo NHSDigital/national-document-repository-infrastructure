@@ -210,6 +210,6 @@ locals {
     ? "/prs/dev/user-input/feedback-recipient-email-list"
     : "/prs/${var.environment}/user-input/feedback-recipient-email-list"
   )
-  ses_send_feedback_email_resource_arn = "arn:aws:ses:${local.current_region}:${local.current_account_id}:identity/${local.ses_feedback_sender_email_address}"
+  ses_send_feedback_email_resource_arn = "arn:aws:ses:${local.current_region}:${local.current_account_id}:identity/*"
 
 }
