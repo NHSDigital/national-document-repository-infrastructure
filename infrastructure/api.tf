@@ -54,8 +54,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
       module.delete-doc-ref-lambda,
       module.lloyd-george-stitch-lambda,
       module.logout_lambda,
-      module.back_channel_logout_lambda,
-      module.send-feedback-lambda
+      module.back_channel_logout_lambda
     ]))
   }
 
@@ -73,9 +72,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.delete-doc-ref-lambda,
     module.lloyd-george-stitch-lambda,
     module.logout_lambda,
-    module.back_channel_logout_lambda,
-    module.send-feedback-gateway,
-    module.send-feedback-lambda
+    module.back_channel_logout_lambda
   ]
 
   lifecycle {

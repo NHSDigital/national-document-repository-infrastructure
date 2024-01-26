@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.12.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.29.0 |
 
 ## Modules
 
@@ -81,10 +81,6 @@
 | <a name="module_search_doc_alarm_topic"></a> [search\_doc\_alarm\_topic](#module\_search\_doc\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_search_patient_alarm"></a> [search\_patient\_alarm](#module\_search\_patient\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_search_patient_alarm_topic"></a> [search\_patient\_alarm\_topic](#module\_search\_patient\_alarm\_topic) | ./modules/sns | n/a |
-| <a name="module_send-feedback-alarm"></a> [send-feedback-alarm](#module\_send-feedback-alarm) | ./modules/lambda_alarms | n/a |
-| <a name="module_send-feedback-alarm-topic"></a> [send-feedback-alarm-topic](#module\_send-feedback-alarm-topic) | ./modules/sns | n/a |
-| <a name="module_send-feedback-gateway"></a> [send-feedback-gateway](#module\_send-feedback-gateway) | ./modules/gateway | n/a |
-| <a name="module_send-feedback-lambda"></a> [send-feedback-lambda](#module\_send-feedback-lambda) | ./modules/lambda | n/a |
 | <a name="module_sns-nems-queue-topic"></a> [sns-nems-queue-topic](#module\_sns-nems-queue-topic) | ./modules/sns | n/a |
 | <a name="module_sns_encryption_key"></a> [sns\_encryption\_key](#module\_sns\_encryption\_key) | ./modules/kms | n/a |
 | <a name="module_sqs-lg-bulk-upload-invalid-queue"></a> [sqs-lg-bulk-upload-invalid-queue](#module\_sqs-lg-bulk-upload-invalid-queue) | ./modules/sqs | n/a |
@@ -131,7 +127,6 @@
 | [aws_iam_policy.copy_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.dynamodb_policy_scan_bulk_report](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.ses_send_email_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ssm_policy_authoriser](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ssm_policy_oidc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ssm_policy_pds](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -189,7 +184,6 @@
 | [aws_iam_policy_document.splunk_trust_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.sqs_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.ssm_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_ssm_parameter.backup_target_account](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.cloud_security_notification_email_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.splunk_trusted_principal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
