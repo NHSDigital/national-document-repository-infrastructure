@@ -79,6 +79,11 @@ module "lloyd_george_reference_dynamodb_table" {
       name            = "NhsNumberIndex"
       hash_key        = "NhsNumber"
       projection_type = "ALL"
+    },
+    {
+      name            = "CurrentGpOdsIndex"
+      hash_key        = "CurrentGpOds"
+      projection_type = "ALL"
     }
   ]
 
