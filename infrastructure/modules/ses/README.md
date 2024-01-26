@@ -28,7 +28,6 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_domain_prefix"></a> [domain\_prefix](#input\_domain\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_enable"></a> [enable](#input\_enable) | n/a | `bool` | n/a | yes |
 | <a name="input_from_mail_prefix"></a> [from\_mail\_prefix](#input\_from\_mail\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | n/a | `string` | n/a | yes |
