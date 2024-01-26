@@ -1,7 +1,17 @@
+locals {
+  #  domain = (
+  #    local.is_production ? var.certificate_domain :
+  #    local.is_sandbox ? "ndr-dev.${var.domain}" :
+  #    "${terraform.workspace}.${var.domain}"
+  #  )
+  domain = "${terraform.workspace}.${var.domain}"
+}
+
 module "ndr-feedback-mailbox" {
   source           = "./modules/ses"
-  domain           = var.domain
+  domain           = local.domain
   zone_id          = module.route53_fargate_ui.zone_id
   from_mail_prefix = "mailing"
-  enable           = !local.is_sandbox_or_test
+  enable           = true
+  #enable           = !local.is_sandbox
 }
