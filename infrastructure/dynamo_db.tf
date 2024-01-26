@@ -62,6 +62,10 @@ module "lloyd_george_reference_dynamodb_table" {
     {
       name = "NhsNumber"
       type = "S"
+    },
+    {
+      name = "CurrentGpOds"
+      type = "S"
     }
   ]
 
