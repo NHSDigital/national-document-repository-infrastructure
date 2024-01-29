@@ -210,9 +210,6 @@ locals {
     ? "/prs/dev/user-input/feedback-recipient-email-list"
     : "/prs/${var.environment}/user-input/feedback-recipient-email-list"
   )
-  ses_send_feedback_email_resource_arn = (module.ndr-feedback-mailbox.is_enable
-    ? module.ndr-feedback-mailbox.ses_domain_identity_arn
-    : "arn:aws:ses:${local.current_region}:${local.current_account_id}:identity/*"
-  )
+  ses_send_feedback_email_resource_arn = "arn:aws:ses:${local.current_region}:${local.current_account_id}:identity/*"
 
 }
