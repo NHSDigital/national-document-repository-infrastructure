@@ -27,17 +27,19 @@ module "nems-message-lambda" {
 }
 
 module "nems-message-lambda-alarm" {
+  count                = local.is_mesh_forwarder_enable ? 1 : 0
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.nems-message-lambda[0].function_name
   lambda_timeout       = module.nems-message-lambda[0].timeout
   lambda_name          = "nems_message_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.nems-message-lambda-alarm-topic.arn]
-  ok_actions           = [module.nems-message-lambda-alarm-topic.arn]
+  alarm_actions        = [module.nems-message-lambda-alarm-topic[0].arn]
+  ok_actions           = [module.nems-message-lambda-alarm-topic[0].arn]
   depends_on           = [module.nems-message-lambda, module.nems-message-lambda-alarm-topic]
 }
 
 module "nems-message-lambda-alarm-topic" {
+  count                 = local.is_mesh_forwarder_enable ? 1 : 0
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   current_account_id    = data.aws_caller_identity.current.account_id
