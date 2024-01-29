@@ -20,11 +20,8 @@ module "nems-message-lambda" {
   is_invoked_from_gateway       = false
 
   depends_on = [
-    aws_iam_role.mesh_forwarder,
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.lloyd_george_reference_dynamodb_table,
     module.sqs-nems-queue,
-    module.sns-nems-queue-topic,
-    aws_ecs_service.mesh_forwarder
   ]
 }
