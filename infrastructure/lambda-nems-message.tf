@@ -25,3 +25,45 @@ module "nems-message-lambda" {
     module.sqs-nems-queue,
   ]
 }
+
+module "nems-message-lambda-alarm" {
+  source               = "./modules/lambda_alarms"
+  lambda_function_name = module.nems-message-lambda.function_name
+  lambda_timeout       = module.nems-message-lambda.timeout
+  lambda_name          = "nems_message_handler"
+  namespace            = "AWS/Lambda"
+  alarm_actions        = [module.nems-message-lambda-alarm-topic.arn]
+  ok_actions           = [module.nems-message-lambda-alarm-topic.arn]
+  depends_on           = [module.nems-message-lambda, module.nems-message-lambda-alarm-topic]
+}
+
+module "nems-message-lambda-alarm-topic" {
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "nems-message-lambda-alarm-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.nems-message-lambda.endpoint
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+
+  depends_on = [module.nems-message-lambda, module.sns_encryption_key]
+}
