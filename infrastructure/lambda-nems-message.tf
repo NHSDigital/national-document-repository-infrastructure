@@ -28,8 +28,8 @@ module "nems-message-lambda" {
 
 module "nems-message-lambda-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.nems-message-lambda.function_name
-  lambda_timeout       = module.nems-message-lambda.timeout
+  lambda_function_name = module.nems-message-lambda[0].function_name
+  lambda_timeout       = module.nems-message-lambda[0].timeout
   lambda_name          = "nems_message_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.nems-message-lambda-alarm-topic.arn]
@@ -43,7 +43,7 @@ module "nems-message-lambda-alarm-topic" {
   current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "nems-message-lambda-alarm-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.nems-message-lambda.endpoint
+  topic_endpoint        = module.nems-message-lambda[0].endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
