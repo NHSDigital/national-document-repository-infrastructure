@@ -32,7 +32,4 @@ No modules.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_is_enable"></a> [is\_enable](#output\_is\_enable) | n/a |
-| <a name="output_ses_domain_identity_arn"></a> [ses\_domain\_identity\_arn](#output\_ses\_domain\_identity\_arn) | n/a |
+No outputs.
