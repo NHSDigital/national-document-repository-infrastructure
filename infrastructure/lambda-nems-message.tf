@@ -13,9 +13,9 @@ module "nems-message-lambda" {
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    WORKSPACE                   = terraform.workspace
-    LLOYD_GEORGE_DYNAMODB_NAME  = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    NEMS_SQS_QUEUE_URL          = module.sqs-nems-queue[0].sqs_url
+    WORKSPACE                  = terraform.workspace
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    NEMS_SQS_QUEUE_URL         = module.sqs-nems-queue[0].sqs_url
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
