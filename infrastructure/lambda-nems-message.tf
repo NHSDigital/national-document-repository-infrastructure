@@ -1,7 +1,7 @@
 module "nems-message-lambda" {
   count          = local.is_mesh_forwarder_enable ? 1 : 0
   source         = "./modules/lambda"
-  name           = "NemsMessageLamba"
+  name           = "NemsMessageLambda"
   handler        = "handlers.nems_message_handler.lambda_handler"
   lambda_timeout = 60
   iam_role_policies = [
@@ -69,4 +69,14 @@ module "nems-message-lambda-alarm-topic" {
   })
 
   depends_on = [module.nems-message-lambda, module.sns_encryption_key]
+}
+
+resource "aws_lambda_event_source_mapping" "nems_message_lambda" {
+  event_source_arn = module.sqs-nems-queue.endpoint
+  function_name    = module.nems-message-lambda.endpoint
+
+  depends_on = [
+    module.sqs-nems-queue,
+    module.nems-message-lambda
+  ]
 }
