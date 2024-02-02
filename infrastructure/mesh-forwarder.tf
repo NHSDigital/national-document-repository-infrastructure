@@ -260,7 +260,7 @@ module "sqs-nems-queue" {
   environment       = var.environment
   owner             = var.owner
   message_retention = 1800
-  kms_master_key_id = module.sns_encryption_key.id
+  # kms_master_key_id = module.sns_encryption_key.id
   enable_sse        = true
   max_visibility    = 60
   max_message       = 262144
