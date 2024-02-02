@@ -1,15 +1,3 @@
-locals {
-  ses_feedback_sender_email_address = (
-    local.is_production ? "feedback@${var.certificate_domain}" :
-    local.is_sandbox ? "feedback@ndr-dev.${var.domain}" :
-    "feedback@${terraform.workspace}.${var.domain}"
-  )
-  feedback_recipient_list_ssm_param_key = (local.is_sandbox
-    ? "/prs/dev/user-input/feedback-recipient-email-list"
-    : "/prs/${var.environment}/user-input/feedback-recipient-email-list"
-  )
-}
-
 module "send-feedback-gateway" {
   # Gateway Variables
   source              = "./modules/gateway"
@@ -31,6 +19,7 @@ module "send-feedback-gateway" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
   ]
 }
+
 
 module "send-feedback-alarm" {
   source               = "./modules/lambda_alarms"
@@ -74,6 +63,8 @@ module "send-feedback-alarm-topic" {
   depends_on = [module.send-feedback-lambda, module.sns_encryption_key]
 }
 
+
+
 module "send-feedback-lambda" {
   source  = "./modules/lambda"
   name    = "SendFeedbackLambda"
@@ -112,7 +103,7 @@ resource "aws_iam_policy" "ses_send_email_policy" {
           "ses:SendEmail",
         ],
         Resource = [
-          "arn:aws:ses:${local.current_region}:${local.current_account_id}:identity/*",
+          local.ses_send_feedback_email_resource_arn,
         ]
       }
     ]
