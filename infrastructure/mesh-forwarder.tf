@@ -261,7 +261,9 @@ module "sqs-nems-queue" {
   owner             = var.owner
   message_retention = 1800
   kms_master_key_id = module.sns_encryption_key.id
-  enable_sse        = null
+  enable_sse        = true
+  max_visibility    = 60
+  max_message       = 262144
 }
 
 data "aws_iam_policy_document" "sqs_policy_doc" {
