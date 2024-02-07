@@ -255,15 +255,16 @@ data "aws_iam_policy_document" "ecs_execution" {
 # SQS
 module "sqs-nems-queue" {
   source            = "./modules/sqs"
-  name              = "${var.mesh_component_name}_name-nems-queue"
+  name              = "${var.mesh_component_name}-nems-queue"
   count             = local.is_mesh_forwarder_enable ? 1 : 0
   environment       = var.environment
   owner             = var.owner
   message_retention = 1800
-  # kms_master_key_id = module.sns_encryption_key.id
-  enable_sse     = true
-  max_visibility = 60
-  max_message    = 262144
+  enable_sse        = true
+  max_visibility    = 60
+  max_size_message  = 262144
+  enable_dlq        = true
+  max_receive_count = 3
 }
 
 data "aws_iam_policy_document" "sqs_policy_doc" {

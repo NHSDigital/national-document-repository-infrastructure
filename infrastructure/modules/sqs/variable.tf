@@ -14,7 +14,7 @@ variable "max_visibility" {
   default     = 30
 }
 
-variable "max_message" {
+variable "max_size_message" {
   description = "Max message size in bytes before sqs rejects the message"
   type        = number
   default     = 2048
@@ -42,15 +42,30 @@ variable "enable_deduplication" {
   type        = bool
   default     = false
   description = "Prevent content based duplication in queue"
-
 }
 
 variable "enable_fifo" {
   type        = bool
   default     = false
   description = "Attach first in first out policy to sqs"
-
 }
+
+variable "kms_master_key_id" {
+  description = "The ID of an AWS-managed customer master key (CMK) for Amazon SQS or a custom CMK"
+  type        = string
+  default     = null
+}
+
+variable "max_receive_count" {
+  type    = number
+  default = 1
+}
+
+variable "enable_dlq" {
+  type    = bool
+  default = false
+}
+
 # Tags
 variable "environment" {
   type = string
@@ -80,10 +95,4 @@ output "sqs_policy" {
 
 output "sqs_url" {
   value = aws_sqs_queue.sqs_queue.url
-}
-
-variable "kms_master_key_id" {
-  description = "The ID of an AWS-managed customer master key (CMK) for Amazon SQS or a custom CMK"
-  type        = string
-  default     = null
 }
