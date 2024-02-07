@@ -72,10 +72,10 @@ module "nems-message-lambda-alarm-topic" {
 }
 
 resource "aws_lambda_event_source_mapping" "nems_message_lambda" {
-  count            = local.is_mesh_forwarder_enable ? 1 : 0
-  event_source_arn = module.sqs-nems-queue[0].endpoint
-  function_name    = module.nems-message-lambda[0].endpoint
-
+  count                   = local.is_mesh_forwarder_enable ? 1 : 0
+  event_source_arn        = module.sqs-nems-queue[0].endpoint
+  function_name           = module.nems-message-lambda[0].endpoint
+  function_response_types = ["ReportBatchItemFailures"]
   depends_on = [
     module.sqs-nems-queue,
     module.nems-message-lambda
