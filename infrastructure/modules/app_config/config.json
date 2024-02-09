@@ -1,14 +1,19 @@
 {
-  "Flags": {
-    "TestFeature1": {
-      "Description": "Controls the availability of test feature 1.",
-      "Enabled": true,
-      "DefaultValue": false
+    "flags": {
+        "testFeature1": {
+            "name": "testFeature1"
+        },
+        "testFeature2": {
+            "name": "testFeature2"
+        }
     },
-    "TestFeature2": {
-      "Description": "Controls the availability of test feature 2.",
-      "Enabled": false,
-      "DefaultValue": false
-    }
-  }
+    "values": {
+        "testFeature1": {
+            "enabled": "true"
+        },
+        "testFeature2": {
+            "enabled": "false"
+        }
+    },
+    "version": "1"
 }
