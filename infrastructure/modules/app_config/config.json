@@ -5,6 +5,9 @@
         },
         "testFeature2": {
             "name": "testFeature2"
+        },
+        "testFeature3": {
+            "name": "testFeature3"
         }
     },
     "values": {
@@ -12,7 +15,11 @@
             "enabled": "true"
         },
         "testFeature2": {
+            "enabled": "true"
+        },
+        "testFeature3": {
             "enabled": "false"
         }
-    }
+    },
+    "version": "1"
 }
