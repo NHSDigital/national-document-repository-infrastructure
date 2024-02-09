@@ -1,0 +1,14 @@
+{
+  "Flags": {
+    "TestFeature1": {
+      "Description": "Controls the availability of test feature 1.",
+      "Enabled": true,
+      "DefaultValue": false
+    },
+    "TestFeature2": {
+      "Description": "Controls the availability of test feature 2.",
+      "Enabled": false,
+      "DefaultValue": false
+    }
+  }
+}
