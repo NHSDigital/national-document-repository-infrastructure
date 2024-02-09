@@ -78,7 +78,7 @@ resource "aws_appconfig_deployment_strategy" "ndr-app-config-deployment-strategy
 resource "aws_appconfig_deployment" "ndr-app-config-deployment" {
   application_id           = aws_appconfig_application.ndr-app-config-application.id
   environment_id           = aws_appconfig_environment.ndr-app-config-environment.environment_id
-  configuration_profile_id = aws_appconfig_configuration_profile.ndr-app-config-profile.id
+  configuration_profile_id = aws_appconfig_configuration_profile.ndr-app-config-profile.configuration_profile_id
   configuration_version    = aws_appconfig_hosted_configuration_version.ndr-app-config-profile-version.version_number
   deployment_strategy_id   = aws_appconfig_deployment_strategy.ndr-app-config-deployment-strategy.id
 
