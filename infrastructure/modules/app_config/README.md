@@ -36,6 +36,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_app_config_application"></a> [app\_config\_application](#output\_app\_config\_application) | n/a |
-| <a name="output_app_config_configuration_profile"></a> [app\_config\_configuration\_profile](#output\_app\_config\_configuration\_profile) | n/a |
-| <a name="output_app_config_environment"></a> [app\_config\_environment](#output\_app\_config\_environment) | n/a |
+| <a name="output_app_config_application_arn"></a> [app\_config\_application\_arn](#output\_app\_config\_application\_arn) | n/a |
+| <a name="output_app_config_application_id"></a> [app\_config\_application\_id](#output\_app\_config\_application\_id) | n/a |
+| <a name="output_app_config_configuration_profile_id"></a> [app\_config\_configuration\_profile\_id](#output\_app\_config\_configuration\_profile\_id) | n/a |
+| <a name="output_app_config_environment_id"></a> [app\_config\_environment\_id](#output\_app\_config\_environment\_id) | n/a |

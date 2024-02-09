@@ -5,7 +5,7 @@ locals {
   #  )
   workspace = terraform.workspace
 }
-module "nrd-app-config" {
+module "ndr-app-config" {
   source                  = "./modules/app_config"
   environment             = var.environment
   owner                   = var.owner
