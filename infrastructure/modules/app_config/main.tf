@@ -46,7 +46,7 @@ resource "aws_appconfig_hosted_configuration_version" "ndr-app-config-profile-ve
   application_id           = aws_appconfig_application.ndr-app-config-application.id
   configuration_profile_id = aws_appconfig_configuration_profile.ndr-app-config-profile.configuration_profile_id
   description              = "version-${sha256(file("${path.module}/config.json"))}"
-  content                  = file("${path.module}/config.json")
+  content                  = jsonencode(file("${path.module}/config.json"))
   content_type             = "application/json"
 
   depends_on = [
