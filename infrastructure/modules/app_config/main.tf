@@ -1,13 +1,6 @@
 resource "aws_appconfig_application" "ndr-app-config-application" {
-  name        = "NDR AppConfig"
-  description = "AppConfig Application for ${terraform.workspace}"
-
-  tags = {
-    Name        = "${terraform.workspace}_repo_app_config_application"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
-  }
+  name        = "Repository"
+  description = "AppConfig Application for the Repository"
 }
 
 resource "aws_appconfig_environment" "ndr-app-config-environment" {

@@ -14,6 +14,5 @@
         "testFeature2": {
             "enabled": "false"
         }
-    },
-    "version": "1"
+    }
 }

@@ -9,6 +9,6 @@ module "nrd-app-config" {
   source                  = "./modules/app_config"
   environment             = var.environment
   owner                   = var.owner
-  config_environment_name = "repo-config-${local.workspace}"
-  config_profile_name     = "repo-config-profile-${local.workspace}"
+  config_environment_name = local.workspace
+  config_profile_name     = "${local.workspace}-config-profile"
 }
