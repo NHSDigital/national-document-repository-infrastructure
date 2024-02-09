@@ -105,7 +105,7 @@ resource "aws_iam_policy" "app_config_policy" {
           "appconfig:StartConfigurationSession"
         ],
         Resource = [
-          module.ndr-app-config.app_config_application_arn,
+          "arn:aws:appconfig:*:*:application/${module.ndr-app-config.app_config_application_id}/environment/${module.ndr-app-config.app_config_environment_id}/configuration/${module.ndr-app-config.app_config_configuration_profile_id}"
         ]
       }
     ]
