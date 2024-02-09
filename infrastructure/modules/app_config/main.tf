@@ -45,22 +45,10 @@ resource "aws_appconfig_configuration_profile" "ndr-app-config-profile" {
 resource "aws_appconfig_hosted_configuration_version" "ndr-app-config-profile-version" {
   application_id           = aws_appconfig_application.ndr-app-config-application.id
   configuration_profile_id = aws_appconfig_configuration_profile.ndr-app-config-profile.configuration_profile_id
+  description              = "version-${sha256(file("${path.module}/config.json"))}"
+  content                  = file("${path.module}/config.json")
   content_type             = "application/json"
-  content = jsonencode({
-    flags : {
-      testFlag1 : {
-        name : "testFlag1",
-      }
-    },
-    values : {
-      testFlag1 : {
-        enabled : "true",
-      }
-    },
-    version : "1"
-  })
-  #description              = "version-${sha256(file("${path.module}/config.json"))}"
-  #content                  = jsonencode(file("${path.module}/config.json"))
+
   depends_on = [
     aws_appconfig_configuration_profile.ndr-app-config-profile
   ]
