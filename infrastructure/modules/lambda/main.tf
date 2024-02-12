@@ -16,9 +16,7 @@ resource "aws_lambda_function" "lambda" {
   environment {
     variables = var.lambda_environment_variables
   }
-  layers = [
-    "arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:38"
-  ]
+  layers = concat(formatlist("arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:38"), var.layers)
 }
 
 resource "aws_api_gateway_integration" "lambda_integration" {
