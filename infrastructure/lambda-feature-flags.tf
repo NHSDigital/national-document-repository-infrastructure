@@ -87,7 +87,7 @@ module "feature-flags-lambda" {
   }
 
   layers = [
-    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:81"
+    "arn:aws:lambda:${local.current_region}:282860088358:layer:AWS-AppConfig-Extension:81"
   ]
 
   depends_on = [
