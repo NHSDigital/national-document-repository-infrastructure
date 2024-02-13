@@ -1,7 +1,3 @@
-output "app_config_application_arn" {
-  value = aws_appconfig_application.ndr-app-config-application.arn
-}
-
 output "app_config_application_id" {
   value = aws_appconfig_application.ndr-app-config-application.id
 }

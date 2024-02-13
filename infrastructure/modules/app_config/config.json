@@ -15,7 +15,7 @@
             "enabled": "true"
         },
         "testFeature2": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "testFeature3": {
             "enabled": "false"
