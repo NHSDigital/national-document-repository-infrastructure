@@ -22,6 +22,6 @@ resource "aws_appconfig_hosted_configuration_version" "ndr-app-config-profile-ve
   content_type             = "application/json"
 
   depends_on = [
-    aws_appconfig_configuration_profile.ndr-app-config-profile
+    aws_appconfig_hosted_configuration_version.ndr-app-config-profile-version-v1-0,
   ]
 }
