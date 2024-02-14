@@ -10,5 +10,5 @@ module "ndr-app-config" {
   environment             = var.environment
   owner                   = var.owner
   config_environment_name = local.workspace
-  config_profile_name     = "${local.workspace}-config-profile"
+  config_profile_name     = "config-profile-${local.workspace}"
 }
