@@ -1,3 +1,7 @@
+locals {
+  current_config_path = "${path.module}/configurations/2024-02-14.json"
+}
+
 resource "aws_appconfig_application" "ndr-app-config-application" {
   name        = "RepositoryConfiguration-${terraform.workspace}"
   description = "AppConfig Application for ${terraform.workspace}"
@@ -35,6 +39,17 @@ resource "aws_appconfig_configuration_profile" "ndr-app-config-profile" {
   depends_on = [aws_appconfig_application.ndr-app-config-application]
 }
 
+resource "aws_appconfig_hosted_configuration_version" "ndr-app-config-profile-version" {
+  application_id           = aws_appconfig_application.ndr-app-config-application.id
+  configuration_profile_id = aws_appconfig_configuration_profile.ndr-app-config-profile.configuration_profile_id
+  content                  = file(local.current_config_path)
+  content_type             = "application/json"
+
+  depends_on = [
+    aws_appconfig_configuration_profile.ndr-app-config-profile
+  ]
+}
+
 resource "aws_appconfig_deployment_strategy" "ndr-app-config-deployment-strategy" {
   name                           = "RepoAppConfigDeploymentStrategy"
   deployment_duration_in_minutes = 0
@@ -48,12 +63,12 @@ resource "aws_appconfig_deployment" "ndr-app-config-deployment" {
   application_id           = aws_appconfig_application.ndr-app-config-application.id
   environment_id           = aws_appconfig_environment.ndr-app-config-environment.environment_id
   configuration_profile_id = aws_appconfig_configuration_profile.ndr-app-config-profile.configuration_profile_id
-  configuration_version    = aws_appconfig_hosted_configuration_version.ndr-app-config-profile-version-v2.version_number
+  configuration_version    = aws_appconfig_hosted_configuration_version.ndr-app-config-profile-version.version_number
   deployment_strategy_id   = aws_appconfig_deployment_strategy.ndr-app-config-deployment-strategy.id
 
   depends_on = [
     aws_appconfig_environment.ndr-app-config-environment,
     aws_appconfig_deployment_strategy.ndr-app-config-deployment-strategy,
-    aws_appconfig_hosted_configuration_version.ndr-app-config-profile-version-v2
+    aws_appconfig_hosted_configuration_version.ndr-app-config-profile-version
   ]
 }
