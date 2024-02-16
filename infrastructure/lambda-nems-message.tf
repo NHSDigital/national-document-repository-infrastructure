@@ -1,5 +1,5 @@
 module "nems-message-lambda" {
-  count          = local.is_mesh_forwarder_enable ? 1 : 0
+  count          = 1
   source         = "./modules/lambda"
   name           = "NemsMessageLambda"
   handler        = "handlers.nems_message_handler.lambda_handler"
@@ -28,7 +28,7 @@ module "nems-message-lambda" {
 }
 
 module "nems-message-lambda-alarm" {
-  count                = local.is_mesh_forwarder_enable ? 1 : 0
+  count                = 1
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.nems-message-lambda[0].function_name
   lambda_timeout       = module.nems-message-lambda[0].timeout
@@ -40,7 +40,7 @@ module "nems-message-lambda-alarm" {
 }
 
 module "nems-message-lambda-alarm-topic" {
-  count                 = local.is_mesh_forwarder_enable ? 1 : 0
+  count                 = 1
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   current_account_id    = data.aws_caller_identity.current.account_id
@@ -72,7 +72,7 @@ module "nems-message-lambda-alarm-topic" {
 }
 
 resource "aws_lambda_event_source_mapping" "nems_message_lambda" {
-  count                   = local.is_mesh_forwarder_enable ? 1 : 0
+  count                   = 1
   event_source_arn        = module.sqs-nems-queue[0].endpoint
   function_name           = module.nems-message-lambda[0].endpoint
   function_response_types = ["ReportBatchItemFailures"]
