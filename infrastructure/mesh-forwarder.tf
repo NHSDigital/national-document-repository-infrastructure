@@ -374,7 +374,7 @@ data "aws_iam_policy_document" "sns_failure_feedback_policy" {
 # CloudWatch groups
 resource "aws_cloudwatch_log_group" "mesh_log_group" {
   count = local.is_mesh_forwarder_enable ? 1 : 0
-  name  = "/nhs/deductions/${terraform.workspace}}/${var.mesh_component_name}"
+  name  = "/nhs/deductions/${terraform.workspace}/${var.mesh_component_name}"
 
   tags = {
     Environment = var.environment
