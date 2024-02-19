@@ -6,7 +6,7 @@ locals {
   mesh_forwarder_metric_namespace  = "MeshForwarder"
   sns_topic_namespace              = "AWS/SNS"
   mesh_forwarder_sns_topic_name    = "${var.environment}-mesh-forwarder-nems-events-sns-topic"
-  alarm_actions                    = [try(aws_sns_topic.alarm_notifications_topic[0].arn, null)]
+  alarm_actions                    = local.is_sandbox ? [] : [aws_sns_topic.alarm_notifications_topic[0].arn]
   account_id                       = data.aws_caller_identity.current.account_id
   environment_variables = [
     { "name" : "MESH_URL", "value" : var.mesh_url },
@@ -183,7 +183,7 @@ data "aws_iam_policy_document" "ssm_policy_doc" {
 }
 
 data "aws_iam_policy_document" "sns_policy_doc" {
-  count = local.is_mesh_forwarder_enable ? 1 : 0
+  count = 1
   statement {
     actions = [
       "sns:Publish"
@@ -256,7 +256,7 @@ data "aws_iam_policy_document" "ecs_execution" {
 module "sqs-nems-queue" {
   source            = "./modules/sqs"
   name              = "${var.mesh_component_name}-nems-queue"
-  count             = local.is_mesh_forwarder_enable ? 1 : 0
+  count             = 1
   environment       = var.environment
   owner             = var.owner
   message_retention = 1800
@@ -268,7 +268,7 @@ module "sqs-nems-queue" {
 }
 
 data "aws_iam_policy_document" "sqs_policy_doc" {
-  count = local.is_mesh_forwarder_enable ? 1 : 0
+  count = 1
   statement {
     effect = "Allow"
     actions = [
@@ -293,14 +293,14 @@ data "aws_iam_policy_document" "sqs_policy_doc" {
 }
 
 resource "aws_sqs_queue_policy" "nems_events_subscription" {
-  count     = local.is_mesh_forwarder_enable ? 1 : 0
+  count     = 1
   queue_url = module.sqs-nems-queue[0].sqs_id
   policy    = data.aws_iam_policy_document.sqs_policy_doc[0].json
 }
 
 # SNS
 module "sns-nems-queue-topic" {
-  count                 = local.is_mesh_forwarder_enable ? 1 : 0
+  count                 = 1
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   current_account_id    = data.aws_caller_identity.current.account_id
@@ -333,8 +333,8 @@ module "sns-nems-queue-topic" {
 }
 
 resource "aws_iam_role" "sns_failure_feedback_role" {
-  count              = local.is_mesh_forwarder_enable ? 1 : 0
-  name               = "${var.environment}-${var.mesh_component_name}-sns-failure-feedback-role"
+  count              = 1
+  name               = "${terraform.workspace}-${var.mesh_component_name}-sns-failure-feedback-role"
   assume_role_policy = data.aws_iam_policy_document.sns_service_assume_role_policy.json
   description        = "Allows logging of SNS delivery failures in ${var.mesh_component_name}"
   inline_policy {
@@ -374,7 +374,7 @@ data "aws_iam_policy_document" "sns_failure_feedback_policy" {
 # CloudWatch groups
 resource "aws_cloudwatch_log_group" "mesh_log_group" {
   count = local.is_mesh_forwarder_enable ? 1 : 0
-  name  = "/nhs/deductions/${var.environment}/${var.mesh_component_name}"
+  name  = "/nhs/deductions/${terraform.workspace}/${var.mesh_component_name}"
 
   tags = {
     Environment = var.environment
@@ -444,7 +444,7 @@ resource "aws_cloudwatch_metric_alarm" "error_log_alarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "sns_topic_error_log_alarm" {
-  count               = local.is_mesh_forwarder_enable ? 1 : 0
+  count               = 1
   alarm_name          = "${local.mesh_forwarder_sns_topic_name}-error-logs"
   comparison_operator = "GreaterThanThreshold"
   threshold           = "0"
@@ -465,8 +465,8 @@ resource "aws_cloudwatch_metric_alarm" "sns_topic_error_log_alarm" {
 
 # Output SSM Mesh forwarder
 resource "aws_ssm_parameter" "sns_sqs_kms_key_id" {
-  count = local.is_mesh_forwarder_enable ? 1 : 0
-  name  = "/repo/${var.environment}/output/${var.mesh_component_name}/sns-sqs-kms-key-id"
+  count = 1
+  name  = "/repo/${terraform.workspace}/output/${var.mesh_component_name}/sns-sqs-kms-key-id"
   type  = "String"
   value = module.sns_encryption_key.id
 
@@ -478,8 +478,8 @@ resource "aws_ssm_parameter" "sns_sqs_kms_key_id" {
 }
 
 resource "aws_ssm_parameter" "nems_events_topic_arn" {
-  count = local.is_mesh_forwarder_enable ? 1 : 0
-  name  = "/repo/${var.environment}/output/${var.mesh_component_name}/nems-events-topic-arn"
+  count = 1
+  name  = "/repo/${terraform.workspace}/output/${var.mesh_component_name}/nems-events-topic-arn"
   type  = "String"
   value = module.sns-nems-queue-topic[0].arn
 
@@ -491,8 +491,8 @@ resource "aws_ssm_parameter" "nems_events_topic_arn" {
 }
 
 resource "aws_ssm_parameter" "nems_events_observability" {
-  count = local.is_mesh_forwarder_enable ? 1 : 0
-  name  = "/repo/${var.environment}/output/${var.mesh_component_name}/nems-events-observability"
+  count = 1
+  name  = "/repo/${terraform.workspace}/output/${var.mesh_component_name}/nems-events-observability"
   type  = "String"
   value = module.sqs-nems-queue[0].sqs_arn
   tags = {
