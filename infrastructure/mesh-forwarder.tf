@@ -383,7 +383,7 @@ resource "aws_cloudwatch_log_group" "mesh_log_group" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "inbox_message_count" {
-  count = local.is_mesh_forwarder_enable ? 1 : 0
+  count          = local.is_mesh_forwarder_enable ? 1 : 0
   name           = "${terraform.workspace}-mesh-inbox-message-count"
   pattern        = "{ $.event = \"COUNT_MESSAGES\" }"
   log_group_name = aws_cloudwatch_log_group.mesh_log_group[0].name
@@ -396,7 +396,7 @@ resource "aws_cloudwatch_log_metric_filter" "inbox_message_count" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "inbox-messages-not-consumed" {
-  count = local.is_mesh_forwarder_enable ? 1 : 0
+  count               = local.is_mesh_forwarder_enable ? 1 : 0
   alarm_name          = "${var.environment}-mesh-inbox-messages-not-consumed"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.cloudwatch_alarm_evaluation_periods
