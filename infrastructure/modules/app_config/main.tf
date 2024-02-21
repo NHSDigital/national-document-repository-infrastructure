@@ -1,5 +1,5 @@
 locals {
-  current_config_path = "${path.module}/configurations/2024-02-14.json"
+  current_config_path = "${path.module}/configurations/2024-02-21.json"
 }
 
 resource "aws_appconfig_application" "ndr-app-config-application" {
