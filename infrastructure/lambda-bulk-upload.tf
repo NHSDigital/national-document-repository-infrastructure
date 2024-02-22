@@ -11,12 +11,16 @@ module "bulk-upload-lambda" {
     module.bulk_upload_report_dynamodb_table.dynamodb_policy,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_policy,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_policy,
-    aws_iam_policy.ssm_policy_pds.arn
+    aws_iam_policy.ssm_policy_pds.arn,
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = null
   api_execution_arn = null
 
   lambda_environment_variables = {
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                  = terraform.workspace
     STAGING_STORE_BUCKET_NAME  = "${terraform.workspace}-${var.staging_store_bucket_name}"
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
@@ -40,7 +44,8 @@ module "bulk-upload-lambda" {
     module.ndr-lloyd-george-store,
     module.lloyd_george_reference_dynamodb_table,
     module.bulk_upload_report_dynamodb_table,
-    aws_iam_policy.ssm_policy_pds
+    aws_iam_policy.ssm_policy_pds,
+    module.ndr-app-config
   ]
 }
 

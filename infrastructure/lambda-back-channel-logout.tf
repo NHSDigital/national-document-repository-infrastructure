@@ -26,13 +26,17 @@ module "back_channel_logout_lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_oidc.arn,
-    module.auth_session_dynamodb_table.dynamodb_policy
+    module.auth_session_dynamodb_table.dynamodb_policy,
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.back-channel-logout-gateway.gateway_resource_id
   http_method       = "POST"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
+    APPCONFIG_APPLICATION          = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT          = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION        = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                      = terraform.workspace
     ENVIRONMENT                    = var.environment
     AUTH_DYNAMODB_NAME             = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
@@ -43,7 +47,9 @@ module "back_channel_logout_lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     aws_iam_policy.ssm_policy_oidc,
     module.auth_session_dynamodb_table,
-  module.back-channel-logout-gateway]
+    module.back-channel-logout-gateway,
+    module.ndr-app-config
+  ]
 }
 
 module "back_channel_logout_alarm" {
