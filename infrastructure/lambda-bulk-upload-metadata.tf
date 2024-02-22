@@ -8,10 +8,14 @@ module "bulk-upload-metadata-lambda" {
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-bulk-staging-store.s3_object_access_policy,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_policy,
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
+    APPCONFIG_APPLICATION     = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT     = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                 = terraform.workspace
     STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
     METADATA_SQS_QUEUE_URL    = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
@@ -24,6 +28,7 @@ module "bulk-upload-metadata-lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-bulk-staging-store,
     module.sqs-lg-bulk-upload-metadata-queue,
+    module.ndr-app-config
   ]
 }
 
