@@ -86,10 +86,6 @@ module "feature-flags-lambda" {
     WORKSPACE               = terraform.workspace
   }
 
-  layers = [
-    "arn:aws:lambda:${local.current_region}:282860088358:layer:AWS-AppConfig-Extension:81"
-  ]
-
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-app-config,

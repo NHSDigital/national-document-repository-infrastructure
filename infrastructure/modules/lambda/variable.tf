@@ -66,11 +66,6 @@ variable "reserved_concurrent_executions" {
   default     = -1
 }
 
-variable "layers" {
-  type    = list(string)
-  default = []
-}
-
 output "invoke_arn" {
   value = aws_lambda_function.lambda.invoke_arn
 }
