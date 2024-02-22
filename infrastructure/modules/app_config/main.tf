@@ -72,3 +72,22 @@ resource "aws_appconfig_deployment" "ndr-app-config-deployment" {
     aws_appconfig_hosted_configuration_version.ndr-app-config-profile-version
   ]
 }
+
+resource "aws_iam_policy" "app_config_policy" {
+  name = "${terraform.workspace}_app_config_policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "appconfig:GetLatestConfiguration",
+          "appconfig:StartConfigurationSession"
+        ],
+        Resource = [
+          "arn:aws:appconfig:*:*:application/${aws_appconfig_application.ndr-app-config-application.id}/environment/${aws_appconfig_environment.ndr-app-config-environment.environment_id}/configuration/${aws_appconfig_configuration_profile.ndr-app-config-profile.configuration_profile_id}"
+        ]
+      }
+    ]
+  })
+}
