@@ -16,6 +16,9 @@ module "nems-message-lambda" {
     WORKSPACE                  = terraform.workspace
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     NEMS_SQS_QUEUE_URL         = module.sqs-nems-queue[0].sqs_url
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
