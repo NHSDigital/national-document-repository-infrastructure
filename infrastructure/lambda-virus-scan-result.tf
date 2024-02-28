@@ -5,7 +5,7 @@ module "virus_scan_result_gateway" {
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
   http_method         = "POST"
   authorization       = "CUSTOM"
-  gateway_path        = "VirusScanResult"
+  gateway_path        = "VirusScan"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
   origin              = "'https://${terraform.workspace}.${var.domain}'"
@@ -23,7 +23,7 @@ module "virus_scan_result_gateway" {
 module "virus_scan_result_alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.virus_scan_result_lambda.function_name
-  lambda_timeout       = modulevirus_scan_result_lambda.timeout
+  lambda_timeout       = module.virus_scan_result_lambda.timeout
   lambda_name          = "virus_scan_result_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.virus_scan_result_alarm_topic.arn]
@@ -64,8 +64,8 @@ module "virus_scan_result_alarm_topic" {
 
 module "virus_scan_result_lambda" {
   source  = "./modules/lambda"
-  name    = "CreateDocRefLambda"
-  handler = "handlers.create_document_reference_handler.lambda_handler"
+  name    = "VirusScanResult"
+  handler = "handlers.virus_scan_result_handler.lambda_handler"
   iam_role_policies = [
     module.ndr-bulk-staging-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -77,13 +77,14 @@ module "virus_scan_result_lambda" {
   http_method       = "POST"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
+    APPCONFIG_APPLICATION     = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT     = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
     STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    WORKSPACE                    = terraform.workspace
+    WORKSPACE                 = terraform.workspace
   }
   depends_on = [
+    aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-bulk-staging-store,
     module.virus_scan_result_gateway,
     module.ndr-app-config

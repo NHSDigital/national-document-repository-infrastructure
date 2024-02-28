@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.12.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.16.0 |
 
 ## Modules
 
@@ -100,6 +100,14 @@
 | <a name="module_sqs-nems-queue"></a> [sqs-nems-queue](#module\_sqs-nems-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-splunk-queue"></a> [sqs-splunk-queue](#module\_sqs-splunk-queue) | ./modules/sqs | n/a |
 | <a name="module_token-gateway"></a> [token-gateway](#module\_token-gateway) | ./modules/gateway | n/a |
+| <a name="module_upload_confirm_result_alarm"></a> [upload\_confirm\_result\_alarm](#module\_upload\_confirm\_result\_alarm) | ./modules/lambda_alarms | n/a |
+| <a name="module_upload_confirm_result_alarm_topic"></a> [upload\_confirm\_result\_alarm\_topic](#module\_upload\_confirm\_result\_alarm\_topic) | ./modules/sns | n/a |
+| <a name="module_upload_confirm_result_gateway"></a> [upload\_confirm\_result\_gateway](#module\_upload\_confirm\_result\_gateway) | ./modules/gateway | n/a |
+| <a name="module_upload_confirm_result_lambda"></a> [upload\_confirm\_result\_lambda](#module\_upload\_confirm\_result\_lambda) | ./modules/lambda | n/a |
+| <a name="module_virus_scan_result_alarm"></a> [virus\_scan\_result\_alarm](#module\_virus\_scan\_result\_alarm) | ./modules/lambda_alarms | n/a |
+| <a name="module_virus_scan_result_alarm_topic"></a> [virus\_scan\_result\_alarm\_topic](#module\_virus\_scan\_result\_alarm\_topic) | ./modules/sns | n/a |
+| <a name="module_virus_scan_result_gateway"></a> [virus\_scan\_result\_gateway](#module\_virus\_scan\_result\_gateway) | ./modules/gateway | n/a |
+| <a name="module_virus_scan_result_lambda"></a> [virus\_scan\_result\_lambda](#module\_virus\_scan\_result\_lambda) | ./modules/lambda | n/a |
 | <a name="module_zip_store_reference_dynamodb_table"></a> [zip\_store\_reference\_dynamodb\_table](#module\_zip\_store\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 
 ## Resources
