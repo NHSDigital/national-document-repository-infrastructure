@@ -92,7 +92,7 @@ module "create-doc-ref-lambda" {
     module.document_reference_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
     module.ndr-bulk-staging-store,
-    module.create-doc-ref-gateway
+    module.create-doc-ref-gateway,
     module.ndr-app-config
   ]
 }
