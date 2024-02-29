@@ -29,12 +29,16 @@ module "create-token-lambda" {
     aws_iam_policy.ssm_policy_token.arn,
     module.auth_session_dynamodb_table.dynamodb_policy,
     module.auth_state_dynamodb_table.dynamodb_policy,
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.token-gateway.gateway_resource_id
   http_method       = "GET"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
+    APPCONFIG_APPLICATION           = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT           = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION         = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                       = terraform.workspace
     SSM_PARAM_JWT_TOKEN_PRIVATE_KEY = "jwt_token_private_key"
     OIDC_CALLBACK_URL               = "https://${terraform.workspace}.${var.domain}/auth-callback"
@@ -49,7 +53,8 @@ module "create-token-lambda" {
     module.auth_session_dynamodb_table,
     module.auth_state_dynamodb_table,
     module.token-gateway,
-    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0]
+    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
+    module.ndr-app-config
   ]
   memory_size = 256
 }

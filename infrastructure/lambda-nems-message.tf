@@ -1,5 +1,5 @@
 module "nems-message-lambda" {
-  count          = local.is_mesh_forwarder_enable ? 1 : 0
+  count          = 1
   source         = "./modules/lambda"
   name           = "NemsMessageLambda"
   handler        = "handlers.nems_message_handler.lambda_handler"
@@ -8,11 +8,15 @@ module "nems-message-lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
-    module.sqs-nems-queue[0].sqs_policy
+    module.sqs-nems-queue[0].sqs_policy,
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                  = terraform.workspace
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     NEMS_SQS_QUEUE_URL         = module.sqs-nems-queue[0].sqs_url
@@ -24,11 +28,12 @@ module "nems-message-lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.lloyd_george_reference_dynamodb_table,
     module.sqs-nems-queue,
+    module.ndr-app-config
   ]
 }
 
 module "nems-message-lambda-alarm" {
-  count                = local.is_mesh_forwarder_enable ? 1 : 0
+  count                = 1
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.nems-message-lambda[0].function_name
   lambda_timeout       = module.nems-message-lambda[0].timeout
@@ -40,7 +45,7 @@ module "nems-message-lambda-alarm" {
 }
 
 module "nems-message-lambda-alarm-topic" {
-  count                 = local.is_mesh_forwarder_enable ? 1 : 0
+  count                 = 1
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   current_account_id    = data.aws_caller_identity.current.account_id
@@ -72,7 +77,7 @@ module "nems-message-lambda-alarm-topic" {
 }
 
 resource "aws_lambda_event_source_mapping" "nems_message_lambda" {
-  count                   = local.is_mesh_forwarder_enable ? 1 : 0
+  count                   = 1
   event_source_arn        = module.sqs-nems-queue[0].endpoint
   function_name           = module.nems-message-lambda[0].endpoint
   function_response_types = ["ReportBatchItemFailures"]

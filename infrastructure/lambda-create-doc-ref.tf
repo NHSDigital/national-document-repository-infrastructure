@@ -71,7 +71,8 @@ module "create-doc-ref-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.ndr-bulk-staging-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
+    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.create-doc-ref-gateway.gateway_resource_id
@@ -79,6 +80,9 @@ module "create-doc-ref-lambda" {
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     STAGING_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     WORKSPACE                    = terraform.workspace
@@ -89,5 +93,6 @@ module "create-doc-ref-lambda" {
     module.lloyd_george_reference_dynamodb_table,
     module.ndr-bulk-staging-store,
     module.create-doc-ref-gateway
+    module.ndr-app-config
   ]
 }

@@ -69,7 +69,7 @@ module "feature-flags-lambda" {
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    aws_iam_policy.app_config_policy.arn
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.feature-flags-gateway.gateway_resource_id
@@ -86,33 +86,10 @@ module "feature-flags-lambda" {
     WORKSPACE               = terraform.workspace
   }
 
-  layers = [
-    "arn:aws:lambda:${local.current_region}:282860088358:layer:AWS-AppConfig-Extension:81"
-  ]
-
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.ndr-app-config,
     module.feature-flags-gateway,
-    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0]
+    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
+    module.ndr-app-config
   ]
-}
-
-resource "aws_iam_policy" "app_config_policy" {
-  name = "${terraform.workspace}_app_config_lambda"
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "appconfig:GetLatestConfiguration",
-          "appconfig:StartConfigurationSession"
-        ],
-        Resource = [
-          "arn:aws:appconfig:*:*:application/${module.ndr-app-config.app_config_application_id}/environment/${module.ndr-app-config.app_config_environment_id}/configuration/${module.ndr-app-config.app_config_configuration_profile_id}"
-        ]
-      }
-    ]
-  })
 }

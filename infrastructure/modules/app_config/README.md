@@ -22,6 +22,7 @@ No modules.
 | [aws_appconfig_deployment_strategy.ndr-app-config-deployment-strategy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appconfig_deployment_strategy) | resource |
 | [aws_appconfig_environment.ndr-app-config-environment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appconfig_environment) | resource |
 | [aws_appconfig_hosted_configuration_version.ndr-app-config-profile-version](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appconfig_hosted_configuration_version) | resource |
+| [aws_iam_policy.app_config_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 
 ## Inputs
 
@@ -39,3 +40,4 @@ No modules.
 | <a name="output_app_config_application_id"></a> [app\_config\_application\_id](#output\_app\_config\_application\_id) | n/a |
 | <a name="output_app_config_configuration_profile_id"></a> [app\_config\_configuration\_profile\_id](#output\_app\_config\_configuration\_profile\_id) | n/a |
 | <a name="output_app_config_environment_id"></a> [app\_config\_environment\_id](#output\_app\_config\_environment\_id) | n/a |
+| <a name="output_app_config_policy_arn"></a> [app\_config\_policy\_arn](#output\_app\_config\_policy\_arn) | n/a |

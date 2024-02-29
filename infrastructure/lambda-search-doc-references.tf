@@ -71,18 +71,23 @@ module "search-document-references-lambda" {
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
+    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.search-document-references-gateway.gateway_resource_id
   http_method       = "GET"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    DYNAMODB_TABLE_LIST = "[\u0022${terraform.workspace}_${var.docstore_dynamodb_table_name}\u0022, \u0022${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}\u0022]"
-    WORKSPACE           = terraform.workspace
+    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
+    DYNAMODB_TABLE_LIST     = "[\u0022${terraform.workspace}_${var.docstore_dynamodb_table_name}\u0022, \u0022${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}\u0022]"
+    WORKSPACE               = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.search-document-references-gateway
+    module.search-document-references-gateway,
+    module.ndr-app-config
   ]
 }

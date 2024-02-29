@@ -1,0 +1,31 @@
+{
+    "flags": {
+        "nemsEnabled": {
+            "name": "nemsEnabled"
+        },
+        "uploadLloydGeorgeWorkflowEnabled": {
+            "name": "uploadLloydGeorgeWorkflowEnabled"
+        },
+        "uploadLambdaEnabled": {
+            "name": "uploadLambdaEnabled"
+        },
+        "uploadArfWorkflowEnabled": {
+            "name": "uploadArfWorkflowEnabled"
+        }
+    },
+    "values": {
+        "nemsEnabled": {
+            "enabled": "false"
+        },
+        "uploadLloydGeorgeWorkflowEnabled": {
+            "enabled": "false"
+        },
+        "uploadLambdaEnabled": {
+            "enabled": "false"
+        },
+        "uploadArfWorkflowEnabled": {
+            "enabled": "false"
+        }
+    },
+    "version": "1"
+}
