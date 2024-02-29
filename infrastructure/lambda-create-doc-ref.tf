@@ -87,7 +87,7 @@ module "create-doc-ref-lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.document_reference_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
-    module.ndr-bulk-staging-store
+    module.ndr-bulk-staging-store,
     module.create-doc-ref-gateway
   ]
 }
