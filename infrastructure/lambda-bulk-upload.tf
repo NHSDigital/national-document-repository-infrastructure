@@ -11,7 +11,7 @@ module "bulk-upload-lambda" {
     module.bulk_upload_report_dynamodb_table.dynamodb_policy,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_policy,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_policy,
-    aws_iam_policy.ssm_policy_pds.arn,
+    aws_iam_policy.ssm_access_policy.arn,
     module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = null
@@ -44,7 +44,7 @@ module "bulk-upload-lambda" {
     module.ndr-lloyd-george-store,
     module.lloyd_george_reference_dynamodb_table,
     module.bulk_upload_report_dynamodb_table,
-    aws_iam_policy.ssm_policy_pds,
+    aws_iam_policy.ssm_access_policy,
     module.ndr-app-config
   ]
 }

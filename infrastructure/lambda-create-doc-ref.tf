@@ -91,12 +91,9 @@ module "create-doc-ref-lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.document_reference_dynamodb_table,
-    module.ndr-lloyd-george-store,
     module.create-doc-ref-gateway,
     module.ndr-app-config,
     module.lloyd_george_reference_dynamodb_table,
-    module.ndr-document-store,
     module.document_reference_dynamodb_table
   ]
 }

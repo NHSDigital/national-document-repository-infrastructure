@@ -70,7 +70,8 @@ module "virus_scan_result_lambda" {
     module.ndr-bulk-staging-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    module.ndr-app-config.app_config_policy_arn
+    module.ndr-app-config.app_config_policy_arn,
+    aws_iam_policy.ssm_access_policy.arn,
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.virus_scan_result_gateway.gateway_resource_id

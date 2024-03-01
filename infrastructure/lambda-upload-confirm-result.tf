@@ -1,16 +1,14 @@
 module "upload_confirm_result_gateway" {
-  # Gateway Variables
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
-  http_method         = "PUT"
+  http_method         = "POST"
   authorization       = "CUSTOM"
   gateway_path        = "UploadConfirm"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
   origin              = "'https://${terraform.workspace}.${var.domain}'"
 
-  # Lambda Variables
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   owner             = var.owner
   environment       = var.environment
@@ -64,32 +62,41 @@ module "upload_confirm_result_alarm_topic" {
 
 module "upload_confirm_result_lambda" {
   source  = "./modules/lambda"
-  name    = "CreateDocRefLambda"
+  name    = "UploadConfirmResultLambda"
   handler = "handlers.upload_confirm_result_handler.lambda_handler"
   iam_role_policies = [
-    module.ndr-bulk-staging-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-app-config.app_config_policy_arn,
+    module.ndr-bulk-staging-store.s3_object_access_policy,
+    module.ndr-document-store.s3_object_access_policy,
     module.ndr-lloyd-george-store.s3_object_access_policy,
+    module.document_reference_dynamodb_table.dynamodb_policy,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.upload_confirm_result_gateway.gateway_resource_id
-  http_method       = "PUT"
+  http_method       = "POST"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION     = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT     = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
-    STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    LLOYD_GEORGE_BUCKET_NAME  = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
-    WORKSPACE                 = terraform.workspace
+    APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
+    STAGING_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    LLOYD_GEORGE_BUCKET_NAME     = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
+    DOCUMENT_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.docstore_bucket_name}"
+    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
+    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    WORKSPACE                    = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-bulk-staging-store,
     module.upload_confirm_result_gateway,
     module.ndr-app-config,
-    module.ndr-lloyd-george-store
+    module.ndr-lloyd-george-store,
+    module.ndr-document-store,
+    module.lloyd_george_reference_dynamodb_table,
+    module.document_reference_dynamodb_table,
   ]
 }
