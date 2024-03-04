@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.12.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.13.1 |
 
 ## Modules
 
@@ -100,6 +100,14 @@
 | <a name="module_sqs-nems-queue"></a> [sqs-nems-queue](#module\_sqs-nems-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-splunk-queue"></a> [sqs-splunk-queue](#module\_sqs-splunk-queue) | ./modules/sqs | n/a |
 | <a name="module_token-gateway"></a> [token-gateway](#module\_token-gateway) | ./modules/gateway | n/a |
+| <a name="module_upload_confirm_result_alarm"></a> [upload\_confirm\_result\_alarm](#module\_upload\_confirm\_result\_alarm) | ./modules/lambda_alarms | n/a |
+| <a name="module_upload_confirm_result_alarm_topic"></a> [upload\_confirm\_result\_alarm\_topic](#module\_upload\_confirm\_result\_alarm\_topic) | ./modules/sns | n/a |
+| <a name="module_upload_confirm_result_gateway"></a> [upload\_confirm\_result\_gateway](#module\_upload\_confirm\_result\_gateway) | ./modules/gateway | n/a |
+| <a name="module_upload_confirm_result_lambda"></a> [upload\_confirm\_result\_lambda](#module\_upload\_confirm\_result\_lambda) | ./modules/lambda | n/a |
+| <a name="module_virus_scan_result_alarm"></a> [virus\_scan\_result\_alarm](#module\_virus\_scan\_result\_alarm) | ./modules/lambda_alarms | n/a |
+| <a name="module_virus_scan_result_alarm_topic"></a> [virus\_scan\_result\_alarm\_topic](#module\_virus\_scan\_result\_alarm\_topic) | ./modules/sns | n/a |
+| <a name="module_virus_scan_result_gateway"></a> [virus\_scan\_result\_gateway](#module\_virus\_scan\_result\_gateway) | ./modules/gateway | n/a |
+| <a name="module_virus_scan_result_lambda"></a> [virus\_scan\_result\_lambda](#module\_virus\_scan\_result\_lambda) | ./modules/lambda | n/a |
 | <a name="module_zip_store_reference_dynamodb_table"></a> [zip\_store\_reference\_dynamodb\_table](#module\_zip\_store\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 
 ## Resources
@@ -140,9 +148,9 @@
 | [aws_iam_policy.dynamodb_policy_scan_bulk_report](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ses_send_email_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.ssm_access_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ssm_policy_authoriser](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ssm_policy_oidc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.ssm_policy_pds](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ssm_policy_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.cross_account_backup_iam_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.ecs_execution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
