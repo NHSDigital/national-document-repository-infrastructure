@@ -1,0 +1,80 @@
+# .github/workflows/terraform-dev
+name: 'Deploy Virus Scanner'
+
+on:
+  workflow_dispatch:
+    inputs:
+      buildBranch:
+        description: 'Feature branch to push to sandbox.'
+        required: true
+        type: 'string'
+      sandboxWorkspace:
+        description: 'Which Sandbox to push to.'
+        required: true
+        type: 'string'
+      environment:
+        description: 'Environment to run against'
+        required: true
+        type: 'string'
+
+permissions:
+  pull-requests: write
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  terraform_process:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment}}
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.buildBranch}}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: View AWS Role
+        run: aws sts get-caller-identity
+
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.4
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="${{ github.event.inputs.sandboxWorkspace}}.tfbackend"
+        working-directory: ./virusscanner/terraform
+        shell: bash
+
+      - name: Terraform Set Workspace
+        id: workspace
+        run: terraform workspace select -or-create ${{ github.event.inputs.sandboxWorkspace}}
+        working-directory: ./virusscanner/terraform
+        shell: bash
+
+        # Checks that all Terraform configuration files adhere to a canonical format
+      - name: Terraform Format
+        run: terraform fmt -check
+        working-directory: ./virusscanner/terraform
+
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
+        working-directory: ./virusscanner/terraform
+        shell: bash
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false tf.plan
+        working-directory: ./infrastructure
