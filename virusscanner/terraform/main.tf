@@ -19,8 +19,8 @@ data "aws_vpc" "vpc" {
 }
 
 locals {
-  subnet_1_cidr_block = tolist(data.aws_ssm_parameter.virus_scanning_subnet_cidr_range)[0]
-  subnet_2_cidr_block = tolist(data.aws_ssm_parameter.virus_scanning_subnet_cidr_range)[1]
+  subnet_1_cidr_block = split(",", data.aws_ssm_parameter.virus_scanning_subnet_cidr_range.value)[0]
+  subnet_2_cidr_block = split(",", data.aws_ssm_parameter.virus_scanning_subnet_cidr_range.value)[1]
 }
 
 resource "aws_subnet" "virus_scanning_subnet1" {
@@ -79,7 +79,7 @@ resource "aws_route_table_association" "virus_scanning_subnet2_route_table_assoc
 }
 
 data "aws_ssm_parameter" "cloud_security_admin_email" {
-  name = "/prs/${var.environment}/user-input/cloud-security-admin-email"
+  name = "/prs/${terraform.workspace}/user-input/cloud-security-admin-email"
 }
 
 data "aws_ssm_parameter" "virus_scanning_subnet_cidr_range" {
@@ -92,7 +92,7 @@ resource "aws_cloudformation_stack" "s3_virus_scanning_stack" {
     VPC                                = data.aws_vpc.vpc.id
     SubnetA                            = aws_subnet.virus_scanning_subnet1.id
     SubnetB                            = aws_subnet.virus_scanning_subnet2.id
-    ConsoleSecurityGroupCidrBlock      = var.public_address
+    ConsoleSecurityGroupCidrBlock      = var.black_hole_address
     Email                              = data.aws_ssm_parameter.cloud_security_admin_email.value
     OnlyScanWhenQueueThresholdExceeded = "Yes"
     MinRunningAgents                   = 0
