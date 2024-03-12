@@ -7,7 +7,7 @@ module "logout-gateway" {
   authorization       = "NONE"
   gateway_path        = "Logout"
   require_credentials = false
-  origin              = "'https://${terraform.workspace}.${var.domain}'"
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
   # Lambda Variables
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   owner             = var.owner
