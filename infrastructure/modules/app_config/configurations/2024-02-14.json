@@ -1,0 +1,25 @@
+{
+    "flags": {
+        "testFeature1": {
+            "name": "testFeature1"
+        },
+        "testFeature2": {
+            "name": "testFeature2"
+        },
+        "testFeature3": {
+            "name": "testFeature3"
+        }
+    },
+    "values": {
+        "testFeature1": {
+            "enabled": "true"
+        },
+        "testFeature2": {
+            "enabled": "true"
+        },
+        "testFeature3": {
+            "enabled": "false"
+        }
+    },
+    "version": "1"
+}

@@ -50,7 +50,7 @@ module "ndr-lloyd-george-store" {
   cors_rules = [
     {
       allowed_headers = ["*"]
-      allowed_methods = ["POST", "DELETE"]
+      allowed_methods = ["POST", "PUT", "DELETE"]
       allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
       expose_headers  = ["ETag"]
       max_age_seconds = 3000

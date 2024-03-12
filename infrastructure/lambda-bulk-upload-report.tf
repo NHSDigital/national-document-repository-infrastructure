@@ -7,11 +7,15 @@ module "bulk-upload-report-lambda" {
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-bulk-staging-store.s3_object_access_policy,
     module.bulk_upload_report_dynamodb_table.dynamodb_policy,
-    aws_iam_policy.dynamodb_policy_scan_bulk_report.arn
+    aws_iam_policy.dynamodb_policy_scan_bulk_report.arn,
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
+    APPCONFIG_APPLICATION     = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT     = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                 = terraform.workspace
     STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
     BULK_UPLOAD_DYNAMODB_NAME = "${terraform.workspace}_${var.bulk_upload_report_dynamodb_table_name}"
@@ -24,7 +28,8 @@ module "bulk-upload-report-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-bulk-staging-store,
-    module.bulk_upload_report_dynamodb_table
+    module.bulk_upload_report_dynamodb_table,
+    module.ndr-app-config
   ]
 }
 

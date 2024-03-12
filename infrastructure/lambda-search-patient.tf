@@ -70,11 +70,15 @@ module "search-patient-details-lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_pds.arn,
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id = module.search-patient-details-gateway.gateway_resource_id
   http_method = "GET"
   lambda_environment_variables = {
+    APPCONFIG_APPLICATION          = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT          = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION        = module.ndr-app-config.app_config_configuration_profile_id
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
     PDS_FHIR_IS_STUBBED            = local.is_sandbox,
     SPLUNK_SQS_QUEUE_URL           = try(module.sqs-splunk-queue[0].sqs_url, null)
@@ -84,7 +88,8 @@ module "search-patient-details-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.search-patient-details-gateway,
-    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0]
+    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
+    module.ndr-app-config
   ]
 }
 

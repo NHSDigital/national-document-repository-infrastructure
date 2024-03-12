@@ -76,13 +76,17 @@ module "document-manifest-by-nhs-number-lambda" {
     module.zip_store_reference_dynamodb_table.dynamodb_policy,
     module.ndr-zip-request-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
+    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.document-manifest-by-nhs-gateway.gateway_resource_id
   http_method       = "GET"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
+    APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.docstore_bucket_name}"
     DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     LLOYD_GEORGE_BUCKET_NAME     = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
@@ -95,7 +99,8 @@ module "document-manifest-by-nhs-number-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.document-manifest-by-nhs-gateway,
-    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0]
+    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
+    module.ndr-app-config
   ]
 }
 
