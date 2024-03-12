@@ -7,7 +7,7 @@ module "token-gateway" {
   authorization       = "NONE"
   gateway_path        = "TokenRequest"
   require_credentials = false
-  origin              = "'https://${terraform.workspace}.${var.domain}'"
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
   # Lambda Variables
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   owner             = var.owner
@@ -37,11 +37,12 @@ module "create-token-lambda" {
   lambda_environment_variables = {
     WORKSPACE                       = terraform.workspace
     SSM_PARAM_JWT_TOKEN_PRIVATE_KEY = "jwt_token_private_key"
-    OIDC_CALLBACK_URL               = "https://${terraform.workspace}.${var.domain}/auth-callback"
-    AUTH_STATE_TABLE_NAME           = "${terraform.workspace}_${var.auth_state_dynamodb_table_name}"
-    AUTH_SESSION_TABLE_NAME         = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
-    ENVIRONMENT                     = var.environment
-    SPLUNK_SQS_QUEUE_URL            = try(module.sqs-splunk-queue[0].sqs_url, null)
+
+    OIDC_CALLBACK_URL       = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
+    AUTH_STATE_TABLE_NAME   = "${terraform.workspace}_${var.auth_state_dynamodb_table_name}"
+    AUTH_SESSION_TABLE_NAME = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
+    ENVIRONMENT             = var.environment
+    SPLUNK_SQS_QUEUE_URL    = try(module.sqs-splunk-queue[0].sqs_url, null)
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

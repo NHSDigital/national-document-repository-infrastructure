@@ -89,7 +89,7 @@ resource "aws_api_gateway_gateway_response" "unauthorised_response" {
   }
 
   response_parameters = {
-    "gatewayresponse.header.Access-Control-Allow-Origin"      = "'https://${terraform.workspace}.${var.domain}'"
+    "gatewayresponse.header.Access-Control-Allow-Origin"      = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
     "gatewayresponse.header.Access-Control-Allow-Methods"     = "'*'"
     "gatewayresponse.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Auth,X-Api-Key,X-Amz-Security-Token,X-Auth-Cookie,Accept'"
     "gatewayresponse.header.Access-Control-Allow-Credentials" = "'true'"
@@ -105,7 +105,7 @@ resource "aws_api_gateway_gateway_response" "bad_gateway_response" {
   }
 
   response_parameters = {
-    "gatewayresponse.header.Access-Control-Allow-Origin"      = "'https://${terraform.workspace}.${var.domain}'"
+    "gatewayresponse.header.Access-Control-Allow-Origin"      = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
     "gatewayresponse.header.Access-Control-Allow-Methods"     = "'*'"
     "gatewayresponse.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Auth,X-Api-Key,X-Amz-Security-Token,X-Auth-Cookie,Accept'"
     "gatewayresponse.header.Access-Control-Allow-Credentials" = "'true'"
