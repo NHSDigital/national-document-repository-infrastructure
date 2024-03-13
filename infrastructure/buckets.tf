@@ -160,6 +160,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
   }
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules" {
+  bucket = module.ndr-bulk-staging-store.bucket_id
+  rule {
+    id     = "Delete objects that have existed for 24 hours"
+    status = "Enabled"
+
+    expiration {
+      days = 1
+    }
+  }
+}
+
 # Staging Bucket for bulk uploads
 module "ndr-bulk-staging-store" {
   source                    = "./modules/s3/"
