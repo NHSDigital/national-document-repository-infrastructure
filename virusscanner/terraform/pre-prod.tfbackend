@@ -1,0 +1,5 @@
+bucket          = "ndr-pre-prod-virus-scanner-terraform-state"
+dynamodb_table  = "ndr-pre-prod-virus-scanner-terraform-lock"
+region          = "eu-west-2"
+key             = "virusScanner/terraform.tfstate"
+encrypt         = true
