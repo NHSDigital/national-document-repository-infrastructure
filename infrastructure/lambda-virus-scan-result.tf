@@ -63,15 +63,18 @@ module "virus_scan_result_alarm_topic" {
 }
 
 module "virus_scan_result_lambda" {
-  source  = "./modules/lambda"
-  name    = "VirusScanResult"
-  handler = "handlers.virus_scan_result_handler.lambda_handler"
+  source      = "./modules/lambda"
+  name        = "VirusScanResult"
+  handler     = "handlers.virus_scan_result_handler.lambda_handler"
+  memory_size = 256
   iam_role_policies = [
     module.ndr-bulk-staging-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-app-config.app_config_policy_arn,
     aws_iam_policy.ssm_access_policy.arn,
+    module.document_reference_dynamodb_table.dynamodb_policy,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.virus_scan_result_gateway.gateway_resource_id
