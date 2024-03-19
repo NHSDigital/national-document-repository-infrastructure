@@ -8,7 +8,7 @@ module "create-doc-ref-gateway" {
   gateway_path        = "DocumentReference"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = "'https://${terraform.workspace}.${var.domain}'"
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 
   # Lambda Variables
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
@@ -72,6 +72,7 @@ module "create-doc-ref-lambda" {
     module.ndr-bulk-staging-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    aws_iam_policy.ssm_policy_pds.arn,
     module.ndr-app-config.app_config_policy_arn,
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id

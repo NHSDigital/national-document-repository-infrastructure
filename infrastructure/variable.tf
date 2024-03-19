@@ -196,8 +196,9 @@ locals {
 
   bulk_upload_lambda_concurrent_limit = 5
 
-  api_gateway_subdomain_name   = "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
-  api_gateway_full_domain_name = "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
+
+  api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
+  api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
 
   current_region     = data.aws_region.current.name
   current_account_id = data.aws_caller_identity.current.account_id

@@ -20,7 +20,7 @@ module "ndr-zip-request-store" {
   cors_rules = [
     {
       allowed_methods = ["GET"]
-      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
     }
   ]
 }
@@ -130,6 +130,22 @@ resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
     status = "Enabled"
     transition {
       storage_class = "INTELLIGENT_TIERING"
+    }
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules" {
+  bucket = module.ndr-bulk-staging-store.bucket_id
+  rule {
+    id     = "Delete objects in user_upload folder that have existed for 24 hours"
+    status = "Enabled"
+
+    expiration {
+      days = 1
+    }
+
+    filter {
+      prefix = "user_upload/"
     }
   }
 }
