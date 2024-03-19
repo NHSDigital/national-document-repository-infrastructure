@@ -85,6 +85,7 @@ module "create-doc-ref-lambda" {
     APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    PDS_FHIR_IS_STUBBED          = local.is_sandbox,
     WORKSPACE                    = terraform.workspace
   }
   depends_on = [
