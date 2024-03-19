@@ -69,7 +69,7 @@ module "search-patient-details-lambda" {
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    aws_iam_policy.ssm_policy_pds.arn,
+    aws_iam_policy.ssm_access_policy.arn,
     module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -91,26 +91,6 @@ module "search-patient-details-lambda" {
     aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
     module.ndr-app-config
   ]
-}
-
-resource "aws_iam_policy" "ssm_policy_pds" {
-  name = "${terraform.workspace}_ssm_pds_parameters"
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "ssm:GetParameter",
-          "ssm:GetParameters",
-          "ssm:PutParameter"
-        ],
-        Resource = [
-          "arn:aws:ssm:*:*:parameter/*",
-        ]
-      }
-    ]
-  })
 }
 
 resource "aws_iam_role_policy_attachment" "policy_audit_search-patient-details-lambda" {
