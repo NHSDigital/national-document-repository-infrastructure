@@ -17,6 +17,11 @@ on:
         description: "Which environment should this run against"
         required: true
         type: "string"
+      backend:
+        default: "backend.conf"
+        description: "Which backend configuration should be used?"
+        required: true
+        type: "string"
 
 permissions:
   pull-requests: write
@@ -54,7 +59,7 @@ jobs:
       
     - name: Terraform Init
       id: init
-      run: terraform init -backend-config=backend.conf
+      run: terraform init -backend-config=${{ github.event.inputs.environment }}
       working-directory: ./infrastructure 
       shell: bash
 
