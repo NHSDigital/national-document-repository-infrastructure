@@ -3,6 +3,11 @@ name: 'Destroy (Select Account) Environment'
 on:
   workflow_dispatch:
     inputs:
+      build_branch:
+        default: "main"
+        description: "Feature branch to push to sandbox."
+        required: true
+        type: "string"
       sandboxWorkspace:
         description: "Which Sandbox to push destroy."
         required: true
@@ -38,7 +43,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        ref: main
+        ref: ${{ github.event.inputs.buildBranch}}
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
