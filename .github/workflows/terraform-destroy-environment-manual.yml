@@ -59,7 +59,7 @@ jobs:
       
     - name: Terraform Init
       id: init
-      run: terraform init -backend-config=${{ github.event.inputs.environment }}
+      run: terraform init -backend-config=${{ github.event.inputs.backend }}
       working-directory: ./infrastructure 
       shell: bash
 
