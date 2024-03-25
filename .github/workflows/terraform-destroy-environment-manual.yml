@@ -1,4 +1,4 @@
-name: 'Destroy (Dev Account) Environment'
+name: 'Destroy (Select Account) Environment'
 
 on:
   workflow_dispatch:
@@ -12,6 +12,11 @@ on:
         description: "Which vars file is required? For test, change to test.tfvars"
         required: true
         type: "string"
+      environment:
+        default: "development"
+        description: "Which environment should this run against"
+        required: true
+        type: "string"
 
 permissions:
   pull-requests: write
@@ -21,7 +26,7 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: development
+    environment: ${{ github.event.inputs.environment }}
 
     steps:
     # Checkout the repository to the GitHub Actions runner
