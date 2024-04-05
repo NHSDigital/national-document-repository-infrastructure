@@ -11,6 +11,9 @@
         },
         "uploadArfWorkflowEnabled": {
             "name": "uploadArfWorkflowEnabled"
+        },
+        "useSmartcardAuth": {
+            "name": "useSmartcardAuth"
         }
     },
     "values": {
@@ -24,6 +27,9 @@
             "enabled": "false"
         },
         "uploadArfWorkflowEnabled": {
+            "enabled": "false"
+        },
+        "useSmartcardAuth": {
             "enabled": "false"
         }
     },
