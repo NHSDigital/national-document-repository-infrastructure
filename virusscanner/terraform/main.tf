@@ -49,7 +49,7 @@ resource "aws_subnet" "virus_scanning_subnet2" {
 
 data "aws_internet_gateway" "ig" {
   tags = {
-    Name = "${var.standalone_vpc_tag}-vpc-internet-gateway"
+    Name = "${var.standalone_vpc_ig_tag}-vpc-internet-gateway"
   }
 }
 
@@ -79,7 +79,7 @@ resource "aws_route_table_association" "virus_scanning_subnet2_route_table_assoc
 }
 
 data "aws_ssm_parameter" "cloud_security_admin_email" {
-  name = "/prs/${var.standalone_vpc_tag}/user-input/cloud-security-admin-email"
+  name = "/prs/${var.cloud_security_email_param_environment}/user-input/cloud-security-admin-email"
 }
 
 data "aws_ssm_parameter" "virus_scanning_subnet_cidr_range" {
