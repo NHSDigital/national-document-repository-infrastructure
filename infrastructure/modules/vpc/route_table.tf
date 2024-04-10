@@ -46,7 +46,7 @@ resource "aws_route_table_association" "public" {
 
 resource "aws_route_table_association" "private" {
   count          = local.is_sandbox ? 0 : var.enable_private_routes ? var.num_private_subnets : 0
-  subnet_id      = local.is_sandbox ? element(data.aws_subnet.public_subnets[*].id, count.index) : element(aws_subnet.public_subnets[*].id, count.index)
+  subnet_id      = local.is_sandbox ? element(data.aws_subnet.private_subnets[*].id, count.index) : element(aws_subnet.private_subnets[*].id, count.index)
   route_table_id = aws_route_table.private[0].id
 }
 
