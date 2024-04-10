@@ -5,6 +5,7 @@ module "ndr-vpc-ui" {
 
   # Variables
   standalone_vpc_tag          = var.standalone_vpc_tag
+  standalone_vpc_ig_tag       = var.standalone_vpc_ig_tag
   availability_zones          = var.availability_zones
   enable_private_routes       = true
   enable_dns_support          = var.enable_dns_support

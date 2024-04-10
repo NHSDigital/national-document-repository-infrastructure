@@ -1,5 +1,5 @@
 resource "aws_route_table" "public" {
-  count  = var.num_public_subnets > 0 ? 1 : 0
+  count  = local.is_sandbox ? 0 : var.num_public_subnets > 0 ? 1 : 0
   vpc_id = local.is_production ? aws_vpc.vpc[0].id : data.aws_vpc.vpc[0].id
   tags = {
     Name        = "${terraform.workspace}-public-route-table"
@@ -12,7 +12,7 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table" "private" {
-  count  = var.num_private_subnets > 0 ? 1 : 0
+  count  = local.is_sandbox ? 0 : var.num_public_subnets > 0 ? 1 : 0
   vpc_id = local.is_production ? aws_vpc.vpc[0].id : data.aws_vpc.vpc[0].id
   tags = {
     Name        = "${terraform.workspace}-private-route-table"
@@ -25,28 +25,28 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "public" {
-  count                  = var.num_public_subnets > 0 ? 1 : 0
+  count                  = local.is_sandbox ? 0 : var.num_public_subnets > 0 ? 1 : 0
   route_table_id         = aws_route_table.public[0].id
   destination_cidr_block = var.ig_cidr
-  gateway_id             = aws_internet_gateway.ig[0].id
+  gateway_id             = local.is_production ? aws_internet_gateway.ig[0].id : data.aws_internet_gateway.ig[0].id
 }
 
 resource "aws_route" "private" {
-  count                       = (var.num_private_subnets > 0) && var.enable_private_routes ? 1 : 0
+  count                       = local.is_sandbox ? 0 : (var.num_private_subnets > 0) && var.enable_private_routes ? 1 : 0
   route_table_id              = aws_route_table.private[0].id
   destination_ipv6_cidr_block = var.ig_ipv6_cidr
-  gateway_id                  = aws_internet_gateway.ig[0].id
+  gateway_id                  = local.is_production ? aws_internet_gateway.ig[0].id : data.aws_internet_gateway.ig[0].id
 }
 
 resource "aws_route_table_association" "public" {
-  count          = var.num_public_subnets
-  subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
+  count          = local.is_sandbox ? 0 : var.num_public_subnets
+  subnet_id      = local.is_sandbox ? element(data.aws_subnet.public_subnets[*].id, count.index) : element(aws_subnet.public_subnets[*].id, count.index)
   route_table_id = aws_route_table.public[0].id
 }
 
 resource "aws_route_table_association" "private" {
-  count          = var.enable_private_routes ? var.num_private_subnets : 0
-  subnet_id      = element(aws_subnet.private_subnets[*].id, count.index)
+  count          = local.is_sandbox ? 0 : var.enable_private_routes ? var.num_private_subnets : 0
+  subnet_id      = local.is_sandbox ? element(data.aws_subnet.public_subnets[*].id, count.index) : element(aws_subnet.public_subnets[*].id, count.index)
   route_table_id = aws_route_table.private[0].id
 }
 

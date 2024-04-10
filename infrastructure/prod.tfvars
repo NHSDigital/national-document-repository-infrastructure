@@ -16,4 +16,5 @@ mesh_client_cert_ssm_param_name = "/repo/prod/user-input/external/mesh-mailbox-c
 mesh_client_key_ssm_param_name  = "/repo/prod/user-input/external/mesh-mailbox-client-key"
 mesh_ca_cert_ssm_param_name     = "/repo/prod/user-input/external/mesh-mailbox-ca-cert"
 
-standalone_vpc_tag = "ndr-prod-vpc"
+standalone_vpc_tag    = "ndr-prod"
+standalone_vpc_ig_tag = "ndr-prod"
