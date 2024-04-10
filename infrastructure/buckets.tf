@@ -29,7 +29,7 @@ module "ndr-zip-request-store" {
 module "ndr-lloyd-george-store" {
   source                    = "./modules/s3/"
   bucket_name               = var.lloyd_george_bucket_name
-  enable_cors_configuration = false
+  enable_cors_configuration = true
   enable_bucket_versioning  = true
   environment               = var.environment
   owner                     = var.owner
