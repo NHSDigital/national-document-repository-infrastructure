@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.42.0 |
 
 ## Modules
 
@@ -38,10 +38,13 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_black_hole_address"></a> [black\_hole\_address](#input\_black\_hole\_address) | using reserved address that does not lead anywhere to make sure CloudStorageSecurity console is not available | `string` | `"198.51.100.0/24"` | no |
+| <a name="input_cloud_security_email_param_environment"></a> [cloud\_security\_email\_param\_environment](#input\_cloud\_security\_email\_param\_environment) | This is the environement reference in cloud security email param store key | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
 | <a name="input_public_address"></a> [public\_address](#input\_public\_address) | using public address to make sure CloudStorageSecurity console is available | `string` | `"0.0.0.0/0"` | no |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"eu-west-2"` | no |
+| <a name="input_standalone_vpc_ig_tag"></a> [standalone\_vpc\_ig\_tag](#input\_standalone\_vpc\_ig\_tag) | This is the tag assigned to the standalone vpc ig that should be created as part of the main infrastructure or manually as part of a swap startergy before the first run of the infrastructure | `string` | n/a | yes |
+| <a name="input_standalone_vpc_tag"></a> [standalone\_vpc\_tag](#input\_standalone\_vpc\_tag) | This is the tag assigned to the standalone vpc that should be created manaully before the first run of the infrastructure | `string` | n/a | yes |
 
 ## Outputs
 

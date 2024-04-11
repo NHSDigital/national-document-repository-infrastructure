@@ -78,6 +78,17 @@ variable "bulk_upload_report_dynamodb_table_name" {
 }
 
 # VPC Variables
+
+variable "standalone_vpc_tag" {
+  type        = string
+  description = "This is the tag assigned to the standalone vpc that should be created manaully before the first run of the infrastructure"
+}
+
+variable "standalone_vpc_ig_tag" {
+  type        = string
+  description = "This is the tag assigned to the standalone vpc internet gateway that should be created manaully before the first run of the infrastructure"
+}
+
 variable "availability_zones" {
   type        = list(string)
   description = "This is a list that specifies all the Availability Zones that will have a pair of public and private subnets"
@@ -190,7 +201,7 @@ variable "cloudwatch_alarm_evaluation_periods" {}
 locals {
   is_sandbox         = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
   is_production      = contains(["pre-prod", "prod"], terraform.workspace)
-  is_force_destroy   = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+  is_force_destroy   = contains(["ndr-dev", "ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
   is_sandbox_or_test = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
 
 

@@ -503,7 +503,7 @@ resource "aws_ssm_parameter" "nems_events_observability" {
 }
 
 resource "aws_security_group" "ndr_mesh_sg" {
-  name        = "mesh-forwarder-sg"
+  name        = "${terraform.workspace}-mesh-forwarder-sg"
   description = "Allow TLS inbound traffic"
   vpc_id      = module.ndr-vpc-ui.vpc_id
   tags = {
