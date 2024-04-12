@@ -14,3 +14,7 @@ mesh_shared_key_ssm_param_name  = "/repo/dev/user-input/external/mesh-mailbox-sh
 mesh_client_cert_ssm_param_name = "/repo/dev/user-input/external/mesh-mailbox-client-cert"
 mesh_client_key_ssm_param_name  = "/repo/dev/user-input/external/mesh-mailbox-client-key"
 mesh_ca_cert_ssm_param_name     = "/repo/dev/user-input/external/mesh-mailbox-ca-cert"
+
+standalone_vpc_tag                     = "ndr-dev"
+standalone_vpc_ig_tag                  = "ndr-dev"
+cloud_security_email_param_environment = "dev"
