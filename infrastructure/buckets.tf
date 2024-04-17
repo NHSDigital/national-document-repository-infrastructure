@@ -29,11 +29,24 @@ module "ndr-zip-request-store" {
 module "ndr-lloyd-george-store" {
   source                    = "./modules/s3/"
   bucket_name               = var.lloyd_george_bucket_name
-  enable_cors_configuration = false
+  enable_cors_configuration = contains(["prod"], terraform.workspace) ? false : true
   enable_bucket_versioning  = true
   environment               = var.environment
   owner                     = var.owner
   force_destroy             = local.is_force_destroy
+  cors_rules = [
+    {
+      allowed_headers = ["*"]
+      allowed_methods = ["POST", "PUT", "DELETE"]
+      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
+      expose_headers  = ["ETag"]
+      max_age_seconds = 3000
+    },
+    {
+      allowed_methods = ["GET"]
+      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
+    }
+  ]
 }
 
 # Lifecycle Rules

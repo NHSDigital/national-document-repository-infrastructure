@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.42.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.41.0 |
 
 ## Modules
 
@@ -100,6 +100,10 @@
 | <a name="module_sqs-nems-queue"></a> [sqs-nems-queue](#module\_sqs-nems-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-splunk-queue"></a> [sqs-splunk-queue](#module\_sqs-splunk-queue) | ./modules/sqs | n/a |
 | <a name="module_token-gateway"></a> [token-gateway](#module\_token-gateway) | ./modules/gateway | n/a |
+| <a name="module_update-upload-state-gateway"></a> [update-upload-state-gateway](#module\_update-upload-state-gateway) | ./modules/gateway | n/a |
+| <a name="module_update-upload-state-lambda"></a> [update-upload-state-lambda](#module\_update-upload-state-lambda) | ./modules/lambda | n/a |
+| <a name="module_update_upload_state_alarm"></a> [update\_upload\_state\_alarm](#module\_update\_upload\_state\_alarm) | ./modules/lambda_alarms | n/a |
+| <a name="module_update_upload_state_alarm_topic"></a> [update\_upload\_state\_alarm\_topic](#module\_update\_upload\_state\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_upload_confirm_result_alarm"></a> [upload\_confirm\_result\_alarm](#module\_upload\_confirm\_result\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_upload_confirm_result_alarm_topic"></a> [upload\_confirm\_result\_alarm\_topic](#module\_upload\_confirm\_result\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_upload_confirm_result_gateway"></a> [upload\_confirm\_result\_gateway](#module\_upload\_confirm\_result\_gateway) | ./modules/gateway | n/a |
@@ -251,7 +255,8 @@
 | <a name="input_poll_frequency"></a> [poll\_frequency](#input\_poll\_frequency) | n/a | `any` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"eu-west-2"` | no |
 | <a name="input_staging_store_bucket_name"></a> [staging\_store\_bucket\_name](#input\_staging\_store\_bucket\_name) | n/a | `string` | `"staging-bulk-store"` | no |
-| <a name="input_standalone_vpc_tag"></a> [standalone\_vpc\_tag](#input\_standalone\_vpc\_tag) | This si the tag assigned to the standalone vpc that should be created manaully before the first run of the infrastructure | `string` | n/a | yes |
+| <a name="input_standalone_vpc_ig_tag"></a> [standalone\_vpc\_ig\_tag](#input\_standalone\_vpc\_ig\_tag) | This is the tag assigned to the standalone vpc internet gateway that should be created manaully before the first run of the infrastructure | `string` | n/a | yes |
+| <a name="input_standalone_vpc_tag"></a> [standalone\_vpc\_tag](#input\_standalone\_vpc\_tag) | This is the tag assigned to the standalone vpc that should be created manaully before the first run of the infrastructure | `string` | n/a | yes |
 | <a name="input_zip_store_bucket_name"></a> [zip\_store\_bucket\_name](#input\_zip\_store\_bucket\_name) | n/a | `string` | `"zip-request-store"` | no |
 | <a name="input_zip_store_dynamodb_table_name"></a> [zip\_store\_dynamodb\_table\_name](#input\_zip\_store\_dynamodb\_table\_name) | n/a | `string` | `"ZipStoreReferenceMetadata"` | no |
 
