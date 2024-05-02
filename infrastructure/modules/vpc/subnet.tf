@@ -1,7 +1,7 @@
 resource "aws_subnet" "public_subnets" {
   count             = local.is_sandbox ? 0 : var.num_public_subnets
   vpc_id            = local.is_production ? aws_vpc.vpc[0].id : data.aws_vpc.vpc[0].id
-  cidr_block        = element(local.public_subnet_cidrs, count.index)
+  cidr_block        = local.is_production ? element(local.public_subnet_cidrs_prod, count.index) : element(local.public_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
   tags = {
     Name        = "${terraform.workspace}-public-subnet-${count.index + 1}"
@@ -15,7 +15,7 @@ resource "aws_subnet" "public_subnets" {
 resource "aws_subnet" "private_subnets" {
   count             = local.is_sandbox ? 0 : var.num_private_subnets
   vpc_id            = local.is_production ? aws_vpc.vpc[0].id : data.aws_vpc.vpc[0].id
-  cidr_block        = element(local.private_subnet_cidrs, count.index)
+  cidr_block        = local.is_production ? element(local.private_subnet_cidrs_prod, count.index) : element(local.private_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
   tags = {
     Name        = "${terraform.workspace}-private-subnet-${count.index + 1}"
