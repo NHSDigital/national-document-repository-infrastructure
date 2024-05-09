@@ -221,3 +221,36 @@ module "bulk_upload_report_dynamodb_table" {
   environment = var.environment
   owner       = var.owner
 }
+
+module "statistics_dynamodb_table" {
+  source                         = "./modules/dynamo_db"
+  table_name                     = var.statistics_dynamodb_table_name
+  hash_key                       = "Date"
+  deletion_protection_enabled    = local.is_production
+  stream_enabled                 = false
+  ttl_enabled                    = false
+  point_in_time_recovery_enabled = !local.is_sandbox
+
+  attributes = [
+    {
+      name = "Date"
+      type = "S"
+    },
+    {
+      name = "Statistic"
+      type = "S"
+    },
+  ]
+
+  global_secondary_indexes = [
+    {
+      name            = "StatisticIndex"
+      hash_key        = "Date"
+      range_key       = "Statistic"
+      projection_type = "ALL"
+    }
+  ]
+
+  environment = var.environment
+  owner       = var.owner
+}
