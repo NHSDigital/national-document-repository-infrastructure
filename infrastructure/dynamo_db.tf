@@ -226,6 +226,7 @@ module "statistics_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.statistics_dynamodb_table_name
   hash_key                       = "Date"
+  sort_key                       = "StatisticID"
   deletion_protection_enabled    = local.is_production
   stream_enabled                 = false
   ttl_enabled                    = false
@@ -243,12 +244,6 @@ module "statistics_dynamodb_table" {
   ]
 
   global_secondary_indexes = [
-    {
-      name            = "StatisticIndex"
-      hash_key        = "Date"
-      range_key       = "StatisticID"
-      projection_type = "ALL"
-    }
   ]
 
   environment = var.environment
