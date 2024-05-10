@@ -87,7 +87,7 @@ resource "aws_lambda_permission" "data_collection_schedule_permission" {
 resource "aws_cloudwatch_event_rule" "statistical_report_schedule" {
   name                = "${terraform.workspace}_statistical_report_schedule"
   description         = "Schedule for Statistical Report Lambda"
-  schedule_expression = "cron(0 8 * * 2 *)"
+  schedule_expression = "cron(0 8 ? * 2 *)"
 }
 
 resource "aws_cloudwatch_event_target" "statistical_report_schedule_event" {
