@@ -50,19 +50,22 @@ module "data-collection-lambda" {
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-app-config.app_config_policy_arn,
     module.statistics_dynamodb_table.dynamodb_policy,
-    module.ndr-lloyd-george-store.s3_object_access_policy,
-    module.ndr-document-store.s3_object_access_policy,
+    module.ndr-lloyd-george-store.s3_list_object_policy,
+    module.ndr-document-store.s3_list_object_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.document_reference_dynamodb_table.dynamodb_policy,
+    aws_iam_policy.cloudwatch_log_query_policy.arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE               = terraform.workspace
-    STATISTICS_TABLE        = var.statistics_dynamodb_table_name
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
+    LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    WORKSPACE                  = terraform.workspace
+    STATISTICS_TABLE           = var.statistics_dynamodb_table_name
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
@@ -72,5 +75,25 @@ module "data-collection-lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-app-config,
     module.statistics_dynamodb_table,
+    aws_iam_policy.cloudwatch_log_query_policy
   ]
+}
+
+
+resource "aws_iam_policy" "cloudwatch_log_query_policy" {
+  name = "${terraform.workspace}_cloudwatch_log_query_policy"
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:StartQuery",
+          "logs:GetQueryResults",
+        ],
+        "Resource" : ["arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*"]
+      }
+    ]
+  })
 }
