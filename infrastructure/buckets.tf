@@ -49,6 +49,23 @@ module "ndr-lloyd-george-store" {
   ]
 }
 
+module "statistical-reports-store" {
+  source                    = "./modules/s3/"
+  bucket_name               = var.statistical_reports_bucket_name
+  enable_cors_configuration = true
+  enable_bucket_versioning  = true
+  environment               = var.environment
+  owner                     = var.owner
+  force_destroy             = local.is_force_destroy
+  cors_rules = [
+    {
+      allowed_methods = ["GET"]
+      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+    }
+  ]
+}
+
+
 # Lifecycle Rules
 resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   bucket = module.ndr-lloyd-george-store.bucket_id

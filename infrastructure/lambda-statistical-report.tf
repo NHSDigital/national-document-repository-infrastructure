@@ -1,21 +1,21 @@
-module "data-collection-alarm" {
+module "statistical-report-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.data-collection-lambda.function_name
-  lambda_timeout       = module.data-collection-lambda.timeout
-  lambda_name          = "data_collection_handler"
+  lambda_function_name = module.statistical-report-lambda.function_name
+  lambda_timeout       = module.statistical-report-lambda.timeout
+  lambda_name          = "statistical_report_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.data-collection-alarm-topic.arn]
-  ok_actions           = [module.data-collection-alarm-topic.arn]
-  depends_on           = [module.data-collection-lambda, module.data-collection-alarm-topic]
+  alarm_actions        = [module.statistical-report-alarm-topic.arn]
+  ok_actions           = [module.statistical-report-alarm-topic.arn]
+  depends_on           = [module.statistical-report-lambda, module.statistical-report-alarm-topic]
 }
 
-module "data-collection-alarm-topic" {
+module "statistical-report-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   current_account_id    = data.aws_caller_identity.current.account_id
-  topic_name            = "data-collection-topic"
+  topic_name            = "statistical-report-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.data-collection-lambda.endpoint
+  topic_endpoint        = module.statistical-report-lambda.endpoint
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -37,23 +37,20 @@ module "data-collection-alarm-topic" {
     ]
   })
 
-  depends_on = [module.data-collection-lambda, module.sns_encryption_key]
+  depends_on = [module.statistical-report-lambda, module.sns_encryption_key]
 }
 
-module "data-collection-lambda" {
+module "statistical-report-lambda" {
   source         = "./modules/lambda"
-  name           = "DataCollectionLambda"
-  handler        = "handlers.data_collection_handler.lambda_handler"
+  name           = "StatisticalReportLambda"
+  handler        = "handlers.statistical_report_handler.lambda_handler"
   lambda_timeout = 900
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-app-config.app_config_policy_arn,
     module.statistics_dynamodb_table.dynamodb_policy,
-    module.ndr-lloyd-george-store.s3_list_object_policy,
-    module.ndr-document-store.s3_list_object_policy,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
-    module.document_reference_dynamodb_table.dynamodb_policy,
+    module.statistical-reports-store.s3_object_access_policy,
     aws_iam_policy.cloudwatch_log_query_policy.arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -62,10 +59,9 @@ module "data-collection-lambda" {
     APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
-    LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
-    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     WORKSPACE                  = terraform.workspace
     STATISTICS_TABLE           = "${terraform.workspace}_${var.statistics_dynamodb_table_name}"
+    STATISTICAL_REPORTS_BUCKET = "${terraform.workspace}_${var.statistical_reports_bucket_name}"
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
@@ -75,29 +71,7 @@ module "data-collection-lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-app-config,
     module.statistics_dynamodb_table,
-    module.lloyd_george_reference_dynamodb_table,
-    module.document_reference_dynamodb_table,
-    module.ndr-document-store,
-    module.ndr-lloyd-george-store,
+    module.statistical-reports-store,
     aws_iam_policy.cloudwatch_log_query_policy
   ]
-}
-
-
-resource "aws_iam_policy" "cloudwatch_log_query_policy" {
-  name = "${terraform.workspace}_cloudwatch_log_query_policy"
-
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "logs:StartQuery",
-          "logs:GetQueryResults",
-        ],
-        "Resource" : ["arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*"]
-      }
-    ]
-  })
 }
