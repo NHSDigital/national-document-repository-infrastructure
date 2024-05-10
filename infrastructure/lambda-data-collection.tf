@@ -65,7 +65,7 @@ module "data-collection-lambda" {
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     WORKSPACE                  = terraform.workspace
-    STATISTICS_TABLE           = var.statistics_dynamodb_table_name
+    STATISTICS_TABLE           = "${terraform.workspace}_${var.statistics_dynamodb_table_name}"
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
