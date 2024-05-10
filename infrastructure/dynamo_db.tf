@@ -237,7 +237,7 @@ module "statistics_dynamodb_table" {
       type = "S"
     },
     {
-      name = "Statistic"
+      name = "StatisticID"
       type = "S"
     },
   ]
@@ -246,7 +246,7 @@ module "statistics_dynamodb_table" {
     {
       name            = "StatisticIndex"
       hash_key        = "Date"
-      range_key       = "Statistic"
+      range_key       = "StatisticID"
       projection_type = "ALL"
     }
   ]
