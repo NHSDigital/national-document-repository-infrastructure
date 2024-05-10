@@ -241,9 +241,19 @@ module "statistics_dynamodb_table" {
       name = "StatisticID"
       type = "S"
     },
+    {
+      name = "OdsCode"
+      type = "S"
+    },
   ]
 
   global_secondary_indexes = [
+    {
+      name            = "OdsCodeIndex"
+      hash_key        = "OdsCode"
+      range_key       = "Date"
+      projection_type = "ALL"
+    }
   ]
 
   environment = var.environment
