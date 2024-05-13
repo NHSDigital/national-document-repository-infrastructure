@@ -61,7 +61,7 @@ module "statistical-report-lambda" {
     APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                  = terraform.workspace
     STATISTICS_TABLE           = "${terraform.workspace}_${var.statistics_dynamodb_table_name}"
-    STATISTICAL_REPORTS_BUCKET = "${terraform.workspace}_${var.statistical_reports_bucket_name}"
+    STATISTICAL_REPORTS_BUCKET = "${terraform.workspace}-${var.statistical_reports_bucket_name}"
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false

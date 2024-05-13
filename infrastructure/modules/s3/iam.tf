@@ -44,8 +44,7 @@ resource "aws_iam_policy" "s3_list_object_policy" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "s3:ListBucket",
-          "s3:PutObject",
+          "s3:ListBucketVersions",
         ],
         "Resource" : ["${aws_s3_bucket.bucket.arn}"]
       }
