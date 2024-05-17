@@ -2,7 +2,7 @@
 module "ndr-document-store" {
   source                    = "./modules/s3/"
   bucket_name               = var.docstore_bucket_name
-  enable_cors_configuration = false
+  enable_cors_configuration = true
   enable_bucket_versioning  = true
   environment               = var.environment
   owner                     = var.owner
