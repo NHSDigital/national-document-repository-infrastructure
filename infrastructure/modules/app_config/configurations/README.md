@@ -4,7 +4,7 @@ If any app configurations are modified manually e.g. new flag version, terraform
 Therefore we have three instances of the configuration per deployment. 
 
 {date}-dev.json  (sandboxes, dev and test)
-{date}-preprod.json
+{date}-pre-prod.json
 {date}-prod.json
 
 It is recomended that all feature flags are enabled for the dev version to reduce manual app config actions. 
