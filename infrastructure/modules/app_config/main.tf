@@ -1,7 +1,10 @@
 locals {
-  is_sandbox_or_test = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
-  current_config_path = (local.is_sandbox_or_test ? "${path.module}/configurations/2024-02-21-dev.json" :
-  "${path.module}/configurations/2024-02-21.json")
+  is_sandbox_dev_or_test = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-dev", "ndr-test"], terraform.workspace)
+  current_config_path = (
+    local.is_sandbox_dev_or_test
+    ? "${path.module}/configurations/2024-02-21-dev.json"
+    : "${path.module}/configurations/2024-05-21-${terraform.workspace}.json"
+  )
 }
 
 resource "aws_appconfig_application" "ndr-app-config-application" {
