@@ -1,3 +1,7 @@
+locals {
+  lambda_layer_aws_name = "${terraform.workspace}_${var.layer_name}_lambda_layer"
+}
+
 data "archive_file" "lambda_layer_placeholder" {
   type        = "zip"
   source_file = "placeholder_lambda.py"
@@ -6,7 +10,7 @@ data "archive_file" "lambda_layer_placeholder" {
 
 resource "aws_lambda_layer_version" "lambda_layer" {
   filename         = data.archive_file.lambda_layer_placeholder.output_path
-  layer_name       = "${terraform.workspace}_${var.layer_name}_lambda_layer"
+  layer_name       = local.lambda_layer_aws_name
   compatible_runtimes = ["python3.11"]
   compatible_architectures = ["x86_64"]
 }

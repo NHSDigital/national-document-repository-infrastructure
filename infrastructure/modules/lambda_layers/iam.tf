@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "lambda_layer_policy" {
-  name = "${terraform.workspace}_${var.layer_name}_lambda_layer_policy"
+  name = "${local.lambda_layer_aws_name}_policy"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -11,7 +11,7 @@ resource "aws_iam_policy" "lambda_layer_policy" {
           "lambda:ListLayers"
         ],
         Resource = [
-          "arn:aws:lambda:eu-west-2:${var.account_id}:layer:${terraform.workspace}_${var.layer_name}_lambda_layer:*"
+          "arn:aws:lambda:eu-west-2:${var.account_id}:layer:${local.lambda_layer_aws_name}:*"
         ]
       }
     ]
