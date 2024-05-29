@@ -63,4 +63,4 @@ jobs:
 
       - name: Run Version Cleanup Script
         run: |
-          pwd
+          ./venv/bin/python3 scripts/cleanup_versions.py ${{ inputs.sandbox }} 

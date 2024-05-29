@@ -56,7 +56,7 @@ resource "aws_appconfig_hosted_configuration_version" "ndr-app-config-profile-ve
 }
 
 resource "aws_appconfig_deployment_strategy" "ndr-app-config-deployment-strategy" {
-  name                           = "RepoAppConfigDeploymentStrategy"
+  name                           = "${terraform.workspace}_RepoAppConfigDeploymentStrategy"
   deployment_duration_in_minutes = 0
   final_bake_time_in_minutes     = 0
   growth_factor                  = "100.0"
