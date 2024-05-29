@@ -58,9 +58,6 @@ jobs:
          role-skip-session-tagging: true
          aws-region: ${{ vars.AWS_REGION }}
 
-      - name: View AWS Role
-        run: aws sts get-caller-identity
-
       - name: Run Version Cleanup Script
         run: |
           ./venv/bin/python3 scripts/cleanup_versions.py ${{ inputs.sandbox }} 
