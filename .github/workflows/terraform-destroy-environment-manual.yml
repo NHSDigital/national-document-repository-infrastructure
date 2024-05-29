@@ -55,6 +55,14 @@ jobs:
     - name: View AWS Role
       run: aws sts get-caller-identity
 
+    - name: Run AppConfig and Lambda Layer Cleanup Versions Script
+      uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
+      with:
+        build_branch: ${{ inputs.build_branch }}
+        sandbox: ${{ inputs.sandbox }}
+        environment: ${{ inputs.environment }}
+        python_version: "3.11"
+
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
