@@ -61,7 +61,7 @@ jobs:
       run: |
         pwd
         ls -a
-        cd ./.github
+        cd ./.github/workflows
         ls -a
 #      uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
 #      with:
