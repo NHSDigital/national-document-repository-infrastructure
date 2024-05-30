@@ -45,8 +45,8 @@ jobs:
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
-  terraform_process:
-    name: Terraform Delete Process
+  terraform_destroy_process:
+    name: Terraform Destroy Process
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
     needs: [cleanup_versions_process]

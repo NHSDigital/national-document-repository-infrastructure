@@ -59,10 +59,10 @@ class CleanupVersions:
 
         if total_untracked_versions:
             if len(successful_deletes) == total_untracked_versions:
-                print("\nSuccessfully deleted all untracked hosted configuration versions")
+                print("\nSuccessfully deleted all untracked hosted configuration versions!")
             else:
-                print("\nAll untracked hosted configuration versions were not successfully deleted, please manually "
-                      "remove these from AppConfig using the AWS console or using AWS CLI")
+                print("\nWARNING! All untracked hosted configuration versions were not successfully deleted, please "
+                      "manually remove these from AppConfig using the AWS console or using AWS CLI")
 
     def get_lambda_layers(self):
         print(f"\nGathering Lambda Layer versions on {self.environment}...")
@@ -87,7 +87,7 @@ class CleanupVersions:
         lambda_layers = self.get_lambda_layers()
         lambda_layer_versions = self.get_lambda_layer_versions(lambda_layers)
         total_untracked_versions = sum(len(versions) for versions in lambda_layer_versions.values())
-        print(f"\n{total_untracked_versions} lambda layer versions require deletion.\n")
+        print(f"\n{total_untracked_versions} lambda layer versions require deletion\n")
 
         if not total_untracked_versions:
             return
@@ -105,9 +105,9 @@ class CleanupVersions:
 
         if total_untracked_versions:
             if len(successful_deletes) == total_untracked_versions:
-                print("\nSuccessfully deleted all untracked lambda layer versions")
+                print("\nSuccessfully deleted all untracked lambda layer versions!")
             else:
-                print("\nAll untracked lambda layer versions were not successfully deleted, please manually "
+                print("\nWARNING! All untracked lambda layer versions were not successfully deleted, please manually "
                       "remove these using the AWS console or using AWS CLI")
 
 
