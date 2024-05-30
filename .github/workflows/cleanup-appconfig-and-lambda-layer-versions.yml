@@ -1,7 +1,7 @@
 name: 'Cleanup Untracked App Config Profiles and Lambda Layer Versions'
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       build_branch:
         description: 'Feature branch to push to sandbox.'
