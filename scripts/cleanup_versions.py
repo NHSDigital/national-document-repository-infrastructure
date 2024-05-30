@@ -64,14 +64,6 @@ class CleanupVersions:
                 print("\nAll untracked hosted configuration versions were not successfully deleted, please manually "
                       "remove these from AppConfig using the AWS console or using AWS CLI")
 
-    def get_lambda_functions(self):
-        response = self.lambda_client.list_functions()
-
-        environment_functions = []
-        for function in response["Functions"]:
-            if f"{self.environment}_" in function["FunctionName"]:
-                environment_functions.append(function)
-
     def get_lambda_layers(self):
         print(f"\nGathering Lambda Layer versions on {self.environment}...")
         response = self.lambda_client.list_layers()
