@@ -20,6 +20,9 @@ on:
         description: "Version of Python to run the cleanup script against"
         required: true
         type: "string"
+    secrets:
+      AWS_ASSUME_ROLE:
+        required: true
 
 
 permissions:

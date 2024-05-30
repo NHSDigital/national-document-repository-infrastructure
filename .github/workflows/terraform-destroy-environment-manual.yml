@@ -36,12 +36,6 @@ permissions:
 jobs:
   cleanup_versions_process:
     name: Run AppConfig and Lambda Layer Cleanup Versions Script
-    #      run: |
-    #        pwd
-    #        ls -a
-    #        cd ./.github/workflows
-    #        ls -a
-    #        pwd
     uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
     with:
       build_branch: ${{ inputs.build_branch }}
@@ -52,6 +46,7 @@ jobs:
   terraform_delete_process:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
+    needs: [cleanup_versions_process]
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -74,26 +69,26 @@ jobs:
 
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-#    - name: Setup Terraform
-#      uses: hashicorp/setup-terraform@v2
-#      with:
-#        terraform_version: 1.5.4
-#        terraform_wrapper: false
-#
-#    - name: Terraform Init
-#      id: init
-#      run: terraform init -backend-config=${{ github.event.inputs.backend }}
-#      working-directory: ./infrastructure
-#      shell: bash
-#
-#    - name: Terraform Set Workspace
-#      id: workspace
-#      run:  terraform workspace select ${{ github.event.inputs.sandboxWorkspace}}
-#      working-directory: ./infrastructure
-#      shell: bash
-#
-#    - name: Terraform Destroy
-#      run: terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraformVars }}"
-#      working-directory: ./infrastructure
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.4
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      id: init
+      run: terraform init -backend-config=${{ github.event.inputs.backend }}
+      working-directory: ./infrastructure
+      shell: bash
+
+    - name: Terraform Set Workspace
+      id: workspace
+      run:  terraform workspace select ${{ github.event.inputs.sandboxWorkspace}}
+      working-directory: ./infrastructure
+      shell: bash
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraformVars }}"
+      working-directory: ./infrastructure
         
         
