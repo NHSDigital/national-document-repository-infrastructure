@@ -44,6 +44,8 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: ${{ github.event.inputs.build_branch}}
+        repository: 'nhsconnect/national-document-repository-infrastructure'
+        fetch-depth: '0'
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -59,8 +61,8 @@ jobs:
       run: |
         pwd
         ls -a
-        cd ~/national-document-repository-infrastructure
-        pwd
+        cd ./.github
+        ls -a
 #      uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
 #      with:
 #        build_branch: ${{ inputs.build_branch }}
