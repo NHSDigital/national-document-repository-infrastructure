@@ -63,6 +63,7 @@ jobs:
         ls -a
         cd ./.github/workflows
         ls -a
+        pwd
 #      uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
 #      with:
 #        build_branch: ${{ inputs.build_branch }}
