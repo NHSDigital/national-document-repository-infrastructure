@@ -35,11 +35,11 @@ permissions:
     
 jobs:
   cleanup_versions_process:
-    name: Run Cleanup Versions
+    name: Cleanup Versions Process
     uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
     with:
       build_branch: ${{ inputs.build_branch }}
-      sandbox: ${{ inputs.sandbox }}
+      sandbox: ${{ inputs.sandboxWorkspace }}
       environment: ${{ inputs.environment }}
       python_version: "3.11"
     secrets:

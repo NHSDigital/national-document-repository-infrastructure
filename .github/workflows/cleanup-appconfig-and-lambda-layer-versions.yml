@@ -31,7 +31,19 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
+  view_action_parameters:
+    name: View Deploy all input variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display client passed variables
+        run: |
+          echo Python Version: ${{ inputs.python_version }}
+          echo Build Branch: ${{ inputs.build_branch }}
+          echo Environment: ${{ inputs.environment }}
+          echo Sandbox: ${{ inputs.sandbox }}
+
   cleanup_process:
+    name: Run Cleanup Versions script
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
 
