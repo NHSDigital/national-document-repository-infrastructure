@@ -34,8 +34,8 @@ permissions:
   contents: read  # This is required for actions/checkout
     
 jobs:
-  cleanup_versions:
-  - name: Run AppConfig and Lambda Layer Cleanup Versions Script
+  cleanup_versions_process:
+    name: Run AppConfig and Lambda Layer Cleanup Versions Script
     #      run: |
     #        pwd
     #        ls -a
