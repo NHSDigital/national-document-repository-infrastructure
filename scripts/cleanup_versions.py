@@ -1,6 +1,4 @@
-import re
 import sys
-
 import boto3
 
 
@@ -40,18 +38,17 @@ class CleanupVersions:
 
         return current_hosted_configuration_versions["Items"]
 
-
-    def get_lambda_layer_versions(self):
-        print("\nGathering Lambda Layer versions...")
-
     def delete_hosted_configuration_versions(self):
         excess_hosted_config_versions = self.get_hosted_configuration_versions()
-        number_of_excess_versions = len(excess_hosted_config_versions)
-        print(f"\n{number_of_excess_versions} hosted configuration versions require deletion")
+        total_untracked_versions = len(excess_hosted_config_versions)
+        print(f"\n{total_untracked_versions} hosted configuration versions require deletion")
+
+        if not total_untracked_versions:
+            return
 
         successful_deletes = []
+        print("\nDeleting configuration versions...")
         for version in excess_hosted_config_versions:
-            print(f"\nDeleting configuration version '{version['VersionNumber']}'...")
             response = self.appconfig_client.delete_hosted_configuration_version(
                 ApplicationId=version['ApplicationId'],
                 ConfigurationProfileId=version['ConfigurationProfileId'],
@@ -60,15 +57,66 @@ class CleanupVersions:
             if response["ResponseMetadata"]["HTTPStatusCode"] == 204:
                 successful_deletes.append(response)
 
-        if number_of_excess_versions:
-            if len(successful_deletes) == number_of_excess_versions:
-                print("\nSuccessfully deleted all excess hosted configuration versions")
+        if total_untracked_versions:
+            if len(successful_deletes) == total_untracked_versions:
+                print("\nSuccessfully deleted all untracked hosted configuration versions")
             else:
-                print("\nAll excess hosted configuration versions were not successfully deleted, please manually "
+                print("\nAll untracked hosted configuration versions were not successfully deleted, please manually "
                       "remove these from AppConfig using the AWS console or using AWS CLI")
 
+    def get_lambda_functions(self):
+        response = self.lambda_client.list_functions()
+
+        environment_functions = []
+        for function in response["Functions"]:
+            if f"{self.environment}_" in function["FunctionName"]:
+                environment_functions.append(function)
+
+    def get_lambda_layers(self):
+        print(f"\nGathering Lambda Layer versions on {self.environment}...")
+        response = self.lambda_client.list_layers()
+
+        environment_layers = []
+        for layer in response["Layers"]:
+            if f"{self.environment}_" in layer["LayerName"]:
+                environment_layers.append(layer)
+        return environment_layers
+
+    def get_lambda_layer_versions(self, lambda_layers: list[dict]) -> dict:
+        layer_versions = {}
+        for layer in lambda_layers:
+            response = self.lambda_client.list_layer_versions(LayerName=layer["LayerName"])
+            versions_to_remove = [layer_version['Version'] for layer_version in response["LayerVersions"][:-1]]
+            layer_versions.update({layer["LayerName"]: versions_to_remove})
+
+        return layer_versions
+
     def delete_lambda_layer_versions(self):
-        self.get_lambda_layer_versions()
+        lambda_layers = self.get_lambda_layers()
+        lambda_layer_versions = self.get_lambda_layer_versions(lambda_layers)
+        total_untracked_versions = sum(len(versions) for versions in lambda_layer_versions.values())
+        print(f"\n{total_untracked_versions} lambda layer versions require deletion.\n")
+
+        if not total_untracked_versions:
+            return
+
+        successful_deletes = []
+        for lambda_layer, versions in lambda_layer_versions.items():
+            print(f"Deleting {len(versions)} version/s from {lambda_layer}...")
+            responses = [self.lambda_client.delete_layer_version(
+                LayerName=lambda_layer,
+                VersionNumber=version
+            ) for version in versions]
+            successful_deletes.extend(
+                response for response in responses if response["ResponseMetadata"]["HTTPStatusCode"] == 204
+            )
+
+        if total_untracked_versions:
+            if len(successful_deletes) == total_untracked_versions:
+                print("\nSuccessfully deleted all untracked lambda layer versions")
+            else:
+                print("\nAll untracked lambda layer versions were not successfully deleted, please manually "
+                      "remove these using the AWS console or using AWS CLI")
 
 
 if __name__ == "__main__":
