@@ -58,7 +58,8 @@ jobs:
     - name: Run AppConfig and Lambda Layer Cleanup Versions Script
       run: |
         pwd
-        cd ~/home/runner/work/national-document-repository-infrastructure
+        ls -a
+        cd ~/national-document-repository-infrastructure
         pwd
 #      uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
 #      with:
