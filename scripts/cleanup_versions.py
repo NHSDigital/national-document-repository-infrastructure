@@ -8,7 +8,7 @@ class CleanupVersions:
     def __init__(self):
         self.lambda_client = boto3.client("lambda")
         self.appconfig_client = boto3.client("appconfig")
-
+        print(sys.argv)
         self.environment = sys.argv[1]
 
         self.lambda_layer_versions_to_delete = []
