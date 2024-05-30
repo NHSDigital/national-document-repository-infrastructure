@@ -35,7 +35,7 @@ permissions:
     
 jobs:
   cleanup_versions_process:
-    name: Run AppConfig and Lambda Layer Cleanup Versions Script
+    name: Run Cleanup Versions
     uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
     with:
       build_branch: ${{ inputs.build_branch }}
@@ -43,7 +43,8 @@ jobs:
       environment: ${{ inputs.environment }}
       python_version: "3.11"
 
-  terraform_delete_process:
+  terraform_process:
+    name: Terraform Delete Process
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
     needs: [cleanup_versions_process]
