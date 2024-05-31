@@ -31,15 +31,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: main
+          ref: ${{ github.event.inputs.old_tag}}
 
-      - name: Get and create new tag
-        id: init
-        run: |
-          git tag
-          git checkout ${{ github.event.inputs.old_tag}}
-          git tag ${{ github.event.inputs.new_tag}}
-          git push origin ${{ github.event.inputs.new_tag}}
-
-        working-directory: ./
-        shell: bash
+      - name: Tag snapshot
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.event.inputs.new_tag }}
