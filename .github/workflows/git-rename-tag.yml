@@ -47,6 +47,6 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/${{ github.event.inputs.new_tag}}',
-              sha: ${{steps.get-sha.outputs.BRANCH_SHA}}
+              ref: 'refs/tags/${{github.event.inputs.new_tag}}',
+              sha: '${{steps.get-sha.outputs.BRANCH_SHA}}'
             })
