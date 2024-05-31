@@ -34,8 +34,13 @@ jobs:
         with:
           ref: ${{ github.event.inputs.old_tag}}
 
-      - name: Tag snapshot
-        uses: tvdias/github-tagger@v0.0.1
+      - name: Create tag
+        uses: actions/github-script@v5
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.event.inputs.new_tag }}
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ github.event.inputs.new_tag}}',
+              sha: context.sha
+            })
