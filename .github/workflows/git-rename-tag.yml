@@ -1,0 +1,33 @@
+name: 'Git - Rename Tag'
+
+on:
+  workflow_dispatch:
+    inputs:
+      old_tag:
+        description: 'Numerical only e.g. 1.0.0'
+        required: true
+        type: 'string'
+      new_tag:
+        description: 'Numerical only e.g. 1.1.0'
+        required: true
+        type: 'string'
+
+permissions:
+  pull-requests: write
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  tag_renaming_process:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get and create new tag
+        id: init
+        run: |
+          git checkout ${{ github.event.inputs.old_tag}}
+          git tag ${{ github.event.inputs.new_tag}}
+          git push origin ${{ github.event.inputs.new_tag}}
+
+        working-directory: ./
+        shell: bash
