@@ -33,6 +33,10 @@ jobs:
         id: get-sha
         run: |
           echo "BRANCH_SHA= git log -1 '--format=format:%H'" >> $GITHUB_OUTPUT
+      
+      - name: Check SHA value
+        run: |
+          echo Branch SHA: ${{steps.get-sha.outputs.BRANCH_SHA}}
           
       - name: Create tag
         uses: actions/github-script@v5
