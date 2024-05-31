@@ -38,11 +38,13 @@ jobs:
       - name: Check SHA value
         run: |
           echo Branch SHA: ${{steps.get-sha.outputs.BRANCH_SHA}}
+          echo context SHA: ${{context.sha}}
           
       - name: Create tag
         uses: actions/github-script@v5
         with:
           script: |
+            echo context.sha 
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
