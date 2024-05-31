@@ -27,18 +27,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.old_tag}}
+          ref: ${{ github.event.inputs.old_tag }}
       
       - name: Check SHA
-        run:  echo git log -1 '--format=format:%H'
-
-      # - name: Create tag
-      #   uses: actions/github-script@v5
-      #   with:
-      #     script: |
-      #       github.rest.git.createRef({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         ref: 'refs/tags/${{ github.event.inputs.new_tag}}',
-      #         sha: context.sha
-      #       })
+        id: get-sha
+        run: |
+          echo "BRANCH_SHA= git log -1 '--format=format:%H'" >> $GITHUB_OUTPUT
+          
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ github.event.inputs.new_tag}}',
+              sha: ${{steps.get-sha.outputs.BRANCH_SHA}}
+            })
