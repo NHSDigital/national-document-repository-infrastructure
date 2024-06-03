@@ -46,7 +46,7 @@ class CleanupVersions:
         if not total_untracked_versions:
             return
 
-        successful_deletes = []
+        successful_deletes = 0
         print("\nDeleting configuration versions...")
         for version in excess_hosted_config_versions:
             response = self.appconfig_client.delete_hosted_configuration_version(
@@ -55,9 +55,9 @@ class CleanupVersions:
                 VersionNumber=version['VersionNumber']
             )
             if response["ResponseMetadata"]["HTTPStatusCode"] == 204:
-                successful_deletes.append(response)
+                successful_deletes += 1
 
-        if len(successful_deletes) == total_untracked_versions:
+        if successful_deletes == total_untracked_versions:
             print("\nSuccessfully deleted all untracked hosted configuration versions!")
         else:
             print("\nWARNING! All untracked hosted configuration versions were not successfully deleted, please "
@@ -91,7 +91,7 @@ class CleanupVersions:
         if not total_untracked_versions:
             return
 
-        successful_deletes = []
+        successful_deletes = 0
         for lambda_layer, versions in lambda_layer_versions.items():
             print(f"Deleting {len(versions)} version/s from {lambda_layer}...")
 
@@ -101,9 +101,9 @@ class CleanupVersions:
                     VersionNumber=version
                 )
                 if response["ResponseMetadata"]["HTTPStatusCode"] == 204:
-                    successful_deletes.append(response)
+                    successful_deletes += 1
 
-        if len(successful_deletes) == total_untracked_versions:
+        if successful_deletes == total_untracked_versions:
             print("\nSuccessfully deleted all untracked lambda layer versions!")
         else:
             print("\nWARNING! All untracked lambda layer versions were not successfully deleted, please manually "
