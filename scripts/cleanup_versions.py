@@ -6,7 +6,7 @@ class CleanupVersions:
     def __init__(self):
         self.lambda_client = boto3.client("lambda")
         self.appconfig_client = boto3.client("appconfig")
-        self.environment = sys.argv[1]
+        self.sandbox = sys.argv[1]
 
     def start(self):
         self.delete_hosted_configuration_versions()
@@ -15,7 +15,7 @@ class CleanupVersions:
     def get_app_config_application_id(self) -> str:
         current_applications = self.appconfig_client.list_applications()
         for app in current_applications["Items"]:
-            if f"-{self.environment}" in app["Name"]:
+            if f"-{self.sandbox}" in app["Name"]:
                 return app["Id"]
 
     def get_app_config_profile_id(self, application_id: str) -> str:
@@ -23,11 +23,11 @@ class CleanupVersions:
             ApplicationId=application_id
         )
         for profile in config_profiles["Items"]:
-            if f"-{self.environment}" in profile["Name"]:
+            if f"-{self.sandbox}" in profile["Name"]:
                 return profile["Id"]
 
     def get_hosted_configuration_versions(self):
-        print(f"\nGathering AppConfig hosted configuration versions on {self.environment}...")
+        print(f"\nGathering AppConfig hosted configuration versions on {self.sandbox}...")
         application_id = self.get_app_config_application_id()
         config_profile_id = self.get_app_config_profile_id(application_id)
 
@@ -64,12 +64,12 @@ class CleanupVersions:
                   "manually remove these from AppConfig using the AWS console or using AWS CLI")
 
     def get_lambda_layers(self):
-        print(f"\nGathering Lambda Layer versions on {self.environment}...")
+        print(f"\nGathering Lambda Layer versions on {self.sandbox}...")
         response = self.lambda_client.list_layers()
 
         environment_layers = []
         for layer in response["Layers"]:
-            if f"{self.environment}_" in layer["LayerName"]:
+            if f"{self.sandbox}_" in layer["LayerName"]:
                 environment_layers.append(layer)
         return environment_layers
 
