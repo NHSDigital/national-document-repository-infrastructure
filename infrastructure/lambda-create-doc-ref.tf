@@ -91,6 +91,8 @@ module "create-doc-ref-lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     PDS_FHIR_IS_STUBBED          = local.is_sandbox,
     WORKSPACE                    = terraform.workspace
+    PRE_SIGN_ASSUME_ROLE         = aws_iam_role.create_post_pre_sign_url_role.arn
+
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

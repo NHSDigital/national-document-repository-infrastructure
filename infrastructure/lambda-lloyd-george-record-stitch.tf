@@ -90,6 +90,8 @@ module "lloyd-george-stitch-lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     SPLUNK_SQS_QUEUE_URL       = try(module.sqs-splunk-queue[0].sqs_url, null)
     WORKSPACE                  = terraform.workspace
+    PRE_SIGN_ASSUME_ROLE       = aws_iam_role.stitch_pre_sign_url_role.arn
+
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
