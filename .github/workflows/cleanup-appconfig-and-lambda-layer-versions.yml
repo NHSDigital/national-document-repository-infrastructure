@@ -1,7 +1,7 @@
 name: 'Cleanup Untracked App Config Profiles and Lambda Layer Versions'
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       build_branch:
         description: 'Feature branch to push to sandbox.'
@@ -20,6 +20,9 @@ on:
         description: "Version of Python to run the cleanup script against"
         required: true
         type: "string"
+    secrets:
+      AWS_ASSUME_ROLE:
+        required: true
 
 
 permissions:
@@ -28,7 +31,19 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
+  view_action_parameters:
+    name: View Deploy all input variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display client passed variables
+        run: |
+          echo Python Version: ${{ inputs.python_version }}
+          echo Build Branch: ${{ inputs.build_branch }}
+          echo Environment: ${{ inputs.environment }}
+          echo Sandbox: ${{ inputs.sandbox }}
+
   cleanup_process:
+    name: Run Cleanup Versions script
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
 
@@ -43,7 +58,7 @@ jobs:
       - name: Set up Python ${{ inputs.python_version }}
         uses: actions/setup-python@v4
         with:
-          python_version: ${{ inputs.python_version }}
+          python-version: ${{ inputs.python_version }}
 
       - name: Make virtual environment
         run: |
@@ -58,9 +73,6 @@ jobs:
          role-skip-session-tagging: true
          aws-region: ${{ vars.AWS_REGION }}
 
-      - name: View AWS Role
-        run: aws sts get-caller-identity
-
       - name: Run Version Cleanup Script
         run: |
-          pwd
+          ./venv/bin/python3 scripts/cleanup_versions.py ${{ inputs.sandbox }} 
