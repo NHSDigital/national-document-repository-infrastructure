@@ -2,7 +2,7 @@ name: 'Destroy Test (Test Account) Environment CRON'
 
 on: 
   schedule:
-    - cron: 59 17 * * 1-5 #utc time 
+    - cron: 59 17 * * 1-5 # utc time
 
 permissions:
   pull-requests: write
@@ -27,8 +27,8 @@ jobs:
     needs: [cleanup_versions_process]
     strategy:
       matrix:
-        # Can't use an env var here unfortunatly, we will have to update here with new sandbox environments
-        sandbox-name: [ndr-test]
+        # Can't use an env var here unfortunately, we will have to update here with new sandbox environments
+        sandbox-name: [ ndr-test ]
 
     steps:
     # Checkout the repository to the GitHub Actions runner
