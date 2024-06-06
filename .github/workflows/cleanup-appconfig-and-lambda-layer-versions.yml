@@ -12,7 +12,6 @@ on:
         required: true
         type: 'string'
       environment:
-        default: "development"
         description: "Which environment should this run against"
         required: true
         type: "string"
@@ -45,7 +44,7 @@ jobs:
   cleanup_process:
     name: Run Cleanup Versions script
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout
@@ -66,12 +65,16 @@ jobs:
           ./venv/bin/pip3 install --upgrade pip
           ./venv/bin/pip3 install boto3==1.33.11
 
+      - name: Check aws region
+        run: |
+          echo region is ${{ vars.AWS_REGION }}
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-         role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-         role-skip-session-tagging: true
-         aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Run Version Cleanup Script
         run: |
