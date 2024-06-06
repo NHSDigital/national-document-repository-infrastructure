@@ -1,9 +1,10 @@
 name: 'Destroy (Dev Account) Environment CRON'
 
-on: 
-  schedule:
-    #- cron: 59 17 * * 1-5  #utc time
-    - cron: '*/5 * * * *'
+on:
+  workflow_dispatch:
+#  schedule:
+#    #- cron: 59 17 * * 1-5  #utc time
+#    - cron: '*/5 * * * *'
 
 permissions:
   pull-requests: write
