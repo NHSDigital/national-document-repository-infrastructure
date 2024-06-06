@@ -2,6 +2,10 @@ import sys
 import boto3
 
 
+class SandboxNotActiveException(Exception):
+    pass
+
+
 class CleanupVersions:
     def __init__(self):
         self.lambda_client = boto3.client("lambda")
@@ -27,7 +31,7 @@ class CleanupVersions:
                 return profile["Id"]
 
     def get_hosted_configuration_versions(self):
-        print(f"\nGathering AppConfig hosted configuration versions on {self.sandbox}...")
+        print(f"Gathering AppConfig hosted configuration versions on {self.sandbox}...")
         application_id = self.get_app_config_application_id()
         config_profile_id = self.get_app_config_profile_id(application_id)
 
@@ -39,7 +43,11 @@ class CleanupVersions:
         return current_hosted_configuration_versions["Items"]
 
     def delete_hosted_configuration_versions(self):
-        excess_hosted_config_versions = self.get_hosted_configuration_versions()
+        try:
+            excess_hosted_config_versions = self.get_hosted_configuration_versions()
+        except Exception:
+            raise SandboxNotActiveException("Failed to retrieve hosted configuration versions")
+
         total_untracked_versions = len(excess_hosted_config_versions)
         print(f"\n{total_untracked_versions} hosted configuration versions require deletion")
 
@@ -111,6 +119,9 @@ class CleanupVersions:
 
 
 if __name__ == "__main__":
-    cleanup_versions = CleanupVersions()
-    cleanup_versions.start()
-    print("\nCleanup Process Complete.")
+    try:
+        cleanup_versions = CleanupVersions()
+        cleanup_versions.start()
+        print("\nCleanup Process Complete.")
+    except SandboxNotActiveException:
+        print("\nExiting Cleanup Process! Sandbox resources not found")
