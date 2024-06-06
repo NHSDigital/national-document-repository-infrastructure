@@ -1,6 +1,6 @@
 name: 'Destroy (Dev Account) Environment CRON'
 
-on: 
+on:
   schedule:
     - cron: 59 17 * * 1-5  #utc time
 
@@ -16,11 +16,11 @@ jobs:
     strategy:
       matrix:
         # Update with new sandbox environments here
-        sandbox-name: [ ndra, ndrb, ndrc, ndrd ]
+        sandbox-name: [ ndrb ]
     with:
       build_branch: main
+      environment: development
       sandbox: ${{ matrix.sandbox-name }}
-      environment: dev
       python_version: 3.11
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
@@ -33,7 +33,7 @@ jobs:
     strategy:
       matrix:
         # Can't use an env var here unfortunately, we will have to update here with new sandbox environments
-        sandbox-name: [ndra, ndrb, ndrc, ndrd]
+        sandbox-name: [ ndrb ]
 
     steps:
     # Checkout the repository to the GitHub Actions runner
