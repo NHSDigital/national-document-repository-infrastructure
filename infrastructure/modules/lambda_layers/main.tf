@@ -9,8 +9,8 @@ data "archive_file" "lambda_layer_placeholder" {
 }
 
 resource "aws_lambda_layer_version" "lambda_layer" {
-  filename         = data.archive_file.lambda_layer_placeholder.output_path
-  layer_name       = local.lambda_layer_aws_name
-  compatible_runtimes = ["python3.11"]
+  filename                 = data.archive_file.lambda_layer_placeholder.output_path
+  layer_name               = local.lambda_layer_aws_name
+  compatible_runtimes      = ["python3.11"]
   compatible_architectures = ["x86_64"]
 }
