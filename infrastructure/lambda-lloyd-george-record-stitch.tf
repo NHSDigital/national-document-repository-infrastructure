@@ -62,7 +62,6 @@ module "lloyd-george-stitch_topic" {
   })
 }
 
-
 module "lloyd-george-stitch-lambda" {
   source  = "./modules/lambda"
   name    = "LloydGeorgeStitchLambda"
@@ -78,10 +77,8 @@ module "lloyd-george-stitch-lambda" {
   resource_id       = module.lloyd-george-stitch-gateway.gateway_resource_id
   http_method       = "GET"
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-
-  memory_size    = 512
-  lambda_timeout = 450
-
+  memory_size       = 512
+  lambda_timeout    = 450
   lambda_environment_variables = {
     APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
@@ -91,7 +88,6 @@ module "lloyd-george-stitch-lambda" {
     SPLUNK_SQS_QUEUE_URL       = try(module.sqs-splunk-queue[0].sqs_url, null)
     WORKSPACE                  = terraform.workspace
     PRE_SIGN_ASSUME_ROLE       = aws_iam_role.stitch_pre_sign_url_role.arn
-
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

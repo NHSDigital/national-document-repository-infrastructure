@@ -3,7 +3,7 @@ variable "account_id" {
 }
 
 variable "layer_zip_file_name" {
-  type = string
+  type    = string
   default = "placeholder_lambda_payload.zip"
 }
 
