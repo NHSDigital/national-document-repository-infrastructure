@@ -41,6 +41,12 @@ variable "lloyd_george_bucket_name" {
   default     = "lloyd-george-store"
 }
 
+variable "statistical_reports_bucket_name" {
+  type        = string
+  description = "The name of S3 bucket to store weekly generated statistical reports"
+  default     = "statistical-reports"
+}
+
 # DynamoDB Table Variables
 variable "docstore_dynamodb_table_name" {
   type        = string
@@ -75,6 +81,12 @@ variable "bulk_upload_report_dynamodb_table_name" {
   type        = string
   description = "The name of dynamodb table to store bulk upload status"
   default     = "BulkUploadReport"
+}
+
+variable "statistics_dynamodb_table_name" {
+  type        = string
+  description = "The name of dynamodb table to store application statistics"
+  default     = "ApplicationStatistics"
 }
 
 # VPC Variables

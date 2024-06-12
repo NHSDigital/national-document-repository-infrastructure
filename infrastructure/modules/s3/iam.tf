@@ -35,6 +35,23 @@ resource "aws_iam_policy" "s3_document_data_policy" {
   })
 }
 
+resource "aws_iam_policy" "s3_list_object_policy" {
+  name = "${terraform.workspace}_${var.bucket_name}_list_object_policy"
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:ListBucket",
+        ],
+        "Resource" : ["${aws_s3_bucket.bucket.arn}"]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "s3_backup_policy" {
   policy = jsonencode(
     {
