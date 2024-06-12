@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "assume_role_policy_for_create_lambda" {
 }
 
 resource "aws_iam_role" "create_post_presign_url_role" {
-  name                = "create_post_presign_url_role"
+  name                = "${terraform.workspace}_create_post_presign_url_role"
   assume_role_policy  = data.aws_iam_policy_document.assume_role_policy_for_create_lambda.json
   managed_policy_arns = [aws_iam_policy.s3_document_data_policy_put_only.arn]
 }
@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "assume_role_policy_for_stitch_lambda" {
 }
 
 resource "aws_iam_role" "stitch_presign_url_role" {
-  name                = "stitch_presign_url_role"
+  name                = "${terraform.workspace}_stitch_presign_url_role"
   assume_role_policy  = data.aws_iam_policy_document.assume_role_policy_for_stitch_lambda.json
   managed_policy_arns = [aws_iam_policy.s3_document_data_policy_for_stitch_lambda.arn]
 }
@@ -95,7 +95,7 @@ data "aws_iam_policy_document" "assume_role_policy_for_manifest_lambda" {
 }
 
 resource "aws_iam_role" "manifest_presign_url_role" {
-  name                = "manifest_presign_url_role"
+  name                = "${terraform.workspace}_manifest_presign_url_role"
   assume_role_policy  = data.aws_iam_policy_document.assume_role_policy_for_manifest_lambda.json
   managed_policy_arns = [aws_iam_policy.s3_document_data_policy_for_manifest_lambda.arn]
 }
