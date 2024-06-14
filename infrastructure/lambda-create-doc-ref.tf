@@ -79,10 +79,10 @@ module "create-doc-ref-lambda" {
     aws_iam_policy.ssm_access_policy.arn,
     module.ndr-app-config.app_config_policy_arn,
   ]
-  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id
   is_gateway_integration_needed = false
-  http_method       = "POST"
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  http_method                   = "POST"
+  api_execution_arn             = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     STAGING_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.staging_store_bucket_name}"
     APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id

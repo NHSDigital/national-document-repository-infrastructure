@@ -77,9 +77,9 @@ module "upload_confirm_result_lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
   ]
   is_gateway_integration_needed = false
-  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  http_method       = "POST"
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  http_method                   = "POST"
+  api_execution_arn             = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
