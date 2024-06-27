@@ -3,7 +3,7 @@ resource "aws_cloudtrail" "cloudtrail_log" {
 
   name                          = "${terraform.workspace}-cloudtrail-audit"
   s3_bucket_name                = aws_s3_bucket.cloudtrail_logs.id
-  s3_key_prefix                 = "prefix"
+  s3_key_prefix                 = "prm"
   include_global_service_events = false
 }
 
@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "cloudtrail_iam_doc" {
     }
 
     actions   = ["s3:PutObject"]
-    resources = ["${aws_s3_bucket.cloudtrail_logs.arn}/prefix/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    resources = ["${aws_s3_bucket.cloudtrail_logs.arn}/prm/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
 
     condition {
       test     = "StringEquals"
