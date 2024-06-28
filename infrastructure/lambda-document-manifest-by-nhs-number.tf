@@ -3,7 +3,7 @@ module "document-manifest-by-nhs-gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
-  http_method         = "GET"
+  http_methods        = ["GET", "POST"]
   authorization       = "CUSTOM"
   gateway_path        = "DocumentManifest"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
@@ -38,7 +38,7 @@ module "document_manifest_alarm_topic" {
   current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "create_doc_manifest-alarms-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.document-manifest-by-nhs-number-lambda.endpoint
+  topic_endpoint        = module.document-manifest-by-nhs-number-lambda.lambda_arn
   depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -63,16 +63,11 @@ module "document_manifest_alarm_topic" {
 }
 
 module "document-manifest-by-nhs-number-lambda" {
-  source                   = "./modules/lambda"
-  name                     = "DocumentManifestByNHSNumberLambda"
-  handler                  = "handlers.document_manifest_by_nhs_number_handler.lambda_handler"
-  lambda_timeout           = 900
-  lambda_ephemeral_storage = 512
+  source         = "./modules/lambda"
+  name           = "DocumentManifestByNHSNumberLambda"
+  handler        = "handlers.document_manifest_by_nhs_number_handler.lambda_handler"
+  lambda_timeout = 900
   iam_role_policies = [
-    module.document_reference_dynamodb_table.dynamodb_policy,
-    module.ndr-document-store.s3_object_access_policy,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
-    module.ndr-lloyd-george-store.s3_object_access_policy,
     module.zip_store_reference_dynamodb_table.dynamodb_policy,
     module.ndr-zip-request-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -81,21 +76,17 @@ module "document-manifest-by-nhs-number-lambda" {
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.document-manifest-by-nhs-gateway.gateway_resource_id
-  http_method       = "GET"
+  http_methods      = ["GET", "POST"]
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.docstore_bucket_name}"
-    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
-    LLOYD_GEORGE_BUCKET_NAME     = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
-    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    ZIPPED_STORE_BUCKET_NAME     = "${terraform.workspace}-${var.zip_store_bucket_name}"
-    ZIPPED_STORE_DYNAMODB_NAME   = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
-    SPLUNK_SQS_QUEUE_URL         = try(module.sqs-splunk-queue[0].sqs_url, null)
-    WORKSPACE                    = terraform.workspace
-    PRESIGNED_ASSUME_ROLE        = aws_iam_role.manifest_presign_url_role.arn
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
+    ZIPPED_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.zip_store_bucket_name}"
+    ZIPPED_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
+    SPLUNK_SQS_QUEUE_URL       = try(module.sqs-splunk-queue[0].sqs_url, null)
+    WORKSPACE                  = terraform.workspace
+    PRESIGNED_ASSUME_ROLE      = aws_iam_role.manifest_presign_url_role.arn
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
