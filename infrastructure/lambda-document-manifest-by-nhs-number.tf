@@ -62,10 +62,10 @@ module "document_manifest_alarm_topic" {
   })
 }
 
-module "document-manifest-by-nhs-number-lambda" {
+module "document-manifest-lambda" {
   source         = "./modules/lambda"
-  name           = "DocumentManifestByNHSNumberLambda"
-  handler        = "handlers.document_manifest_by_nhs_number_handler.lambda_handler"
+  name           = "DocumentManifestLambda"
+  handler        = "handlers.document_manifest_handler.lambda_handler"
   lambda_timeout = 900
   iam_role_policies = [
     module.document_reference_dynamodb_table.dynamodb_policy,
