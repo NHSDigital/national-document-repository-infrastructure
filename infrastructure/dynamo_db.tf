@@ -103,10 +103,6 @@ module "zip_store_reference_dynamodb_table" {
       name = "NhsNumber"
       type = "S"
     },
-    {
-      name = "FileLocation"
-      type = "S"
-    },
   ]
 
   global_secondary_indexes = [
@@ -120,11 +116,6 @@ module "zip_store_reference_dynamodb_table" {
       hash_key        = "NhsNumber"
       projection_type = "ALL"
     },
-    {
-      name            = "FileLocationsIndex"
-      hash_key        = "FileLocation"
-      projection_type = "ALL"
-    }
   ]
 
   environment = var.environment
