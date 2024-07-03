@@ -1,4 +1,4 @@
-module "document-manifest-by-nhs-gateway" {
+module "document-manifest-job-gateway" {
   # Gateway Variables
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -22,13 +22,13 @@ module "document-manifest-by-nhs-gateway" {
 
 module "document_manifest_alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.document-manifest-by-nhs-number-lambda.function_name
-  lambda_timeout       = module.document-manifest-by-nhs-number-lambda.timeout
+  lambda_function_name = module.document-manifest-job-lambda.function_name
+  lambda_timeout       = module.document-manifest-job-lambda.timeout
   lambda_name          = "create_document_manifest_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.document_manifest_alarm_topic.arn]
   ok_actions           = [module.document_manifest_alarm_topic.arn]
-  depends_on           = [module.document-manifest-by-nhs-number-lambda, module.document_manifest_alarm_topic]
+  depends_on           = [module.document-manifest-job-lambda, module.document_manifest_alarm_topic]
 }
 
 
@@ -38,7 +38,7 @@ module "document_manifest_alarm_topic" {
   current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "create_doc_manifest-alarms-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.document-manifest-by-nhs-number-lambda.lambda_arn
+  topic_endpoint        = module.document-manifest-job-lambda.lambda_arn
   depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -62,10 +62,10 @@ module "document_manifest_alarm_topic" {
   })
 }
 
-module "document-manifest-lambda" {
+module "document-manifest-job-lambda" {
   source         = "./modules/lambda"
-  name           = "DocumentManifestLambda"
-  handler        = "handlers.document_manifest_handler.lambda_handler"
+  name           = "DocumentManifestJobLambda"
+  handler        = "handlers.document_manifest_job_handler.lambda_handler"
   lambda_timeout = 900
   iam_role_policies = [
     module.document_reference_dynamodb_table.dynamodb_policy,
@@ -77,7 +77,7 @@ module "document-manifest-lambda" {
     module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = module.document-manifest-by-nhs-gateway.gateway_resource_id
+  resource_id       = module.document-manifest-job-gateway.gateway_resource_id
   http_methods      = ["GET", "POST"]
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
@@ -94,7 +94,7 @@ module "document-manifest-lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.document-manifest-by-nhs-gateway,
+    module.document-manifest-job-gateway,
     aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
     module.ndr-app-config,
     module.lloyd_george_reference_dynamodb_table,
@@ -106,6 +106,6 @@ module "document-manifest-lambda" {
 
 resource "aws_iam_role_policy_attachment" "policy_manifest_lambda" {
   count      = local.is_sandbox ? 0 : 1
-  role       = module.document-manifest-by-nhs-number-lambda.lambda_execution_role_name
+  role       = module.document-manifest-job-lambda.lambda_execution_role_name
   policy_arn = try(aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0].arn, null)
 }

@@ -110,4 +110,20 @@ resource "aws_lambda_event_source_mapping" "dynamodb_stream_event_mapping" {
   function_name     = module.generate-document-manifest-lambda.lambda_arn
   batch_size        = 1
   starting_position = "TRIM_HORIZON"
+
+  filter_criteria = jsonencode({
+    Filters = [
+      {
+        Pattern = jsonencode({
+          "dynamodb" : {
+            "NewImage" : {
+              "Status" : {
+                "S" : ["Pending"]
+              }
+            }
+          }
+        })
+      }
+    ]
+  })
 }

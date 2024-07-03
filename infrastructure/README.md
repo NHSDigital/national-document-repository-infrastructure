@@ -49,8 +49,8 @@
 | <a name="module_delete-doc-ref-lambda"></a> [delete-doc-ref-lambda](#module\_delete-doc-ref-lambda) | ./modules/lambda | n/a |
 | <a name="module_delete_doc_alarm"></a> [delete\_doc\_alarm](#module\_delete\_doc\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_delete_doc_alarm_topic"></a> [delete\_doc\_alarm\_topic](#module\_delete\_doc\_alarm\_topic) | ./modules/sns | n/a |
-| <a name="module_document-manifest-by-nhs-gateway"></a> [document-manifest-by-nhs-gateway](#module\_document-manifest-by-nhs-gateway) | ./modules/gateway | n/a |
-| <a name="module_document-manifest-by-nhs-number-lambda"></a> [document-manifest-by-nhs-number-lambda](#module\_document-manifest-by-nhs-number-lambda) | ./modules/lambda | n/a |
+| <a name="module_document-manifest-job-gateway"></a> [document-manifest-job-gateway](#module\_document-manifest-job-gateway) | ./modules/gateway | n/a |
+| <a name="module_document-manifest-job-lambda"></a> [document-manifest-job-lambda](#module\_document-manifest-job-lambda) | ./modules/lambda | n/a |
 | <a name="module_document_manifest_alarm"></a> [document\_manifest\_alarm](#module\_document\_manifest\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_document_manifest_alarm_topic"></a> [document\_manifest\_alarm\_topic](#module\_document\_manifest\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_document_reference_dynamodb_table"></a> [document\_reference\_dynamodb\_table](#module\_document\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |

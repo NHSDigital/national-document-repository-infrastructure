@@ -89,7 +89,7 @@ data "aws_iam_policy_document" "assume_role_policy_for_manifest_lambda" {
 
     principals {
       type        = "AWS"
-      identifiers = [module.document-manifest-by-nhs-number-lambda.lambda_execution_role_arn]
+      identifiers = [module.document-manifest-job-lambda.lambda_execution_role_arn]
     }
   }
 }
