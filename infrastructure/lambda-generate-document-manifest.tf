@@ -114,13 +114,13 @@ resource "aws_lambda_event_source_mapping" "dynamodb_stream_event_mapping" {
   filter_criteria {
     filter {
       pattern = jsonencode({
-        "eventName":[
+        "eventName" : [
           "INSERT"
         ],
-        "dynamodb":{
-          "NewImage":{
-            "JobStatus":{
-              "S":[
+        "dynamodb" : {
+          "NewImage" : {
+            "JobStatus" : {
+              "S" : [
                 "Pending"
               ]
             }
