@@ -99,21 +99,12 @@ module "zip_store_reference_dynamodb_table" {
       name = "JobId"
       type = "S"
     },
-    {
-      name = "NhsNumber"
-      type = "S"
-    },
   ]
 
   global_secondary_indexes = [
     {
       name            = "JobIdIndex"
       hash_key        = "JobId"
-      projection_type = "ALL"
-    },
-    {
-      name            = "NhsNumberIndex"
-      hash_key        = "NhsNumber"
       projection_type = "ALL"
     },
   ]

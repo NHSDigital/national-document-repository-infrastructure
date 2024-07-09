@@ -48,9 +48,7 @@ module "generate-document-manifest-lambda" {
   lambda_ephemeral_storage = 512
   memory_size              = 512
   iam_role_policies = [
-    module.document_reference_dynamodb_table.dynamodb_policy,
     module.ndr-document-store.s3_object_access_policy,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.ndr-lloyd-george-store.s3_object_access_policy,
     module.zip_store_reference_dynamodb_table.dynamodb_policy,
     module.ndr-zip-request-store.s3_object_access_policy,
@@ -62,25 +60,25 @@ module "generate-document-manifest-lambda" {
   rest_api_id       = null
   api_execution_arn = null
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.docstore_bucket_name}"
-    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
-    LLOYD_GEORGE_BUCKET_NAME     = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
-    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    ZIPPED_STORE_BUCKET_NAME     = "${terraform.workspace}-${var.zip_store_bucket_name}"
-    ZIPPED_STORE_DYNAMODB_NAME   = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
-    SPLUNK_SQS_QUEUE_URL         = try(module.sqs-splunk-queue[0].sqs_url, null)
-    WORKSPACE                    = terraform.workspace
-    PRESIGNED_ASSUME_ROLE        = aws_iam_role.manifest_presign_url_role.arn
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
+    ZIPPED_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.zip_store_bucket_name}"
+    ZIPPED_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
+    SPLUNK_SQS_QUEUE_URL       = try(module.sqs-splunk-queue[0].sqs_url, null)
+    WORKSPACE                  = terraform.workspace
+    PRESIGNED_ASSUME_ROLE      = aws_iam_role.manifest_presign_url_role.arn
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
 
   depends_on = [
     aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
-    module.ndr-app-config
+    module.ndr-app-config,
+    module.zip_store_reference_dynamodb_table,
+    module.ndr-zip-request-store,
+    module.ndr-document-store,
+    module.ndr-lloyd-george-store
   ]
 }
 
