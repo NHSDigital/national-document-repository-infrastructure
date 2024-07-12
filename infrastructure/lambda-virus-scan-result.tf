@@ -79,7 +79,7 @@ module "virus_scan_result_lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
   ]
   rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id                   = module.virus_scan_result_gateway.gateway_resource_id
+  resource_id                   = try(module.virus_scan_result_gateway[0].gateway_resource_id, null)
   http_methods                  = ["POST"]
   api_execution_arn             = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   is_gateway_integration_needed = local.is_production ? false : true
