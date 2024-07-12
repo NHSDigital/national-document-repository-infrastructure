@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         # Update with new sandbox environments here
-        sandbox-name: [ ndra, ndrb, ndrc, ndrd ]
+        sandbox-name: [ ndra, ndrb, ndrc ]
     with:
       build_branch: main
       environment: development
@@ -33,7 +33,7 @@ jobs:
     strategy:
       matrix:
         # Can't use an env var here unfortunately, we will have to update here with new sandbox environments
-        sandbox-name: [ ndra, ndrb, ndrc, ndrd ]
+        sandbox-name: [ ndra, ndrb, ndrc ]
 
     steps:
     # Checkout the repository to the GitHub Actions runner
