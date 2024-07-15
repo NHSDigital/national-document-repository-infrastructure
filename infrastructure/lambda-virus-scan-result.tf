@@ -1,6 +1,4 @@
 module "virus_scan_result_gateway" {
-  count = local.is_production ? 0 : 1
-
   # Gateway Variables
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -78,11 +76,10 @@ module "virus_scan_result_lambda" {
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
   ]
-  rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id                   = try(module.virus_scan_result_gateway[0].gateway_resource_id, null)
-  http_methods                  = ["POST"]
-  api_execution_arn             = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  is_gateway_integration_needed = local.is_production ? false : true
+  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id       = module.virus_scan_result_gateway.gateway_resource_id
+  http_methods      = ["POST"]
+  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
