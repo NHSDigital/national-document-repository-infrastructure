@@ -30,7 +30,7 @@
             "enabled": "false"
         },
         "useSmartcardAuth": {
-            "enabled": "false"
+            "enabled": "true"
         }
     },
     "version": "1"
