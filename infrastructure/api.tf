@@ -99,11 +99,11 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.search-patient-details-lambda,
     module.send-feedback-gateway,
     module.send-feedback-lambda,
-    module.update-upload-state-gateway[0],
+    module.update-upload-state-gateway,
     module.update-upload-state-lambda,
-    module.upload_confirm_result_gateway[0],
+    module.upload_confirm_result_gateway,
     module.upload_confirm_result_lambda,
-    module.virus_scan_result_gateway[0],
+    module.virus_scan_result_gateway,
     module.virus_scan_result_lambda
   ]
 
