@@ -75,9 +75,9 @@ module "upload_confirm_result_lambda" {
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
   ]
-  rest_api_id                   = local.is_production ? aws_api_gateway_rest_api.ndr_doc_store_api.id : null
-  resource_id                   = local.is_production ? module.upload_confirm_result_gateway.gateway_resource_id : null
-  api_execution_arn             = local.is_production ? aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn : null
+  rest_api_id                   = local.is_production ? null : aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id                   = local.is_production ? null : module.upload_confirm_result_gateway.gateway_resource_id
+  api_execution_arn             = local.is_production ? null : aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   is_gateway_integration_needed = local.is_production ? false : true
   is_invoked_from_gateway       = local.is_production ? false : true
   http_methods                  = ["POST"]
