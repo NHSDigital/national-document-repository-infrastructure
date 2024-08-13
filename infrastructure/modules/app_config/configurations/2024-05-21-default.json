@@ -1,0 +1,37 @@
+{
+    "flags": {
+        "nemsEnabled": {
+            "name": "nemsEnabled"
+        },
+        "uploadLloydGeorgeWorkflowEnabled": {
+            "name": "uploadLloydGeorgeWorkflowEnabled"
+        },
+        "uploadLambdaEnabled": {
+            "name": "uploadLambdaEnabled"
+        },
+        "uploadArfWorkflowEnabled": {
+            "name": "uploadArfWorkflowEnabled"
+        },
+        "useSmartcardAuth": {
+            "name": "useSmartcardAuth"
+        }
+    },
+    "values": {
+        "nemsEnabled": {
+            "enabled": "false"
+        },
+        "uploadLloydGeorgeWorkflowEnabled": {
+            "enabled": "false"
+        },
+        "uploadLambdaEnabled": {
+            "enabled": "false"
+        },
+        "uploadArfWorkflowEnabled": {
+            "enabled": "false"
+        },
+        "useSmartcardAuth": {
+            "enabled": "true"
+        }
+    },
+    "version": "1"
+}

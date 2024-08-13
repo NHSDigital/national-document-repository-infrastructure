@@ -10,31 +10,68 @@ resource "aws_s3_bucket" "bucket" {
   }
 }
 
-resource "aws_s3_bucket_policy" "bucket_policy" {
-  bucket = aws_s3_bucket.bucket.id
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Principal" : {
-          "AWS" : "*"
-        },
-        "Action" : [
-          "s3:*"
-        ],
-        "Resource" : [
-          "${aws_s3_bucket.bucket.arn}/*",
-          "${aws_s3_bucket.bucket.arn}"
-        ],
-        "Effect" : "Deny",
-        "Condition" : {
-          "Bool" : {
-            "aws:SecureTransport" : "false"
-          }
-        }
-      }
+data "aws_iam_policy_document" "s3_defaut_policy" {
+  statement {
+    effect = "Deny"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:*",
     ]
-  })
+
+    resources = [
+      "${aws_s3_bucket.bucket.arn}/*",
+      "${aws_s3_bucket.bucket.arn}",
+    ]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "s3_cloudfront_policy" {
+  statement {
+    effect = "Deny"
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+
+    actions = [
+      "s3:*",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.bucket.arn}/*",
+      "${aws_s3_bucket.bucket.arn}",
+    ]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [var.cloudfront_arn]
+    }
+  }
+
+}
+
+resource "aws_s3_bucket_policy" "bucket_policy" {
+  bucket     = aws_s3_bucket.bucket.id
+  policy     = var.cloudfront_enabled ? data.aws_iam_policy_document.s3_cloudfront_policy.json : data.aws_iam_policy_document.s3_defaut_policy.json
   depends_on = [aws_s3_bucket.bucket]
 }
 
