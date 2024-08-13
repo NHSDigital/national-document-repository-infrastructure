@@ -71,6 +71,7 @@ module "cloudfront-distribution-lg" {
   source             = "./modules/cloudfront/"
   bucket_domain_name = var.lloyd_george_bucket_name
   bucket_id          = module.ndr-lloyd-george-store.bucket_id
+  lambda_arn = module.edge_presign_alarm.lambda_arn
   depends_on = [
     module.ndr-lloyd-george-store
   ]
