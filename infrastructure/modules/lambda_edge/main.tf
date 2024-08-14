@@ -7,6 +7,29 @@ terraform {
   }
 }
 
+resource "aws_lambda_function" "lambda" {
+  provider = aws
+
+  filename                       = data.archive_file.lambda.output_path
+  function_name                  = "${terraform.workspace}_${var.name}"
+  role                           = aws_iam_role.lambda_execution_role.arn
+  handler                        = var.handler
+  source_code_hash               = data.archive_file.lambda.output_base64sha256
+  runtime                        = "python3.11"
+  timeout                        = var.lambda_timeout
+  memory_size                    = var.memory_size
+  reserved_concurrent_executions = var.reserved_concurrent_executions
+  ephemeral_storage {
+    size = var.lambda_ephemeral_storage
+  }
+  # layers = [
+  #   "arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:38",
+  #   "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:81"
+  # ]
+  publish = true
+}
+
+
 data "archive_file" "lambda" {
   type        = "zip"
   source_file = "placeholder_lambda.py"
@@ -23,30 +46,6 @@ data "aws_iam_policy_document" "assume_role" {
     }
     actions = ["sts:AssumeRole"]
   }
-}
-
-
-
-resource "aws_lambda_function" "lambda" {
-  provider = aws
-
-  filename                       = data.archive_file.lambda.output_path
-  function_name                  = "${terraform.workspace}_${var.name}"
-  role                           = aws_iam_role.lambda_execution_role.arn
-  handler                        = var.handler
-  source_code_hash               = data.archive_file.lambda.output_base64sha256
-  runtime                        = "python3.11"
-  timeout                        = var.lambda_timeout
-  memory_size                    = var.memory_size
-  reserved_concurrent_executions = var.reserved_concurrent_executions
-  ephemeral_storage {
-    size = var.lambda_ephemeral_storage
-  }
-  layers = [
-    "arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:38",
-    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:81"
-  ]
-  publish = true
 }
 
 
