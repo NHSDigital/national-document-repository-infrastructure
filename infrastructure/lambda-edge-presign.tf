@@ -44,4 +44,7 @@ module "edge-presign-lambda" {
   source  = "./modules/lambda_edge"
   name    = "EdgePresignLambda"
   handler = "handlers.edge_presign_handler.lambda_handler"
+  providers = {
+    aws = aws.us_east_1
+  }
 }

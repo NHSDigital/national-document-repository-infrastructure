@@ -1,16 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 4.0.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = "us-east-1"
-}
-
 data "archive_file" "lambda" {
   type        = "zip"
   source_file = "placeholder_lambda.py"
@@ -35,6 +22,8 @@ resource "aws_iam_role" "lambda_execution_role" {
 }
 
 resource "aws_lambda_function" "lambda" {
+  provider = aws
+  
   filename                       = data.archive_file.lambda.output_path
   function_name                  = "${terraform.workspace}_${var.name}"
   role                           = aws_iam_role.lambda_execution_role.arn
