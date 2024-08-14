@@ -65,7 +65,7 @@ module "ndr-lloyd-george-store" {
 
 module "cloudfront-distribution-lg" {
   source             = "./modules/cloudfront/"
-  bucket_domain_name = var.lloyd_george_bucket_name
+  bucket_domain_name = module.ndr-lloyd-george-store.bucket_domain_name
   bucket_id          = module.ndr-lloyd-george-store.bucket_id
   lambda_arn         = module.edge-presign-lambda.qualified_arn
 }
