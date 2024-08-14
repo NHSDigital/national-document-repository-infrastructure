@@ -38,12 +38,6 @@ module "ndr-zip-request-store" {
   ]
 }
 # Lloyd George Store Bucket
-module "cloudfront-distribution-lg" {
-  source             = "./modules/cloudfront/"
-  bucket_domain_name = var.lloyd_george_bucket_name
-  bucket_id          = module.ndr-lloyd-george-store.bucket_id
-}
-
 module "ndr-lloyd-george-store" {
   source                    = "./modules/s3/"
   cloudfront_enabled        = true
@@ -67,6 +61,13 @@ module "ndr-lloyd-george-store" {
       allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
     }
   ]
+}
+
+module "cloudfront-distribution-lg" {
+  source             = "./modules/cloudfront/"
+  bucket_domain_name = var.lloyd_george_bucket_name
+  bucket_id          = module.ndr-lloyd-george-store.bucket_id
+  lambda_arn         = module.edge-presign-lambda.qualified_arn
 }
 
 

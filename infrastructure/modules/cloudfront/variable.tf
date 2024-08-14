@@ -8,6 +8,11 @@ variable "bucket_id" {
   description = "Bucket ID to assign CloudFront distribution to"
 }
 
+variable "lambda_arn" {
+  type        = string
+  description = "Lambda@Edge function association"
+}
+
 output "cloudfront_arn" {
   value = aws_cloudfront_distribution.distribution.arn
 }

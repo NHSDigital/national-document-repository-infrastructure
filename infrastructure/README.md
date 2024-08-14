@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.41.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.62.0 |
 
 ## Modules
 
@@ -55,6 +55,9 @@
 | <a name="module_document_manifest_alarm"></a> [document\_manifest\_alarm](#module\_document\_manifest\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_document_manifest_alarm_topic"></a> [document\_manifest\_alarm\_topic](#module\_document\_manifest\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_document_reference_dynamodb_table"></a> [document\_reference\_dynamodb\_table](#module\_document\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
+| <a name="module_edge-presign-lambda"></a> [edge-presign-lambda](#module\_edge-presign-lambda) | ./modules/lambda_edge | n/a |
+| <a name="module_edge_presign_alarm"></a> [edge\_presign\_alarm](#module\_edge\_presign\_alarm) | ./modules/lambda_alarms | n/a |
+| <a name="module_edge_presign_alarm_topic"></a> [edge\_presign\_alarm\_topic](#module\_edge\_presign\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_feature-flags-gateway"></a> [feature-flags-gateway](#module\_feature-flags-gateway) | ./modules/gateway | n/a |
 | <a name="module_feature-flags-lambda"></a> [feature-flags-lambda](#module\_feature-flags-lambda) | ./modules/lambda | n/a |
 | <a name="module_feature_flags_alarm"></a> [feature\_flags\_alarm](#module\_feature\_flags\_alarm) | ./modules/lambda_alarms | n/a |

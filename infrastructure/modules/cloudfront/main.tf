@@ -30,6 +30,11 @@ resource "aws_cloudfront_distribution" "distribution" {
     min_ttl                = 0
     default_ttl            = 3600
     max_ttl                = 86400
+
+    lambda_function_association {
+      event_type = "origin-request"
+      lambda_arn = var.lambda_arn
+    }
   }
   viewer_certificate {
     cloudfront_default_certificate = true
