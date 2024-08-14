@@ -9,7 +9,7 @@ variable "bucket_id" {
 }
 
 variable "lambda_arn" {
-  type = string
+  type        = string
   description = "Lambda@Edge function association"
 }
 

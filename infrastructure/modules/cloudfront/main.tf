@@ -33,7 +33,7 @@ resource "aws_cloudfront_distribution" "distribution" {
 
     lambda_function_association {
       event_type = "origin-request"
-      lambda_arn = "${var.lambda_arn}"
+      lambda_arn = var.lambda_arn
     }
   }
   viewer_certificate {
