@@ -8,7 +8,7 @@ variable "bucket_id" {
   description = "Bucket ID to assign CloudFront distribution to"
 }
 
-variable "lambda_arn" {
+variable "qualifed_arn" {
   type        = string
   description = "Lambda@Edge function association"
 }
