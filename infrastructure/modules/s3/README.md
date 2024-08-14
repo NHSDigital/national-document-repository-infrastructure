@@ -47,6 +47,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_bucket_arn"></a> [bucket\_arn](#output\_bucket\_arn) | n/a |
+| <a name="output_bucket_domain_name"></a> [bucket\_domain\_name](#output\_bucket\_domain\_name) | n/a |
 | <a name="output_bucket_id"></a> [bucket\_id](#output\_bucket\_id) | n/a |
 | <a name="output_s3_list_object_policy"></a> [s3\_list\_object\_policy](#output\_s3\_list\_object\_policy) | n/a |
 | <a name="output_s3_object_access_policy"></a> [s3\_object\_access\_policy](#output\_s3\_object\_access\_policy) | Outputs |
