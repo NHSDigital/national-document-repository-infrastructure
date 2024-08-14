@@ -44,6 +44,13 @@ module "edge-presign-lambda" {
   source  = "./modules/lambda_edge"
   name    = "EdgePresignLambda"
   handler = "handlers.edge_presign_handler.lambda_handler"
+  iam_role_policies = [
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    aws_iam_policy.ssm_policy_oidc.arn,
+    module.auth_state_dynamodb_table.dynamodb_policy,
+    module.ndr-app-config.app_config_policy_arn
+  ]
   providers = {
     aws = aws.us_east_1
   }

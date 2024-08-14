@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">=5.11"
+    }
+  }
+}
+
 data "archive_file" "lambda" {
   type        = "zip"
   source_file = "placeholder_lambda.py"
@@ -16,14 +25,11 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-resource "aws_iam_role" "lambda_execution_role" {
-  name               = "${terraform.workspace}_lambda_execution_role_${var.name}"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
+
 
 resource "aws_lambda_function" "lambda" {
   provider = aws
-  
+
   filename                       = data.archive_file.lambda.output_path
   function_name                  = "${terraform.workspace}_${var.name}"
   role                           = aws_iam_role.lambda_execution_role.arn
@@ -41,4 +47,16 @@ resource "aws_lambda_function" "lambda" {
     "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:81"
   ]
   publish = true
+}
+
+
+resource "aws_iam_role" "lambda_execution_role" {
+  name               = "${terraform.workspace}_lambda_execution_role_${var.name}"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
+  count      = length(var.iam_role_policies)
+  role       = aws_iam_role.lambda_execution_role.name
+  policy_arn = var.iam_role_policies[count.index]
 }
