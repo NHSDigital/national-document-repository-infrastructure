@@ -20,8 +20,8 @@ resource "aws_lambda_function" "lambda" {
   memory_size                    = var.memory_size
   reserved_concurrent_executions = var.reserved_concurrent_executions
   layers = [
-    # "arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:38",
-    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:81"
+    "arn:aws:lambda:us-east-1:580247275435:layer:LambdaInsightsExtension:38",
+    "arn:aws:lambda:us-east-1:282860088358:layer:AWS-AppConfig-Extension:81"
   ]
   ephemeral_storage {
     size = var.lambda_ephemeral_storage
