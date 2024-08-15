@@ -116,7 +116,7 @@ resource "aws_lambda_permission" "statistical_report_schedule_permission" {
 resource "aws_cloudwatch_event_rule" "update_patient_ods_schedule" {
   name                = "${terraform.workspace}_update_patient_ods_schedule"
   description         = "Schedule for Updating Patient ODS Lambda"
-  schedule_expression = "cron(0 7 ? * * 6)"??
+  schedule_expression = "cron(0 7 * * * 6)"
 }
 
 resource "aws_cloudwatch_event_target" "update_patient_ods_schedule_event" {
