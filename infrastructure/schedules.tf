@@ -112,3 +112,32 @@ resource "aws_lambda_permission" "statistical_report_schedule_permission" {
     aws_cloudwatch_event_rule.statistical_report_schedule
   ]
 }
+
+resource "aws_cloudwatch_event_rule" "update_patient_ods_schedule" {
+  name                = "${terraform.workspace}_update_patient_ods_schedule"
+  description         = "Schedule for Updating Patient ODS Lambda"
+  schedule_expression = "cron(0 7 ? * * 6)"??
+}
+
+resource "aws_cloudwatch_event_target" "update_patient_ods_schedule_event" {
+  rule      = aws_cloudwatch_event_rule.update_patient_ods_schedule.name
+  target_id = "update_patient_ods_schedule"
+
+  arn = module.update-patient-ods-lambda.lambda_arn
+  depends_on = [
+    module.update-patient-ods-lambda,
+    aws_cloudwatch_event_rule.update_patient_ods_schedule
+  ]
+}
+
+resource "aws_lambda_permission" "update_patient_ods_schedule_permission" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = module.update-patient-ods-lambda.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.update_patient_ods_schedule.arn
+  depends_on = [
+    module.update-patient-ods-lambda,
+    aws_cloudwatch_event_rule.update_patient_ods_schedule
+  ]
+}
