@@ -38,10 +38,10 @@ module "update-patient-ods-alarm" {
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.update-patient-ods-topic.arn]
   ok_actions           = [module.update-patient-ods-topic.arn]
-  depends_on           = [module.update-patient-ods-lambda, module.update-patient-ods-topic]
+  depends_on           = [module.update-patient-ods-lambda, module.update-patient-ods-alarm-topic]
 }
 
-module "update-patient-alarm-topic" {
+module "update-patient-ods-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   current_account_id    = data.aws_caller_identity.current.account_id
