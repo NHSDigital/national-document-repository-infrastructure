@@ -33,11 +33,11 @@ module "update-patient-ods-lambda" {
 module "update-patient-ods-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.update-patient-ods-lambda.function_name
-  lambda_timeout       = module.update-patient-ods-lambda.lambda_timeout
+  lambda_timeout       = module.update-patient-ods-lambda.timeout
   lambda_name          = "update_patient_ods_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.update-patient-ods-topic.arn]
-  ok_actions           = [module.update-patient-ods-topic.arn]
+  alarm_actions        = [module.update-patient-ods-alarm-topic.arn]
+  ok_actions           = [module.update-patient-ods-alarm-topic.arn]
   depends_on           = [module.update-patient-ods-lambda, module.update-patient-ods-alarm-topic]
 }
 
