@@ -25,7 +25,7 @@ module "update-patient-ods-lambda" {
   lambda_timeout                = 900
 
   depends_on = [
-    module.ndr-lloyd_george_reference_dynamodb_table,
+    module.lloyd_george_reference_dynamodb_table,
     module.ndr-app-config
   ]
 }
