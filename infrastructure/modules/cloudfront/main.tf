@@ -12,11 +12,13 @@ resource "aws_cloudfront_distribution" "distribution" {
     origin_id                = var.bucket_id
     origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_oac.id
   }
-  enabled = true
+  enabled         = true
+  is_ipv6_enabled = true
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = var.bucket_id
+    # viewer_protocol_policy = "redirect-to-https"
 
     forwarded_values {
       query_string = false
@@ -41,8 +43,8 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
   restrictions {
     geo_restriction {
-      restriction_type = "none"
-      locations        = []
+      restriction_type = "whitelist" # Restrict access to only the listed countries
+      locations        = ["GB"]      # ISO code for the United Kingdom
     }
   }
 }
