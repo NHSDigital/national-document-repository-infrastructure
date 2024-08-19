@@ -51,6 +51,7 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
+# TODO: Refine log resource output and add dynamic bucket name
 data "aws_iam_policy_document" "lambda_policy" {
   statement {
     effect = "Allow"
@@ -65,7 +66,7 @@ data "aws_iam_policy_document" "lambda_policy" {
   statement {
     effect    = "Allow"
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::your-s3-bucket-name/*"]
+    resources = ["arn:aws:s3:::${var.bucket_name}/*"]
   }
 }
 

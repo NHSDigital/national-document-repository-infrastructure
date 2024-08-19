@@ -63,6 +63,7 @@ module "ndr-lloyd-george-store" {
   ]
 }
 
+# TODO: Add actual region
 module "cloudfront-distribution-lg" {
   source             = "./modules/cloudfront/"
   bucket_domain_name = "${terraform.workspace}-lloyd-george-store.s3.eu-west-2.amazonaws.com"

@@ -31,6 +31,11 @@ variable "iam_role_policies" {
   type = list(string)
 }
 
+variable "bucket_name" {
+  description = "the name of the bucket"
+  type        = string
+}
+
 output "lambda_arn" {
   value = aws_lambda_function.lambda.arn
 }
@@ -46,3 +51,4 @@ output "timeout" {
 output "qualified_arn" {
   value = aws_lambda_function.lambda.qualified_arn
 }
+

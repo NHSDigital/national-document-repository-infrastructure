@@ -4,35 +4,35 @@ on:
   workflow_dispatch:
     inputs:
       build_branch:
-        default: "main"
-        description: "Feature branch to push to sandbox."
+        default: 'main'
+        description: 'Feature branch to push to sandbox.'
         required: true
-        type: "string"
+        type: 'string'
       sandbox_workspace:
-        description: "Which Sandbox to push destroy."
+        description: 'Which Sandbox to push destroy.'
         required: true
-        type: "string"
+        type: 'string'
       terraform_vars:
-        default: "dev.tfvars"
-        description: "Which vars file is required? For test, change to test.tfvars"
+        default: 'dev.tfvars'
+        description: 'Which vars file is required? For test, change to test.tfvars'
         required: true
-        type: "string"
+        type: 'string'
       environment:
-        default: "development"
-        description: "Which environment should this run against"
+        default: 'development'
+        description: 'Which environment should this run against'
         required: true
-        type: "string"
+        type: 'string'
       backend:
-        default: "backend.conf"
-        description: "Which backend configuration should be used?"
+        default: 'backend.conf'
+        description: 'Which backend configuration should be used?'
         required: true
-        type: "string"
+        type: 'string'
 
 permissions:
   pull-requests: write
   id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
-    
+  contents: read # This is required for actions/checkout
+
 jobs:
   cleanup_versions_process:
     name: Cleanup Versions Process
@@ -52,46 +52,67 @@ jobs:
     needs: [cleanup_versions_process]
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ github.event.inputs.build_branch}}
-        repository: 'nhsconnect/national-document-repository-infrastructure'
-        fetch-depth: '0'
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.build_branch}}
+          repository: 'nhsconnect/national-document-repository-infrastructure'
+          fetch-depth: '0'
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-        role-skip-session-tagging: true
-        aws-region: ${{ vars.AWS_REGION }}
-      
-    - name: View AWS Role
-      run: aws sts get-caller-identity
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
 
+      - name: View AWS Role
+        run: aws sts get-caller-identity
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: 1.5.4
-        terraform_wrapper: false
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.4
+          terraform_wrapper: false
 
-    - name: Terraform Init
-      id: init
-      run: terraform init -backend-config=${{ github.event.inputs.backend }}
-      working-directory: ./infrastructure
-      shell: bash
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config=${{ github.event.inputs.backend }}
+        working-directory: ./infrastructure
+        shell: bash
 
-    - name: Terraform Set Workspace
-      id: workspace
-      run:  terraform workspace select ${{ github.event.inputs.sandbox_workspace}}
-      working-directory: ./infrastructure
-      shell: bash
+      - name: Terraform Set Workspace
+        id: workspace
+        run: terraform workspace select ${{ github.event.inputs.sandbox_workspace}}
+        working-directory: ./infrastructure
+        shell: bash
 
-    - name: Terraform Destroy
-      run: terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraform_vars }}"
-      working-directory: ./infrastructure
-        
-        
+      - name: Get CloudFront Distribution ID
+        id: get_distribution_id
+        run: |
+          DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Comment=='your-comment'].Id" --output text)
+          echo "DISTRIBUTION_ID=$DISTRIBUTION_ID" >> $GITHUB_ENV
+
+      # Install dependencies for Python scripts
+      - name: Install Python and Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install boto3
+
+      # Run script to remove Lambda@Edge associations
+      - name: Remove Lambda@Edge Associations
+        env:
+          DISTRIBUTION_ID: ${{ env.DISTRIBUTION_ID }}
+        run: python scripts/remove_lambda_edge_associations.py
+
+      # Run script to delete Lambda function across regions
+      - name: Delete Lambda Function Across Regions
+        env:
+          WORKSPACE: ${{ inputs.sandbox_workspace }}
+        run: python scripts/delete_lambda_function_across_regions.py
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraform_vars }}"
+        working-directory: ./infrastructure
