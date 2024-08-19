@@ -57,7 +57,7 @@ resource "aws_iam_policy" "dynamodb_policy" {
           "dynamodb:Query",
         ],
         "Resource" : [
-          for index in var.global_secondary_indexes :
+          for index in coalesce(var.global_secondary_indexes, []) :
           "${aws_dynamodb_table.ndr_dynamodb_table.arn}/index/${index.name}"
         ]
       },
