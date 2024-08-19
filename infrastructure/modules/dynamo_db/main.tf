@@ -50,33 +50,36 @@ resource "aws_iam_policy" "dynamodb_policy" {
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "dynamodb:Query",
-        ],
-        "Resource" : [
-          for index in coalesce(var.global_secondary_indexes, []) :
-          "${aws_dynamodb_table.ndr_dynamodb_table.arn}/index/${index.name}"
-        ]
-      },
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "dynamodb:Query",
-          "dynamodb:Scan",
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:UpdateItem",
-          "dynamodb:DeleteItem",
-          "dynamodb:BatchWriteItem",
-        ],
-        "Resource" : [
-          aws_dynamodb_table.ndr_dynamodb_table.arn,
-        ]
-      }
-
-    ]
+    Statement = concat(
+      [
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "dynamodb:Query",
+            "dynamodb:Scan",
+            "dynamodb:GetItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem",
+            "dynamodb:DeleteItem",
+            "dynamodb:BatchWriteItem",
+          ],
+          "Resource" : [
+            aws_dynamodb_table.ndr_dynamodb_table.arn,
+          ]
+        }
+      ],
+      length(coalesce(var.global_secondary_indexes, [])) > 0 ? [
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "dynamodb:Query",
+          ],
+          "Resource" : [
+            for index in var.global_secondary_indexes :
+            "${aws_dynamodb_table.ndr_dynamodb_table.arn}/index/${index.name}"
+          ]
+        }
+      ] : []
+    )
   })
 }
