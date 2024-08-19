@@ -54,6 +54,12 @@ variable "docstore_dynamodb_table_name" {
   default     = "DocumentReferenceMetadata"
 }
 
+variable "lloyd_george_dynamodb_table_name" {
+  type        = string
+  description = "The name of dynamodb table to store the metadata of Lloyd George documents"
+  default     = "LloydGeorgeReferenceMetadata"
+}
+
 variable "cloudfront_edge_table_name" {
   type        = string
   description = "The name of dynamodb table to store the metadata of Lloyd George documents"
