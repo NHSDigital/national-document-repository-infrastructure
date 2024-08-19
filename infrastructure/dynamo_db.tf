@@ -59,10 +59,6 @@ module "cloudfront_edge_dynamodb_table" {
       name = "Url"
       type = "S"
     },
-    {
-      name = "Consumed"
-      type = "BOOL"
-    }
   ]
 
   global_secondary_indexes = [
