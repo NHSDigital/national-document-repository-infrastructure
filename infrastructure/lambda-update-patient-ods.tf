@@ -7,7 +7,7 @@ module "update-patient-ods-lambda" {
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.ndr-app-config.app_config_policy_arn,
-    aws_iam_policy.ssm_access_policy.arn
+    aws_iam_policy.dynamodb_policy_scan_lloyd_george_dynamodb.arn
   ]
   rest_api_id       = null
   api_execution_arn = null
@@ -32,7 +32,7 @@ module "update-patient-ods-lambda" {
   ]
 }
 
-resource "aws_iam_policy" "dynamodb_policy_scan_update_patient_ods" {
+resource "aws_iam_policy" "dynamodb_policy_scan_lloyd_george_dynamodb" {
   name = "${terraform.workspace}_${var.lloyd_george_reference_dynamodb_table_name}_scan_policy"
   path = "/"
 
