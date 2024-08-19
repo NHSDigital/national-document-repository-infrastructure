@@ -32,6 +32,27 @@ module "update-patient-ods-lambda" {
   ]
 }
 
+resource "aws_iam_policy" "dynamodb_policy_scan_update_patient_ods" {
+  name = "${terraform.workspace}_${var.lloyd_george_reference_dynamodb_table_name}_scan_policy"
+  path = "/"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:Scan",
+        ],
+        "Resource" : [
+          module.lloyd_george_reference_dynamodb_table.dynamodb_table_arn,
+        ]
+      }
+    ]
+  })
+}
+
 module "update-patient-ods-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.update-patient-ods-lambda.function_name
