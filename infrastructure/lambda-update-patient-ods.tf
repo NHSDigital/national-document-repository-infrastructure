@@ -26,6 +26,7 @@ module "update-patient-ods-lambda" {
 
   depends_on = [
     module.lloyd_george_reference_dynamodb_table,
+    aws_iam_policy.ssm_access_policy,
     module.ndr-app-config
   ]
 }
