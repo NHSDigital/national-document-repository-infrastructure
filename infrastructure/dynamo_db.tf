@@ -42,6 +42,48 @@ module "document_reference_dynamodb_table" {
 
 module "lloyd_george_reference_dynamodb_table" {
   source                         = "./modules/dynamo_db"
+  table_name                     = var.cloudfront_edge_table_name
+  hash_key                       = "ID"
+  deletion_protection_enabled    = local.is_production
+  stream_enabled                 = false
+  ttl_enabled                    = true
+  ttl_attribute_name             = "TTL"
+  point_in_time_recovery_enabled = !local.is_sandbox
+
+  attributes = [
+    {
+      name = "ID"
+      type = "S"
+    },
+    {
+      name = "Url"
+      type = "S"
+    },
+    {
+      name = "Consumed"
+      type = "BOOL"
+    }
+  ]
+
+  global_secondary_indexes = [
+    {
+      name            = "FileLocationsIndex"
+      hash_key        = "FileLocation"
+      projection_type = "ALL"
+    },
+    {
+      name            = "NhsNumberIndex"
+      hash_key        = "NhsNumber"
+      projection_type = "ALL"
+    }
+  ]
+
+  environment = var.environment
+  owner       = var.owner
+}
+
+module "lloyd_george_reference_dynamodb_table" {
+  source                         = "./modules/dynamo_db"
   table_name                     = var.lloyd_george_dynamodb_table_name
   hash_key                       = "ID"
   deletion_protection_enabled    = local.is_production
