@@ -93,6 +93,7 @@ jobs:
         id: get_distribution_id
         run: |
           DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Comment=='your-comment'].Id" --output text)
+          echo "Distribution ID: $DISTRIBUTION_ID" 
           echo "DISTRIBUTION_ID=$DISTRIBUTION_ID" >> $GITHUB_ENV
 
       # Install dependencies for Python scripts
