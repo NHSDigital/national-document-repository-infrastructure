@@ -57,19 +57,6 @@ module "cloudfront_edge_dynamodb_table" {
     },
   ]
 
-  global_secondary_indexes = [
-    {
-      name            = "FileLocationsIndex"
-      hash_key        = "FileLocation"
-      projection_type = "ALL"
-    },
-    {
-      name            = "NhsNumberIndex"
-      hash_key        = "NhsNumber"
-      projection_type = "ALL"
-    }
-  ]
-
   environment = var.environment
   owner       = var.owner
 }
