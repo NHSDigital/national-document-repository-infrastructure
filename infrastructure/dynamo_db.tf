@@ -40,7 +40,7 @@ module "document_reference_dynamodb_table" {
   owner       = var.owner
 }
 
-module "lloyd_george_reference_dynamodb_table" {
+module "cloudfront_edge_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.cloudfront_edge_table_name
   hash_key                       = "ID"
