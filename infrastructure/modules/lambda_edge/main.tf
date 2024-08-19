@@ -12,7 +12,7 @@ resource "aws_lambda_function" "lambda" {
 
   filename                       = data.archive_file.lambda.output_path
   function_name                  = "${terraform.workspace}_${var.name}"
-  role                           = aws_iam_role.lambda_execution_role.arn
+  role                           = aws_iam_role.lambda_exec_role.arn
   handler                        = var.handler
   source_code_hash               = data.archive_file.lambda.output_base64sha256
   runtime                        = "python3.11"
@@ -78,6 +78,6 @@ resource "aws_iam_role_policy" "lambda_exec_policy" {
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
   count      = length(var.iam_role_policies)
-  role       = aws_iam_role.lambda_execution_role.name
+  role       = aws_iam_role.lambda_exec_role.name
   policy_arn = var.iam_role_policies[count.index]
 }
