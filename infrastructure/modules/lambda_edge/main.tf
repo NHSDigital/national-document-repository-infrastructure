@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-resource "aws_lambda_function" "edge_function" {
+resource "aws_lambda_function" "lambda" {
   provider = aws # Alternative AWS provider for Lambda@Edge region
 
   filename                       = data.archive_file.lambda.output_path
