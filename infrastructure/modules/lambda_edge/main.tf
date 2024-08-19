@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-resource "aws_lambda_function" "lambda" {
+resource "aws_lambda_function" "edge_function" {
   provider = aws # Alternative AWS provider for Lambda@Edge region
 
   filename                       = data.archive_file.lambda.output_path
@@ -32,6 +32,13 @@ data "archive_file" "lambda" {
   output_path = "placeholder_lambda_payload.zip"
 }
 
+# Define the IAM role for the Lambda function with the combined assume role policy
+resource "aws_iam_role" "lambda_exec_role" {
+  name = "lambda_edge_exec_role"
+
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
 data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"
@@ -44,11 +51,30 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
+data "aws_iam_policy_document" "lambda_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+    resources = ["arn:aws:logs:*:*:*"]
+  }
 
-resource "aws_iam_role" "lambda_execution_role" {
-  name               = "${terraform.workspace}_lambda_execution_role_${var.name}"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
+    resources = ["arn:aws:s3:::your-s3-bucket-name/*"]
+  }
 }
+
+resource "aws_iam_role_policy" "lambda_exec_policy" {
+  name   = "lambda_edge_exec_policy"
+  role   = aws_iam_role.lambda_exec_role.id
+  policy = data.aws_iam_policy_document.lambda_policy.json
+}
+
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
   count      = length(var.iam_role_policies)
