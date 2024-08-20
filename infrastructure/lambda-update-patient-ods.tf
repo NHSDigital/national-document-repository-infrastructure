@@ -1,4 +1,4 @@
-module "update-patient-ods-lambda" {
+module "update_patient_ods_lambda" {
   source  = "./modules/lambda"
   name    = "UpdatePatientOdsLambda"
   handler = "handlers.update_patient_ods_handler.lambda_handler"
@@ -25,15 +25,9 @@ module "update-patient-ods-lambda" {
   is_invoked_from_gateway       = false
   memory_size                   = 512
   lambda_timeout                = 900
-
-  depends_on = [
-    module.lloyd_george_reference_dynamodb_table,
-    aws_iam_policy.ssm_access_policy,
-    module.ndr-app-config
-  ]
 }
 
-resource "aws_iam_policy" "dynamodb_policy_scan_lloyd_george" {
+resource "aws_iam_policy" "dynamodb_scan_lloyd_george" {
   name = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}_scan_policy"
   path = "/"
 
@@ -54,24 +48,24 @@ resource "aws_iam_policy" "dynamodb_policy_scan_lloyd_george" {
   })
 }
 
-module "update-patient-ods-alarm" {
+module "update_patient_ods_alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.update-patient-ods-lambda.function_name
-  lambda_timeout       = module.update-patient-ods-lambda.timeout
+  lambda_function_name = module.update_patient_ods_lambda.function_name
+  lambda_timeout       = module.update_patient_ods_lambda.timeout
   lambda_name          = "update_patient_ods_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.update-patient-ods-alarm-topic.arn]
-  ok_actions           = [module.update-patient-ods-alarm-topic.arn]
-  depends_on           = [module.update-patient-ods-lambda, module.update-patient-ods-alarm-topic]
+  alarm_actions        = [module.update_patient_ods_alarm_topic.arn]
+  ok_actions           = [module.update_patient_ods_alarm_topic.arn]
+  depends_on           = [module.update_patient_ods_lambda, module.update_patient_ods_alarm_topic]
 }
 
-module "update-patient-ods-alarm-topic" {
+module "update_patient_ods_alarm_topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   current_account_id    = data.aws_caller_identity.current.account_id
-  topic_name            = "update-patient-ods--topic"
+  topic_name            = "update-patient-ods-alarm-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.update-patient-ods-lambda.lambda_arn
+  topic_endpoint        = module.update_patient_ods_lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -93,5 +87,5 @@ module "update-patient-ods-alarm-topic" {
     ]
   })
 
-  depends_on = [module.update-patient-ods-lambda, module.sns_encryption_key]
+  depends_on = [module.update_patient_ods_lambda, module.sns_encryption_key]
 }

@@ -123,21 +123,21 @@ resource "aws_cloudwatch_event_target" "update_patient_ods_schedule_event" {
   rule      = aws_cloudwatch_event_rule.update_patient_ods_schedule.name
   target_id = "update_patient_ods_schedule"
 
-  arn = module.update-patient-ods-lambda.lambda_arn
+  arn = module.update_patient_ods_lambda.lambda_arn
   depends_on = [
-    module.update-patient-ods-lambda,
+    module.update_patient_ods_lambda,
     aws_cloudwatch_event_rule.update_patient_ods_schedule
   ]
 }
 
-resource "aws_lambda_permission" "update_patient_ods_schedule_permission" {
+resource "aws_lambda_permission" "update_patient_ods_schedule" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
-  function_name = module.update-patient-ods-lambda.function_name
+  function_name = module.update_patient_ods_lambda.function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.update_patient_ods_schedule.arn
   depends_on = [
-    module.update-patient-ods-lambda,
+    module.update_patient_ods_lambda,
     aws_cloudwatch_event_rule.update_patient_ods_schedule
   ]
 }
