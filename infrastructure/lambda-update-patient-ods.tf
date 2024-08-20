@@ -7,7 +7,8 @@ module "update-patient-ods-lambda" {
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.ndr-app-config.app_config_policy_arn,
-    aws_iam_policy.dynamodb_policy_scan_lloyd_george.arn
+    aws_iam_policy.dynamodb_policy_scan_lloyd_george.arn,
+    aws_iam_policy.ssm_access_policy.arn
   ]
   rest_api_id       = null
   api_execution_arn = null
