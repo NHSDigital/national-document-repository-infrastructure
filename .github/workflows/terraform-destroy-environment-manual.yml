@@ -13,7 +13,7 @@ on:
         required: true
         type: 'string'
       cloudfront_distribution:
-        description: 'Id of the cloudfront distribution to destroy.'
+        description: 'Cloudfront distribution ID.'
         required: true
         type: 'string'
       terraform_vars:
@@ -110,7 +110,7 @@ jobs:
       # Run script to remove Lambda@Edge associations
       - name: Remove Lambda@Edge Associations
         env:
-          DISTRIBUTION_ID: ${{ inputs.distribution_id }}
+          DISTRIBUTION_ID: ${{ inputs.cloudfront_distribution }}
         run: ./venv/bin/python3 scripts/remove_edge_associations.py ${{ inputs.sandbox }}
 
       # Run script to delete Lambda function across regions
