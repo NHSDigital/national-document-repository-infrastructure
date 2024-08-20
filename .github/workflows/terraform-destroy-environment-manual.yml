@@ -12,6 +12,10 @@ on:
         description: 'Which Sandbox to push destroy.'
         required: true
         type: 'string'
+      cloudfront_distribution:
+        description: 'Id of the cloudfront distribution to destroy.'
+        required: true
+        type: 'string'
       terraform_vars:
         default: 'dev.tfvars'
         description: 'Which vars file is required? For test, change to test.tfvars'
@@ -89,12 +93,12 @@ jobs:
         working-directory: ./infrastructure
         shell: bash
 
-      - name: Get CloudFront Distribution ID
-        id: get_distribution_id
-        run: |
-          DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Comment=='your-comment'].Id" --output text)
-          echo "Distribution ID: $DISTRIBUTION_ID" 
-          echo "DISTRIBUTION_ID=$DISTRIBUTION_ID" >> $GITHUB_ENV
+      # - name: Get CloudFront Distribution ID
+      #   id: get_distribution_id
+      #   run: |
+      #     DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Comment=='your-comment'].Id" --output text)
+      #     echo "Distribution ID: $DISTRIBUTION_ID"
+      #     echo "DISTRIBUTION_ID=$DISTRIBUTION_ID" >> $GITHUB_ENV
 
       # Install dependencies for Python scripts
       - name: Install Python and Dependencies
@@ -106,7 +110,7 @@ jobs:
       # Run script to remove Lambda@Edge associations
       - name: Remove Lambda@Edge Associations
         env:
-          DISTRIBUTION_ID: ${{ env.DISTRIBUTION_ID }}
+          DISTRIBUTION_ID: ${{ inputs.distribution_id }}
         run: ./venv/bin/python3 scripts/remove_edge_associations.py ${{ inputs.sandbox }}
 
       # Run script to delete Lambda function across regions
