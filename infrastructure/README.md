@@ -277,6 +277,7 @@
 | <a name="input_enable_private_routes"></a> [enable\_private\_routes](#input\_enable\_private\_routes) | Controls whether the internet gateway can connect to private subnets | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Tag Variables | `string` | n/a | yes |
 | <a name="input_lloyd_george_bucket_name"></a> [lloyd\_george\_bucket\_name](#input\_lloyd\_george\_bucket\_name) | The name of S3 bucket to store Lloyd George documents | `string` | `"lloyd-george-store"` | no |
+| <a name="input_lloyd_george_dynamodb_table_name"></a> [lloyd\_george\_dynamodb\_table\_name](#input\_lloyd\_george\_dynamodb\_table\_name) | The name of dynamodb table to store the metadata of Lloyd George documents | `string` | `"LloydGeorgeReferenceMetadata"` | no |
 | <a name="input_log_level"></a> [log\_level](#input\_log\_level) | n/a | `string` | `"debug"` | no |
 | <a name="input_mesh_ca_cert_ssm_param_name"></a> [mesh\_ca\_cert\_ssm\_param\_name](#input\_mesh\_ca\_cert\_ssm\_param\_name) | Name of SSM parameter containing MESH CA certificate | `string` | n/a | yes |
 | <a name="input_mesh_client_cert_ssm_param_name"></a> [mesh\_client\_cert\_ssm\_param\_name](#input\_mesh\_client\_cert\_ssm\_param\_name) | Name of SSM parameter containing MESH client certificate | `string` | n/a | yes |
