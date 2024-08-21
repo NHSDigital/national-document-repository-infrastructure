@@ -16,7 +16,7 @@ resource "aws_lambda_function" "lambda" {
   handler                        = var.handler
   source_code_hash               = data.archive_file.lambda.output_base64sha256
   runtime                        = "python3.11"
-  timeout                        = var.lambda_timeout
+  timeout                        = 5
   memory_size                    = var.memory_size
   reserved_concurrent_executions = var.reserved_concurrent_executions
   ephemeral_storage {
