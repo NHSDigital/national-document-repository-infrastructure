@@ -16,3 +16,7 @@ variable "qualifed_arn" {
 output "cloudfront_arn" {
   value = aws_cloudfront_distribution.distribution.arn
 }
+
+output "cloudfront_url" {
+  value = aws_cloudfront_distribution.distribution.domain_name
+}
