@@ -38,10 +38,10 @@ resource "aws_iam_policy" "dynamodb_scan_lloyd_george" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "dynamodb:Scan",
+          "dynamodb:Scan"
         ],
         "Resource" : [
-          module.lloyd_george_reference_dynamodb_table.dynamodb_table_arn,
+          module.lloyd_george_reference_dynamodb_table.dynamodb_table_arn
         ]
       }
     ]
@@ -75,7 +75,7 @@ module "update_patient_ods_alarm_topic" {
           "Service" : "cloudwatch.amazonaws.com"
         },
         "Action" : [
-          "SNS:Publish",
+          "SNS:Publish"
         ],
         "Condition" : {
           "ArnLike" : {
