@@ -23,6 +23,7 @@ def remove_lambda_edge_associations(distribution_id):
         config['DefaultCacheBehavior'].pop('LambdaFunctionAssociations', None)
     
     if 'CacheBehaviors' in config:
+        print('BEHAVIOURS: ' + config['CacheBehaviors'])
         for behavior in config['CacheBehaviors']['Items']:
             behavior.pop('LambdaFunctionAssociations', None)
     
