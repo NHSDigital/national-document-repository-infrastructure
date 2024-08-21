@@ -34,7 +34,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     max_ttl                = 86400
 
     lambda_function_association {
-      event_type = "origin-request"
+      event_type = "viewer-request"
       lambda_arn = var.qualifed_arn
     }
   }
