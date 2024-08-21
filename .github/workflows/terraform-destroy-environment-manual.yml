@@ -108,16 +108,10 @@ jobs:
           ./venv/bin/pip3 install boto3==1.33.11
 
       # Run script to remove Lambda@Edge associations
-      - name: Remove Lambda@Edge Associations
+      - name: Remove Lambda@Edge & CloudFront associations
         env:
           DISTRIBUTION_ID: ${{ inputs.cloudfront_distribution }}
         run: ./venv/bin/python3 scripts/remove_edge_associations.py ${{ inputs.sandbox }}
-
-      # Run script to delete Lambda function across regions
-      - name: Delete Lambda@Edge Replications
-        env:
-          WORKSPACE: ${{ inputs.sandbox_workspace }}
-        run: ./venv/bin/python3 scripts/remove_edge_replications.py ${{ inputs.sandbox }}
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraform_vars }}"
