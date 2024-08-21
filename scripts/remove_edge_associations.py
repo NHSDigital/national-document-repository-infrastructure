@@ -18,14 +18,21 @@ def remove_lambda_edge_associations(distribution_id):
     config = response['DistributionConfig']
     etag = response['ETag']
 
-    # Remove Lambda@Edge function associations
-    if 'DefaultCacheBehavior' in config:
-        config['DefaultCacheBehavior'].pop('LambdaFunctionAssociations', None)
-    
-    if 'CacheBehaviors' in config:
-        print('BEHAVIOURS: ' + json.dumps(config['CacheBehaviors']))
-        for behavior in config['CacheBehaviors']['Items']:
-            behavior.pop('LambdaFunctionAssociations', None)
+    behaviors = []
+
+    # Default behavior
+    default_behavior = config.get('DefaultCacheBehavior', None)
+    if default_behavior and 'LambdaFunctionAssociations' in default_behavior:
+        behaviors.append(default_behavior)
+
+    # Cache behaviors
+    if 'CacheBehaviors' in config and config['CacheBehaviors']['Quantity'] > 0:
+        behaviors.extend(config['CacheBehaviors']['Items'])
+
+    for behavior in behaviors:
+        if 'LambdaFunctionAssociations' in behavior:
+            # Clear all Lambda function associations
+            behavior['LambdaFunctionAssociations'] = {'Quantity': 0}
     
     # Update the distribution config
     client.update_distribution(
