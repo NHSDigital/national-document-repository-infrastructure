@@ -12,10 +12,6 @@ on:
         description: 'Which Sandbox to push destroy.'
         required: true
         type: 'string'
-      cloudfront_distribution:
-        description: 'Cloudfront distribution ID.'
-        required: true
-        type: 'string'
       terraform_vars:
         default: 'dev.tfvars'
         description: 'Which vars file is required? For test, change to test.tfvars'
@@ -93,15 +89,13 @@ jobs:
         working-directory: ./infrastructure
         shell: bash
 
-      # - name: Get CloudFront Distribution ID
-      #   id: get_distribution_id
-      #   run: |
-      #     DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Comment=='your-comment'].Id" --output text)
-      #     echo "Distribution ID: $DISTRIBUTION_ID"
-      #     echo "DISTRIBUTION_ID=$DISTRIBUTION_ID" >> $GITHUB_ENV
+      - name: Get CloudFront Distribution ID
+        id: cloudfront
+        run: echo "distribution_id=$(aws cloudfront list-distributions |jq -r '.[]["Items"][] | select(.Origins.Items[].Id=="${{inputs.sandbox_workspace}}-lloyd-george-store") | .Id')" >> $GITHUB_OUTPUT
 
       # Install dependencies for Python scripts
       - name: Install Python and Dependencies
+        id: dependencies
         run: |
           python3 -m venv ./venv
           ./venv/bin/pip3 install --upgrade pip
@@ -109,10 +103,12 @@ jobs:
 
       # Run script to remove Lambda@Edge associations
       - name: Remove Lambda@Edge & CloudFront associations
+        id: lambda
         env:
-          DISTRIBUTION_ID: ${{ inputs.cloudfront_distribution }}
+          DISTRIBUTION_ID: ${{ env.distribution_id }}
         run: ./venv/bin/python3 scripts/remove_edge_associations.py ${{ inputs.sandbox }}
 
       - name: Terraform Destroy
+        id: destroy
         run: terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraform_vars }}"
         working-directory: ./infrastructure
