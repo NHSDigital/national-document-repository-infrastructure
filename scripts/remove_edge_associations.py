@@ -1,42 +1,38 @@
 import boto3
+from botocore.exceptions import ClientError
 import time
 
 def remove_lambda_edge_associations(distribution_id):
-    client = boto3.client('cloudfront')
-    
-    # Get the current distribution configuration
-    response = client.get_distribution_config(Id=distribution_id)
-    config = response['DistributionConfig']
-    etag = response['ETag']
+    try:
+        client = boto3.client('cloudfront')
+        
+        response = client.get_distribution_config(Id=distribution_id)
+        config = response['DistributionConfig']
+        etag = response['ETag']
 
-    # Log the CacheBehaviors for debugging
-    print(f"BEHAVIOURS: {config.get('CacheBehaviors')}")
+        behaviors = []
 
-    # Check for default and cache behaviors
-    behaviors = []
+        default_behavior = config.get('DefaultCacheBehavior', None)
+        if default_behavior and 'LambdaFunctionAssociations' in default_behavior:
+            behaviors.append(default_behavior)
 
-    # Default behavior
-    default_behavior = config.get('DefaultCacheBehavior', None)
-    if default_behavior and 'LambdaFunctionAssociations' in default_behavior:
-        behaviors.append(default_behavior)
+        if 'CacheBehaviors' in config and config['CacheBehaviors']['Quantity'] > 0:
+            behaviors.extend(config['CacheBehaviors']['Items'])
 
-    # Cache behaviors
-    if 'CacheBehaviors' in config and config['CacheBehaviors']['Quantity'] > 0:
-        behaviors.extend(config['CacheBehaviors']['Items'])
+        for behavior in behaviors:
+            if 'LambdaFunctionAssociations' in behavior:
+                behavior['LambdaFunctionAssociations'] = {'Quantity': 0}
 
-    for behavior in behaviors:
-        if 'LambdaFunctionAssociations' in behavior:
-            # Clear all Lambda function associations
-            behavior['LambdaFunctionAssociations'] = {'Quantity': 0}
+        client.update_distribution(
+            Id=distribution_id,
+            DistributionConfig=config,
+            IfMatch=etag
+        )
 
-    # Update the distribution configuration with the cleared Lambda associations
-    client.update_distribution(
-        Id=distribution_id,
-        DistributionConfig=config,
-        IfMatch=etag
-    )
+        print("Cleared Lambda@Edge associations from CloudFront distribution.")
+    except ClientError as e:
+        print(f"No Cloudfront Distribution with ID ${distribution_id} found.")
 
-    print("Cleared Lambda@Edge associations from CloudFront distribution.")
 
 def delete_lambda_function(lambda_function_name):
     # Create a Lambda client in us-east-1 region
