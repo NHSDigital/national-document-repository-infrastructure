@@ -54,6 +54,7 @@ module "edge-presign-lambda" {
   providers = {
     aws = aws.us_east_1
   }
-  bucket_name = "${terraform.workspace}_${var.lloyd_george_bucket_name}"
-  table_name  = "${terraform.workspace}_${var.cloudfront_edge_table_name}"
+  current_account_id = data.aws_caller_identity.current.account_id
+  bucket_name        = "${terraform.workspace}_${var.lloyd_george_bucket_name}"
+  table_name         = "${terraform.workspace}_${var.cloudfront_edge_table_name}"
 }

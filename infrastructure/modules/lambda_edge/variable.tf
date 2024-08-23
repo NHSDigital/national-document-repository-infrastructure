@@ -41,6 +41,11 @@ variable "table_name" {
   type        = string
 }
 
+variable "current_account_id" {
+  description = "AWS Account ID"
+  type        = string
+}
+
 output "lambda_arn" {
   value = aws_lambda_function.lambda.arn
 }

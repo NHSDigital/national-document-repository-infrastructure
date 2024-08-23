@@ -59,13 +59,13 @@ data "aws_iam_policy_document" "lambda_policy" {
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    resources = ["arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:*"]
+    resources = ["arn:aws:logs:eu-west-2:${var.current_account_id}:*"]
   }
 
   statement {
     effect    = "Allow"
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:eu-west-2:${data.aws_caller_identity.current.account_id}:${var.bucket_name}/*"]
+    resources = ["arn:aws:s3:eu-west-2:${var.current_account_id}:${var.bucket_name}/*"]
   }
 
   statement {
@@ -73,7 +73,7 @@ data "aws_iam_policy_document" "lambda_policy" {
     actions = [
       "dynamodb:UpdateItem",
     ]
-    resources = ["arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.current.account_id}:table/${var.table_name}"]
+    resources = ["arn:aws:dynamodb:eu-west-2:${var.current_account_id}:table/${var.table_name}"]
   }
 }
 
