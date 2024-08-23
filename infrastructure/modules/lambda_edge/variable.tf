@@ -32,7 +32,12 @@ variable "iam_role_policies" {
 }
 
 variable "bucket_name" {
-  description = "the name of the bucket"
+  description = "The name of the bucket to proxy"
+  type        = string
+}
+
+variable "table_name" {
+  description = "The name of the bucket"
   type        = string
 }
 

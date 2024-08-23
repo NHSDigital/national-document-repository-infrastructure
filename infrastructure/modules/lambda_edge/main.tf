@@ -51,7 +51,6 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-# TODO: Refine log resource output and add dynamic bucket name
 data "aws_iam_policy_document" "lambda_policy" {
   statement {
     effect = "Allow"
@@ -60,15 +59,24 @@ data "aws_iam_policy_document" "lambda_policy" {
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    resources = ["arn:aws:logs:*:*:*"]
+    resources = ["arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:*"]
   }
 
   statement {
     effect    = "Allow"
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::${var.bucket_name}/*"]
+    resources = ["arn:aws:s3:eu-west-2:${data.aws_caller_identity.current.account_id}:${var.bucket_name}/*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "dynamodb:UpdateItem",
+    ]
+    resources = ["arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.current.account_id}:table/${var.table_name}"]
   }
 }
+
 
 resource "aws_iam_role_policy" "lambda_exec_policy" {
   name   = "lambda_edge_exec_policy"

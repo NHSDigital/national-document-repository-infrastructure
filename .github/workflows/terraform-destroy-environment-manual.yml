@@ -91,7 +91,11 @@ jobs:
 
       - name: Get CloudFront Distribution ID
         id: cloudfront
-        run: echo "distribution_id=$(aws cloudfront list-distributions |jq -r '.[]["Items"][] | select(.Origins.Items[].Id=="${{inputs.sandbox_workspace}}-lloyd-george-store") | .Id')" >> $GITHUB_OUTPUT
+        run: |
+          aws cloudfront list-distributions > distributions.json
+          distribution_id=$(cat distributions.json | jq -r '.DistributionList.Items[] | select(.Origins.Items[].Id=="${{ inputs.sandbox }}-lloyd-george-store") | .Id')
+          echo "Distribution ID found: $distribution_id"
+          echo "DISTRIBUTION_ID=${distribution_id}" >> $GITHUB_ENV
 
       # Install dependencies for Python scripts
       - name: Install Python and Dependencies
@@ -104,8 +108,6 @@ jobs:
       # Run script to remove Lambda@Edge associations
       - name: Remove Lambda@Edge & CloudFront associations
         id: lambda
-        env:
-          DISTRIBUTION_ID: ${{ env.distribution_id }}
         run: ./venv/bin/python3 scripts/remove_edge_associations.py ${{ inputs.sandbox }}
 
       - name: Terraform Destroy
