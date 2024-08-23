@@ -59,13 +59,13 @@ data "aws_iam_policy_document" "lambda_policy" {
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    resources = ["arn:aws:logs:eu-west-2:${var.current_account_id}:*"]
+    resources = ["arn:aws:logs:eu-west-2:${var.current_account_id}:log-group:*"]
   }
 
   statement {
     effect    = "Allow"
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:*:*:${var.bucket_name}/*"]
+    resources = ["arn:aws:s3:::${var.bucket_name}/*"]
   }
 
   statement {
