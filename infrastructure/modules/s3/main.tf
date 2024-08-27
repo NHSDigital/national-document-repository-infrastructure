@@ -67,6 +67,22 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
     }
   }
 
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [var.cloudfront_arn] # Add the OAI ARN here
+    }
+
+    actions = [
+      "s3:GetObject",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.bucket.arn}/*",
+    ]
+  }
 }
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
