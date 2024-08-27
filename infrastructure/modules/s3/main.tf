@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
-      values   = [var.cloudfront_arn]
+      values   = [var.cloudfront_arn] # Use CloudFront Distribution ARN here
     }
   }
 
@@ -71,8 +71,8 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
     effect = "Allow"
 
     principals {
-      type        = "AWS"
-      identifiers = [var.cloudfront_oai_arn]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
 
     actions = [
@@ -82,6 +82,18 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
     resources = [
       "${aws_s3_bucket.bucket.arn}/*",
     ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:UserAgent"
+      values   = ["AWS-SigV4-CloudFront"] 
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [var.cloudfront_arn]
+    }
   }
 }
 
