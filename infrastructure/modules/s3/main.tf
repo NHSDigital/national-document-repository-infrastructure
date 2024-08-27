@@ -72,7 +72,7 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = [var.cloudfront_arn] # Add the OAI ARN here
+      identifiers = [var.cloudfront_oai_arn]
     }
 
     actions = [

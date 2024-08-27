@@ -31,5 +31,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cloudfront_arn"></a> [cloudfront\_arn](#output\_cloudfront\_arn) | n/a |
+| <a name="output_cloudfront_arn"></a> [cloudfront\_arn](#output\_cloudfront\_arn) | The ARN of the CloudFront Distribution |
+| <a name="output_cloudfront_oai_arn"></a> [cloudfront\_oai\_arn](#output\_cloudfront\_oai\_arn) | The ARN of the CloudFront Origin Access Identity (OAI) |
 | <a name="output_cloudfront_url"></a> [cloudfront\_url](#output\_cloudfront\_url) | n/a |

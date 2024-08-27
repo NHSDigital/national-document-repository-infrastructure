@@ -33,8 +33,9 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | the name of the bucket | `string` | n/a | yes |
-| <a name="input_cloudfront_arn"></a> [cloudfront\_arn](#input\_cloudfront\_arn) | Cloudfront arn association and policy toggles | `string` | `"null"` | no |
+| <a name="input_cloudfront_arn"></a> [cloudfront\_arn](#input\_cloudfront\_arn) | Cloudfront Distribution ARN association and policy toggles | `string` | `"null"` | no |
 | <a name="input_cloudfront_enabled"></a> [cloudfront\_enabled](#input\_cloudfront\_enabled) | Enables the correct policy config for cloudfront s3 | `bool` | `false` | no |
+| <a name="input_cloudfront_oai_arn"></a> [cloudfront\_oai\_arn](#input\_cloudfront\_oai\_arn) | Cloudfront OAI ARN association and policy toggles | `string` | `"null"` | no |
 | <a name="input_cors_rules"></a> [cors\_rules](#input\_cors\_rules) | n/a | `list` | `[]` | no |
 | <a name="input_enable_bucket_versioning"></a> [enable\_bucket\_versioning](#input\_enable\_bucket\_versioning) | n/a | `bool` | `false` | no |
 | <a name="input_enable_cors_configuration"></a> [enable\_cors\_configuration](#input\_enable\_cors\_configuration) | n/a | `bool` | `false` | no |
