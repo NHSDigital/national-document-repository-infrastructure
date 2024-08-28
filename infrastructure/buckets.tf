@@ -39,9 +39,9 @@ module "ndr-zip-request-store" {
 }
 # Lloyd George Store Bucket
 module "ndr-lloyd-george-store" {
-  source                    = "./modules/s3/"
-  cloudfront_enabled        = true
-  cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
+  source = "./modules/s3/"
+  # cloudfront_enabled        = true
+  # cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
   bucket_name               = var.lloyd_george_bucket_name
   enable_cors_configuration = contains(["prod"], terraform.workspace) ? false : true
   enable_bucket_versioning  = true
@@ -90,7 +90,7 @@ module "ndr-cf-test" {
 
 module "cloudfront-distribution-lg" {
   source             = "./modules/cloudfront/"
-  bucket_domain_name = "${terraform.workspace}-${var.lloyd_george_bucket_name}.s3.amazonaws.com"
+  bucket_domain_name = "${terraform.workspace}-cloudfront-test.s3.amazonaws.com"
   bucket_id          = module.ndr-cf-test.bucket_id
   qualifed_arn       = module.edge-presign-lambda.qualified_arn
   depends_on         = [module.edge-presign-lambda.qualified_arn, module.ndr-cf-test.bucket_id, module.ndr-cf-test.bucket_domain_name]
