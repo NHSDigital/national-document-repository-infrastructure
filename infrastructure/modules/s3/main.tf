@@ -37,21 +37,21 @@ data "aws_iam_policy_document" "s3_defaut_policy" {
 }
 
 data "aws_iam_policy_document" "s3_cloudfront_policy" {
+  # Deny any requests that are not using HTTPS
   statement {
     effect = "Deny"
 
     principals {
-      type        = "Service"
-      identifiers = ["cloudfront.amazonaws.com"]
+      type        = "*"
+      identifiers = ["*"]
     }
 
     actions = [
-      "s3:*",
+      "s3:GetObject",
     ]
 
     resources = [
       "${aws_s3_bucket.bucket.arn}/*",
-      "${aws_s3_bucket.bucket.arn}",
     ]
 
     condition {
@@ -59,14 +59,9 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
       variable = "aws:SecureTransport"
       values   = ["false"]
     }
-
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-      values   = [var.cloudfront_arn] # Use CloudFront Distribution ARN here
-    }
   }
 
+  # Allow CloudFront to access the S3 bucket
   statement {
     effect = "Allow"
 
@@ -83,62 +78,26 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
       "${aws_s3_bucket.bucket.arn}/*",
     ]
 
+    # # Ensure the request is coming from the correct CloudFront distribution
+    # condition {
+    #   test     = "StringEquals"
+    #   variable = "AWS:SourceArn"
+    #   values   = [var.cloudfront_arn]
+    # }
+
+    # Ensure the request is signed with AWS SigV4 from CloudFront
     condition {
       test     = "StringEquals"
       variable = "aws:UserAgent"
       values   = ["AWS-SigV4-CloudFront"]
     }
-
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-      values   = [var.cloudfront_arn]
-    }
-  }
-}
-
-data "aws_iam_policy_document" "s3_cloudfront_debug_policy" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["cloudfront.amazonaws.com"]
-    }
-
-    actions = [
-      "s3:GetObject",
-    ]
-
-    resources = [
-      "${aws_s3_bucket.bucket.arn}/*",
-    ]
-
-    # Temporarily remove all conditions to allow more open access for debugging
-    # condition {
-    #   test     = "StringEquals"
-    #   variable = "AWS:SourceArn"
-    #   values   = [var.cloudfront_distribution_arn]
-    # }
-
-    # condition {
-    #   test     = "StringEquals"
-    #   variable = "aws:UserAgent"
-    #   values   = ["AWS-SigV4-CloudFront"]
-    # }
   }
 }
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
   bucket = aws_s3_bucket.bucket.id
-  policy = data.aws_iam_policy_document.s3_cloudfront_debug_policy.json
+  policy = data.aws_iam_policy_document.s3_cloudfront_policy.json
 }
-
-# resource "aws_s3_bucket_policy" "bucket_policy" {
-#   bucket     = aws_s3_bucket.bucket.id
-#   policy     = var.cloudfront_enabled ? data.aws_iam_policy_document.s3_cloudfront_policy.json : data.aws_iam_policy_document.s3_defaut_policy.json
-#   depends_on = [aws_s3_bucket.bucket]
-# }
 
 resource "aws_s3_bucket_acl" "bucket_acl" {
   bucket     = aws_s3_bucket.bucket.id
