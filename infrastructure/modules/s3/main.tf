@@ -97,11 +97,35 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
   }
 }
 
-resource "aws_s3_bucket_policy" "bucket_policy" {
-  bucket     = aws_s3_bucket.bucket.id
-  policy     = var.cloudfront_enabled ? data.aws_iam_policy_document.s3_cloudfront_policy.json : data.aws_iam_policy_document.s3_defaut_policy.json
-  depends_on = [aws_s3_bucket.bucket]
+data "aws_iam_policy_document" "s3_cloudfront_debug_policy" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:GetObject",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.bucket.arn}/*",
+    ]
+  }
 }
+
+resource "aws_s3_bucket_policy" "bucket_policy" {
+  bucket = aws_s3_bucket.bucket.id
+  policy = data.aws_iam_policy_document.s3_cloudfront_debug_policy.json
+}
+
+# resource "aws_s3_bucket_policy" "bucket_policy" {
+#   bucket     = aws_s3_bucket.bucket.id
+#   policy     = var.cloudfront_enabled ? data.aws_iam_policy_document.s3_cloudfront_policy.json : data.aws_iam_policy_document.s3_defaut_policy.json
+#   depends_on = [aws_s3_bucket.bucket]
+# }
 
 resource "aws_s3_bucket_acl" "bucket_acl" {
   bucket     = aws_s3_bucket.bucket.id
