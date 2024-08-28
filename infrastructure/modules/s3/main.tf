@@ -102,8 +102,8 @@ data "aws_iam_policy_document" "s3_cloudfront_debug_policy" {
     effect = "Allow"
 
     principals {
-      type        = "AWS"
-      identifiers = ["*"]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
 
     actions = [
@@ -113,6 +113,19 @@ data "aws_iam_policy_document" "s3_cloudfront_debug_policy" {
     resources = [
       "${aws_s3_bucket.bucket.arn}/*",
     ]
+
+    # Temporarily remove all conditions to allow more open access for debugging
+    # condition {
+    #   test     = "StringEquals"
+    #   variable = "AWS:SourceArn"
+    #   values   = [var.cloudfront_distribution_arn]
+    # }
+
+    # condition {
+    #   test     = "StringEquals"
+    #   variable = "aws:UserAgent"
+    #   values   = ["AWS-SigV4-CloudFront"]
+    # }
   }
 }
 
