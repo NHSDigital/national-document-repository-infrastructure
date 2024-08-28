@@ -32,25 +32,29 @@ def remove_lambda_edge_associations(distribution_id):
         print("Cleared Lambda@Edge associations from CloudFront distribution.")
     except ClientError as e:
         print(f"No Cloudfront Distribution with ID ${distribution_id} found.")
+        raise
 
+def delete_lambda_function_replicas(lambda_function_name):
+    # List of all AWS regions
+    regions = [region['RegionName'] for region in boto3.client('ec2').describe_regions()['Regions']]
 
-def delete_lambda_function(lambda_function_name):
-    # Create a Lambda client in us-east-1 region
-    client = boto3.client('lambda', region_name='us-east-1')
-
-    try:
-        # Delete the Lambda function (this will only delete the function if it has no remaining associations)
-        client.delete_function(FunctionName=lambda_function_name)
-        print(f"Deleted Lambda function {lambda_function_name} in region us-east-1")
-
-    except client.exceptions.InvalidParameterValueException as e:
-        print(f"Failed to delete Lambda function {lambda_function_name} in region us-east-1: {e}")
-        print("Waiting for replication cleanup...")
-
-        # Retry deleting the function after a delay
-        time.sleep(30)
-        client.delete_function(FunctionName=lambda_function_name)
-        print(f"Deleted Lambda function {lambda_function_name} in region us-east-1 after waiting for cleanup")
+    # Iterate through each region and attempt to delete the Lambda function
+    for region in regions:
+        client = boto3.client('lambda', region_name=region)
+        try:
+            client.delete_function(FunctionName=lambda_function_name)
+            print(f"Deleted Lambda function {lambda_function_name} in region {region}")
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'ResourceNotFoundException':
+                print(f"Lambda function {lambda_function_name} not found in region {region}, skipping.")
+            elif e.response['Error']['Code'] == 'InvalidParameterValueException' and region == 'us-east-1':
+                print(f"Failed to delete Lambda function {lambda_function_name} in region us-east-1: {e}")
+                print("Waiting for replication cleanup...")
+                time.sleep(30)
+                client.delete_function(FunctionName=lambda_function_name)
+                print(f"Deleted Lambda function {lambda_function_name} in region us-east-1 after waiting for cleanup")
+            else:
+                print(f"Error deleting Lambda function {lambda_function_name} in region {region}: {e}")
 
 if __name__ == "__main__":
     import os
@@ -64,4 +68,4 @@ if __name__ == "__main__":
         raise ValueError("The LAMBDA_FUNCTION_NAME environment variable is not set.")
 
     remove_lambda_edge_associations(distribution_id)
-    delete_lambda_function(lambda_function_name)
+    delete_lambda_function_replicas(lambda_function_name)

@@ -67,7 +67,7 @@ module "ndr-cf-test" {
   source                    = "./modules/s3/"
   cloudfront_enabled        = true
   cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
-  bucket_name               = var.lloyd_george_bucket_name
+  bucket_name               = "cloudfront-test"
   enable_cors_configuration = false
   enable_bucket_versioning  = true
   environment               = var.environment
