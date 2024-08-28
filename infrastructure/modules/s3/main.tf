@@ -78,19 +78,19 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
       "${aws_s3_bucket.bucket.arn}/*",
     ]
 
-    # # Ensure the request is coming from the correct CloudFront distribution
-    # condition {
-    #   test     = "StringEquals"
-    #   variable = "AWS:SourceArn"
-    #   values   = [var.cloudfront_arn]
-    # }
-
-    # Ensure the request is signed with AWS SigV4 from CloudFront
+    # Ensure the request is coming from the correct CloudFront distribution
     condition {
       test     = "StringEquals"
-      variable = "aws:UserAgent"
-      values   = ["AWS-SigV4-CloudFront"]
+      variable = "AWS:SourceArn"
+      values   = [var.cloudfront_arn]
     }
+
+    # # Ensure the request is signed with AWS SigV4 from CloudFront
+    # condition {
+    #   test     = "StringEquals"
+    #   variable = "aws:UserAgent"
+    #   values   = ["AWS-SigV4-CloudFront"]
+    # }
   }
 }
 
