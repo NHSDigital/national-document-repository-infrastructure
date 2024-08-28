@@ -86,7 +86,7 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:UserAgent"
-      values   = ["AWS-SigV4-CloudFront"] 
+      values   = ["AWS-SigV4-CloudFront"]
     }
 
     condition {
