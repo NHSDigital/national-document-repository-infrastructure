@@ -13,7 +13,9 @@ def detach_lambda_edge_associations(distribution_id):
         behaviors = []
 
         default_behavior = config.get('DefaultCacheBehavior', None)
-        if default_behavior and 'LambdaFunctionAssociations' in default_behavior:
+        if (default_behavior and 
+                'LambdaFunctionAssociations' in default_behavior and 
+                default_behavior['LambdaFunctionAssociations']['Quantity'] > 0):
             behaviors.append(default_behavior)
 
         if 'CacheBehaviors' in config and config['CacheBehaviors']['Quantity'] > 0:
@@ -31,50 +33,29 @@ def detach_lambda_edge_associations(distribution_id):
 
         print("Cleared Lambda@Edge associations from CloudFront distribution.")
     except ClientError as e:
-        print(f"No Cloudfront Distribution with ID ${distribution_id} found.")
+        print(f"Error removing associations for distribution {distribution_id}: {e}")
         raise
 
-def delete_lambda_edge_replicas(lambda_function_name):
-    # Create a Lambda client in us-east-1 to list the replicas
+def delete_lambda_function_with_retries(lambda_function_name, max_retries=10):
     client = boto3.client('lambda', region_name='us-east-1')
+    wait_time = 30  # initial wait time in seconds
+
+    for attempt in range(1, max_retries + 1):
+        try:
+            client.delete_function(FunctionName=lambda_function_name)
+            print(f"Successfully deleted Lambda function {lambda_function_name} in region us-east-1")
+            return
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'InvalidParameterValueException':
+                print(f"Attempt {attempt} failed: {e}")
+                print(f"Waiting {wait_time} seconds before retrying...")
+                time.sleep(wait_time)
+                wait_time *= 2  # exponential backoff
+            else:
+                print(f"Unexpected error: {e}")
+                raise
     
-    # List all versions to find aliases (which include replicas)
-    response = client.list_versions_by_function(FunctionName=lambda_function_name)
-    versions = response['Versions']
-
-    for version in versions:
-        # Skip $LATEST version
-        if version['Version'] == '$LATEST':
-            continue
-
-        # Try to delete the alias (replica)
-        for region in version['FunctionArn'].split(':'):
-            if region.startswith("aws-region-"):
-                target_region = region.split('-')[2]
-                print(f"Deleting Lambda replica in region {target_region}")
-                try:
-                    regional_client = boto3.client('lambda', region_name=target_region)
-                    regional_client.delete_function(FunctionName=lambda_function_name, Qualifier=version['Version'])
-                    print(f"Deleted replica of version {version['Version']} in region {target_region}")
-                except ClientError as e:
-                    if e.response['Error']['Code'] == 'ResourceNotFoundException':
-                        print(f"Replica not found in region {target_region}, skipping.")
-                    else:
-                        print(f"Failed to delete replica in region {target_region}: {e}")
-    
-    # Wait to ensure all replicas are deleted
-    time.sleep(60)
-
-    # Now delete the main function in us-east-1
-    try:
-        client.delete_function(FunctionName=lambda_function_name)
-        print(f"Deleted Lambda function {lambda_function_name} in region us-east-1")
-    except ClientError as e:
-        print(f"Failed to delete Lambda function {lambda_function_name} in region us-east-1: {e}")
-        print("Waiting for replication cleanup...")
-        time.sleep(60)
-        client.delete_function(FunctionName=lambda_function_name)
-        print(f"Deleted Lambda function {lambda_function_name} in region us-east-1 after waiting for cleanup")
+    print(f"Failed to delete Lambda function {lambda_function_name} after {max_retries} attempts.")
 
 if __name__ == "__main__":
     import os
@@ -88,4 +69,6 @@ if __name__ == "__main__":
         raise ValueError("The LAMBDA_FUNCTION_NAME environment variable is not set.")
 
     detach_lambda_edge_associations(distribution_id)  # Step 1: Remove the Lambda@Edge associations from the CloudFront distribution
-    delete_lambda_edge_replicas(lambda_function_name) # Step 2: Delete all Lambda@Edge replicas and the main function
+    print("Waiting 5 minutes to allow AWS to clean up any replicas...")
+    time.sleep(300)  # Wait for 5 minutes before trying to delete the function
+    delete_lambda_function_with_retries(lambda_function_name)  # Step 2: Delete the main Lambda@Edge function with retries
