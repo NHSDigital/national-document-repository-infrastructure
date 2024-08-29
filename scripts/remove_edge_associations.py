@@ -2,6 +2,9 @@ import boto3
 from botocore.exceptions import ClientError
 import time
 
+def log(message):
+    print(message, flush=True)
+
 def detach_lambda_edge_associations(distribution_id):
     try:
         client = boto3.client('cloudfront')
@@ -18,7 +21,7 @@ def detach_lambda_edge_associations(distribution_id):
                 default_behavior['LambdaFunctionAssociations']['Quantity'] > 0):
             behaviors.append(default_behavior)
 
-        if 'CacheBehaviors' in config and config['CacheBehaviors']['Quantity'] > 0:
+        if ('CacheBehaviors' in config and config['CacheBehaviors']['Quantity'] > 0):
             behaviors.extend(config['CacheBehaviors']['Items'])
 
         for behavior in behaviors:
@@ -31,37 +34,37 @@ def detach_lambda_edge_associations(distribution_id):
             IfMatch=etag
         )
 
-        print("Cleared Lambda@Edge associations from CloudFront distribution.")
+        log("Cleared Lambda@Edge associations from CloudFront distribution.")
     except ClientError as e:
-        print(f"Error removing associations for distribution {distribution_id}: {e}")
+        log(f"Error removing associations for distribution {distribution_id}: {e}")
         raise
 
 def delete_lambda_function_with_retries(lambda_function_name, max_retries=10):
     client = boto3.client('lambda', region_name='us-east-1')
     wait_time = 30  # initial wait time in seconds
 
-    for attempt in range(1, max_retries + 1):
+    for attempt in range(1, max_retries + 10):
         try:
             client.delete_function(FunctionName=lambda_function_name)
-            print(f"Successfully deleted Lambda function {lambda_function_name} in region us-east-1")
+            log(f"Successfully deleted Lambda function {lambda_function_name} in region us-east-1")
             return
         except ClientError as e:
             if e.response['Error']['Code'] == 'InvalidParameterValueException':
-                print(f"Attempt {attempt} failed: {e}")
-                print(f"Waiting {wait_time} seconds before retrying...")
+                log(f"Attempt {attempt} failed: {e}")
+                log(f"Waiting {wait_time} seconds before retrying...")
                 time.sleep(wait_time)
                 wait_time *= 2  # exponential backoff
             else:
-                print(f"Unexpected error: {e}")
+                log(f"Unexpected error: {e}")
                 raise
     
-    print(f"Failed to delete Lambda function {lambda_function_name} after {max_retries} attempts.")
+    log(f"Failed to delete Lambda function {lambda_function_name} after {max_retries} attempts.")
 
 if __name__ == "__main__":
     import os
 
     distribution_id = os.getenv("DISTRIBUTION_ID")
-    lambda_function_name = 'ndrd_EdgePresignLambda'
+    lambda_function_name = os.getenv("FUNCTION_NAME")
 
     if not distribution_id:
         raise ValueError("The DISTRIBUTION_ID environment variable is not set.")
@@ -69,6 +72,6 @@ if __name__ == "__main__":
         raise ValueError("The LAMBDA_FUNCTION_NAME environment variable is not set.")
 
     detach_lambda_edge_associations(distribution_id)  # Step 1: Remove the Lambda@Edge associations from the CloudFront distribution
-    print("Waiting 5 minutes to allow AWS to clean up any replicas...")
+    log("Waiting 5 minutes to allow AWS to clean up any replicas...")
     time.sleep(300)  # Wait for 5 minutes before trying to delete the function
     delete_lambda_function_with_retries(lambda_function_name)  # Step 2: Delete the main Lambda@Edge function with retries
