@@ -64,7 +64,7 @@ if __name__ == "__main__":
     import os
 
     distribution_id = os.getenv("DISTRIBUTION_ID")
-    lambda_function_name = os.getenv("FUNCTION_NAME")
+    lambda_function_name = os.getenv("LAMBDA_FUNCTION_NAME")
 
     if not distribution_id:
         raise ValueError("The DISTRIBUTION_ID environment variable is not set.")
