@@ -43,17 +43,21 @@ def delete_lambda_function_with_retries(lambda_function_name, max_retries=10):
     client = boto3.client('lambda', region_name='us-east-1')
     wait_time = 30  # initial wait time in seconds
 
-    for attempt in range(1, max_retries + 10):
+    for attempt in range(1, max_retries + 1):
         try:
             client.delete_function(FunctionName=lambda_function_name)
             log(f"Successfully deleted Lambda function {lambda_function_name} in region us-east-1")
             return
         except ClientError as e:
-            if e.response['Error']['Code'] == 'InvalidParameterValueException':
+            error_code = e.response['Error']['Code']
+            if error_code == 'InvalidParameterValueException':
                 log(f"Attempt {attempt} failed: {e}")
                 log(f"Waiting {wait_time} seconds before retrying...")
                 time.sleep(wait_time)
                 wait_time *= 2  # exponential backoff
+            elif error_code == 'ResourceNotFoundException':
+                log(f"Function {lambda_function_name} not found. Exiting retries.")
+                return
             else:
                 log(f"Unexpected error: {e}")
                 raise
