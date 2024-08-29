@@ -109,10 +109,10 @@ jobs:
       - name: Remove Lambda@Edge & CloudFront associations
         id: lambda
         run: ./venv/bin/python3 -u scripts/remove_edge_associations.py ${{ inputs.sandbox_workspace }}
+        env:
+          LAMBDA_FUNCTION_NAME: '${{ inputs.sandbox_workspace }}_EdgePresignLambda'
 
       - name: Terraform Destroy
         id: destroy
         run: terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraform_vars }}"
         working-directory: ./infrastructure
-        env:
-          LAMBDA_FUNCTION_NAME: '${{ inputs.sandbox_workspace }}_EdgePresignLambda'
