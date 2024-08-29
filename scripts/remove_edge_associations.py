@@ -81,7 +81,13 @@ if __name__ == "__main__":
     retries = 5
     for i in range(retries):
         log(f"Retry {i+1}/{retries}: Attempting to delete Lambda function after 1 minute...")
-        delete_lambda_function_with_retries(lambda_function_name, max_retries=1)
+        function_deleted = delete_lambda_function_with_retries(lambda_function_name, max_retries=1)
+        
+        if function_deleted:
+            break  # Exit loop if the function is successfully deleted
+        elif not function_deleted:
+            break  # Exit loop if the function was not found (to prevent further retries)
+        
         time.sleep(60)  # Wait for 1 minute before the next attempt
 
     log("Finished all retries.")
