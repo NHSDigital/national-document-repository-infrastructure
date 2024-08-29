@@ -72,6 +72,12 @@ if __name__ == "__main__":
         raise ValueError("The LAMBDA_FUNCTION_NAME environment variable is not set.")
 
     detach_lambda_edge_associations(distribution_id)  # Step 1: Remove the Lambda@Edge associations from the CloudFront distribution
-    log("Waiting 5 minutes to allow AWS to clean up any replicas...")
-    time.sleep(300)  # Wait for 5 minutes before trying to delete the function
-    delete_lambda_function_with_retries(lambda_function_name)  # Step 2: Delete the main Lambda@Edge function with retries
+    
+    # Retry loop with 1-minute intervals
+    retries = 5
+    for i in range(retries):
+        log(f"Retry {i+1}/{retries}: Attempting to delete Lambda function after 1 minute...")
+        delete_lambda_function_with_retries(lambda_function_name, max_retries=1)
+        time.sleep(60)  # Wait for 1 minute before the next attempt
+
+    log("Finished all retries.")
