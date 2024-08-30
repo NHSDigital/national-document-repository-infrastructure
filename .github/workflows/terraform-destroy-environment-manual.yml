@@ -94,7 +94,8 @@ jobs:
         run: |
           aws cloudfront list-distributions > distributions.json
           distribution_id=$(jq -r --arg origin_id "${{ inputs.sandbox_workspace }}-lloyd-george-store" \
-          '.DistributionList.Items[] | select(.Origins.Items[].Id==$origin_id) | .Id' distributions.json)
+          '.DistributionList.Items[] | select(.Origins.Items[].Id==$origin_id) | .Id' distributions.json | head -n 1)
+
           echo "Distribution ID found: $distribution_id"
           echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
 
