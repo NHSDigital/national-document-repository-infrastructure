@@ -7,8 +7,8 @@ on:
 permissions:
   pull-requests: write
   id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
-    
+  contents: read # This is required for actions/checkout
+
 jobs:
   cleanup_versions_process:
     name: Cleanup Versions Process
@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         # Update with new sandbox environments here
-        sandbox-name: [ ndra, ndrb, ndrc, ndrd ]
+        sandbox-name: [ndra, ndrb, ndrc, ndrd]
     with:
       build_branch: main
       environment: development
@@ -33,46 +33,70 @@ jobs:
     strategy:
       matrix:
         # Can't use an env var here unfortunately, we will have to update here with new sandbox environments
-        sandbox-name: [ ndra, ndrb, ndrc, ndrd ]
+        sandbox-name: [ndra, ndrb, ndrc, ndrd]
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        ref: main
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-        role-skip-session-tagging: true
-        aws-region: ${{ vars.AWS_REGION }}
-      
-    - name: View AWS Role
-      run: aws sts get-caller-identity
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: 1.5.4
-        terraform_wrapper: false
-      
-    - name: Terraform Init
-      id: init
-      run: terraform init -backend-config=backend.conf
-      working-directory: ./infrastructure 
-      shell: bash
+      - name: View AWS Role
+        run: aws sts get-caller-identity
 
-    - name: Terraform Set Workspace
-      id: workspace
-      run:  terraform workspace select ${{ matrix.sandbox-name }}
-      working-directory: ./infrastructure 
-      shell: bash
-    
-    - name: Terraform Destroy 
-      run: terraform destroy -auto-approve -var-file="${{vars.TF_VARS_FILE}}"
-      working-directory: ./infrastructure
-        
-        
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.4
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config=backend.conf
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Terraform Set Workspace
+        id: workspace
+        run: terraform workspace select ${{ matrix.sandbox-name }}
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Get CloudFront Distribution ID
+        id: cloudfront
+        run: |
+          aws cloudfront list-distributions > distributions.json
+          distribution_id=$(jq -r --arg origin_id "${{ matrix.sandbox-name }}-lloyd-george-store" \
+          '.DistributionList.Items[] | select(.Origins.Items[].Id==$origin_id) | .Id' distributions.json | head -n 1)
+
+          echo "Distribution ID found: $distribution_id"
+          echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
+
+      # Install dependencies for Python scripts
+      - name: Install Python and Dependencies
+        id: dependencies
+        run: |
+          python3 -m venv ./venv
+          ./venv/bin/pip3 install --upgrade pip
+          ./venv/bin/pip3 install boto3==1.33.11
+
+      # Run script to remove Lambda@Edge associations
+      - name: Remove Lambda@Edge & CloudFront associations
+        id: lambda
+        run: ./venv/bin/python3 -u scripts/remove_edge_associations.py ${{ matrix.sandbox-name }}
+        env:
+          LAMBDA_FUNCTION_NAME: '$${{ matrix.sandbox-name }}_EdgePresignLambda'
+
+      - name: Terraform Destroy
+        id: destroy
+        run: terraform destroy -auto-approve -var-file="${{ vars.TF_VARS_FILE }}"
+        working-directory: ./infrastructure
