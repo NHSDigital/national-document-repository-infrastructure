@@ -15,8 +15,8 @@ resource "aws_cloudfront_distribution" "distribution" {
   enabled         = true
   is_ipv6_enabled = true
   default_cache_behavior {
-    allowed_methods          = ["GET", "HEAD", "OPTIONS"]
-    cached_methods           = ["HEAD", "OPTIONS"]
+    allowed_methods          = ["HEAD", "GET", "OPTIONS"]
+    cached_methods           = ["HEAD", "GET", "OPTIONS"]
     target_origin_id         = var.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
