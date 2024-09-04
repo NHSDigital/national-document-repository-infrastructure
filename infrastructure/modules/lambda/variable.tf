@@ -66,12 +66,6 @@ variable "reserved_concurrent_executions" {
   default     = -1
 }
 
-variable "is_edge" {
-  type        = bool
-  default     = false
-  description = "Toggle the lamdba to be Lambda@Edge function based in us virginia"
-}
-
 output "invoke_arn" {
   value = aws_lambda_function.lambda.invoke_arn
 }

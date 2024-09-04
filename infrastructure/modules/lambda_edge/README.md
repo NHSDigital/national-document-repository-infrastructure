@@ -10,6 +10,7 @@
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >=5.11 |
+| <a name="provider_aws.us_east_1"></a> [aws.us\_east\_1](#provider\_aws.us\_east\_1) | >=5.11 |
 
 ## Modules
 

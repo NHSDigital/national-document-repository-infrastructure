@@ -8,7 +8,8 @@ terraform {
 }
 
 resource "aws_lambda_function" "lambda" {
-  provider = aws # Alternative AWS provider for Lambda@Edge region
+  provider = aws.us_east_1
+  publish  = true
 
   filename                       = data.archive_file.lambda.output_path
   function_name                  = "${terraform.workspace}_${var.name}"
@@ -22,7 +23,6 @@ resource "aws_lambda_function" "lambda" {
   ephemeral_storage {
     size = var.lambda_ephemeral_storage
   }
-  publish = true # Publish the version for Lambda@Edge
 }
 
 

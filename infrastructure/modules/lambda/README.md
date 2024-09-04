@@ -33,7 +33,6 @@ No modules.
 | <a name="input_handler"></a> [handler](#input\_handler) | n/a | `string` | n/a | yes |
 | <a name="input_http_methods"></a> [http\_methods](#input\_http\_methods) | n/a | `list(string)` | `[]` | no |
 | <a name="input_iam_role_policies"></a> [iam\_role\_policies](#input\_iam\_role\_policies) | n/a | `list(string)` | n/a | yes |
-| <a name="input_is_edge"></a> [is\_edge](#input\_is\_edge) | Toggle the lamdba to be Lambda@Edge function based in us virginia | `bool` | `false` | no |
 | <a name="input_is_gateway_integration_needed"></a> [is\_gateway\_integration\_needed](#input\_is\_gateway\_integration\_needed) | Indicate whether the lambda need an aws\_api\_gateway\_integration resource block | `bool` | `true` | no |
 | <a name="input_is_invoked_from_gateway"></a> [is\_invoked\_from\_gateway](#input\_is\_invoked\_from\_gateway) | Indicate whether the lambda is supposed to be invoked by API gateway. Should be true for authoriser lambda. | `bool` | `true` | no |
 | <a name="input_lambda_environment_variables"></a> [lambda\_environment\_variables](#input\_lambda\_environment\_variables) | n/a | `map(string)` | `{}` | no |

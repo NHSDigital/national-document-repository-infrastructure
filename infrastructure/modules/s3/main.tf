@@ -84,19 +84,12 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
       variable = "AWS:SourceArn"
       values   = [var.cloudfront_arn]
     }
-
-    # # Ensure the request is signed with AWS SigV4 from CloudFront
-    # condition {
-    #   test     = "StringEquals"
-    #   variable = "aws:UserAgent"
-    #   values   = ["AWS-SigV4-CloudFront"]
-    # }
   }
 }
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
   bucket = aws_s3_bucket.bucket.id
-  policy = data.aws_iam_policy_document.s3_cloudfront_policy.json
+  policy = var.cloudfront_enabled ? data.aws_iam_policy_document.s3_cloudfront_policy.json : data.aws_iam_policy_document.s3_defaut_policy.json
 }
 
 resource "aws_s3_bucket_acl" "bucket_acl" {

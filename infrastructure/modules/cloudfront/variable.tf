@@ -13,13 +13,8 @@ variable "qualifed_arn" {
   description = "Lambda@Edge function association"
 }
 
-
-output "cloudfront_url" {
-  value = aws_cloudfront_distribution.distribution.domain_name
-}
-
-
-output "cloudfront_arn" {
-  description = "The ARN of the CloudFront Distribution"
-  value       = aws_cloudfront_distribution.distribution.arn
+variable "forwarding_policy" {
+  type        = string
+  default     = "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf" #Managed-AllViewer Policy
+  description = "Manged or custom policy for CloudFront distribution caching and forwarding"
 }
