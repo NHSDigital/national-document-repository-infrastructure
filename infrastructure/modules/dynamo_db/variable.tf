@@ -67,15 +67,3 @@ variable "point_in_time_recovery_enabled" {
   type    = bool
   default = false
 }
-
-output "dynamodb_policy" {
-  value = aws_iam_policy.dynamodb_policy.arn
-}
-
-output "dynamodb_table_arn" {
-  value = aws_dynamodb_table.ndr_dynamodb_table.arn
-}
-
-output "dynamodb_stream_arn" {
-  value = aws_dynamodb_table.ndr_dynamodb_table.stream_arn
-}

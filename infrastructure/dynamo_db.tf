@@ -54,7 +54,7 @@ module "cloudfront_edge_dynamodb_table" {
     {
       name = "ID"
       type = "S"
-    },
+    }
   ]
 
   environment = var.environment
@@ -119,7 +119,7 @@ module "zip_store_reference_dynamodb_table" {
     {
       name = "JobId"
       type = "S"
-    },
+    }
   ]
 
   global_secondary_indexes = [
@@ -127,7 +127,7 @@ module "zip_store_reference_dynamodb_table" {
       name            = "JobIdIndex"
       hash_key        = "JobId"
       projection_type = "ALL"
-    },
+    }
   ]
 
   environment = var.environment
@@ -256,7 +256,7 @@ module "statistics_dynamodb_table" {
     {
       name = "OdsCode"
       type = "S"
-    },
+    }
   ]
 
   global_secondary_indexes = [
