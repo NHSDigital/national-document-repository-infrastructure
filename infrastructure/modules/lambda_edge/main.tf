@@ -2,13 +2,13 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">=5.11"
+      version = "~> 5.0"
     }
   }
 }
 
 resource "aws_lambda_function" "lambda" {
-  provider = aws.us_east_1
+  provider = aws
   publish  = true
 
   filename                       = data.archive_file.lambda.output_path
