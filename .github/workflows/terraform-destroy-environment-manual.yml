@@ -54,7 +54,7 @@ jobs:
       environment: ${{ inputs.environment }}
       python_version: 3.11
       sandbox_workspace: ${{ inputs.sandbox_workspace }}
-      aws_region: ${{ vars.AWS_REGION }}
+      aws_region: ${{ github.env.AWS_REGION }}
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
@@ -77,7 +77,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           role-skip-session-tagging: true
-          aws-region: ${{ vars.AWS_REGION }}
+          aws-region: ${{ github.env.AWS_REGION }}
 
       - name: View AWS Role
         run: aws sts get-caller-identity
