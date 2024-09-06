@@ -3,6 +3,18 @@ name: 'Remove Lambda@Edge Associations'
 on:
   workflow_call:
     inputs:
+      build_branch:
+        description: 'Feature branch to push to sandbox.'
+        required: true
+        type: 'string'
+      environment:
+        description: 'Which environment should this run against'
+        required: true
+        type: 'string'
+      python_version:
+        description: 'Version of Python to run the cleanup script against'
+        required: true
+        type: 'string'
       sandbox_workspace:
         description: 'The sandbox workspace name'
         required: true
@@ -16,10 +28,28 @@ on:
         required: true # Ensure the secret is declared here
 
 permissions:
-  contents: read
-  id-token: write
+  pull-requests: write
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
 
 jobs:
+  view_action_parameters:
+    name: View Deploy all input variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display client passed variables
+        run: |
+          echo Python Version: ${{ inputs.python_version }}
+          echo Build Branch: ${{ inputs.build_branch }}
+          echo Environment: ${{ inputs.environment }}
+          echo Sandbox: ${{ inputs.sandbox_workspace }}
+          echo Region: ${{ inputs.aws_region }}
+
+  cleanup_process:
+    name: Run Cleanup Versions script
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
   remove_edge_associations:
     name: Remove Lambda@Edge Associations
     runs-on: ubuntu-latest
