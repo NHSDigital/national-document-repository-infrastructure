@@ -47,7 +47,7 @@ jobs:
 
   remove_edge_associations_process:
     name: Remove Lambda@Edge Associations
-    uses: ./.github/workflows/remove_edge_associations.yml
+    uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
     with:
       sandbox_workspace: ${{ inputs.sandbox_workspace }}
       aws_region: ${{ vars.AWS_REGION }}

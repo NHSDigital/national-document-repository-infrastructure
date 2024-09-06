@@ -27,7 +27,7 @@ jobs:
 
   remove_edge_associations_process:
     name: Remove Lambda@Edge Associations
-    uses: ./.github/workflows/remove_edge_associations.yml
+    uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
     strategy:
       matrix:
         sandbox-name: [ndra, ndrb, ndrc, ndrd]
