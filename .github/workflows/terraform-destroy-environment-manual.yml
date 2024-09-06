@@ -40,7 +40,6 @@ jobs:
       aws_region: ${{ vars.AWS_REGION }} # Assuming AWS_REGION is set as a repository/organization variable
       python_version: 3.11
       build_branch: main
-      environment: development
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
