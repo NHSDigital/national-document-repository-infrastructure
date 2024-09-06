@@ -1,3 +1,5 @@
+# .github/workflows/destroy.yml
+
 name: 'Destroy (Select Account) Environment'
 
 on:
@@ -5,74 +7,56 @@ on:
     inputs:
       build_branch:
         default: 'main'
-        description: 'Feature branch to push to sandbox.'
+        description: 'Branch to use for the destroy action.'
         required: true
-        type: 'string'
       sandbox_workspace:
-        description: 'Which Sandbox to push destroy.'
+        description: 'The sandbox workspace to destroy.'
         required: true
-        type: 'string'
       terraform_vars:
         default: 'dev.tfvars'
-        description: 'Which vars file is required? For test, change to test.tfvars'
+        description: 'Terraform vars file to use.'
         required: true
-        type: 'string'
       environment:
         default: 'development'
-        description: 'Which environment should this run against'
+        description: 'Environment for destruction.'
         required: true
-        type: 'string'
       backend:
         default: 'backend.conf'
-        description: 'Which backend configuration should be used?'
+        description: 'Terraform backend configuration.'
         required: true
-        type: 'string'
 
 permissions:
   pull-requests: write
-  id-token: write # This is required for requesting the JWT
-  contents: read # This is required for actions/checkout
+  id-token: write
+  contents: read
 
 jobs:
-  cleanup_versions_process:
-    name: Cleanup Versions Process
-    uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
-    with:
-      build_branch: ${{ inputs.build_branch }}
-      sandbox: ${{ inputs.sandbox_workspace }}
-      environment: ${{ inputs.environment }}
-      python_version: 3.11
-    secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-
-  remove_edge_associations_process:
+  remove_edge_associations:
     name: Remove Lambda@Edge Associations
-    uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
+    uses: ./.github/workflows/remove_edge_associations.yml
     with:
       sandbox_workspace: ${{ inputs.sandbox_workspace }}
-      aws_region: 'eu-west-2'
+      lambda_function_name: '${{ inputs.sandbox_workspace }}_EdgePresignLambda'
+      aws_region: ${{ vars.AWS_REGION }} # Assuming AWS_REGION is set as a repository/organization variable
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   terraform_destroy_process:
     name: Terraform Destroy Process
     runs-on: ubuntu-latest
+    needs: [remove_edge_associations] # Ensure this runs after Lambda@Edge removal
     environment: ${{ github.event.inputs.environment }}
-    needs: [cleanup_versions_process, remove_edge_associations_process]
 
     steps:
-      - name: Checkout the repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.build_branch }}
-          repository: 'nhsconnect/national-document-repository-infrastructure'
-          fetch-depth: '0'
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          role-skip-session-tagging: true
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: View AWS Role
@@ -82,19 +66,15 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.4
-          terraform_wrapper: false
 
       - name: Terraform Init
-        id: init
         run: terraform init -backend-config=${{ github.event.inputs.backend }}
         working-directory: ./infrastructure
 
-      - name: Terraform Set Workspace
-        id: workspace
-        run: terraform workspace select ${{ github.event.inputs.sandbox_workspace }}
+      - name: Set Terraform Workspace
+        run: terraform workspace select ${{ inputs.sandbox_workspace }}
         working-directory: ./infrastructure
 
       - name: Terraform Destroy
-        id: destroy
         run: terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraform_vars }}"
         working-directory: ./infrastructure

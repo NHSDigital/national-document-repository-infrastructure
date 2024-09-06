@@ -13,22 +13,22 @@ on:
         type: string
     secrets:
       AWS_ASSUME_ROLE:
-        required: true # Ensure the secret is declared here
+        required: true
 
 permissions:
   pull-requests: write
-  id-token: write # This is required for requesting the JWT
-  contents: read # This is required for actions/checkout
+  id-token: write # Required for requesting the JWT
+  contents: read # Required for actions/checkout
 
 jobs:
   view_action_parameters:
-    name: View Deploy all input variables
+    name: View Input Variables
     runs-on: ubuntu-latest
     steps:
       - name: Display client passed variables
         run: |
-          echo Sandbox: ${{ inputs.sandbox_workspace }}
-          echo Region: ${{ inputs.aws_region }}
+          echo "Sandbox: ${{ inputs.sandbox_workspace }}"
+          echo "Region: ${{ inputs.aws_region }}"
 
   remove_edge_associations:
     name: Remove Lambda@Edge Associations
@@ -53,6 +53,11 @@ jobs:
           distribution_id=$(jq -r --arg origin_id "${{ inputs.sandbox_workspace }}-lloyd-george-store" \
           '.DistributionList.Items[] | select(.Origins.Items[].Id==$origin_id) | .Id' distributions.json | head -n 1)
 
+          if [ -z "$distribution_id" ]; then
+            echo "No distribution found for origin ID: ${{ inputs.sandbox_workspace }}-lloyd-george-store"
+            exit 1
+          fi
+
           echo "Distribution ID found: $distribution_id"
           echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
 
@@ -64,4 +69,5 @@ jobs:
       - name: Remove Lambda@Edge & CloudFront Associations
         run: ./venv/bin/python3 -u scripts/remove_edge_associations.py ${{ inputs.sandbox_workspace }}
         env:
+          DISTRIBUTION_ID: ${{ env.DISTRIBUTION_ID }}
           LAMBDA_FUNCTION_NAME: '${{ inputs.sandbox_workspace }}_EdgePresignLambda'
