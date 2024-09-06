@@ -1,4 +1,4 @@
-name: 'Cleanup CloudFront & Lambda@Edge Associations'
+name: 'Remove Lambda@Edge Associations'
 
 on:
   workflow_call:
@@ -11,6 +11,9 @@ on:
         description: 'AWS Region to use for the Lambda and CloudFront operations'
         required: true
         type: string
+    secrets:
+      AWS_ASSUME_ROLE:
+        required: true # Ensure the secret is declared here
 
 permissions:
   contents: read
@@ -44,7 +47,6 @@ jobs:
           echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
 
       - name: Install Python and Dependencies
-        id: dependencies
         run: |
           python3 -m venv ./venv
           ./venv/bin/pip3 install --upgrade pip boto3==1.33.11
