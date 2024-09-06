@@ -2,7 +2,7 @@ name: 'Destroy (Dev Account) Environment CRON'
 
 on:
   schedule:
-    - cron: 59 17 * * 1-5 # utc time
+    - cron: 59 17 * * 1-5 # UTC time
 
 permissions:
   pull-requests: write
@@ -25,19 +25,29 @@ jobs:
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
-  terraform_destroy_process:
-    runs-on: ubuntu-latest
-    environment: development
-    needs: [cleanup_versions_process]
-
+  remove_edge_associations_process:
+    name: Remove Lambda@Edge Associations
+    uses: ./.github/workflows/remove_edge_associations.yml
     strategy:
       matrix:
-        # Can't use an env var here unfortunately, we will have to update here with new sandbox environments
+        sandbox-name: [ndra, ndrb, ndrc, ndrd]
+    with:
+      sandbox_workspace: ${{ matrix.sandbox-name }}
+      aws_region: ${{ vars.AWS_REGION }}
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
+  terraform_destroy_process:
+    name: Terraform Destroy Process
+    runs-on: ubuntu-latest
+    environment: development
+    needs: [cleanup_versions_process, remove_edge_associations_process]
+    strategy:
+      matrix:
         sandbox-name: [ndra, ndrb, ndrc, ndrd]
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
+      - name: Checkout the repository
         uses: actions/checkout@v3
         with:
           ref: main
@@ -52,7 +62,6 @@ jobs:
       - name: View AWS Role
         run: aws sts get-caller-identity
 
-      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -63,38 +72,11 @@ jobs:
         id: init
         run: terraform init -backend-config=backend.conf
         working-directory: ./infrastructure
-        shell: bash
 
       - name: Terraform Set Workspace
         id: workspace
         run: terraform workspace select ${{ matrix.sandbox-name }}
         working-directory: ./infrastructure
-        shell: bash
-
-      - name: Get CloudFront Distribution ID
-        id: cloudfront
-        run: |
-          aws cloudfront list-distributions > distributions.json
-          distribution_id=$(jq -r --arg origin_id "${{ matrix.sandbox-name }}-lloyd-george-store" \
-          '.DistributionList.Items[] | select(.Origins.Items[].Id==$origin_id) | .Id' distributions.json | head -n 1)
-
-          echo "Distribution ID found: $distribution_id"
-          echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
-
-      # Install dependencies for Python scripts
-      - name: Install Python and Dependencies
-        id: dependencies
-        run: |
-          python3 -m venv ./venv
-          ./venv/bin/pip3 install --upgrade pip
-          ./venv/bin/pip3 install boto3==1.33.11
-
-      # Run script to remove Lambda@Edge associations
-      - name: Remove Lambda@Edge & CloudFront associations
-        id: lambda
-        run: ./venv/bin/python3 -u scripts/remove_edge_associations.py ${{ matrix.sandbox-name }}
-        env:
-          LAMBDA_FUNCTION_NAME: '$${{ matrix.sandbox-name }}_EdgePresignLambda'
 
       - name: Terraform Destroy
         id: destroy

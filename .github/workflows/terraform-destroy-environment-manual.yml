@@ -45,18 +45,26 @@ jobs:
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
+  remove_edge_associations_process:
+    name: Remove Lambda@Edge Associations
+    uses: ./.github/workflows/remove_edge_associations.yml
+    with:
+      sandbox_workspace: ${{ inputs.sandbox_workspace }}
+      aws_region: ${{ vars.AWS_REGION }}
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
   terraform_destroy_process:
     name: Terraform Destroy Process
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
-    needs: [cleanup_versions_process]
+    needs: [cleanup_versions_process, remove_edge_associations_process]
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
+      - name: Checkout the repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.build_branch}}
+          ref: ${{ github.event.inputs.build_branch }}
           repository: 'nhsconnect/national-document-repository-infrastructure'
           fetch-depth: '0'
 
@@ -70,7 +78,6 @@ jobs:
       - name: View AWS Role
         run: aws sts get-caller-identity
 
-      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -81,38 +88,11 @@ jobs:
         id: init
         run: terraform init -backend-config=${{ github.event.inputs.backend }}
         working-directory: ./infrastructure
-        shell: bash
 
       - name: Terraform Set Workspace
         id: workspace
-        run: terraform workspace select ${{ github.event.inputs.sandbox_workspace}}
+        run: terraform workspace select ${{ github.event.inputs.sandbox_workspace }}
         working-directory: ./infrastructure
-        shell: bash
-
-      - name: Get CloudFront Distribution ID
-        id: cloudfront
-        run: |
-          aws cloudfront list-distributions > distributions.json
-          distribution_id=$(jq -r --arg origin_id "${{ inputs.sandbox_workspace }}-lloyd-george-store" \
-          '.DistributionList.Items[] | select(.Origins.Items[].Id==$origin_id) | .Id' distributions.json | head -n 1)
-
-          echo "Distribution ID found: $distribution_id"
-          echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
-
-      # Install dependencies for Python scripts
-      - name: Install Python and Dependencies
-        id: dependencies
-        run: |
-          python3 -m venv ./venv
-          ./venv/bin/pip3 install --upgrade pip
-          ./venv/bin/pip3 install boto3==1.33.11
-
-      # Run script to remove Lambda@Edge associations
-      - name: Remove Lambda@Edge & CloudFront associations
-        id: lambda
-        run: ./venv/bin/python3 -u scripts/remove_edge_associations.py ${{ inputs.sandbox_workspace }}
-        env:
-          LAMBDA_FUNCTION_NAME: '${{ inputs.sandbox_workspace }}_EdgePresignLambda'
 
       - name: Terraform Destroy
         id: destroy
