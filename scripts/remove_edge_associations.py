@@ -78,16 +78,14 @@ if __name__ == "__main__":
     detach_lambda_edge_associations(distribution_id)  # Step 1: Remove the Lambda@Edge associations from the CloudFront distribution
     
     # Retry loop with 1-minute intervals
-    retries = 5
+    retries = 10
     for i in range(retries):
-        log(f"Retry {i+1}/{retries}: Attempting to delete Lambda function after 1 minute...")
+        log(f"Retry {i+1}/{retries}: Attempting to delete Lambda function ever 30 seconds...")
         function_deleted = delete_lambda_function_with_retries(lambda_function_name, max_retries=20)
         
         if function_deleted:
-            break  # Exit loop if the function is successfully deleted
-        elif not function_deleted:
-            break  # Exit loop if the function was not found (to prevent further retries)
+            break
         
-        time.sleep(60)  # Wait for 1 minute before the next attempt
+        time.sleep(30)  # Wait for 30 seconds before the next attempt
 
     log("Finished all retries.")
