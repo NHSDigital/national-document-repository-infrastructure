@@ -3,18 +3,6 @@ name: 'Remove Lambda@Edge Associations'
 on:
   workflow_call:
     inputs:
-      build_branch:
-        description: 'Feature branch to push to sandbox.'
-        required: true
-        type: 'string'
-      environment:
-        description: 'Which environment should this run against'
-        required: true
-        type: 'string'
-      python_version:
-        description: 'Version of Python to run the cleanup script against'
-        required: true
-        type: 'string'
       sandbox_workspace:
         description: 'The sandbox workspace name'
         required: true
@@ -39,16 +27,8 @@ jobs:
     steps:
       - name: Display client passed variables
         run: |
-          echo Python Version: ${{ inputs.python_version }}
-          echo Build Branch: ${{ inputs.build_branch }}
-          echo Environment: ${{ inputs.environment }}
           echo Sandbox: ${{ inputs.sandbox_workspace }}
           echo Region: ${{ inputs.aws_region }}
-
-  cleanup_process:
-    name: Run Cleanup Versions script
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
 
   remove_edge_associations:
     name: Remove Lambda@Edge Associations
