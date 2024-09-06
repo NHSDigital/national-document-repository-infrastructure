@@ -7,10 +7,22 @@ on:
         description: 'The sandbox workspace name'
         required: true
         type: string
+      lambda_function_name:
+        description: 'The sandbox workspace name'
+        required: true
+        type: string
       aws_region:
         description: 'AWS Region to use for the Lambda and CloudFront operations'
         required: true
         type: string
+      python_version:
+        description: 'Version of Python to run the cleanup script against'
+        required: true
+        type: 'string'
+      build_branch:
+        description: 'Feature branch to push to sandbox.'
+        required: true
+        type: 'string'
     secrets:
       AWS_ASSUME_ROLE:
         required: true
@@ -35,10 +47,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          repository: 'nhsconnect/national-document-repository-infrastructure'
+          ref: ${{ inputs.build_branch }}
+          fetch-depth: '0'
+
+      - name: Set up Python ${{ inputs.python_version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ inputs.python_version }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -61,7 +80,7 @@ jobs:
           echo "Distribution ID found: $distribution_id"
           echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
 
-      - name: Install Python and Dependencies
+      - name: Install Python Dependencies
         run: |
           python3 -m venv ./venv
           ./venv/bin/pip3 install --upgrade pip boto3==1.33.11
@@ -70,4 +89,4 @@ jobs:
         run: ./venv/bin/python3 -u scripts/remove_edge_associations.py ${{ inputs.sandbox_workspace }}
         env:
           DISTRIBUTION_ID: ${{ env.DISTRIBUTION_ID }}
-          LAMBDA_FUNCTION_NAME: '${{ inputs.sandbox_workspace }}_EdgePresignLambda'
+          LAMBDA_FUNCTION_NAME: ${{ inputs.lambda_function_name }}
