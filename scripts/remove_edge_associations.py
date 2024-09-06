@@ -39,30 +39,30 @@ def detach_lambda_edge_associations(distribution_id):
         log(f"Error removing associations for distribution {distribution_id}: {e}")
         raise
 
-def delete_lambda_function_with_retries(lambda_function_name, max_retries=10):
+def delete_lambda_function(lambda_function_name, max_retries, initial_wait_time):
     client = boto3.client('lambda', region_name='us-east-1')
-    wait_time = 30  # initial wait time in seconds
+    wait_time = initial_wait_time
 
     for attempt in range(1, max_retries + 1):
         try:
             client.delete_function(FunctionName=lambda_function_name)
             log(f"Successfully deleted Lambda function {lambda_function_name} in region us-east-1")
-            return
+            return True
         except ClientError as e:
             error_code = e.response['Error']['Code']
             if error_code == 'InvalidParameterValueException':
                 log(f"Attempt {attempt} failed: {e}")
                 log(f"Waiting {wait_time} seconds before retrying...")
                 time.sleep(wait_time)
-                wait_time *= 2  # exponential backoff
             elif error_code == 'ResourceNotFoundException':
-                log(f"Function {lambda_function_name} not found. Exiting retries.")
-                return
+                log(f"Function {lambda_function_name} not found. No further retries necessary.")
+                return True
             else:
                 log(f"Unexpected error: {e}")
                 raise
-    
+
     log(f"Failed to delete Lambda function {lambda_function_name} after {max_retries} attempts.")
+    return False
 
 if __name__ == "__main__":
     import os
@@ -75,17 +75,10 @@ if __name__ == "__main__":
     if not lambda_function_name:
         raise ValueError("The LAMBDA_FUNCTION_NAME environment variable is not set.")
 
-    detach_lambda_edge_associations(distribution_id)  # Step 1: Remove the Lambda@Edge associations from the CloudFront distribution
+    detach_lambda_edge_associations(distribution_id)  # Step 1: Remove Lambda@Edge associations from CloudFront distribution
     
-    # Retry loop with 1-minute intervals
-    retries = 10
-    for i in range(retries):
-        log(f"Retry {i+1}/{retries}: Attempting to delete Lambda function ever 30 seconds...")
-        function_deleted = delete_lambda_function_with_retries(lambda_function_name, max_retries=20)
-        
-        if function_deleted:
-            break
-        
-        time.sleep(30)  # Wait for 30 seconds before the next attempt
-
-    log("Finished all retries.")
+    # Single retry loop for lambda deletion with 30 seconds interval
+    if delete_lambda_function(lambda_function_name, max_retries=15, initial_wait_time=30):
+        log("Lambda function deletion successful.")
+    else:
+        log("Lambda function deletion failed after all retries.")
