@@ -33,7 +33,7 @@ jobs:
         sandbox-name: [ndra, ndrb, ndrc, ndrd]
     with:
       sandbox_workspace: ${{ matrix.sandbox-name }}
-      aws_region: ${{ github.env.AWS_REGION }}
+      aws_region: ${{ vars.AWS_REGION }}
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
@@ -57,7 +57,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           role-skip-session-tagging: true
-          aws-region: ${{ github.env.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: View AWS Role
         run: aws sts get-caller-identity
