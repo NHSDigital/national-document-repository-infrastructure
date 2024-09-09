@@ -39,6 +39,7 @@ jobs:
       lambda_function_name: '${{ inputs.sandbox_workspace }}_EdgePresignLambda'
       python_version: 3.11
       build_branch: main
+      environment: ${{ inputs.environment}}
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
