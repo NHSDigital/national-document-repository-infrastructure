@@ -30,12 +30,16 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  # Setting an environment variable with the value of a configuration variable
+  AWS_REGION: ${{ vars.AWS_REGION }}
+
 jobs:
   debug_region:
     runs-on: ubuntu-latest
     steps:
       - name: Print AWS_REGION
-        run: echo ${{ vars.AWS_REGION }}
+        run: echo ${{ vars.AWS_REGION }} && echo ${{env.AWS_REGION}}
   remove_edge_associations:
     name: Remove Lambda@Edge Associations
     uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
