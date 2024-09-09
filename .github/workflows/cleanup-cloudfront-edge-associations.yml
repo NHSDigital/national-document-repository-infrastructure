@@ -58,7 +58,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           role-skip-session-tagging: true
-          aws-region: ${{ vars.AWS_REGION }}
+          aws-region: 'eu-west-2'
 
       - name: Get CloudFront Distribution ID
         id: cloudfront
