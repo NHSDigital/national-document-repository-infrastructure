@@ -62,14 +62,8 @@ variable "lloyd_george_dynamodb_table_name" {
 
 variable "cloudfront_edge_table_name" {
   type        = string
-  description = "The name of dynamodb table to store the metadata of Lloyd George documents"
+  description = "The name of dynamodb table to store the presigned url reference of CloudFront requests"
   default     = "CloudFrontEdgeReference"
-}
-
-variable "edge_presign_table_name" {
-  type        = string
-  description = "The name of dynamodb table to store the metadata of Lloyd George documents"
-  default     = "LloydGeorgeReferenceMetadata"
 }
 
 variable "zip_store_dynamodb_table_name" {

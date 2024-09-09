@@ -265,13 +265,12 @@
 | <a name="input_certificate_domain"></a> [certificate\_domain](#input\_certificate\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_certificate_subdomain_name_prefix"></a> [certificate\_subdomain\_name\_prefix](#input\_certificate\_subdomain\_name\_prefix) | Prefix to add to subdomains on certification configurations, dev envs use api-{env}, prod envs use api.{env} | `string` | `"api-"` | no |
 | <a name="input_cloud_only_service_instances"></a> [cloud\_only\_service\_instances](#input\_cloud\_only\_service\_instances) | n/a | `number` | `1` | no |
-| <a name="input_cloudfront_edge_table_name"></a> [cloudfront\_edge\_table\_name](#input\_cloudfront\_edge\_table\_name) | The name of dynamodb table to store the metadata of Lloyd George documents | `string` | `"CloudFrontEdgeReference"` | no |
+| <a name="input_cloudfront_edge_table_name"></a> [cloudfront\_edge\_table\_name](#input\_cloudfront\_edge\_table\_name) | The name of dynamodb table to store the presigned url reference of CloudFront requests | `string` | `"CloudFrontEdgeReference"` | no |
 | <a name="input_cloudwatch_alarm_evaluation_periods"></a> [cloudwatch\_alarm\_evaluation\_periods](#input\_cloudwatch\_alarm\_evaluation\_periods) | n/a | `any` | n/a | yes |
 | <a name="input_disable_message_header_validation"></a> [disable\_message\_header\_validation](#input\_disable\_message\_header\_validation) | if true then relaxes the restrictions on MESH message headers | `string` | `"true"` | no |
 | <a name="input_docstore_bucket_name"></a> [docstore\_bucket\_name](#input\_docstore\_bucket\_name) | The name of S3 bucket to store ARF documents | `string` | `"ndr-document-store"` | no |
 | <a name="input_docstore_dynamodb_table_name"></a> [docstore\_dynamodb\_table\_name](#input\_docstore\_dynamodb\_table\_name) | The name of dynamodb table to store the metadata of ARF documents | `string` | `"DocumentReferenceMetadata"` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_edge_presign_table_name"></a> [edge\_presign\_table\_name](#input\_edge\_presign\_table\_name) | The name of dynamodb table to store the metadata of Lloyd George documents | `string` | `"LloydGeorgeReferenceMetadata"` | no |
 | <a name="input_enable_dns_hostnames"></a> [enable\_dns\_hostnames](#input\_enable\_dns\_hostnames) | Enable DNS hostnames for VPC | `bool` | `true` | no |
 | <a name="input_enable_dns_support"></a> [enable\_dns\_support](#input\_enable\_dns\_support) | Enable DNS  support for VPC | `bool` | `true` | no |
 | <a name="input_enable_private_routes"></a> [enable\_private\_routes](#input\_enable\_private\_routes) | Controls whether the internet gateway can connect to private subnets | `bool` | `false` | no |

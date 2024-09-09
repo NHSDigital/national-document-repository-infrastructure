@@ -36,11 +36,11 @@ variable "owner" {
 variable "cloudfront_arn" {
   type        = string
   default     = "null"
-  description = "Cloudfront Distribution ARN association and policy toggles"
+  description = "CloudFront Distribution ARN association and policy toggles"
 }
 
 variable "cloudfront_enabled" {
   type        = bool
   default     = false
-  description = "Enables the correct policy config for cloudfront s3"
+  description = "Enables the correct policy config for CloudFront associated S3 bucket"
 }
