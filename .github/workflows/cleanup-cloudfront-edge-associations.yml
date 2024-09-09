@@ -85,10 +85,10 @@ jobs:
           ./venv/bin/pip3 install --upgrade pip boto3==1.33.11
 
       - name: List directory contents
-        run: ls -R
+        run: ls ./scripts
 
       - name: Remove Lambda@Edge & CloudFront Associations
-        run: ./venv/bin/python3 -u ./scripts/remove_edge_associations.py
+        run: ./venv/bin/python3 -u scripts/remove_edge_associations.py
         env:
           DISTRIBUTION_ID: ${{ env.DISTRIBUTION_ID }}
           LAMBDA_FUNCTION_NAME: ${{ inputs.lambda_function_name }}
