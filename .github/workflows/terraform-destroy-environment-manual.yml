@@ -35,18 +35,12 @@ env:
   AWS_REGION: ${{ vars.AWS_REGION }}
 
 jobs:
-  debug_region:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print AWS_REGION
-        run: echo ${{ vars.AWS_REGION }} && echo ${{env.AWS_REGION}}
   remove_edge_associations:
     name: Remove Lambda@Edge Associations
     uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
     with:
       sandbox_workspace: ${{ inputs.sandbox_workspace }}
       lambda_function_name: '${{ inputs.sandbox_workspace }}_EdgePresignLambda'
-      aws_region: '${{ vars.AWS_REGION }}'
       python_version: 3.11
       build_branch: main
     secrets:

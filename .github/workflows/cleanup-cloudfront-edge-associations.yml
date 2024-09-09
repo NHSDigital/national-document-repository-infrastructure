@@ -11,10 +11,6 @@ on:
         description: 'The sandbox workspace name'
         required: true
         type: string
-      aws_region:
-        description: 'AWS Region to use for the Lambda and CloudFront operations'
-        required: true
-        type: string
       python_version:
         description: 'Version of Python to run the cleanup script against'
         required: true
@@ -40,7 +36,7 @@ jobs:
       - name: Display client passed variables
         run: |
           echo "Sandbox: ${{ inputs.sandbox_workspace }}"
-          echo "Region: ${{ inputs.aws_region }}"
+          echo "Lambda: ${{ inputs.lambda_function_name }}"
 
   remove_edge_associations:
     name: Remove Lambda@Edge Associations
@@ -63,7 +59,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          aws-region: ${{ inputs.aws_region }}
+          aws-region: 'eu-west-2'
 
       - name: Get CloudFront Distribution ID
         id: cloudfront
