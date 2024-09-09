@@ -30,10 +30,6 @@ permissions:
   id-token: write
   contents: read
 
-env:
-  # Setting an environment variable with the value of a configuration variable
-  AWS_REGION: ${{ vars.AWS_REGION }}
-
 jobs:
   remove_edge_associations:
     name: Remove Lambda@Edge Associations

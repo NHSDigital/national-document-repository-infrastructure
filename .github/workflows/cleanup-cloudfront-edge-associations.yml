@@ -29,20 +29,18 @@ permissions:
   contents: read # Required for actions/checkout
 
 jobs:
-  view_action_parameters:
-    name: View Input Variables
-    runs-on: ubuntu-latest
-    steps:
-      - name: Display client passed variables
-        run: |
-          echo "Sandbox: ${{ inputs.sandbox_workspace }}"
-          echo "Lambda: ${{ inputs.lambda_function_name }}"
-
   remove_edge_associations:
     name: Remove Lambda@Edge Associations
     runs-on: ubuntu-latest
 
     steps:
+      - name: Display passed variables
+        run: |
+          echo Python Version: ${{ inputs.python_version }}
+          echo Build Branch: ${{ inputs.build_branch }}
+          echo Sandbox: ${{ inputs.sandbox_workspace }}
+          echo Lambda Function Name: ${{ inputs.lambda_function_name }}
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -55,11 +53,12 @@ jobs:
         with:
           python-version: ${{ inputs.python_version }}
 
-      - name: Configure AWS Credentials
+      - name: Configure AWS Credentials for ${{ vars.AWS_REGION }}
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          aws-region: 'eu-west-2'
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Get CloudFront Distribution ID
         id: cloudfront
