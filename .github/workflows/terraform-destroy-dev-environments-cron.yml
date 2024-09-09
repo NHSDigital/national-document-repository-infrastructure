@@ -10,6 +10,21 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
+  remove_edge_associations:
+    name: Remove Lambda@Edge Associations
+    uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
+    strategy:
+      matrix:
+        # Update with new sandbox environments here
+        sandbox-name: [ndra, ndrb, ndrc, ndrd]
+    with:
+      sandbox_workspace: ${{ matrix.sandbox-name }}
+      lambda_function_name: '${{ matrix.sandbox-name }}_EdgePresignLambda'
+      python_version: 3.11
+      build_branch: main
+      environment: development
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
   cleanup_versions_process:
     name: Cleanup Versions Process
     uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
