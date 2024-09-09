@@ -86,6 +86,7 @@ jobs:
 
       - name: Remove Lambda@Edge & CloudFront Associations
         run: ./venv/bin/python3 -u ../scripts/remove_edge_associations.py ${{ inputs.sandbox_workspace }}
+        working-directory: ${{ github.workspace }}
         env:
           DISTRIBUTION_ID: ${{ env.DISTRIBUTION_ID }}
           LAMBDA_FUNCTION_NAME: ${{ inputs.lambda_function_name }}
