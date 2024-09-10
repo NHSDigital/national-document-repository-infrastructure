@@ -1,5 +1,5 @@
 resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
-  name                              = "CloudFront S3 OAC"
+  name                              = "${terraform.workspace}_cloudfront_s3_oac_policy"
   description                       = "Cloud Front S3 OAC"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
@@ -39,7 +39,7 @@ resource "aws_cloudfront_distribution" "distribution" {
 }
 
 resource "aws_cloudfront_cache_policy" "nocache" {
-  name        = "nocache_policy"
+  name        = "${terraform.workspace}_nocache_policy"
   default_ttl = 0
   max_ttl     = 0
   min_ttl     = 0
