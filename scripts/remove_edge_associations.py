@@ -1,11 +1,11 @@
 import boto3
 from botocore.exceptions import ClientError
-import time
+import json
 
 def log(message):
     print(message, flush=True)
 
-def detach_lambda_edge_associations(distribution_id):
+def detach_lambda_edge_associations(distribution_id: str):
     try:
         client = boto3.client('cloudfront')
         
@@ -13,8 +13,7 @@ def detach_lambda_edge_associations(distribution_id):
         config = response['DistributionConfig']
         etag = response['ETag']
 
-        behaviors = []
-
+        behaviors: list[dict] = []
         default_behavior = config.get('DefaultCacheBehavior', None)
         if (default_behavior and 
                 'LambdaFunctionAssociations' in default_behavior and 
