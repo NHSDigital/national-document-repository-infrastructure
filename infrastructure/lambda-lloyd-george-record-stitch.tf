@@ -85,6 +85,7 @@ module "lloyd-george-stitch-lambda" {
     APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    CLOUDFRONT_URL             = module.cloudfront-distribution-lg.cloudfront_url
     SPLUNK_SQS_QUEUE_URL       = try(module.sqs-splunk-queue[0].sqs_url, null)
     WORKSPACE                  = terraform.workspace
     PRESIGNED_ASSUME_ROLE      = aws_iam_role.stitch_presign_url_role.arn
@@ -95,7 +96,8 @@ module "lloyd-george-stitch-lambda" {
     module.lloyd_george_reference_dynamodb_table,
     module.lloyd-george-stitch-gateway,
     aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
-    module.ndr-app-config
+    module.ndr-app-config,
+    module.cloudfront-distribution-lg
   ]
 }
 

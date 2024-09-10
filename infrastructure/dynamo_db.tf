@@ -40,6 +40,27 @@ module "document_reference_dynamodb_table" {
   owner       = var.owner
 }
 
+module "cloudfront_edge_dynamodb_table" {
+  source                         = "./modules/dynamo_db"
+  table_name                     = var.cloudfront_edge_table_name
+  hash_key                       = "ID"
+  deletion_protection_enabled    = local.is_production
+  stream_enabled                 = false
+  ttl_enabled                    = true
+  ttl_attribute_name             = "TTL"
+  point_in_time_recovery_enabled = !local.is_sandbox
+
+  attributes = [
+    {
+      name = "ID"
+      type = "S"
+    }
+  ]
+
+  environment = var.environment
+  owner       = var.owner
+}
+
 module "lloyd_george_reference_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.lloyd_george_dynamodb_table_name
@@ -98,7 +119,7 @@ module "zip_store_reference_dynamodb_table" {
     {
       name = "JobId"
       type = "S"
-    },
+    }
   ]
 
   global_secondary_indexes = [
@@ -106,7 +127,7 @@ module "zip_store_reference_dynamodb_table" {
       name            = "JobIdIndex"
       hash_key        = "JobId"
       projection_type = "ALL"
-    },
+    }
   ]
 
   environment = var.environment
@@ -235,7 +256,7 @@ module "statistics_dynamodb_table" {
     {
       name = "OdsCode"
       type = "S"
-    },
+    }
   ]
 
   global_secondary_indexes = [

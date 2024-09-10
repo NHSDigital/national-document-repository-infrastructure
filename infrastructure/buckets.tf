@@ -37,10 +37,11 @@ module "ndr-zip-request-store" {
     }
   ]
 }
-
 # Lloyd George Store Bucket
 module "ndr-lloyd-george-store" {
   source                    = "./modules/s3/"
+  cloudfront_enabled        = true
+  cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
   bucket_name               = var.lloyd_george_bucket_name
   enable_cors_configuration = contains(["prod"], terraform.workspace) ? false : true
   enable_bucket_versioning  = true
@@ -61,6 +62,7 @@ module "ndr-lloyd-george-store" {
     }
   ]
 }
+
 
 module "statistical-reports-store" {
   source                    = "./modules/s3/"

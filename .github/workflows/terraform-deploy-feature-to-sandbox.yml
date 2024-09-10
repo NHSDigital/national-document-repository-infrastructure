@@ -13,10 +13,10 @@ on:
         required: true
         type: 'string'
       environment:
-        default: "development"
-        description: "Which environment should this run against"
+        default: 'development'
+        description: 'Which environment should this run against'
         required: true
-        type: "string"
+        type: 'string'
 
 permissions:
   pull-requests: write

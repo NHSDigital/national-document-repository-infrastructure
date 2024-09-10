@@ -10,32 +10,86 @@ resource "aws_s3_bucket" "bucket" {
   }
 }
 
+data "aws_iam_policy_document" "s3_defaut_policy" {
+  statement {
+    effect = "Deny"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:*",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.bucket.arn}/*",
+      "${aws_s3_bucket.bucket.arn}",
+    ]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "s3_cloudfront_policy" {
+  # Deny any requests that are not using HTTPS
+  statement {
+    effect = "Deny"
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:GetObject",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.bucket.arn}/*",
+    ]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+
+  # Allow CloudFront to access the S3 bucket
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+
+    actions = [
+      "s3:GetObject",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.bucket.arn}/*",
+    ]
+
+    # Ensure the request is coming from the correct CloudFront distribution
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [var.cloudfront_arn]
+    }
+  }
+}
+
 resource "aws_s3_bucket_policy" "bucket_policy" {
   bucket = aws_s3_bucket.bucket.id
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Principal" : {
-          "AWS" : "*"
-        },
-        "Action" : [
-          "s3:*"
-        ],
-        "Resource" : [
-          "${aws_s3_bucket.bucket.arn}/*",
-          "${aws_s3_bucket.bucket.arn}"
-        ],
-        "Effect" : "Deny",
-        "Condition" : {
-          "Bool" : {
-            "aws:SecureTransport" : "false"
-          }
-        }
-      }
-    ]
-  })
-  depends_on = [aws_s3_bucket.bucket]
+  policy = var.cloudfront_enabled ? data.aws_iam_policy_document.s3_cloudfront_policy.json : data.aws_iam_policy_document.s3_defaut_policy.json
 }
 
 resource "aws_s3_bucket_acl" "bucket_acl" {

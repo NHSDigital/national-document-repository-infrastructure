@@ -31,19 +31,14 @@ variable "owner" {
   type = string
 }
 
-# Outputs
-output "s3_object_access_policy" {
-  value = aws_iam_policy.s3_document_data_policy.arn
+variable "cloudfront_arn" {
+  type        = string
+  default     = "null"
+  description = "CloudFront Distribution ARN association and policy toggles"
 }
 
-output "s3_list_object_policy" {
-  value = aws_iam_policy.s3_list_object_policy.arn
-}
-
-output "bucket_id" {
-  value = aws_s3_bucket.bucket.id
-}
-
-output "bucket_arn" {
-  value = aws_s3_bucket.bucket.arn
+variable "cloudfront_enabled" {
+  type        = bool
+  default     = false
+  description = "Enables the correct policy config for CloudFront associated S3 bucket"
 }
