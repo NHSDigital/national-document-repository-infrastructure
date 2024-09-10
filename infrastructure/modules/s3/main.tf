@@ -37,7 +37,6 @@ data "aws_iam_policy_document" "s3_defaut_policy" {
 }
 
 data "aws_iam_policy_document" "s3_cloudfront_policy" {
-  # Deny any requests that are not using HTTPS
   statement {
     effect = "Deny"
 
@@ -61,7 +60,6 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
     }
   }
 
-  # Allow CloudFront to access the S3 bucket
   statement {
     effect = "Allow"
 
@@ -78,7 +76,6 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
       "${aws_s3_bucket.bucket.arn}/*",
     ]
 
-    # Ensure the request is coming from the correct CloudFront distribution
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
@@ -98,7 +95,6 @@ resource "aws_s3_bucket_acl" "bucket_acl" {
   depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
 }
 
-# Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"
 resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
   bucket = aws_s3_bucket.bucket.id
   rule {

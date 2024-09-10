@@ -32,9 +32,8 @@ data "archive_file" "lambda" {
   output_path = "placeholder_lambda_payload.zip"
 }
 
-# Define the IAM role for the Lambda function with the combined assume role policy
 resource "aws_iam_role" "lambda_exec_role" {
-  name = "lambda_edge_exec_role"
+  name = "${terraform.workspace}_lambda_edge_exec_role"
 
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
@@ -79,7 +78,7 @@ data "aws_iam_policy_document" "lambda_policy" {
 
 
 resource "aws_iam_role_policy" "lambda_exec_policy" {
-  name   = "lambda_edge_exec_policy"
+  name   = "${terraform.workspace}_lambda_edge_exec_policy"
   role   = aws_iam_role.lambda_exec_role.id
   policy = data.aws_iam_policy_document.lambda_policy.json
 }
