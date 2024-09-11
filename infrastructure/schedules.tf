@@ -72,7 +72,7 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_ods_report_schedule" {
 resource "aws_cloudwatch_event_target" "bulk_upload_ods_report_schedule_event" {
   rule      = aws_cloudwatch_event_rule.bulk_upload_ods_report_schedule.name
   target_id = "bulk_upload_ods_report_schedule"
-  arn       = module.bulk-upload-ods-report-lambda.lambda_arn
+  arn       = module.bulk-upload-report-lambda.lambda_arn
 
   input_transformer {
     input_paths = {}
@@ -82,7 +82,7 @@ resource "aws_cloudwatch_event_target" "bulk_upload_ods_report_schedule_event" {
   }
 
   depends_on = [
-    module.bulk-upload-ods-report-lambda,
+    module.bulk-upload-report-lambda,
     aws_cloudwatch_event_rule.bulk_upload_ods_report_schedule
   ]
 }
@@ -94,7 +94,7 @@ resource "aws_lambda_permission" "bulk_upload_ods_report_schedule_permission" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.bulk_upload_ods_report_schedule.arn
   depends_on = [
-    module.bulk-upload-ods-report-lambda,
+    module.bulk-upload-report-lambda,
     aws_cloudwatch_event_rule.bulk_upload_ods_report_schedule
   ]
 }
