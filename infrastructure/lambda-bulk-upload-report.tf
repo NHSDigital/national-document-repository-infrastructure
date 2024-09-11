@@ -5,7 +5,7 @@ module "bulk-upload-report-lambda" {
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    module.ndr-bulk-staging-store.s3_object_access_policy,
+    module.statistical-reports-store.s3_object_access_policy,
     module.bulk_upload_report_dynamodb_table.dynamodb_policy,
     aws_iam_policy.dynamodb_policy_scan_bulk_report.arn,
     module.ndr-app-config.app_config_policy_arn
