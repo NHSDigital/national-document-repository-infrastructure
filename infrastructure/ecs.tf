@@ -1,6 +1,7 @@
 module "ndr-ecs-fargate" {
   source                   = "./modules/ecs"
   ecs_cluster_name         = "app-cluster"
+  is_lb_needed             = true
   vpc_id                   = module.ndr-vpc-ui.vpc_id
   public_subnets           = module.ndr-vpc-ui.public_subnets
   private_subnets          = module.ndr-vpc-ui.private_subnets
@@ -27,4 +28,23 @@ module "ndr-ecs-container-port-ssm-parameter" {
   type                = "SecureString"
   owner               = var.owner
   environment         = var.environment
+}
+
+module "ndr-ods-update-fargate" {
+  source                   = "./modules/ecs"
+  ecs_cluster_name         = "ods-weekly-update"
+  vpc_id                   = module.ndr-vpc-ui.vpc_id
+  public_subnets           = module.ndr-vpc-ui.public_subnets
+  private_subnets          = module.ndr-vpc-ui.private_subnets
+  sg_name                  = "${terraform.workspace}-fargate-sg"
+  ecs_launch_type          = "FARGATE"
+  ecs_cluster_service_name = "${terraform.workspace}-ods-weekly-update"
+  ecr_repository_url       = module.ndr-docker-ecr-weekly-ods-update.ecr_repository_url
+  environment              = var.environment
+  owner                    = var.owner
+  container_port           = 80
+  desired_count            = 1
+  is_autoscaling_needed    = false
+  alarm_actions_arn_list   = local.is_sandbox ? [] : [aws_sns_topic.alarm_notifications_topic[0].arn]
+  logs_bucket              = aws_s3_bucket.logs_bucket.bucket
 }

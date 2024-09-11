@@ -5,3 +5,10 @@ module "ndr-docker-ecr-ui" {
   environment = var.environment
   owner       = var.owner
 }
+module "ndr-docker-ecr-weekly-ods-update" {
+  source   = "./modules/ecr/"
+  app_name = "ndr-${terraform.workspace}-weekly-ods-update"
+
+  environment = var.environment
+  owner       = var.owner
+}
