@@ -24,3 +24,7 @@ output "container_port" {
 output "ecs_cluster_arn" {
   value = aws_ecs_cluster.ndr_ecs_cluster.arn
 }
+
+output "task_definition_arn" {
+  value = aws_ecs_task_definition.ndr_ecs_task.arn
+}
