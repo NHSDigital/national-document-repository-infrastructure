@@ -220,7 +220,7 @@ variable "cloudwatch_alarm_evaluation_periods" {}
 variable "bulk_upload_report_schedule" {
   description = "The cron schedule for bulk upload report generation."
   type        = string
-  default     = "cron(0 7 * * ? *)"  # Adjust this as needed
+  default     = "cron(0 7 * * ? *)" # Adjust this as needed
 }
 
 

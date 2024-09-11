@@ -14,12 +14,12 @@ module "bulk-upload-report-lambda" {
   api_execution_arn = null
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION     = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT     = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE                 = terraform.workspace
-    STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    BULK_UPLOAD_DYNAMODB_NAME = "${terraform.workspace}_${var.bulk_upload_report_dynamodb_table_name}"
+    APPCONFIG_APPLICATION           = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT           = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION         = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE                       = terraform.workspace
+    STATISTICAL_REPORTS_BUCKET_NAME = "${terraform.workspace}-${var.statistical_reports_bucket_name}"
+    BULK_UPLOAD_DYNAMODB_NAME       = "${terraform.workspace}_${var.bulk_upload_report_dynamodb_table_name}"
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
