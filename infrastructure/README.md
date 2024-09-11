@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.62.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
 
 ## Modules
 
@@ -84,11 +84,13 @@
 | <a name="module_ndr-app-config"></a> [ndr-app-config](#module\_ndr-app-config) | ./modules/app_config | n/a |
 | <a name="module_ndr-bulk-staging-store"></a> [ndr-bulk-staging-store](#module\_ndr-bulk-staging-store) | ./modules/s3/ | n/a |
 | <a name="module_ndr-docker-ecr-ui"></a> [ndr-docker-ecr-ui](#module\_ndr-docker-ecr-ui) | ./modules/ecr/ | n/a |
+| <a name="module_ndr-docker-ecr-weekly-ods-update"></a> [ndr-docker-ecr-weekly-ods-update](#module\_ndr-docker-ecr-weekly-ods-update) | ./modules/ecr/ | n/a |
 | <a name="module_ndr-document-store"></a> [ndr-document-store](#module\_ndr-document-store) | ./modules/s3/ | n/a |
 | <a name="module_ndr-ecs-container-port-ssm-parameter"></a> [ndr-ecs-container-port-ssm-parameter](#module\_ndr-ecs-container-port-ssm-parameter) | ./modules/ssm_parameter | n/a |
 | <a name="module_ndr-ecs-fargate"></a> [ndr-ecs-fargate](#module\_ndr-ecs-fargate) | ./modules/ecs | n/a |
 | <a name="module_ndr-feedback-mailbox"></a> [ndr-feedback-mailbox](#module\_ndr-feedback-mailbox) | ./modules/ses | n/a |
 | <a name="module_ndr-lloyd-george-store"></a> [ndr-lloyd-george-store](#module\_ndr-lloyd-george-store) | ./modules/s3/ | n/a |
+| <a name="module_ndr-ods-update-fargate"></a> [ndr-ods-update-fargate](#module\_ndr-ods-update-fargate) | ./modules/ecs | n/a |
 | <a name="module_ndr-vpc-ui"></a> [ndr-vpc-ui](#module\_ndr-vpc-ui) | ./modules/vpc/ | n/a |
 | <a name="module_ndr-zip-request-store"></a> [ndr-zip-request-store](#module\_ndr-zip-request-store) | ./modules/s3/ | n/a |
 | <a name="module_nems-message-lambda"></a> [nems-message-lambda](#module\_nems-message-lambda) | ./modules/lambda | n/a |

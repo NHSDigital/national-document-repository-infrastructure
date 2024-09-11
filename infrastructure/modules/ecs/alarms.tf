@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "alb_alarm_4XX" {
-  count = !local.is_sandbox && var.is_lb_needed ? 1 : 0
+  count               = !local.is_sandbox && var.is_lb_needed ? 1 : 0
   alarm_name          = "4XX-status-${aws_lb.ecs_lb[0].name}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"

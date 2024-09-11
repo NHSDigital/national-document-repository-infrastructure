@@ -14,13 +14,13 @@ resource "aws_ecs_service" "ndr_ecs_service" {
   dynamic "load_balancer" {
     for_each = var.is_lb_needed ? toset([1]) : toset([])
     content {
-    target_group_arn = aws_lb_target_group.ecs_lb_tg[0].arn
-    container_name   = "${terraform.workspace}-app-container"
-    container_port   = var.container_port
+      target_group_arn = aws_lb_target_group.ecs_lb_tg[0].arn
+      container_name   = "${terraform.workspace}-app-container"
+      container_port   = var.container_port
     }
   }
 
-  depends_on =  [aws_lb_target_group.ecs_lb_tg[0]]
+  depends_on = [aws_lb_target_group.ecs_lb_tg[0]]
 
   tags = {
     Name        = "${terraform.workspace}-ecs"

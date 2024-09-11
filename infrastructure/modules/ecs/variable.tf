@@ -42,12 +42,12 @@ variable "ecr_repository_url" {
 }
 
 variable "domain" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "certificate_domain" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -64,27 +64,27 @@ variable "logs_bucket" {
 }
 
 variable "desired_count" {
-  type = number
+  type    = number
   default = 3
 }
 
 variable "autoscaling_min_capacity" {
-  type = number
+  type    = number
   default = 3
 }
 
 variable "autoscaling_max_capacity" {
-  type = number
+  type    = number
   default = 6
 }
 
 variable "is_lb_needed" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "is_autoscaling_needed" {
-  type = bool
+  type    = bool
   default = true
 }
 

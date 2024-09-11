@@ -1,5 +1,5 @@
 resource "aws_lb" "ecs_lb" {
-  count = var.is_lb_needed ? 1 : 0
+  count                      = var.is_lb_needed ? 1 : 0
   name                       = "${terraform.workspace}-lb"
   internal                   = false
   load_balancer_type         = "application"
@@ -49,7 +49,7 @@ resource "aws_lb_target_group" "ecs_lb_tg" {
 }
 
 resource "aws_lb_listener" "https" {
-  count = var.is_lb_needed ? 1 : 0
+  count             = var.is_lb_needed ? 1 : 0
   load_balancer_arn = aws_lb.ecs_lb[0].arn
   port              = "443"
   protocol          = "HTTPS"

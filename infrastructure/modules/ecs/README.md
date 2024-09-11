@@ -47,15 +47,20 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alarm_actions_arn_list"></a> [alarm\_actions\_arn\_list](#input\_alarm\_actions\_arn\_list) | n/a | `list(string)` | n/a | yes |
+| <a name="input_autoscaling_max_capacity"></a> [autoscaling\_max\_capacity](#input\_autoscaling\_max\_capacity) | n/a | `number` | `6` | no |
+| <a name="input_autoscaling_min_capacity"></a> [autoscaling\_min\_capacity](#input\_autoscaling\_min\_capacity) | n/a | `number` | `3` | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | n/a | `string` | `"eu-west-2"` | no |
-| <a name="input_certificate_domain"></a> [certificate\_domain](#input\_certificate\_domain) | n/a | `string` | n/a | yes |
+| <a name="input_certificate_domain"></a> [certificate\_domain](#input\_certificate\_domain) | n/a | `string` | `""` | no |
 | <a name="input_container_port"></a> [container\_port](#input\_container\_port) | n/a | `number` | `8080` | no |
-| <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
+| <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | n/a | `number` | `3` | no |
+| <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | `""` | no |
 | <a name="input_ecr_repository_url"></a> [ecr\_repository\_url](#input\_ecr\_repository\_url) | n/a | `any` | n/a | yes |
 | <a name="input_ecs_cluster_name"></a> [ecs\_cluster\_name](#input\_ecs\_cluster\_name) | n/a | `string` | n/a | yes |
 | <a name="input_ecs_cluster_service_name"></a> [ecs\_cluster\_service\_name](#input\_ecs\_cluster\_service\_name) | n/a | `string` | n/a | yes |
 | <a name="input_ecs_launch_type"></a> [ecs\_launch\_type](#input\_ecs\_launch\_type) | n/a | `string` | `"FARGATE"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
+| <a name="input_is_autoscaling_needed"></a> [is\_autoscaling\_needed](#input\_is\_autoscaling\_needed) | n/a | `bool` | `true` | no |
+| <a name="input_is_lb_needed"></a> [is\_lb\_needed](#input\_is\_lb\_needed) | n/a | `bool` | `false` | no |
 | <a name="input_logs_bucket"></a> [logs\_bucket](#input\_logs\_bucket) | n/a | `any` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | n/a | `any` | n/a | yes |
