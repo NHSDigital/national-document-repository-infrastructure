@@ -54,5 +54,7 @@ module "ndr-ods-update-fargate" {
     }
   ]
   ecs_container_definition_memory = 512
+  ecs_container_definition_cpu    = 256
   ecs_task_definition_memory      = 512
+  ecs_task_definition_cpu         = 256
 }

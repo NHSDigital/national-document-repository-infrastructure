@@ -3,14 +3,14 @@ resource "aws_ecs_task_definition" "ndr_ecs_task" {
   execution_role_arn       = aws_iam_role.task_exec.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 1024
+  cpu                      = var.ecs_task_definition_cpu
   memory                   = var.ecs_task_definition_memory
 
   container_definitions = jsonencode([
     {
       name        = "${terraform.workspace}-container-${var.ecs_cluster_name}"
       image       = var.ecr_repository_url
-      cpu         = 512
+      cpu         = var.ecs_container_definition_cpu
       memory      = var.ecs_container_definition_memory
       essential   = true
       networkMode = "awsvpc"

@@ -15,7 +15,7 @@ resource "aws_ecs_service" "ndr_ecs_service" {
     for_each = var.is_lb_needed ? toset([1]) : toset([])
     content {
       target_group_arn = aws_lb_target_group.ecs_lb_tg[0].arn
-      container_name   = "${terraform.workspace}-app-container"
+      container_name   = "${terraform.workspace}-container-${var.ecs_cluster_name}"
       container_port   = var.container_port
     }
   }

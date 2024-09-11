@@ -97,8 +97,19 @@ variable "ecs_task_definition_memory" {
   type    = number
 }
 
+
+variable "ecs_task_definition_cpu" {
+  default = 1024
+  type    = number
+}
+
 variable "ecs_container_definition_memory" {
   default = 1024
+  type    = number
+}
+
+variable "ecs_container_definition_cpu" {
+  default = 512
   type    = number
 }
 
