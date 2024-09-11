@@ -45,6 +45,6 @@ module "ndr-ods-update-fargate" {
   container_port           = 80
   desired_count            = 1
   is_autoscaling_needed    = false
-  alarm_actions_arn_list   = local.is_sandbox ? [] : [aws_sns_topic.alarm_notifications_topic[0].arn]
+  alarm_actions_arn_list   = []
   logs_bucket              = aws_s3_bucket.logs_bucket.bucket
 }

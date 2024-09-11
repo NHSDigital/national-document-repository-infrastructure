@@ -1,5 +1,5 @@
 output "dns_name" {
-  value = aws_lb.ecs_lb[0].dns_name
+  value = var.is_lb_needed ? aws_lb.ecs_lb[0].dns_name : null
 }
 
 output "security_group_id" {
@@ -8,12 +8,12 @@ output "security_group_id" {
 
 output "load_balancer_arn" {
   description = "The arn of the load balancer"
-  value       = aws_lb.ecs_lb[0].arn
+  value       = var.is_lb_needed ? aws_lb.ecs_lb[0].arn : null
 }
 
 output "certificate_arn" {
   description = "The arn of certificate that load balancer is using"
-  value       = data.aws_acm_certificate.amazon_issued[0].arn
+  value       = var.is_lb_needed ? data.aws_acm_certificate.amazon_issued[0].arn : null
 }
 
 output "container_port" {
