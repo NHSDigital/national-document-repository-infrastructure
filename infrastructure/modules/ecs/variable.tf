@@ -88,7 +88,22 @@ variable "is_autoscaling_needed" {
   default = true
 }
 
+variable "environment_vars" {
+  default = [null]
+}
+
+variable "ecs_task_definition_memory" {
+  default = 2048
+  type    = number
+}
+
+variable "ecs_container_definition_memory" {
+  default = 1024
+  type    = number
+}
+
 locals {
   is_sandbox    = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
   is_production = contains(["prod", "pre-prod", "production"], terraform.workspace)
 }
+

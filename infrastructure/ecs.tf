@@ -47,4 +47,12 @@ module "ndr-ods-update-fargate" {
   is_autoscaling_needed    = false
   alarm_actions_arn_list   = []
   logs_bucket              = aws_s3_bucket.logs_bucket.bucket
+  environment_vars = [
+    {
+      "name" : "table_name",
+      "value" : module.lloyd_george_reference_dynamodb_table.table_name
+    }
+  ]
+  ecs_container_definition_memory = 512
+  ecs_task_definition_memory      = 512
 }
