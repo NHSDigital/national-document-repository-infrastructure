@@ -126,12 +126,11 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
   target {
     arn      = module.ndr-ods-update-fargate.ecs_cluster_arn
     role_arn = aws_iam_role.ods_weekly_update_ecs_execution.arn
-  }
-
-  ecs_parameters {
-    task_definition_arn = module.ndr-ods-update-fargate.task_definition_arn
-    launch_type         = "FARGATE"
-    task_count          = 1
+    ecs_parameters {
+      task_definition_arn = module.ndr-ods-update-fargate.task_definition_arn
+      launch_type         = "FARGATE"
+      task_count          = 1
+    }
   }
 }
 
