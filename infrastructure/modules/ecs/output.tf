@@ -20,3 +20,7 @@ output "container_port" {
   description = "The container port number of docker image, which was provided as input variable of this module"
   value       = var.container_port
 }
+
+output "ecs_cluster_arn" {
+  value = aws_ecs_cluster.ndr_ecs_cluster.arn
+}
