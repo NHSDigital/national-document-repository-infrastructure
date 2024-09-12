@@ -66,6 +66,7 @@ No modules.
 | <a name="input_environment_vars"></a> [environment\_vars](#input\_environment\_vars) | n/a | `list` | <pre>[<br>  null<br>]</pre> | no |
 | <a name="input_is_autoscaling_needed"></a> [is\_autoscaling\_needed](#input\_is\_autoscaling\_needed) | n/a | `bool` | `true` | no |
 | <a name="input_is_lb_needed"></a> [is\_lb\_needed](#input\_is\_lb\_needed) | n/a | `bool` | `false` | no |
+| <a name="input_is_service_needed"></a> [is\_service\_needed](#input\_is\_service\_needed) | n/a | `bool` | `true` | no |
 | <a name="input_logs_bucket"></a> [logs\_bucket](#input\_logs\_bucket) | n/a | `any` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | n/a | `any` | n/a | yes |

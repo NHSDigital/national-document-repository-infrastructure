@@ -60,7 +60,7 @@ resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_high_alarm" {
 
   dimensions = {
     ClusterName = aws_ecs_cluster.ndr_ecs_cluster.name
-    ServiceName = aws_ecs_service.ndr_ecs_service.name
+    ServiceName = aws_ecs_service.ndr_ecs_service[0].name
   }
 
   alarm_description = "The CPU usage for ${var.ecs_cluster_service_name} is currently above 85%, the autoscaling will begin scaling up."
@@ -87,7 +87,7 @@ resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_low_alarm" {
 
   dimensions = {
     ClusterName = aws_ecs_cluster.ndr_ecs_cluster.name
-    ServiceName = aws_ecs_service.ndr_ecs_service.name
+    ServiceName = aws_ecs_service.ndr_ecs_service[0].name
   }
 
   alarm_description = "The CPU usage for ${var.ecs_cluster_service_name} is currently belowe 15%, the autoscaling will begin scaling down."

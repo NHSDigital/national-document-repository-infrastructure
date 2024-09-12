@@ -58,6 +58,7 @@ module "ndr-ods-update-fargate" {
       "value" : local.is_sandbox
     },
   ]
+  is_service_needed               = false
   ecs_container_definition_memory = 512
   ecs_container_definition_cpu    = 256
   ecs_task_definition_memory      = 512

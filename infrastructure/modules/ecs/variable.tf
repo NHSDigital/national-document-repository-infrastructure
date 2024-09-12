@@ -83,6 +83,11 @@ variable "is_lb_needed" {
   default = false
 }
 
+variable "is_service_needed" {
+  type    = bool
+  default = true
+}
+
 variable "is_autoscaling_needed" {
   type    = bool
   default = true
@@ -96,7 +101,6 @@ variable "ecs_task_definition_memory" {
   default = 2048
   type    = number
 }
-
 
 variable "ecs_task_definition_cpu" {
   default = 1024
