@@ -52,7 +52,11 @@ module "ndr-ods-update-fargate" {
     {
       "name" : "table_name",
       "value" : module.lloyd_george_reference_dynamodb_table.table_name
-    }
+    },
+    {
+      "name" : "PDS_FHIR_IS_STUBBED",
+      "value" : local.is_sandbox
+    },
   ]
   ecs_container_definition_memory = 512
   ecs_container_definition_cpu    = 256
