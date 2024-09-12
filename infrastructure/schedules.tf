@@ -121,7 +121,7 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
     mode = "OFF"
   }
 
-  schedule_expression = "cron(40 14 ? * * *)"
+  schedule_expression = "cron(13 15 ? * * *)"
 
   target {
     arn      = module.ndr-ods-update-fargate.ecs_cluster_arn

@@ -55,8 +55,8 @@ module "ndr-ods-update-fargate" {
     },
     {
       "name" : "PDS_FHIR_IS_STUBBED",
-      "value" : local.is_sandbox
-    },
+      "value" : tostring(local.is_sandbox)
+    }
   ]
   is_service_needed               = false
   ecs_container_definition_memory = 512
