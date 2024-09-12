@@ -140,6 +140,7 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
 }
 
 resource "aws_iam_role" "ods_weekly_update_ecs_execution" {
+  name = "${terraform.workspace}_ods_weekly_update_scheduler_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
