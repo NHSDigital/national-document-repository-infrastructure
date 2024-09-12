@@ -113,6 +113,10 @@ variable "ecs_container_definition_cpu" {
   type    = number
 }
 
+variable "task_role" {
+  default = null
+}
+
 locals {
   is_sandbox    = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
   is_production = contains(["prod", "pre-prod", "production"], terraform.workspace)

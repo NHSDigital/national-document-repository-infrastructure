@@ -1,6 +1,7 @@
 resource "aws_ecs_task_definition" "ndr_ecs_task" {
   family                   = "${terraform.workspace}-ndr-service-task-${var.ecs_cluster_name}"
   execution_role_arn       = aws_iam_role.task_exec.arn
+  task_role_arn            = var.task_role
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.ecs_task_definition_cpu

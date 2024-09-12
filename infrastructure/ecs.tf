@@ -43,10 +43,11 @@ module "ndr-ods-update-fargate" {
   environment              = var.environment
   owner                    = var.owner
   container_port           = 80
-  desired_count            = 1
+  desired_count            = 0
   is_autoscaling_needed    = false
   alarm_actions_arn_list   = []
   logs_bucket              = aws_s3_bucket.logs_bucket.bucket
+  task_role                = aws_iam_role.ods_weekly_update_ecs_execution.arn
   environment_vars = [
     {
       "name" : "table_name",
@@ -57,4 +58,30 @@ module "ndr-ods-update-fargate" {
   ecs_container_definition_cpu    = 256
   ecs_task_definition_memory      = 512
   ecs_task_definition_cpu         = 256
+}
+
+resource "aws_iam_role" "ods_weekly_update_task_execution" {
+  name = "${terraform.workspace}_ods_weekly_update_task_execution"
+  managed_policy_arns = [
+    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
+    aws_iam_policy.ssm_access_policy.arn,
+  ]
+
+  assume_role_policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Sid" : "",
+          "Effect" : "Allow",
+          "Principal" : {
+            "Service" : [
+              "ecs-tasks.amazonaws.com"
+            ]
+          },
+          "Action" : "sts:AssumeRole"
+        }
+      ]
+    }
+  )
 }

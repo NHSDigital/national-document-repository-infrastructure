@@ -129,6 +129,12 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
     ecs_parameters {
       task_definition_arn = module.ndr-ods-update-fargate.task_definition_arn
       task_count          = 1
+      launch_type         = "FARGATE"
+      network_configuration {
+        assign_public_ip = false
+        security_groups  = [module.ndr-ods-update-fargate.security_group_id]
+        subnets          = [module.ndr-vpc-ui.private_subnets]
+      }
     }
   }
 }
