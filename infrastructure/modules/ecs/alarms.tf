@@ -72,7 +72,7 @@ resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_high_alarm" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
-  count = local.is_sandbox ? 0 : 1
+  count = local.is_sandbox || !var.is_service_needed ? 0 : 1
 }
 
 resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_low_alarm" {
@@ -99,5 +99,5 @@ resource "aws_cloudwatch_metric_alarm" "ndr_ecs_service_cpu_low_alarm" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
-  count = local.is_sandbox ? 0 : 1
+  count = local.is_sandbox || !var.is_service_needed ? 0 : 1
 }
