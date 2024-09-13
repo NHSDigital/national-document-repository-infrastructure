@@ -32,7 +32,7 @@ module "ndr-ecs-container-port-ssm-parameter" {
   environment         = var.environment
 }
 
-module "ndr-ods-update-fargate" {
+module "ndr-ecs-fargate-ods-update" {
   count                    = local.is_sandbox ? 0 : 1
   source                   = "./modules/ecs"
   ecs_cluster_name         = "ods-weekly-update"

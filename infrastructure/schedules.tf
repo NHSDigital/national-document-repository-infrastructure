@@ -125,7 +125,7 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
   schedule_expression = "cron(0 4 ? * SAT *)"
 
   target {
-    arn      = module.ndr-ods-update-fargate.ecs_cluster_arn
+    arn      = module.ndr-ods-update-fargate[0].ecs_cluster_arn
     role_arn = aws_iam_role.ods_weekly_update_ecs_execution[0].arn
     ecs_parameters {
       task_definition_arn = module.ndr-ods-update-fargate[0].task_definition_arn

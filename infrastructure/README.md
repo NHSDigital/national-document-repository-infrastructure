@@ -88,9 +88,9 @@
 | <a name="module_ndr-document-store"></a> [ndr-document-store](#module\_ndr-document-store) | ./modules/s3/ | n/a |
 | <a name="module_ndr-ecs-container-port-ssm-parameter"></a> [ndr-ecs-container-port-ssm-parameter](#module\_ndr-ecs-container-port-ssm-parameter) | ./modules/ssm_parameter | n/a |
 | <a name="module_ndr-ecs-fargate-app"></a> [ndr-ecs-fargate-app](#module\_ndr-ecs-fargate-app) | ./modules/ecs | n/a |
+| <a name="module_ndr-ecs-fargate-ods-update"></a> [ndr-ecs-fargate-ods-update](#module\_ndr-ecs-fargate-ods-update) | ./modules/ecs | n/a |
 | <a name="module_ndr-feedback-mailbox"></a> [ndr-feedback-mailbox](#module\_ndr-feedback-mailbox) | ./modules/ses | n/a |
 | <a name="module_ndr-lloyd-george-store"></a> [ndr-lloyd-george-store](#module\_ndr-lloyd-george-store) | ./modules/s3/ | n/a |
-| <a name="module_ndr-ods-update-fargate"></a> [ndr-ods-update-fargate](#module\_ndr-ods-update-fargate) | ./modules/ecs | n/a |
 | <a name="module_ndr-vpc-ui"></a> [ndr-vpc-ui](#module\_ndr-vpc-ui) | ./modules/vpc/ | n/a |
 | <a name="module_ndr-zip-request-store"></a> [ndr-zip-request-store](#module\_ndr-zip-request-store) | ./modules/s3/ | n/a |
 | <a name="module_nems-message-lambda"></a> [nems-message-lambda](#module\_nems-message-lambda) | ./modules/lambda | n/a |
