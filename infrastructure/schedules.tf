@@ -114,6 +114,7 @@ resource "aws_lambda_permission" "statistical_report_schedule_permission" {
 }
 
 resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
+  count       = local.is_sandbox ? 0 : 1
   name_prefix = "${terraform.workspace}_ods_weekly_update_ecs"
   description = "A weekly trigger for the ods update run"
 
@@ -121,18 +122,18 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
     mode = "OFF"
   }
 
-  schedule_expression = "cron(30 9 ? * * *)"
+  schedule_expression = "cron(0 4 ? * 7 *)"
 
   target {
     arn      = module.ndr-ods-update-fargate.ecs_cluster_arn
-    role_arn = aws_iam_role.ods_weekly_update_ecs_execution.arn
+    role_arn = aws_iam_role.ods_weekly_update_ecs_execution[0].arn
     ecs_parameters {
-      task_definition_arn = module.ndr-ods-update-fargate.task_definition_arn
+      task_definition_arn = module.ndr-ods-update-fargate[0].task_definition_arn
       task_count          = 1
       launch_type         = "FARGATE"
       network_configuration {
         assign_public_ip = false
-        security_groups  = [module.ndr-ods-update-fargate.security_group_id]
+        security_groups  = [module.ndr-ods-update-fargate[0].security_group_id]
         subnets          = [for subnet in module.ndr-vpc-ui.private_subnets : subnet]
       }
     }
@@ -140,7 +141,8 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
 }
 
 resource "aws_iam_role" "ods_weekly_update_ecs_execution" {
-  name = "${terraform.workspace}_ods_weekly_update_scheduler_role"
+  count = local.is_sandbox ? 0 : 1
+  name  = "${terraform.workspace}_ods_weekly_update_scheduler_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

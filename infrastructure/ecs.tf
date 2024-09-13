@@ -31,6 +31,7 @@ module "ndr-ecs-container-port-ssm-parameter" {
 }
 
 module "ndr-ods-update-fargate" {
+  count                    = local.is_sandbox ? 0 : 1
   source                   = "./modules/ecs"
   ecs_cluster_name         = "ods-weekly-update"
   vpc_id                   = module.ndr-vpc-ui.vpc_id
@@ -39,7 +40,7 @@ module "ndr-ods-update-fargate" {
   sg_name                  = "${terraform.workspace}-ods-weekly-update-sg"
   ecs_launch_type          = "FARGATE"
   ecs_cluster_service_name = "${terraform.workspace}-ods-weekly-update"
-  ecr_repository_url       = module.ndr-docker-ecr-weekly-ods-update.ecr_repository_url
+  ecr_repository_url       = module.ndr-docker-ecr-weekly-ods-update[0].ecr_repository_url
   environment              = var.environment
   owner                    = var.owner
   container_port           = 80
@@ -47,7 +48,7 @@ module "ndr-ods-update-fargate" {
   is_autoscaling_needed    = false
   alarm_actions_arn_list   = []
   logs_bucket              = aws_s3_bucket.logs_bucket.bucket
-  task_role                = aws_iam_role.ods_weekly_update_task_role.arn
+  task_role                = aws_iam_role.ods_weekly_update_task_role[0].arn
   environment_vars = [
     {
       "name" : "table_name",
@@ -66,12 +67,12 @@ module "ndr-ods-update-fargate" {
 }
 
 resource "aws_iam_role" "ods_weekly_update_task_role" {
-  name = "${terraform.workspace}_ods_weekly_update_task_role"
+  count = local.is_sandbox ? 0 : 1
+  name  = "${terraform.workspace}_ods_weekly_update_task_role"
   managed_policy_arns = [
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     aws_iam_policy.ssm_access_policy.arn,
   ]
-
   assume_role_policy = jsonencode(
     {
       "Version" : "2012-10-17",
