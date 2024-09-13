@@ -1,4 +1,4 @@
-module "ndr-ecs-fargate" {
+module "ndr-ecs-fargate-app" {
   source                   = "./modules/ecs"
   ecs_cluster_name         = "app-cluster"
   is_lb_needed             = true
@@ -23,8 +23,8 @@ module "ndr-ecs-container-port-ssm-parameter" {
   source              = "./modules/ssm_parameter"
   name                = "container_port"
   description         = "Docker container port number for ${var.environment}"
-  resource_depends_on = module.ndr-ecs-fargate
-  value               = module.ndr-ecs-fargate.container_port
+  resource_depends_on = module.ndr-ecs-fargate-app
+  value               = module.ndr-ecs-fargate-app.container_port
   type                = "SecureString"
   owner               = var.owner
   environment         = var.environment
