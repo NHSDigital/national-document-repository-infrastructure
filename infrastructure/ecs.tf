@@ -2,6 +2,8 @@ module "ndr-ecs-fargate-app" {
   source                   = "./modules/ecs"
   ecs_cluster_name         = "app-cluster"
   is_lb_needed             = true
+  is_autoscaling_needed    = true
+  is_service_needed        = true
   vpc_id                   = module.ndr-vpc-ui.vpc_id
   public_subnets           = module.ndr-vpc-ui.public_subnets
   private_subnets          = module.ndr-vpc-ui.private_subnets
@@ -46,6 +48,8 @@ module "ndr-ods-update-fargate" {
   container_port           = 80
   desired_count            = 0
   is_autoscaling_needed    = false
+  is_lb_needed             = false
+  is_service_needed        = false
   alarm_actions_arn_list   = []
   logs_bucket              = aws_s3_bucket.logs_bucket.bucket
   task_role                = aws_iam_role.ods_weekly_update_task_role[0].arn
@@ -59,7 +63,6 @@ module "ndr-ods-update-fargate" {
       "value" : tostring(local.is_sandbox)
     }
   ]
-  is_service_needed               = false
   ecs_container_definition_memory = 512
   ecs_container_definition_cpu    = 256
   ecs_task_definition_memory      = 512
