@@ -46,7 +46,6 @@ module "ndr-ods-update-fargate" {
   environment              = var.environment
   owner                    = var.owner
   container_port           = 80
-  desired_count            = 0
   is_autoscaling_needed    = false
   is_lb_needed             = false
   is_service_needed        = false

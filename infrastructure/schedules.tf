@@ -122,7 +122,7 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
     mode = "OFF"
   }
 
-  schedule_expression = "cron(0 4 ? * 7 *)"
+  schedule_expression = "cron(0 4 ? * SAT *)"
 
   target {
     arn      = module.ndr-ods-update-fargate.ecs_cluster_arn
