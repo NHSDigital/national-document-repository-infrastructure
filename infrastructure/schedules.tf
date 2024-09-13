@@ -125,15 +125,15 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
   schedule_expression = "cron(0 4 ? * SAT *)"
 
   target {
-    arn      = module.ndr-ods-update-fargate[0].ecs_cluster_arn
+    arn      = module.ndr-ecs-fargate-ods-update[0].ecs_cluster_arn
     role_arn = aws_iam_role.ods_weekly_update_ecs_execution[0].arn
     ecs_parameters {
-      task_definition_arn = module.ndr-ods-update-fargate[0].task_definition_arn
+      task_definition_arn = module.ndr-ecs-fargate-ods-update[0].task_definition_arn
       task_count          = 1
       launch_type         = "FARGATE"
       network_configuration {
         assign_public_ip = false
-        security_groups  = [module.ndr-ods-update-fargate[0].security_group_id]
+        security_groups  = [module.ndr-ecs-fargate-ods-update[0].security_group_id]
         subnets          = [for subnet in module.ndr-vpc-ui.private_subnets : subnet]
       }
     }
