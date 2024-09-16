@@ -1,42 +1,44 @@
 import boto3
 from botocore.exceptions import ClientError
-import json
+
 
 def log(message):
     print(message, flush=True)
 
+
 def detach_lambda_edge_associations(distribution_id: str):
     try:
-        client = boto3.client('cloudfront')
-        
+        client = boto3.client("cloudfront")
+
         response = client.get_distribution_config(Id=distribution_id)
-        config = response['DistributionConfig']
-        etag = response['ETag']
+        config = response["DistributionConfig"]
+        etag = response["ETag"]
 
         behaviors: list[dict] = []
-        default_behavior = config.get('DefaultCacheBehavior', None)
-        if (default_behavior and 
-                'LambdaFunctionAssociations' in default_behavior and 
-                default_behavior['LambdaFunctionAssociations']['Quantity'] > 0):
+        default_behavior = config.get("DefaultCacheBehavior", None)
+        if (
+            default_behavior
+            and "LambdaFunctionAssociations" in default_behavior
+            and default_behavior["LambdaFunctionAssociations"]["Quantity"] > 0
+        ):
             behaviors.append(default_behavior)
 
-        if ('CacheBehaviors' in config and config['CacheBehaviors']['Quantity'] > 0):
-            behaviors.extend(config['CacheBehaviors']['Items'])
+        if "CacheBehaviors" in config and config["CacheBehaviors"]["Quantity"] > 0:
+            behaviors.extend(config["CacheBehaviors"]["Items"])
 
         for behavior in behaviors:
-            if 'LambdaFunctionAssociations' in behavior:
-                behavior['LambdaFunctionAssociations'] = {'Quantity': 0}
+            if "LambdaFunctionAssociations" in behavior:
+                behavior["LambdaFunctionAssociations"] = {"Quantity": 0}
 
         client.update_distribution(
-            Id=distribution_id,
-            DistributionConfig=config,
-            IfMatch=etag
+            Id=distribution_id, DistributionConfig=config, IfMatch=etag
         )
 
         log("Cleared Lambda@Edge associations from CloudFront distribution.")
     except ClientError as e:
         log(f"Error removing associations for distribution {distribution_id}: {e}")
         raise
+
 
 if __name__ == "__main__":
     import os
