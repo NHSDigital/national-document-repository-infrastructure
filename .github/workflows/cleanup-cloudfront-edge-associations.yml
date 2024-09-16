@@ -74,7 +74,6 @@ jobs:
 
           if [ -z "$distribution_id" ]; then
             echo "No distribution found for origin ID: ${{ inputs.sandbox_workspace }}-lloyd-george-store"
-            distribution_id="empty"
           else
             echo "Distribution ID found: $distribution_id"
           fi
@@ -82,13 +81,13 @@ jobs:
           echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
 
       - name: Install Python Dependencies
-        if: env.DISTRIBUTION_ID != 'empty' && env.DISTRIBUTION_ID != ''
+        if: env.DISTRIBUTION_ID != ''
         run: |
           python3 -m venv ./venv
           ./venv/bin/pip3 install --upgrade pip boto3==1.33.11
 
       - name: Remove Lambda@Edge & CloudFront Associations
-        if: env.DISTRIBUTION_ID != 'empty' && env.DISTRIBUTION_ID != ''
+        if: env.DISTRIBUTION_ID != ''
         run: ./venv/bin/python3 -u scripts/remove_edge_associations.py
         env:
           DISTRIBUTION_ID: ${{ env.DISTRIBUTION_ID }}
