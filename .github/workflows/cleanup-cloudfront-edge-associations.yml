@@ -46,7 +46,7 @@ jobs:
           echo Lambda Function Name: ${{ inputs.lambda_function_name }}
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'nhsconnect/national-document-repository-infrastructure'
           ref: ${{ inputs.build_branch }}
@@ -58,11 +58,12 @@ jobs:
           python-version: ${{ inputs.python_version }}
 
       - name: Configure AWS Credentials for ${{ vars.AWS_REGION }}
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           role-skip-session-tagging: true
           aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
 
       - name: Get CloudFront Distribution ID
         id: cloudfront
