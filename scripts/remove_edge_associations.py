@@ -1,8 +1,5 @@
-import sys
-
 import boto3
 from botocore.exceptions import ClientError
-import json
 
 
 def log(message):
@@ -53,8 +50,5 @@ if __name__ == "__main__":
         raise ValueError("The DISTRIBUTION_ID environment variable is not set.")
     if not lambda_function_name:
         raise ValueError("The LAMBDA_FUNCTION_NAME environment variable is not set.")
-
-    if distribution_id == "empty":
-        sys.exit(0)
 
     detach_lambda_edge_associations(distribution_id)

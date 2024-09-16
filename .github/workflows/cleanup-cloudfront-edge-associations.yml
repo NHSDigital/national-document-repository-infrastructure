@@ -81,11 +81,13 @@ jobs:
           echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
 
       - name: Install Python Dependencies
+        if: env.DISTRIBUTION_ID != 'empty' && env.DISTRIBUTION_ID != ''
         run: |
           python3 -m venv ./venv
           ./venv/bin/pip3 install --upgrade pip boto3==1.33.11
 
       - name: Remove Lambda@Edge & CloudFront Associations
+        if: env.DISTRIBUTION_ID != 'empty' && env.DISTRIBUTION_ID != ''
         run: ./venv/bin/python3 -u scripts/remove_edge_associations.py
         env:
           DISTRIBUTION_ID: ${{ env.DISTRIBUTION_ID }}
