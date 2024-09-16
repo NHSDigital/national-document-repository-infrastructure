@@ -73,10 +73,11 @@ jobs:
 
           if [ -z "$distribution_id" ]; then
             echo "No distribution found for origin ID: ${{ inputs.sandbox_workspace }}-lloyd-george-store"
-            exit 1
+            distribution_id="empty"
+          else
+            echo "Distribution ID found: $distribution_id"
           fi
-
-          echo "Distribution ID found: $distribution_id"
+          
           echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
 
       - name: Install Python Dependencies
