@@ -1,5 +1,5 @@
 resource "aws_iam_role" "task_exec" {
-  name = "${terraform.workspace}-ecs-task"
+  name = "${terraform.workspace}-${var.ecs_cluster_name}-ecs-task"
   assume_role_policy = jsonencode(
     {
       "Version" : "2012-10-17",
@@ -25,7 +25,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_exec" {
 }
 
 resource "aws_iam_role_policy" "s3_access" {
-  name = "${terraform.workspace}-s3_access_policy"
+  name = "${terraform.workspace}-${var.ecs_cluster_name}-s3-access-policy"
   role = aws_iam_role.task_exec.name
 
   policy = jsonencode({

@@ -112,3 +112,48 @@ resource "aws_lambda_permission" "statistical_report_schedule_permission" {
     aws_cloudwatch_event_rule.statistical_report_schedule
   ]
 }
+
+resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
+  count       = local.is_sandbox ? 0 : 1
+  name_prefix = "${terraform.workspace}_ods_weekly_update_ecs"
+  description = "A weekly trigger for the ods update run"
+
+  flexible_time_window {
+    mode = "OFF"
+  }
+
+  schedule_expression = "cron(0 4 ? * SAT *)"
+
+  target {
+    arn      = module.ndr-ecs-fargate-ods-update[0].ecs_cluster_arn
+    role_arn = aws_iam_role.ods_weekly_update_ecs_execution[0].arn
+    ecs_parameters {
+      task_definition_arn = module.ndr-ecs-fargate-ods-update[0].task_definition_arn
+      task_count          = 1
+      launch_type         = "FARGATE"
+      network_configuration {
+        assign_public_ip = false
+        security_groups  = [module.ndr-ecs-fargate-ods-update[0].security_group_id]
+        subnets          = [for subnet in module.ndr-vpc-ui.private_subnets : subnet]
+      }
+    }
+  }
+}
+
+resource "aws_iam_role" "ods_weekly_update_ecs_execution" {
+  count = local.is_sandbox ? 0 : 1
+  name  = "${terraform.workspace}_ods_weekly_update_scheduler_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "scheduler.amazonaws.com"
+        }
+      },
+    ]
+  })
+  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"]
+}

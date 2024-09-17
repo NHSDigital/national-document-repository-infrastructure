@@ -14,7 +14,7 @@ module "ndr-vpc-ui" {
   num_private_subnets         = var.num_private_subnets
   endpoint_interface_services = ["ecr.api", "logs", "secretsmanager", "ecr.dkr", "ssm"]
   endpoint_gateway_services   = ["s3", "dynamodb"]
-  security_group_id           = module.ndr-ecs-fargate.security_group_id
+  security_group_id           = module.ndr-ecs-fargate-app.security_group_id
 
   # Tags
   environment = var.environment

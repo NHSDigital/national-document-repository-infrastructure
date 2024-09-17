@@ -42,11 +42,13 @@ variable "ecr_repository_url" {
 }
 
 variable "domain" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "certificate_domain" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "container_port" {
@@ -61,7 +63,66 @@ variable "alarm_actions_arn_list" {
 variable "logs_bucket" {
 }
 
+variable "desired_count" {
+  type    = number
+  default = 3
+}
+
+variable "autoscaling_min_capacity" {
+  type    = number
+  default = 3
+}
+
+variable "autoscaling_max_capacity" {
+  type    = number
+  default = 6
+}
+
+variable "is_lb_needed" {
+  type    = bool
+  default = false
+}
+
+variable "is_service_needed" {
+  type    = bool
+  default = true
+}
+
+variable "is_autoscaling_needed" {
+  type    = bool
+  default = true
+}
+
+variable "environment_vars" {
+  default = [null]
+}
+
+variable "ecs_task_definition_memory" {
+  default = 2048
+  type    = number
+}
+
+variable "ecs_task_definition_cpu" {
+  default = 1024
+  type    = number
+}
+
+variable "ecs_container_definition_memory" {
+  default = 1024
+  type    = number
+}
+
+variable "ecs_container_definition_cpu" {
+  default = 512
+  type    = number
+}
+
+variable "task_role" {
+  default = null
+}
+
 locals {
   is_sandbox    = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
   is_production = contains(["prod", "pre-prod", "production"], terraform.workspace)
 }
+

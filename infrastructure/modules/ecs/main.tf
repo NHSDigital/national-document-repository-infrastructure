@@ -1,17 +1,18 @@
 resource "aws_ecs_task_definition" "ndr_ecs_task" {
-  family                   = "${terraform.workspace}-ndr-service-task"
+  family                   = "${terraform.workspace}-task-${var.ecs_cluster_name}"
   execution_role_arn       = aws_iam_role.task_exec.arn
+  task_role_arn            = var.task_role
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 1024
-  memory                   = 2048
+  cpu                      = var.ecs_task_definition_cpu
+  memory                   = var.ecs_task_definition_memory
 
   container_definitions = jsonencode([
     {
-      name        = "${terraform.workspace}-app-container"
+      name        = "${terraform.workspace}-container-${var.ecs_cluster_name}"
       image       = var.ecr_repository_url
-      cpu         = 512
-      memory      = 1024
+      cpu         = var.ecs_container_definition_cpu
+      memory      = var.ecs_container_definition_memory
       essential   = true
       networkMode = "awsvpc"
       portMappings = [
@@ -28,10 +29,11 @@ resource "aws_ecs_task_definition" "ndr_ecs_task" {
           "awslogs-stream-prefix" : terraform.workspace
         }
       }
+      environment = var.environment_vars
     }
   ])
 }
 
 resource "aws_cloudwatch_log_group" "awslogs-ndr-ecs" {
-  name = "${terraform.workspace}-ecs-task"
+  name = "${terraform.workspace}-ecs-task-${var.ecs_cluster_name}"
 }

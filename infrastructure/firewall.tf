@@ -10,7 +10,7 @@ module "firewall_waf_v2" {
 }
 
 resource "aws_wafv2_web_acl_association" "web_acl_association" {
-  resource_arn = module.ndr-ecs-fargate.load_balancer_arn
+  resource_arn = module.ndr-ecs-fargate-app.load_balancer_arn
   web_acl_arn  = module.firewall_waf_v2[0].arn
 
   count = (terraform.workspace == "ndra" ||
@@ -18,7 +18,7 @@ resource "aws_wafv2_web_acl_association" "web_acl_association" {
     terraform.workspace == "ndrc" ||
   terraform.workspace == "ndrd") ? 0 : 1
   depends_on = [
-    module.ndr-ecs-fargate,
+    module.ndr-ecs-fargate-app,
     module.firewall_waf_v2[0]
   ]
 }
