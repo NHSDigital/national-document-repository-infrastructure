@@ -53,16 +53,17 @@ jobs:
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: main
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           role-skip-session-tagging: true
           aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
 
       - name: View AWS Role
         run: aws sts get-caller-identity
@@ -98,6 +99,7 @@ jobs:
 
       # Install dependencies for Python scripts
       - name: Install Python and Dependencies
+        if: env.DISTRIBUTION_ID != ''
         id: dependencies
         run: |
           python3 -m venv ./venv
@@ -106,6 +108,7 @@ jobs:
 
       # Run script to remove Lambda@Edge associations
       - name: Remove Lambda@Edge & CloudFront associations
+        if: env.DISTRIBUTION_ID != ''
         id: lambda
         run: ./venv/bin/python3 -u scripts/remove_edge_associations.py ${{ matrix.sandbox-name }}
         env:
