@@ -25,6 +25,7 @@ jobs:
       environment: development
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
   cleanup_versions_process:
     name: Cleanup Versions Process
     uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
@@ -67,17 +68,6 @@ jobs:
 
       - name: View AWS Role
         run: aws sts get-caller-identity
-
-      - name: Remove Lambda@Edge Associations
-        uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
-        with:
-          sandbox_workspace: ${{ ${{ matrix.sandbox-name }} }}
-          lambda_function_name: '${{ matrix.sandbox-name }}_EdgePresignLambda'
-          python_version: 3.11
-          build_branch: ${{ inputs.build_branch }}
-          environment: ${{ inputs.environment}}
-        secrets:
-          AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
       # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
