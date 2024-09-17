@@ -10,6 +10,18 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
+  remove_edge_associations:
+    name: Remove Lambda@Edge Associations
+    uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
+    with:
+      sandbox_workspace: ndr-test
+      lambda_function_name: 'ndr-test_EdgePresignLambda'
+      python_version: 3.11
+      build_branch: main
+      environment: test
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
   cleanup_versions_process:
     name: Cleanup Versions Process
     uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
@@ -33,7 +45,7 @@ jobs:
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: main
 
@@ -65,31 +77,6 @@ jobs:
         run: terraform workspace select ${{ matrix.sandbox-name }}
         working-directory: ./infrastructure
         shell: bash
-
-      - name: Get CloudFront Distribution ID
-        id: cloudfront
-        run: |
-          aws cloudfront list-distributions > distributions.json
-          distribution_id=$(jq -r --arg origin_id "${{ matrix.sandbox-name }}-lloyd-george-store" \
-          '.DistributionList.Items[] | select(.Origins.Items[].Id==$origin_id) | .Id' distributions.json | head -n 1)
-
-          echo "Distribution ID found: $distribution_id"
-          echo "DISTRIBUTION_ID=$distribution_id" >> $GITHUB_ENV
-
-      # Install dependencies for Python scripts
-      - name: Install Python and Dependencies
-        id: dependencies
-        run: |
-          python3 -m venv ./venv
-          ./venv/bin/pip3 install --upgrade pip
-          ./venv/bin/pip3 install boto3==1.33.11
-
-      # Run script to remove Lambda@Edge associations
-      - name: Remove Lambda@Edge & CloudFront associations
-        id: lambda
-        run: ./venv/bin/python3 -u scripts/remove_edge_associations.py ${{ matrix.sandbox-name }}
-        env:
-          LAMBDA_FUNCTION_NAME: '$${{ matrix.sandbox-name }}_EdgePresignLambda'
 
       - name: Terraform Destroy
         id: destroy
