@@ -27,79 +27,34 @@ resource "aws_lambda_permission" "bulk_upload_metadata_schedule_permission" {
   ]
 }
 
-resource "aws_cloudwatch_event_rule" "bulk_upload_daily_report_schedule" {
-  name                = "${terraform.workspace}_bulk_upload_daily_report_schedule"
+resource "aws_cloudwatch_event_rule" "bulk_upload_report_schedule" {
+  name                = "${terraform.workspace}_bulk_upload_report_schedule"
   description         = "Schedule for Daily Bulk Upload Report Lambda"
-  schedule_expression = var.bulk_upload_report_schedule
+  schedule_expression = "cron(0 7 * * ? *)"
 }
 
-resource "aws_cloudwatch_event_target" "bulk_upload_daily_report_schedule_event" {
-  rule      = aws_cloudwatch_event_rule.bulk_upload_daily_report_schedule.name
+resource "aws_cloudwatch_event_target" "bulk_upload_report_schedule_event" {
+  rule      = aws_cloudwatch_event_rule.bulk_upload_report_schedule.name
   target_id = "bulk_upload_daily_report_schedule"
   arn       = module.bulk-upload-report-lambda.lambda_arn
 
-  input_transformer {
-    input_paths = {}
-    input_template = jsonencode({
-      "report_type" : "DAILY"
-    })
-  }
-
   depends_on = [
     module.bulk-upload-report-lambda,
-    aws_cloudwatch_event_rule.bulk_upload_daily_report_schedule
+    aws_cloudwatch_event_rule.bulk_upload_report_schedule
   ]
 }
 
-resource "aws_lambda_permission" "bulk_upload_daily_report_schedule_permission" {
+resource "aws_lambda_permission" "bulk_upload_report_schedule_permission" {
   statement_id  = "AllowExecutionFromCloudWatchForDaily"
   action        = "lambda:InvokeFunction"
   function_name = module.bulk-upload-report-lambda.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.bulk_upload_daily_report_schedule.arn
+  source_arn    = aws_cloudwatch_event_rule.bulk_upload_report_schedule.arn
   depends_on = [
     module.bulk-upload-report-lambda,
-    aws_cloudwatch_event_rule.bulk_upload_daily_report_schedule
+    aws_cloudwatch_event_rule.bulk_upload_report_schedule
   ]
 }
-
-resource "aws_cloudwatch_event_rule" "bulk_upload_ods_report_schedule" {
-  name                = "${terraform.workspace}_bulk_upload_ods_report_schedule"
-  description         = "Schedule for ODS Bulk Upload Report Lambda"
-  schedule_expression = var.bulk_upload_report_schedule
-}
-
-resource "aws_cloudwatch_event_target" "bulk_upload_ods_report_schedule_event" {
-  rule      = aws_cloudwatch_event_rule.bulk_upload_ods_report_schedule.name
-  target_id = "bulk_upload_ods_report_schedule"
-  arn       = module.bulk-upload-report-lambda.lambda_arn
-
-  input_transformer {
-    input_paths = {}
-    input_template = jsonencode({
-      "report_type" : "ODS"
-    })
-  }
-
-  depends_on = [
-    module.bulk-upload-report-lambda,
-    aws_cloudwatch_event_rule.bulk_upload_ods_report_schedule
-  ]
-}
-
-resource "aws_lambda_permission" "bulk_upload_ods_report_schedule_permission" {
-  statement_id  = "AllowExecutionFromCloudWatchForODS"
-  action        = "lambda:InvokeFunction"
-  function_name = module.bulk-upload-report-lambda.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.bulk_upload_ods_report_schedule.arn
-  depends_on = [
-    module.bulk-upload-report-lambda,
-    aws_cloudwatch_event_rule.bulk_upload_ods_report_schedule
-  ]
-}
-
-
 
 resource "aws_cloudwatch_event_rule" "data_collection_schedule" {
   name                = "${terraform.workspace}_data_collection_schedule"

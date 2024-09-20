@@ -216,13 +216,6 @@ variable "message_destination" {
 
 variable "cloudwatch_alarm_evaluation_periods" {}
 
-# Define a variable for the cron schedule
-variable "bulk_upload_report_schedule" {
-  description = "The cron schedule for bulk upload report generation."
-  type        = string
-  default     = "cron(0 7 * * ? *)" # Adjust this as needed
-}
-
 
 locals {
   is_sandbox         = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
