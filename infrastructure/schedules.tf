@@ -35,7 +35,7 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_report_schedule" {
 
 resource "aws_cloudwatch_event_target" "bulk_upload_report_schedule_event" {
   rule      = aws_cloudwatch_event_rule.bulk_upload_report_schedule.name
-  target_id = "bulk_upload_daily_report_schedule"
+  target_id = "bulk_upload_report_schedule"
   arn       = module.bulk-upload-report-lambda.lambda_arn
 
   depends_on = [
@@ -45,7 +45,7 @@ resource "aws_cloudwatch_event_target" "bulk_upload_report_schedule_event" {
 }
 
 resource "aws_lambda_permission" "bulk_upload_report_schedule_permission" {
-  statement_id  = "AllowExecutionFromCloudWatchForDaily"
+  statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
   function_name = module.bulk-upload-report-lambda.function_name
   principal     = "events.amazonaws.com"
