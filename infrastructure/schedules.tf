@@ -29,7 +29,7 @@ resource "aws_lambda_permission" "bulk_upload_metadata_schedule_permission" {
 
 resource "aws_cloudwatch_event_rule" "bulk_upload_report_schedule" {
   name                = "${terraform.workspace}_bulk_upload_report_schedule"
-  description         = "Schedule for Daily Bulk Upload Report Lambda"
+  description         = "Schedule for Bulk Upload Report Lambda"
   schedule_expression = "cron(0 7 * * ? *)"
 }
 
@@ -50,6 +50,7 @@ resource "aws_lambda_permission" "bulk_upload_report_schedule_permission" {
   function_name = module.bulk-upload-report-lambda.function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.bulk_upload_report_schedule.arn
+
   depends_on = [
     module.bulk-upload-report-lambda,
     aws_cloudwatch_event_rule.bulk_upload_report_schedule
