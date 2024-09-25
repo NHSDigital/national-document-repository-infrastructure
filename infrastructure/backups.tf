@@ -7,7 +7,7 @@ resource "aws_backup_plan" "s3_continuous_backup" {
   name = "${terraform.workspace}_s3_continuous_backup"
 
   rule {
-    enable_continuous_backup = true
+    enable_continuous_backup = !local.is_sandbox
     rule_name                = "S3BucketContinousBackups"
     target_vault_name        = aws_backup_vault.backup_vault.name
     lifecycle {
