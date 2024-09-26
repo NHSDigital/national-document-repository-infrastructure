@@ -156,7 +156,6 @@ variable "cloud_only_service_instances" {
   default = 1
 }
 
-
 variable "mesh_component_name" {
   type    = string
   default = "mesh-forwarder"
@@ -222,9 +221,7 @@ locals {
   is_force_destroy   = contains(["ndr-dev", "ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
   is_sandbox_or_test = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
 
-
   bulk_upload_lambda_concurrent_limit = 5
-
 
   api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
   api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
