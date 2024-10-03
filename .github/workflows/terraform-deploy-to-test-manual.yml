@@ -51,7 +51,7 @@ jobs:
 
     - name: Terraform Set Workspace
       id: workspace
-      run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
+      run:  terraform workspace select -or-create ${{ secrets.AWS_WORKSPACE }}
       working-directory: ./infrastructure 
       shell: bash
       
