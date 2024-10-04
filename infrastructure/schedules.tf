@@ -130,7 +130,7 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
     arn      = module.ndr-ecs-fargate-ods-update[0].ecs_cluster_arn
     role_arn = aws_iam_role.ods_weekly_update_ecs_execution[0].arn
     ecs_parameters {
-      task_definition_arn = module.ndr-ecs-fargate-ods-update[0].task_definition_arn
+      task_definition_arn = replace(module.ndr-ecs-fargate-ods-update[0].task_definition_arn, "/:[0-9]+$/", "")
       task_count          = 1
       launch_type         = "FARGATE"
       network_configuration {
