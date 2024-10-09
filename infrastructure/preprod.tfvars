@@ -1,7 +1,7 @@
 environment                       = "pre-prod"
 owner                             = "nhse/ndr-team"
-domain                            = "access-request-fulfilment.patient-deductions.nhs.uk"
-certificate_domain                = "pre-prod.access-request-fulfilment.patient-deductions.nhs.uk"
+domain                            = "national-document-repository.nhs.uk"
+certificate_domain                = "pre-prod.national-document-repository.nhs.uk"
 certificate_subdomain_name_prefix = "api."
 
 cloudwatch_alarm_evaluation_periods = 30
