@@ -48,7 +48,7 @@ resource "aws_cloudfront_origin_request_policy" "origin_policy" {
   headers_config {
     header_behavior = "whitelist"
     headers {
-      items = ["Host", "CloudFront-Viewer-Country", "X-Forwarded-For", "X-Forwarded-Proto"]
+      items = ["Host", "CloudFront-Viewer-Country", "X-Forwarded-For"]
     }
   }
 
