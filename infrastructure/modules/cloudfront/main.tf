@@ -21,7 +21,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
     origin_request_policy_id = aws_cloudfront_origin_request_policy.origin_policy.id
-    
+
     lambda_function_association {
       event_type = "origin-request"
       lambda_arn = var.qualifed_arn
@@ -42,7 +42,7 @@ resource "aws_cloudfront_origin_request_policy" "origin_policy" {
   name = "ForwardQueryStringsExceptAuthHeader"
 
   query_strings_config {
-    query_string_behavior = "all" 
+    query_string_behavior = "all"
   }
 
   headers_config {
@@ -53,7 +53,7 @@ resource "aws_cloudfront_origin_request_policy" "origin_policy" {
   }
 
   cookies_config {
-    cookie_behavior = "none"  
+    cookie_behavior = "none"
   }
 }
 
