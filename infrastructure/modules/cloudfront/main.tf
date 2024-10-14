@@ -39,17 +39,25 @@ resource "aws_cloudfront_distribution" "distribution" {
 }
 
 resource "aws_cloudfront_origin_request_policy" "origin_policy" {
-  name = "ForwardAllQueryStringsHeadersCookiesPolicy"
+  name = "ForwardQueryStringsExceptAuthHeader"
+
   query_strings_config {
-    query_string_behavior = "all"
+    query_string_behavior = "all" 
   }
+
   headers_config {
-    header_behavior = "allViewer"  
+    header_behavior = "whitelist"
+    headers {
+      items = ["Host", "CloudFront-Viewer-Country", "X-Forwarded-For", "X-Forwarded-Proto"]
+    }
   }
+
   cookies_config {
-    cookie_behavior = "all"
+    cookie_behavior = "none"  
   }
 }
+
+
 
 
 
