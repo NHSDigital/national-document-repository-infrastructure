@@ -42,8 +42,12 @@ resource "aws_cloudfront_origin_request_policy" "origin_policy" {
   name = "ForwardQueryStringsExceptAuthHeader"
 
   query_strings_config {
-    query_string_behavior = "all"
+    query_string_behavior = "whitelist"
+    query_strings {
+      items = ["X-Amz-*"]
+    }
   }
+
 
   headers_config {
     header_behavior = "whitelist"
