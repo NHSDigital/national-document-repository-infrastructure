@@ -39,25 +39,33 @@ resource "aws_cloudfront_distribution" "distribution" {
 }
 
 resource "aws_cloudfront_origin_request_policy" "origin_policy" {
-  name = "ForwardQueryStringsExceptAuthHeader"
+  name = "ForwardAmazonAuthAndOrigin"
 
   query_strings_config {
     query_string_behavior = "whitelist"
     query_strings {
-      items = ["X-Amz-*"]
+      items = [
+      "origin",            
+      "X-Amz-Algorithm",   
+      "X-Amz-Credential",
+      "X-Amz-Date",
+      "X-Amz-Expires",
+      "X-Amz-SignedHeaders",
+      "X-Amz-Signature",
+      "X-Amz-Security-Token"
+    ]
     }
   }
-
 
   headers_config {
     header_behavior = "whitelist"
     headers {
-      items = ["Host", "CloudFront-Viewer-Country", "X-Forwarded-For"]
+      items = ["Host", "CloudFront-Viewer-Country", "X-Forwarded-For"] 
     }
   }
 
   cookies_config {
-    cookie_behavior = "none"
+    cookie_behavior = "none"  # Adjust cookie behavior as needed
   }
 }
 
