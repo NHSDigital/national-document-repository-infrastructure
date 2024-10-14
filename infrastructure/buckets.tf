@@ -57,6 +57,7 @@ module "ndr-lloyd-george-store" {
       max_age_seconds = 3000
     },
     {
+      allowed_headers = ["*"]
       allowed_methods = ["GET"]
       allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
     }
