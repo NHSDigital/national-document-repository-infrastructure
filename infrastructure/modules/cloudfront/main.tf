@@ -45,7 +45,6 @@ resource "aws_cloudfront_origin_request_policy" "origin_policy" {
     query_string_behavior = "whitelist"
     query_strings {
       items = [
-        "origin",
         "X-Amz-Algorithm",
         "X-Amz-Credential",
         "X-Amz-Date",
@@ -60,7 +59,7 @@ resource "aws_cloudfront_origin_request_policy" "origin_policy" {
   headers_config {
     header_behavior = "whitelist"
     headers {
-      items = ["Host", "CloudFront-Viewer-Country", "X-Forwarded-For"]
+      items = ["Host", "CloudFront-Viewer-Country", "X-Forwarded-For", "X-Origin"]
     }
   }
 
