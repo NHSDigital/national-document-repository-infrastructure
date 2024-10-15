@@ -91,6 +91,7 @@ module "delete-doc-ref-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.document_reference_dynamodb_table,
+    module.stitch_metadata_reference_dynamodb_table,
     module.delete-doc-ref-gateway,
     module.ndr-app-config
   ]

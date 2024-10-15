@@ -78,7 +78,8 @@ module "generate-document-manifest-lambda" {
     module.zip_store_reference_dynamodb_table,
     module.ndr-zip-request-store,
     module.ndr-document-store,
-    module.ndr-lloyd-george-store
+    module.ndr-lloyd-george-store,
+    aws_iam_policy.dynamodb_stream_manifest_policy
   ]
 }
 
