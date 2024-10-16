@@ -23,7 +23,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer_policy.id
 
     lambda_function_association {
-      event_type = "viewer-request"
+      event_type = "origin-request"
       lambda_arn = var.qualifed_arn
     }
   }
