@@ -49,7 +49,6 @@ resource "aws_cloudfront_origin_request_policy" "viewer_policy" {
     header_behavior = "whitelist"
     headers {
       items = [
-        "Authorization",
         "Host",
         "CloudFront-Viewer-Country",
         "X-Forwarded-For"
