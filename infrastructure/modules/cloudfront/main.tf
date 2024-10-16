@@ -23,7 +23,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     origin_request_policy_id = aws_cloudfront_origin_request_policy.origin_policy.id
 
     lambda_function_association {
-      event_type = "origin-request"
+      event_type = "viewer-request"
       lambda_arn = var.qualifed_arn
     }
   }
@@ -38,8 +38,8 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 }
 
-resource "aws_cloudfront_origin_request_policy" "origin_policy" {
-  name = "ForwardAmazonAuthAndOrigin"
+resource "aws_cloudfront_origin_request_policy" "viewer_policy" {
+  name = "ForwardAmazonAuthAndXOrigin"
 
   query_strings_config {
     query_string_behavior = "whitelist"
@@ -59,14 +59,19 @@ resource "aws_cloudfront_origin_request_policy" "origin_policy" {
   headers_config {
     header_behavior = "whitelist"
     headers {
-      items = ["Host", "CloudFront-Viewer-Country", "X-Forwarded-For", "X-Origin"]
+      items = [
+        "Host",
+        "CloudFront-Viewer-Country",
+        "X-Forwarded-For",
+      ]
     }
   }
 
   cookies_config {
-    cookie_behavior = "none" # Adjust cookie behavior as needed
+    cookie_behavior = "none"
   }
 }
+
 
 
 
