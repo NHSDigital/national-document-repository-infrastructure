@@ -20,7 +20,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     target_origin_id         = var.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.origin_policy.id
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer_policy.id
 
     lambda_function_association {
       event_type = "viewer-request"
