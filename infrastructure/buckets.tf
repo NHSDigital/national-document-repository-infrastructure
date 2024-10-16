@@ -16,7 +16,7 @@ module "ndr-document-store" {
       max_age_seconds = 3000
     },
     {
-      allowed_methods = ["GET", "OPTIONS"]
+      allowed_methods = ["GET"]
       allowed_origins = ["https://${terraform.workspace}.${var.domain}", module.cloudfront-distribution-lg.cloudfront_url]
     }
   ]
