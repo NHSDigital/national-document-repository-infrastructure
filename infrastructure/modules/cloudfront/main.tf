@@ -2,7 +2,7 @@ resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
   name                              = "${terraform.workspace}_cloudfront_s3_oac_policy"
   description                       = "Cloud Front S3 OAC"
   origin_access_control_origin_type = "s3"
-  signing_behavior                  = "never"
+  signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
 }
 
@@ -39,45 +39,21 @@ resource "aws_cloudfront_distribution" "distribution" {
 }
 
 resource "aws_cloudfront_origin_request_policy" "viewer_policy" {
-  name = "BlockXAmzAndAllowAuthorization"
+  name = "${terraform.workspace}_BlockQueriesAndAllowViewer"
 
   query_strings_config {
-    query_string_behavior = "whitelist"
-    query_strings {
-      items = [
-        "X-Amz-Algorithm",
-        "X-Amz-Credential",
-        "X-Amz-Date",
-        "X-Amz-Expires",
-        "X-Amz-SignedHeaders",
-        "X-Amz-Signature",
-        "X-Amz-Security-Token"
-      ]
-    }
+    query_string_behavior = "none"
   }
 
 
   headers_config {
-    header_behavior = "whitelist"
-    headers {
-      items = [
-        "Host",
-        "CloudFront-Viewer-Country",
-        "X-Forwarded-For"
-      ]
-    }
+    header_behavior = "allViewer"
   }
 
   cookies_config {
     cookie_behavior = "none"
   }
 }
-
-
-
-
-
-
 
 resource "aws_cloudfront_cache_policy" "nocache" {
   name        = "${terraform.workspace}_nocache_policy"
