@@ -72,7 +72,7 @@ data "aws_iam_policy_document" "lambda_policy" {
     actions = [
       "dynamodb:UpdateItem",
     ]
-    resources = ["arn:aws:dynamodb:eu-west-2:${var.current_account_id}:table/${terraform.workspace}_${var.table_name}"]
+    resources = ["arn:aws:dynamodb:eu-west-2:${var.current_account_id}:table/${var.table_name}"]
   }
 }
 
