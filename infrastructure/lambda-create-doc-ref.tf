@@ -104,6 +104,6 @@ module "create-doc-ref-lambda" {
     module.ndr-app-config,
     module.lloyd_george_reference_dynamodb_table,
     module.document_reference_dynamodb_table,
-    module.stitch_metadata_reference_dynamodb_table,
+    module.stitch_metadata_reference_dynamodb_table
   ]
 }

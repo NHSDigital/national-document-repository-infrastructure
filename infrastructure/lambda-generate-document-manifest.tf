@@ -55,7 +55,7 @@ module "generate-document-manifest-lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-app-config.app_config_policy_arn,
-    aws_iam_policy.dynamodb_stream_manifest_policy.arn
+    aws_iam_policy.dynamodb_stream_manifest.arn
   ]
   rest_api_id       = null
   api_execution_arn = null
@@ -79,11 +79,11 @@ module "generate-document-manifest-lambda" {
     module.ndr-zip-request-store,
     module.ndr-document-store,
     module.ndr-lloyd-george-store,
-    aws_iam_policy.dynamodb_stream_manifest_policy
+    aws_iam_policy.dynamodb_stream_manifest
   ]
 }
 
-resource "aws_iam_policy" "dynamodb_stream_manifest_policy" {
+resource "aws_iam_policy" "dynamodb_stream_manifest" {
   name = "${terraform.workspace}_dynamodb_stream_to_manifest_policy"
 
   policy = jsonencode({

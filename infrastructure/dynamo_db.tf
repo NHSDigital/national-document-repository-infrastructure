@@ -138,7 +138,7 @@ module "stitch_metadata_reference_dynamodb_table" {
   source                      = "./modules/dynamo_db"
   table_name                  = var.stitch_metadata_dynamodb_table_name
   hash_key                    = "ID"
-  deletion_protection_enabled = false
+  deletion_protection_enabled = local.is_production
   stream_enabled              = true
   ttl_enabled                 = true
   ttl_attribute_name          = "ExpireAt"
