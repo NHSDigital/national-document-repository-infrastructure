@@ -42,7 +42,18 @@ resource "aws_cloudfront_origin_request_policy" "viewer_policy" {
   name = "${terraform.workspace}_BlockQueriesAndAllowViewer"
 
   query_strings_config {
-    query_string_behavior = "none"
+    query_string_behavior = "whitelist"
+    query_strings {
+      items = [
+        "X-Amz-Algorithm",
+        "X-Amz-Credential",
+        "X-Amz-Date",
+        "X-Amz-Expires",
+        "X-Amz-SignedHeaders",
+        "X-Amz-Signature",
+        "X-Amz-Security-Token"
+      ]
+    }
   }
 
 
