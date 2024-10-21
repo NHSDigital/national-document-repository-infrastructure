@@ -2,7 +2,7 @@ resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
   name                              = "${terraform.workspace}_cloudfront_s3_oac_policy"
   description                       = "Cloud Front S3 OAC"
   origin_access_control_origin_type = "s3"
-  signing_behavior                  = "never"
+  signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
 }
 
@@ -47,7 +47,14 @@ resource "aws_cloudfront_origin_request_policy" "viewer_policy" {
 
 
   headers_config {
-    header_behavior = "allViewer"
+    header_behavior = "whitelist"
+    headers {
+      items = [
+        "Host",
+        "CloudFront-Viewer-Country",
+        "X-Forwarded-For"
+      ]
+    }
   }
 
   cookies_config {
