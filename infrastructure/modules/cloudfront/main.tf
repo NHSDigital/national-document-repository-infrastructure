@@ -32,8 +32,8 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
   restrictions {
     geo_restriction {
-      restriction_type = "whitelist" # Restrict access to only the listed countries
-      locations        = ["GB"]      # ISO code for the United Kingdom
+      restriction_type = "whitelist"
+      locations        = ["GB"]
     }
   }
 }

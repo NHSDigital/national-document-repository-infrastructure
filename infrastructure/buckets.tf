@@ -17,7 +17,7 @@ module "ndr-document-store" {
     },
     {
       allowed_methods = ["GET"]
-      allowed_origins = ["https://${terraform.workspace}.${var.domain}", module.cloudfront-distribution-lg.cloudfront_url]
+      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
     }
   ]
 }
@@ -57,7 +57,6 @@ module "ndr-lloyd-george-store" {
       max_age_seconds = 3000
     },
     {
-      allowed_headers = ["*"]
       allowed_methods = ["GET"]
       allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
     }
