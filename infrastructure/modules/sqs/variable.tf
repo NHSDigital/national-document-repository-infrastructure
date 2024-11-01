@@ -26,6 +26,12 @@ variable "message_retention" {
   default     = 86400
 }
 
+variable "snomed-code" {
+  description = "Snomed code used for nrl queue"
+  type        = string
+  default     = null
+}
+
 variable "receive_wait" {
   description = "Number of seconds sqs will wait for a message when ReceiveMessage is received"
   type        = number
