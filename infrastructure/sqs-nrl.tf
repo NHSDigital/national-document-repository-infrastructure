@@ -7,4 +7,5 @@ module "sqs-nrl-queue" {
   message_retention = 1800
   enable_sse        = true
   enable_fifo       = true
+  max_visibility    = 601
 }
