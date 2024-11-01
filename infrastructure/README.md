@@ -304,6 +304,7 @@
 | <a name="input_mesh_shared_key_ssm_param_name"></a> [mesh\_shared\_key\_ssm\_param\_name](#input\_mesh\_shared\_key\_ssm\_param\_name) | Name of SSM parameter containing MESH shared key | `string` | n/a | yes |
 | <a name="input_mesh_url"></a> [mesh\_url](#input\_mesh\_url) | URL of MESH service | `string` | n/a | yes |
 | <a name="input_message_destination"></a> [message\_destination](#input\_message\_destination) | n/a | `string` | `"sns"` | no |
+| <a name="input_nrl_api_endpoint"></a> [nrl\_api\_endpoint](#input\_nrl\_api\_endpoint) | n/a | `string` | `"api.service.nhs.uk/record-locator/producer/FHIR/R4/DocumentReference"` | no |
 | <a name="input_num_private_subnets"></a> [num\_private\_subnets](#input\_num\_private\_subnets) | Sets the number of private subnets, one per availability zone | `number` | `3` | no |
 | <a name="input_num_public_subnets"></a> [num\_public\_subnets](#input\_num\_public\_subnets) | Sets the number of public subnets, one per availability zone | `number` | `3` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
