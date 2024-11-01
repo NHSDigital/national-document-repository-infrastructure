@@ -241,3 +241,7 @@ variable "snomed-code" {
   type        = string
   default     = null
 }
+
+variable "nrl_api_endpoint" {
+  default = "api.service.nhs.uk/record-locator/producer/FHIR/R4/DocumentReference"
+}
