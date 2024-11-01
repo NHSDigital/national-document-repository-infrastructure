@@ -40,6 +40,7 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | n/a | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
 | <a name="input_receive_wait"></a> [receive\_wait](#input\_receive\_wait) | Number of seconds sqs will wait for a message when ReceiveMessage is received | `number` | `2` | no |
+| <a name="input_snomed-code"></a> [snomed-code](#input\_snomed-code) | Snomed code used for nrl queue | `string` | `null` | no |
 
 ## Outputs
 

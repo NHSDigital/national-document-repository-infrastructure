@@ -234,3 +234,10 @@ locals {
   current_region     = data.aws_region.current.name
   current_account_id = data.aws_caller_identity.current.account_id
 }
+
+
+variable "snomed-code" {
+  description = "Snomed code used for nrl queue"
+  type        = string
+  default     = null
+}

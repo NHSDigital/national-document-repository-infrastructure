@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.62.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.73.0 |
 
 ## Modules
 
@@ -120,6 +120,7 @@
 | <a name="module_sqs-lg-bulk-upload-invalid-queue"></a> [sqs-lg-bulk-upload-invalid-queue](#module\_sqs-lg-bulk-upload-invalid-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-lg-bulk-upload-metadata-queue"></a> [sqs-lg-bulk-upload-metadata-queue](#module\_sqs-lg-bulk-upload-metadata-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-nems-queue"></a> [sqs-nems-queue](#module\_sqs-nems-queue) | ./modules/sqs | n/a |
+| <a name="module_sqs-nrl-queue"></a> [sqs-nrl-queue](#module\_sqs-nrl-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-splunk-queue"></a> [sqs-splunk-queue](#module\_sqs-splunk-queue) | ./modules/sqs | n/a |
 | <a name="module_statistical-report-alarm"></a> [statistical-report-alarm](#module\_statistical-report-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_statistical-report-alarm-topic"></a> [statistical-report-alarm-topic](#module\_statistical-report-alarm-topic) | ./modules/sns | n/a |
@@ -223,6 +224,7 @@
 | [aws_lambda_event_source_mapping.dynamodb_stream_manifest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_event_source_mapping.dynamodb_stream_stitch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_event_source_mapping.nems_message_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
+| [aws_lambda_event_source_mapping.nrl_pointer_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_permission.bulk_upload_metadata_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.bulk_upload_report_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.data_collection_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
@@ -275,7 +277,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_auth_session_dynamodb_table_name"></a> [auth\_session\_dynamodb\_table\_name](#input\_auth\_session\_dynamodb\_table\_name) | The name of dynamodb table to store user login sessions | `string` | `"AuthSessionReferenceMetadata"` | no |
 | <a name="input_auth_state_dynamodb_table_name"></a> [auth\_state\_dynamodb\_table\_name](#input\_auth\_state\_dynamodb\_table\_name) | The name of dynamodb table to store the state values (for CIS2 authorisation) | `string` | `"AuthStateReferenceMetadata"` | no |
-| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | This is a list that specifies all the Availability Zones that will have a pair of public and private subnets | `list(string)` | <pre>[<br>  "eu-west-2a",<br>  "eu-west-2b",<br>  "eu-west-2c"<br>]</pre> | no |
+| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | This is a list that specifies all the Availability Zones that will have a pair of public and private subnets | `list(string)` | <pre>[<br/>  "eu-west-2a",<br/>  "eu-west-2b",<br/>  "eu-west-2c"<br/>]</pre> | no |
 | <a name="input_bulk_upload_report_dynamodb_table_name"></a> [bulk\_upload\_report\_dynamodb\_table\_name](#input\_bulk\_upload\_report\_dynamodb\_table\_name) | The name of dynamodb table to store bulk upload status | `string` | `"BulkUploadReport"` | no |
 | <a name="input_certificate_domain"></a> [certificate\_domain](#input\_certificate\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_certificate_subdomain_name_prefix"></a> [certificate\_subdomain\_name\_prefix](#input\_certificate\_subdomain\_name\_prefix) | Prefix to add to subdomains on certification configurations, dev envs use api-{env}, prod envs use api.{env} | `string` | `"api-"` | no |
@@ -307,6 +309,7 @@
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
 | <a name="input_poll_frequency"></a> [poll\_frequency](#input\_poll\_frequency) | n/a | `any` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"eu-west-2"` | no |
+| <a name="input_snomed-code"></a> [snomed-code](#input\_snomed-code) | Snomed code used for nrl queue | `string` | `null` | no |
 | <a name="input_staging_store_bucket_name"></a> [staging\_store\_bucket\_name](#input\_staging\_store\_bucket\_name) | n/a | `string` | `"staging-bulk-store"` | no |
 | <a name="input_standalone_vpc_ig_tag"></a> [standalone\_vpc\_ig\_tag](#input\_standalone\_vpc\_ig\_tag) | This is the tag assigned to the standalone vpc internet gateway that should be created manaully before the first run of the infrastructure | `string` | n/a | yes |
 | <a name="input_standalone_vpc_tag"></a> [standalone\_vpc\_tag](#input\_standalone\_vpc\_tag) | This is the tag assigned to the standalone vpc that should be created manaully before the first run of the infrastructure | `string` | n/a | yes |
