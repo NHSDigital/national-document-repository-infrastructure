@@ -310,7 +310,6 @@
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
 | <a name="input_poll_frequency"></a> [poll\_frequency](#input\_poll\_frequency) | n/a | `any` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"eu-west-2"` | no |
-| <a name="input_snomed-code"></a> [snomed-code](#input\_snomed-code) | Snomed code used for nrl queue | `string` | `null` | no |
 | <a name="input_staging_store_bucket_name"></a> [staging\_store\_bucket\_name](#input\_staging\_store\_bucket\_name) | n/a | `string` | `"staging-bulk-store"` | no |
 | <a name="input_standalone_vpc_ig_tag"></a> [standalone\_vpc\_ig\_tag](#input\_standalone\_vpc\_ig\_tag) | This is the tag assigned to the standalone vpc internet gateway that should be created manaully before the first run of the infrastructure | `string` | n/a | yes |
 | <a name="input_standalone_vpc_tag"></a> [standalone\_vpc\_tag](#input\_standalone\_vpc\_tag) | This is the tag assigned to the standalone vpc that should be created manaully before the first run of the infrastructure | `string` | n/a | yes |

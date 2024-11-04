@@ -3,7 +3,6 @@ module "sqs-nrl-queue" {
   name              = "nrl-queue.fifo"
   environment       = var.environment
   owner             = var.owner
-  snomed-code       = var.snomed-code
   message_retention = 1800
   enable_sse        = true
   enable_fifo       = true

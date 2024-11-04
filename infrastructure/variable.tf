@@ -235,13 +235,6 @@ locals {
   current_account_id = data.aws_caller_identity.current.account_id
 }
 
-
-variable "snomed-code" {
-  description = "Snomed code used for nrl queue"
-  type        = string
-  default     = null
-}
-
 variable "nrl_api_endpoint" {
   default = "api.service.nhs.uk/record-locator/producer/FHIR/R4/DocumentReference"
 }
