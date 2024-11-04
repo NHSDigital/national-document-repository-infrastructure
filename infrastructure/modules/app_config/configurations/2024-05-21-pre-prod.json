@@ -14,10 +14,7 @@
       },
       "useSmartcardAuth": {
           "name": "useSmartcardAuth"
-      },
-      "nrlEnabled": {
-            "name": "nrlEnabled"
-        }
+      }
   },
   "values": {
       "nemsEnabled": {
@@ -34,9 +31,6 @@
       },
       "useSmartcardAuth": {
           "enabled": "false"
-      },
-      "nrlEnabled": {
-        "enabled": "false"
       }
   },
   "version": "1"
