@@ -73,8 +73,9 @@ module "manage-nrl-pointer-alarm-topic" {
 resource "aws_lambda_event_source_mapping" "nrl_pointer_lambda" {
   filter_criteria {
     filters {
-      key   = "Action"
-      value = []
+     pattern = jsonencode({ 
+       "body" : { "action" : [ "" ] 
+    }})
     }
   }
   event_source_arn = module.sqs-nrl-queue.endpoint
