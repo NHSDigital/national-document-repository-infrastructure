@@ -76,10 +76,12 @@ resource "aws_lambda_event_source_mapping" "nrl_pointer_lambda" {
   function_name    = module.manage-nrl-pointer-lambda.lambda_arn
 
   filter_criteria {
-    filters {
+    filter {
       pattern = jsonencode({
-        "body" : { "action" : [""]
-      } })
+        body = {
+          "action" : [""]
+        }
+      })
     }
   }
 
