@@ -19,6 +19,7 @@ module "manage-nrl-pointer-lambda" {
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
     NRL_API_ENDPOINT        = local.is_production ? "https://${var.nrl_api_endpoint}" : "https://int.${var.nrl_api_endpoint}"
+    NRL_END_USER_ODS_CODE   = data.aws_ssm_parameter.end_user_ods_code.name
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
@@ -71,22 +72,24 @@ module "manage-nrl-pointer-alarm-topic" {
 }
 
 resource "aws_lambda_event_source_mapping" "nrl_pointer_lambda" {
-  filter_criteria {
-    filters {
-     pattern = jsonencode({ 
-       "body" : { "action" : [ "" ] 
-    }})
-    }
-  }
   event_source_arn = module.sqs-nrl-queue.endpoint
   function_name    = module.manage-nrl-pointer-lambda.lambda_arn
 
-  scaling_config {
-    maximum_concurrency = local.bulk_upload_lambda_concurrent_limit
+  filter_criteria {
+    filters {
+      pattern = jsonencode({
+        "body" : { "action" : [""]
+      } })
+    }
   }
 
   depends_on = [
     module.sqs-nrl-queue,
     module.manage-nrl-pointer-lambda
   ]
+}
+
+
+data "aws_ssm_parameter" "end_user_ods_code" {
+  name = "ndr_ods_code"
 }
