@@ -18,15 +18,11 @@ module "manage-nrl-pointer-lambda" {
     APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
-    NRL_API_ENDPOINT        = local.is_production ? "https://${var.nrl_api_endpoint}" : "https://int.${var.nrl_api_endpoint}"
+    NRL_API_ENDPOINT        = local.is_production ? "https://${var.nrl_api_endpoint_suffix}" : "https://int.${var.nrl_api_endpoint_suffix}"
     NRL_END_USER_ODS_CODE   = data.aws_ssm_parameter.end_user_ods_code.name
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
-
-  depends_on = [
-    module.ndr-app-config
-  ]
 }
 
 module "manage-nrl-pointer-alarm" {
@@ -37,7 +33,6 @@ module "manage-nrl-pointer-alarm" {
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.manage-nrl-pointer-alarm-topic.arn]
   ok_actions           = [module.manage-nrl-pointer-alarm-topic.arn]
-  depends_on           = [module.manage-nrl-pointer-lambda, module.manage-nrl-pointer-alarm-topic]
 }
 
 module "manage-nrl-pointer-alarm-topic" {
@@ -67,8 +62,6 @@ module "manage-nrl-pointer-alarm-topic" {
       }
     ]
   })
-
-  depends_on = [module.manage-nrl-pointer-lambda, module.sns_encryption_key]
 }
 
 resource "aws_lambda_event_source_mapping" "nrl_pointer_lambda" {
@@ -84,11 +77,6 @@ resource "aws_lambda_event_source_mapping" "nrl_pointer_lambda" {
       })
     }
   }
-
-  depends_on = [
-    module.sqs-nrl-queue,
-    module.manage-nrl-pointer-lambda
-  ]
 }
 
 
