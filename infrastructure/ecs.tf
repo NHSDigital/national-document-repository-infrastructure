@@ -33,7 +33,8 @@ module "ndr-ecs-container-port-ssm-parameter" {
 }
 
 module "ndr-ecs-fargate-ods-update" {
-  count                    = local.is_sandbox ? 0 : 1
+  # TODO: PRMP-1123 - UNCOMMENT BELOW BEFORE MERGE INTO MAIN
+  #  count                    = local.is_sandbox ? 0 : 1
   source                   = "./modules/ecs"
   ecs_cluster_name         = "ods-weekly-update"
   vpc_id                   = module.ndr-vpc-ui.vpc_id

@@ -6,7 +6,8 @@ module "ndr-docker-ecr-ui" {
   owner       = var.owner
 }
 module "ndr-docker-ecr-weekly-ods-update" {
-  count    = local.is_sandbox ? 0 : 1
+  # TODO: PRMP-1123 - UNCOMMENT BELOW BEFORE MERGE INTO MAIN
+  #  count    = local.is_sandbox ? 0 : 1
   source   = "./modules/ecr/"
   app_name = "${terraform.workspace}-weekly-ods-update"
 
