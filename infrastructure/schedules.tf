@@ -58,7 +58,8 @@ resource "aws_lambda_permission" "bulk_upload_report_schedule_permission" {
 }
 
 resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
-  count       = local.is_sandbox ? 0 : 1
+  # TODO: PRMP-1123 - Uncomment the following line before merging
+  #  count = local.is_sandbox ? 0 : 1
   name_prefix = "${terraform.workspace}_ods_weekly_update_ecs"
   description = "A weekly trigger for the ods update run"
 
@@ -69,15 +70,15 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
   schedule_expression = "cron(0 4 ? * SAT *)"
 
   target {
-    arn      = module.ndr-ecs-fargate-ods-update[0].ecs_cluster_arn
-    role_arn = aws_iam_role.ods_weekly_update_ecs_execution[0].arn
+    arn      = module.ndr-ecs-fargate-ods-update.ecs_cluster_arn
+    role_arn = aws_iam_role.ods_weekly_update_ecs_execution.arn
     ecs_parameters {
-      task_definition_arn = replace(module.ndr-ecs-fargate-ods-update[0].task_definition_arn, "/:[0-9]+$/", "")
+      task_definition_arn = replace(module.ndr-ecs-fargate-ods-update.task_definition_arn, "/:[0-9]+$/", "") # TODO: PRMP-1123 - Undo change before merging
       task_count          = 1
       launch_type         = "FARGATE"
       network_configuration {
         assign_public_ip = false
-        security_groups  = [module.ndr-ecs-fargate-ods-update[0].security_group_id]
+        security_groups  = [module.ndr-ecs-fargate-ods-update.security_group_id] # TODO: PRMP-1123 - Undo change before merging
         subnets          = [for subnet in module.ndr-vpc-ui.private_subnets : subnet]
       }
     }
@@ -85,8 +86,9 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
 }
 
 resource "aws_iam_role" "ods_weekly_update_ecs_execution" {
-  count = local.is_sandbox ? 0 : 1
-  name  = "${terraform.workspace}_ods_weekly_update_scheduler_role"
+  # TODO: PRMP-1123 - Uncomment the following line before merging
+  #  count = local.is_sandbox ? 0 : 1
+  name = "${terraform.workspace}_ods_weekly_update_scheduler_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
