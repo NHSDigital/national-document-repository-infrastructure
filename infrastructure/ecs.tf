@@ -43,7 +43,7 @@ module "ndr-ecs-fargate-ods-update" {
   sg_name                  = "${terraform.workspace}-ods-weekly-update-sg"
   ecs_launch_type          = "FARGATE"
   ecs_cluster_service_name = "${terraform.workspace}-ods-weekly-update"
-  ecr_repository_url       = module.ndr-docker-ecr-weekly-ods-update.ecr_repository_url   # TODO: PRMP-1123 - Re-add "ndr-docker-ecr-weekly-ods-update[0]." before merging
+  ecr_repository_url       = module.ndr-docker-ecr-weekly-ods-update.ecr_repository_url # TODO: PRMP-1123 - Re-add "ndr-docker-ecr-weekly-ods-update[0]." before merging
   environment              = var.environment
   owner                    = var.owner
   container_port           = 80
@@ -99,8 +99,8 @@ module "ndr-ecs-fargate-ods-update" {
 
 resource "aws_iam_role" "ods_weekly_update_task_role" {
   # TODO: PRMP-1123 - Uncomment the following line before merging
-#  count = local.is_sandbox ? 0 : 1
-  name  = "${terraform.workspace}_ods_weekly_update_task_role"
+  #  count = local.is_sandbox ? 0 : 1
+  name = "${terraform.workspace}_ods_weekly_update_task_role"
   managed_policy_arns = [
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     aws_iam_policy.ssm_access_policy.arn,
