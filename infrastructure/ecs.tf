@@ -98,7 +98,7 @@ module "ndr-ecs-fargate-ods-update" {
 
 resource "aws_iam_role" "ods_weekly_update_task_role" {
   count = local.is_sandbox ? 0 : 1
-  name = "${terraform.workspace}_ods_weekly_update_task_role"
+  name  = "${terraform.workspace}_ods_weekly_update_task_role"
   managed_policy_arns = [
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     aws_iam_policy.ssm_access_policy.arn,

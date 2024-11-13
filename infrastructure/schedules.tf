@@ -58,7 +58,7 @@ resource "aws_lambda_permission" "bulk_upload_report_schedule_permission" {
 }
 
 resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
-  count = local.is_sandbox ? 0 : 1
+  count       = local.is_sandbox ? 0 : 1
   name_prefix = "${terraform.workspace}_ods_weekly_update_ecs"
   description = "A weekly trigger for the ods update run"
 
@@ -86,7 +86,7 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
 
 resource "aws_iam_role" "ods_weekly_update_ecs_execution" {
   count = local.is_sandbox ? 0 : 1
-  name = "${terraform.workspace}_ods_weekly_update_scheduler_role"
+  name  = "${terraform.workspace}_ods_weekly_update_scheduler_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
