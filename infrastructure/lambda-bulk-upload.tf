@@ -12,7 +12,8 @@ module "bulk-upload-lambda" {
     module.sqs-lg-bulk-upload-metadata-queue.sqs_policy,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_policy,
     aws_iam_policy.ssm_access_policy.arn,
-    module.ndr-app-config.app_config_policy_arn
+    module.ndr-app-config.app_config_policy_arn,
+    module.sqs-nrl-queue.sqs_policy
   ]
   rest_api_id       = null
   api_execution_arn = null
@@ -29,7 +30,7 @@ module "bulk-upload-lambda" {
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
     INVALID_SQS_QUEUE_URL      = module.sqs-lg-bulk-upload-invalid-queue.sqs_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
-    METADATA_NRL_SQS_URL       = module.sqs-nrl-queue.sqs_url
+    NRL_SQS_URL                = module.sqs-nrl-queue.sqs_url
   }
 
   is_gateway_integration_needed  = false
