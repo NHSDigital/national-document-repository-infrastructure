@@ -30,3 +30,5 @@ module "sqs-lg-bulk-upload-invalid-queue" {
   max_visibility    = 1020
 }
 
+
+

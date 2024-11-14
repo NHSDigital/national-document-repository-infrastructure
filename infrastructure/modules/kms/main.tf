@@ -1,6 +1,6 @@
 resource "aws_kms_key" "encryption_key" {
   description         = var.kms_key_description
-  policy              = data.aws_iam_policy_document.kms_key_policy_doc.json
+  policy              = data.aws_iam_policy_document.combined_policy_documents.json
   enable_key_rotation = var.kms_key_rotation_enabled
 
   tags = {
@@ -17,7 +17,7 @@ resource "aws_kms_alias" "encryption_key_alias" {
 }
 
 
-data "aws_iam_policy_document" "kms_key_policy_doc" {
+data "aws_iam_policy_document" "kmn_key_base" {
   statement {
     effect = "Allow"
     principals {
@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "kms_key_policy_doc" {
   statement {
     effect = "Allow"
     principals {
-      identifiers = var.identifiers
+      identifiers = var.service_identifiers
       type        = "Service"
     }
     actions = [
@@ -38,5 +38,32 @@ data "aws_iam_policy_document" "kms_key_policy_doc" {
       "kms:GenerateDataKey*"
     ]
     resources = ["*"]
+    dynamic "condition" {
+      for_each = var.allow_decrypt_for_arn ? [1] : []
+      content {
+        key   = "ArnEquals"
+        value = var.allowed_arn
+      }
+    }
   }
 }
+
+data "aws_iam_policy_document" "kms_key_generate" {
+  statment {
+    effect = "Allow"
+    principals {
+      identifiers = var.aws_identifiers
+      type        = "AWS"
+    }
+    action    = ["kms:GenerateDataKey"]
+    resources = ["*"]
+  }
+}
+
+data "aws_iam_policy_document" "combined_policy_documents" {
+  source_policy_documents = [
+    data.aws_iam_policy_document.kmn_key_base.json,
+    data.aws_iam_policy_document.kms_key_generate.json
+  ]
+}
+
