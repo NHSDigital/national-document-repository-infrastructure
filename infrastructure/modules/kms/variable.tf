@@ -38,8 +38,8 @@ variable "allow_decrypt_for_arn" {
 }
 
 variable "allowed_arn" {
-  type    = string
-  default = ""
+  type    = list(string)
+  default = []
 }
 
 output "kms_arn" {

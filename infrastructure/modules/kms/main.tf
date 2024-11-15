@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "kmn_key_base" {
       for_each = var.allow_decrypt_for_arn ? [1] : []
       content {
         test     = "ArnEquals"
-        values   = [var.allowed_arn]
+        values   = var.allowed_arn
         variable = "aws:SourceArn"
       }
     }
