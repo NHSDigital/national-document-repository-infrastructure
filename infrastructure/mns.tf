@@ -32,39 +32,34 @@ module "sqs-mns-notification-queue" {
   kms_master_key_id = module.mns_encryption_key.id
 }
 
-resource "aws_iam_policy" "mns_sqs_access_policy" {
+resource "aws_sqs_queue_policy" "mns_sqs_access_policy" {
+  queue_url = module.sqs-mns-notification-queue.sqs_url
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        "Effect" = "Allow",
-        "Action" = [
-          "sqs:SendMessage",
-        ],
-        "Resource" = [
-          module.sqs-mns-notification-queue.sqs_arn
-        ],
-        "Principal" = {
-          "Type"        = "Service",
-          "Identifiers" = ["sns.amazonaws.com"],
+        Effect = "Allow",
+        Principal = {
+          Service = "sns.amazonaws.com"
         },
-        "Condition" = {
-          "aws:SourceArn" = data.aws_ssm_parameter.mns_sns.value
+        Action   = "SQS:SendMessage",
+        Resource = module.sqs-mns-notification-queue.sqs_arn,
+        Condition = {
+          "StringEquals" = {
+            "aws:SourceArn" = data.aws_ssm_parameter.mns_sns.value
+          }
         }
       },
       {
-        "Effect" = "Allow",
-        "Action" = [
-          "sqs:SendMessage",
-        ],
-        "Resource" = [
-          module.sqs-mns-notification-queue.sqs_arn
-        ],
-        "Principal" = {
-          "Type"        = "AWS",
-          "Identifiers" = [data.aws_ssm_parameter.mns_lambda_role.value],
+        Effect = "Allow",
+        Principal = {
+          AWS = data.aws_ssm_parameter.mns_lambda_role.value
         },
+        Action   = "SQS:SendMessage",
+        Resource = module.sqs-mns-notification-queue.sqs_arn
       }
     ]
   })
 }
+
