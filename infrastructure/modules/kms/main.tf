@@ -50,6 +50,7 @@ data "aws_iam_policy_document" "kmn_key_base" {
 }
 
 data "aws_iam_policy_document" "kms_key_generate" {
+  count = var.aws_identifiers ? 1 : 0
   statement {
     effect = "Allow"
     principals {
@@ -63,7 +64,7 @@ data "aws_iam_policy_document" "kms_key_generate" {
 
 data "aws_iam_policy_document" "combined_policy_documents" {
   source_policy_documents = [
-    data.aws_iam_policy_document.kmn_key_base.json,
+    var.aws_identifiers ? data.aws_iam_policy_document.kmn_key_base[0].json : null,
     data.aws_iam_policy_document.kms_key_generate.json
   ]
 }
