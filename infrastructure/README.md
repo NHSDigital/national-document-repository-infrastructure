@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.62.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.66.0 |
 
 ## Modules
 
@@ -84,6 +84,9 @@
 | <a name="module_logout_alarm"></a> [logout\_alarm](#module\_logout\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_logout_alarm_topic"></a> [logout\_alarm\_topic](#module\_logout\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_logout_lambda"></a> [logout\_lambda](#module\_logout\_lambda) | ./modules/lambda | n/a |
+| <a name="module_manage-nrl-pointer-alarm"></a> [manage-nrl-pointer-alarm](#module\_manage-nrl-pointer-alarm) | ./modules/lambda_alarms | n/a |
+| <a name="module_manage-nrl-pointer-alarm-topic"></a> [manage-nrl-pointer-alarm-topic](#module\_manage-nrl-pointer-alarm-topic) | ./modules/sns | n/a |
+| <a name="module_manage-nrl-pointer-lambda"></a> [manage-nrl-pointer-lambda](#module\_manage-nrl-pointer-lambda) | ./modules/lambda | n/a |
 | <a name="module_ndr-app-config"></a> [ndr-app-config](#module\_ndr-app-config) | ./modules/app_config | n/a |
 | <a name="module_ndr-bulk-staging-store"></a> [ndr-bulk-staging-store](#module\_ndr-bulk-staging-store) | ./modules/s3/ | n/a |
 | <a name="module_ndr-docker-ecr-ui"></a> [ndr-docker-ecr-ui](#module\_ndr-docker-ecr-ui) | ./modules/ecr/ | n/a |
@@ -117,6 +120,7 @@
 | <a name="module_sqs-lg-bulk-upload-invalid-queue"></a> [sqs-lg-bulk-upload-invalid-queue](#module\_sqs-lg-bulk-upload-invalid-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-lg-bulk-upload-metadata-queue"></a> [sqs-lg-bulk-upload-metadata-queue](#module\_sqs-lg-bulk-upload-metadata-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-nems-queue"></a> [sqs-nems-queue](#module\_sqs-nems-queue) | ./modules/sqs | n/a |
+| <a name="module_sqs-nrl-queue"></a> [sqs-nrl-queue](#module\_sqs-nrl-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-splunk-queue"></a> [sqs-splunk-queue](#module\_sqs-splunk-queue) | ./modules/sqs | n/a |
 | <a name="module_statistical-report-alarm"></a> [statistical-report-alarm](#module\_statistical-report-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_statistical-report-alarm-topic"></a> [statistical-report-alarm-topic](#module\_statistical-report-alarm-topic) | ./modules/sns | n/a |
@@ -220,6 +224,7 @@
 | [aws_lambda_event_source_mapping.dynamodb_stream_manifest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_event_source_mapping.dynamodb_stream_stitch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_event_source_mapping.nems_message_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
+| [aws_lambda_event_source_mapping.nrl_pointer_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_permission.bulk_upload_metadata_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.bulk_upload_report_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.data_collection_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
@@ -263,6 +268,7 @@
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_ssm_parameter.backup_target_account](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.cloud_security_notification_email_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.end_user_ods_code](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.splunk_trusted_principal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.target_backup_vault_arn](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 
@@ -299,6 +305,7 @@
 | <a name="input_mesh_shared_key_ssm_param_name"></a> [mesh\_shared\_key\_ssm\_param\_name](#input\_mesh\_shared\_key\_ssm\_param\_name) | Name of SSM parameter containing MESH shared key | `string` | n/a | yes |
 | <a name="input_mesh_url"></a> [mesh\_url](#input\_mesh\_url) | URL of MESH service | `string` | n/a | yes |
 | <a name="input_message_destination"></a> [message\_destination](#input\_message\_destination) | n/a | `string` | `"sns"` | no |
+| <a name="input_nrl_api_endpoint_suffix"></a> [nrl\_api\_endpoint\_suffix](#input\_nrl\_api\_endpoint\_suffix) | n/a | `string` | `"api.service.nhs.uk/record-locator/producer/FHIR/R4/DocumentReference"` | no |
 | <a name="input_num_private_subnets"></a> [num\_private\_subnets](#input\_num\_private\_subnets) | Sets the number of private subnets, one per availability zone | `number` | `3` | no |
 | <a name="input_num_public_subnets"></a> [num\_public\_subnets](#input\_num\_public\_subnets) | Sets the number of public subnets, one per availability zone | `number` | `3` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |

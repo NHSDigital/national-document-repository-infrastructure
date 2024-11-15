@@ -234,3 +234,7 @@ locals {
   current_region     = data.aws_region.current.name
   current_account_id = data.aws_caller_identity.current.account_id
 }
+
+variable "nrl_api_endpoint_suffix" {
+  default = "api.service.nhs.uk/record-locator/producer/FHIR/R4/DocumentReference"
+}
