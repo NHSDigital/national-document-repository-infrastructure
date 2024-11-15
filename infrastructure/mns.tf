@@ -43,27 +43,27 @@ resource "aws_iam_policy" "mns_sqs_access_policy" {
         module.sqs-mns-notification-queue.sqs_arn
       ]
       "Principal" = {
-        "Type" = "Service",
+        "Type"        = "Service",
         "Identifiers" = "sns.amazonaws.com",
       },
       "Condition" = {
         "aws:SourceArn" = "arn:aws:sns:${var.region}:${data.aws_ssm_parameter.mns_account_id.value}:${mns_event_placeholder}"
       }
-    },
-    {
-      "Sid"    = "shsqsstatement",
-      "Effect" = "Allow",
-      "Action" = [
-        "sqs:SendMessage",
-      ],
-      "Resource" = [
-        module.sqs-mns-notification-queue.sqs_arn
-      ],
-      "Principal" = {
-        "Type" = "AWS",
-        "Identifiers" = "arn:aws:iam:${data.aws_ssm_parameter.mns_account_id.value}:role/${role_placeholder}",
-      },   
+      },
+      {
+        "Sid"    = "shsqsstatement",
+        "Effect" = "Allow",
+        "Action" = [
+          "sqs:SendMessage",
+        ],
+        "Resource" = [
+          module.sqs-mns-notification-queue.sqs_arn
+        ],
+        "Principal" = {
+          "Type"        = "AWS",
+          "Identifiers" = "arn:aws:iam:${data.aws_ssm_parameter.mns_account_id.value}:role/${role_placeholder}",
+        },
     }]
-  
-   })
+
+  })
 }
