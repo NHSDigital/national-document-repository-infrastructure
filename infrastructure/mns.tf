@@ -1,6 +1,9 @@
-data "aws_ssm_parameter" "mns_account_id" {
-  name = "/ndr/${var.environment}/mns/account-id"
-  #   TODO add ssm parameter for account-id
+data "aws_ssm_parameter" "mns_lambda_role" {
+  name = "/ndr/${var.environment}/mns/lambda_role"
+}
+
+data "aws_ssm_parameter" "mns_sns" {
+  name = "/ndr/${var.environment}/mns/sns_resource"
 }
 
 module "mns_encryption_key" {
@@ -10,10 +13,10 @@ module "mns_encryption_key" {
   current_account_id    = data.aws_caller_identity.current.account_id
   environment           = var.environment
   owner                 = var.owner
-  services_identifiers  = ["sns.amazonaws.com"]
-  aws_identifiers       = ["arn:aws:iam:${data.aws_ssm_parameter.mns_account_id.value}:role/${role_placeholder}"]
+  service_identifiers   = ["sns.amazonaws.com"]
+  aws_identifiers       = [data.aws_ssm_parameter.mns_lambda_role.value]
   allow_decrypt_for_arn = true
-  allowed_arn           = "arn:aws:sns:${var.region}:${data.aws_ssm_parameter.mns_account_id.value}:${mns_event_placeholder}"
+  allowed_arn           = data.aws_ssm_parameter.mns_sns.value
 }
 
 module "sqs-mns-notification-queue" {
@@ -47,7 +50,7 @@ resource "aws_iam_policy" "mns_sqs_access_policy" {
         "Identifiers" = "sns.amazonaws.com",
       },
       "Condition" = {
-        "aws:SourceArn" = "arn:aws:sns:${var.region}:${data.aws_ssm_parameter.mns_account_id.value}:${mns_event_placeholder}"
+        "aws:SourceArn" = data.aws_ssm_parameter.mns_sns.value
       }
       },
       {
@@ -61,7 +64,7 @@ resource "aws_iam_policy" "mns_sqs_access_policy" {
         ],
         "Principal" = {
           "Type"        = "AWS",
-          "Identifiers" = "arn:aws:iam:${data.aws_ssm_parameter.mns_account_id.value}:role/${role_placeholder}",
+          "Identifiers" = data.aws_ssm_parameter.mns_lambda_role.value,
         },
     }]
 
