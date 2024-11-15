@@ -49,13 +49,13 @@ data "aws_iam_policy_document" "kmn_key_base" {
 }
 
 data "aws_iam_policy_document" "kms_key_generate" {
-  statment {
+  statement {
     effect = "Allow"
     principals {
       identifiers = var.aws_identifiers
       type        = "AWS"
     }
-    action    = ["kms:GenerateDataKey"]
+    actions   = ["kms:GenerateDataKey"]
     resources = ["*"]
   }
 }

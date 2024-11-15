@@ -28,7 +28,8 @@ variable "service_identifiers" {
 }
 
 variable "aws_identifiers" {
-  type = list(string)
+  type    = list(string)
+  default = []
 }
 
 variable "allow_decrypt_for_arn" {

@@ -28,7 +28,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_allow_decrypt_for_arn"></a> [allow\_decrypt\_for\_arn](#input\_allow\_decrypt\_for\_arn) | n/a | `bool` | `false` | no |
 | <a name="input_allowed_arn"></a> [allowed\_arn](#input\_allowed\_arn) | n/a | `string` | `""` | no |
-| <a name="input_aws_identifiers"></a> [aws\_identifiers](#input\_aws\_identifiers) | n/a | `list(string)` | n/a | yes |
+| <a name="input_aws_identifiers"></a> [aws\_identifiers](#input\_aws\_identifiers) | n/a | `list(string)` | `[]` | no |
 | <a name="input_current_account_id"></a> [current\_account\_id](#input\_current\_account\_id) | n/a | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
 | <a name="input_kms_key_description"></a> [kms\_key\_description](#input\_kms\_key\_description) | n/a | `string` | n/a | yes |

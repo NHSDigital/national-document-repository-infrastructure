@@ -36,25 +36,24 @@ module "sqs-mns-notification-queue" {
 resource "aws_iam_policy" "mns_sqs_access_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      "Sid"    = "shsqsstatement",
-      "Effect" = "Allow",
-      "Action" = [
-        "sqs:SendMessage",
-      ],
-      "Resource" = [
-        module.sqs-mns-notification-queue.sqs_arn
-      ]
-      "Principal" = {
-        "Type"        = "Service",
-        "Identifiers" = "sns.amazonaws.com",
-      },
-      "Condition" = {
-        "aws:SourceArn" = data.aws_ssm_parameter.mns_sns.value
-      }
+    Statement = [
+      {
+        "Effect" = "Allow",
+        "Action" = [
+          "sqs:SendMessage",
+        ],
+        "Resource" = [
+          module.sqs-mns-notification-queue.sqs_arn
+        ],
+        "Principal" = {
+          "Type"        = "Service",
+          "Identifiers" = ["sns.amazonaws.com"],
+        },
+        "Condition" = {
+          "aws:SourceArn" = data.aws_ssm_parameter.mns_sns.value
+        }
       },
       {
-        "Sid"    = "shsqsstatement",
         "Effect" = "Allow",
         "Action" = [
           "sqs:SendMessage",
@@ -64,9 +63,9 @@ resource "aws_iam_policy" "mns_sqs_access_policy" {
         ],
         "Principal" = {
           "Type"        = "AWS",
-          "Identifiers" = data.aws_ssm_parameter.mns_lambda_role.value,
+          "Identifiers" = [data.aws_ssm_parameter.mns_lambda_role.value],
         },
-    }]
-
+      }
+    ]
   })
 }
