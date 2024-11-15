@@ -28,8 +28,8 @@ module "sqs-mns-notification-queue" {
   owner             = var.owner
   max_visibility    = 1020
   delay             = 60
+  enable_sse        = null
   kms_master_key_id = module.mns_encryption_key.id
-  enable_sse        = false
 }
 
 resource "aws_iam_policy" "mns_sqs_access_policy" {
