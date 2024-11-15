@@ -20,17 +20,15 @@ module "mns_encryption_key" {
 }
 
 module "sqs-mns-notification-queue" {
-  source               = "./modules/sqs"
-  name                 = "mns-notification-queue"
-  max_size_message     = 256 * 1024        # allow message size up to 256 KB
-  message_retention    = 60 * 60 * 24 * 14 # 14 days
-  environment          = var.environment
-  owner                = var.owner
-  max_visibility       = 1020
-  enable_deduplication = true
-  delay                = 60
-  kms_master_key_id    = module.mns_encryption_key.id
-
+  source            = "./modules/sqs"
+  name              = "mns-notification-queue"
+  max_size_message  = 256 * 1024        # allow message size up to 256 KB
+  message_retention = 60 * 60 * 24 * 14 # 14 days
+  environment       = var.environment
+  owner             = var.owner
+  max_visibility    = 1020
+  delay             = 60
+  kms_master_key_id = module.mns_encryption_key.id
 }
 
 resource "aws_iam_policy" "mns_sqs_access_policy" {
