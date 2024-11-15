@@ -10,7 +10,6 @@ locals {
   mns_sns_source_arns = split(",", data.aws_ssm_parameter.mns_sns_resources.value)
 }
 
-
 module "mns_encryption_key" {
   source                = "./modules/kms"
   kms_key_name          = "alias/mns-notification-encryption-key-kms-${terraform.workspace}"
@@ -67,4 +66,3 @@ resource "aws_sqs_queue_policy" "mns_sqs_access_policy" {
     ]
   })
 }
-
