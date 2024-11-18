@@ -66,9 +66,9 @@ resource "aws_iam_role" "lambda_execution_role" {
 #   policy_arn = var.iam_role_policy_documents[count.index]
 # }
 
-data "aws_iam_policy_document" "combined_policies" {
-  source_policy_documents = var.iam_role_policy_documents  # Combine all provided policy documents
-}
+# data "aws_iam_policy_document" "combined_policies" {
+#   source_policy_documents = var.iam_role_policy_documents  # Combine all provided policy documents
+# }
 
 
 resource "aws_iam_policy" "lambda_combined_policy" {
