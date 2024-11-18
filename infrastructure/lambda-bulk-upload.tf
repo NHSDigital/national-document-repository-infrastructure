@@ -8,7 +8,7 @@ module "bulk-upload-lambda" {
     module.ndr-app-config.app_config_policy_arn,
     aws_iam_policy.ssm_access_policy.arn,
 
-    module.lambda.
+    module.bulk-upload-lambda.combined_policies
     # module.ndr-bulk-staging-store.s3_object_access_policy,
     # module.ndr-lloyd-george-store.s3_object_access_policy,
     # module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
