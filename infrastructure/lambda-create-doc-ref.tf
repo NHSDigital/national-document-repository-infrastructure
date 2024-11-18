@@ -66,7 +66,7 @@ module "create-doc-ref-lambda" {
   source  = "./modules/lambda"
   name    = "CreateDocRefLambda"
   handler = "handlers.create_document_reference_handler.lambda_handler"
-  iam_role_policies = [
+  iam_role_policy_documents = [
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.stitch_metadata_reference_dynamodb_table.dynamodb_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,

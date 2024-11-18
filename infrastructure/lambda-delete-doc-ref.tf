@@ -65,7 +65,7 @@ module "delete-doc-ref-lambda" {
   source  = "./modules/lambda"
   name    = "DeleteDocRefLambda"
   handler = "handlers.delete_document_reference_handler.lambda_handler"
-  iam_role_policies = [
+  iam_role_policy_documents = [
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.ndr-document-store.s3_object_access_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,

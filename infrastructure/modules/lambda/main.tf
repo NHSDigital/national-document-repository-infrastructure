@@ -61,13 +61,24 @@ resource "aws_iam_role" "lambda_execution_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
-  count      = length(var.iam_role_policies)
+  count      = length(var.iam_role_policy_documents)
   role       = aws_iam_role.lambda_execution_role.name
-  policy_arn = var.iam_role_policies[count.index]
+  policy_arn = var.iam_role_policy_documents[count.index]
 }
 
 data "archive_file" "lambda" {
   type        = "zip"
   source_file = "placeholder_lambda.py"
   output_path = "placeholder_lambda_payload.zip"
+}
+
+data "aws_iam_policy_document" "combined" {
+  source_policy_documents = [
+    data.s3_read_policy_document,
+    data.s3_write_policy_document,
+    data.sqs_read_policy_document,
+    data.sqs_write_policy_document,
+    data.dynamodb_read_policy_document,
+    data.dynamodb_write_policy_document
+  ]
 }

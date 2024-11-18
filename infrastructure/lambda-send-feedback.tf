@@ -78,7 +78,7 @@ module "send-feedback-lambda" {
   source  = "./modules/lambda"
   name    = "SendFeedbackLambda"
   handler = "handlers.send_feedback_handler.lambda_handler"
-  iam_role_policies = [
+  iam_role_policy_documents = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_access_policy.arn,

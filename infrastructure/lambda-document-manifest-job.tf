@@ -67,7 +67,7 @@ module "document-manifest-job-lambda" {
   name           = "DocumentManifestJobLambda"
   handler        = "handlers.document_manifest_job_handler.lambda_handler"
   lambda_timeout = 900
-  iam_role_policies = [
+  iam_role_policy_documents = [
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     module.zip_store_reference_dynamodb_table.dynamodb_policy,

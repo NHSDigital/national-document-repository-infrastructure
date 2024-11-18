@@ -41,7 +41,7 @@ variable "api_execution_arn" {
   type = string
 }
 
-variable "iam_role_policies" {
+variable "iam_role_policy_documents" {
   type = list(string)
 }
 
