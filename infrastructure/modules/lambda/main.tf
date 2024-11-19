@@ -73,7 +73,7 @@ resource "aws_iam_role" "lambda_execution_role" {
 
 resource "aws_iam_policy" "lambda_combined_policy" {
   name   = "${terraform.workspace}_lambda_combined_policy_${var.name}"
-  policy = data.aws_iam_policy_document.combined_policies.json
+  policy = var.iam_role_policy_documents[0] # Reference the first combined policy document
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {

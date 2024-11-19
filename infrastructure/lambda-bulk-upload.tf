@@ -3,12 +3,11 @@ module "bulk-upload-lambda" {
   name    = "BulkUploadLambda"
   handler = "handlers.bulk_upload_handler.lambda_handler"
   iam_role_policy_documents = [
+    data.aws_iam_policy_document.combined_policies.json,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-app-config.app_config_policy_arn,
     aws_iam_policy.ssm_access_policy.arn,
-
-    data.aws_iam_policy_document.combined_policies.json,
     # module.ndr-bulk-staging-store.s3_object_access_policy,
     # module.ndr-lloyd-george-store.s3_object_access_policy,
     # module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
