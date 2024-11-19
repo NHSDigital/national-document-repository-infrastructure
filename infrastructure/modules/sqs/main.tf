@@ -22,7 +22,7 @@ resource "aws_iam_policy" "sqs_queue_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      "Sid"    = "shsqsstatement",
+      # "Sid"    = "shsqsstatement",
       "Effect" = "Allow",
       "Action" = [
         "sqs:SendMessage",
