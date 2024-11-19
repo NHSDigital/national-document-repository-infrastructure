@@ -2,6 +2,10 @@ output "dynamodb_policy" {
   value = aws_iam_policy.dynamodb_policy.arn
 }
 
+output "dynamodb_policy_json" {
+  value = aws_iam_policy.dynamodb_policy.policy
+}
+
 output "dynamodb_table_arn" {
   value = aws_dynamodb_table.ndr_dynamodb_table.arn
 }
