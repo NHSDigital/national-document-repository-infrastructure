@@ -20,23 +20,23 @@ resource "aws_iam_policy" "ssm_access_policy" {
 
 data "aws_iam_policy_document" "combined_sqs_policies" {
   source_policy_documents = [
-    module.sqs-lg-bulk-upload-metadata-queue.sqs_policy,
-    module.sqs-lg-bulk-upload-invalid-queue.sqs_policy,
-    module.sqs-nrl-queue.sqs_policy
+    module.sqs-lg-bulk-upload-metadata-queue.sqs_policy.json,
+    module.sqs-lg-bulk-upload-invalid-queue.sqs_policy.json,
+    module.sqs-nrl-queue.sqs_policy.json
   ]
 }
 
 data "aws_iam_policy_document" "combined_s3_policies" {
   source_policy_documents = [
-    module.ndr-bulk-staging-store.s3_object_access_policy,
-    module.ndr-lloyd-george-store.s3_object_access_policy
+    module.ndr-bulk-staging-store.s3_object_access_policy.json,
+    module.ndr-lloyd-george-store.s3_object_access_policy.json
   ]
 }
 
 data "aws_iam_policy_document" "combined_dynamodb_policies" {
   source_policy_documents = [
-    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
-    module.bulk_upload_report_dynamodb_table.dynamodb_policy
+    module.lloyd_george_reference_dynamodb_table.dynamodb_policy.json,
+    module.bulk_upload_report_dynamodb_table.dynamodb_policy.json
   ]
 }
 
