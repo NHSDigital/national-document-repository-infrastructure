@@ -6,10 +6,10 @@ module "bulk-upload-lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-app-config.app_config_policy_arn,
-    aws_iam_policy.ssm_access_policy,
-    aws_iam_policy.lambda_sqs_combined_policy,
-    aws_iam_policy.lambda_s3_combined_policy,
-    aws_iam_policy.lambda_dynamodb_combined_policy
+    aws_iam_policy.ssm_access_policy.arn,
+    aws_iam_policy.lambda_sqs_combined_policy.arn,
+    aws_iam_policy.lambda_s3_combined_policy.arn,
+    aws_iam_policy.lambda_dynamodb_combined_policy.arn
   ]
   rest_api_id       = null
   api_execution_arn = null
