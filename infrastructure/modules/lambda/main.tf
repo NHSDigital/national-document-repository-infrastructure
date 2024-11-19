@@ -60,25 +60,10 @@ resource "aws_iam_role" "lambda_execution_role" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
-# resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
-#   count      = length(var.iam_role_policy_documents)
-#   role       = aws_iam_role.lambda_execution_role.name
-#   policy_arn = var.iam_role_policy_documents[count.index]
-# }
-
-# data "aws_iam_policy_document" "combined_policies" {
-#   source_policy_documents = var.iam_role_policy_documents  # Combine all provided policy documents
-# }
-
-
-resource "aws_iam_policy" "lambda_combined_policy" {
-  name   = "${terraform.workspace}_lambda_combined_policy_${var.name}"
-  policy = var.iam_role_policy_documents[0] # Reference the first combined policy document
-}
-
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
+  count      = length(var.iam_role_policy_documents)
   role       = aws_iam_role.lambda_execution_role.name
-  policy_arn = aws_iam_policy.lambda_combined_policy.arn
+  policy_arn = var.iam_role_policy_documents[count.index]
 }
 
 data "archive_file" "lambda" {
@@ -86,14 +71,3 @@ data "archive_file" "lambda" {
   source_file = "placeholder_lambda.py"
   output_path = "placeholder_lambda_payload.zip"
 }
-
-# data "aws_iam_policy_document" "combined_policies" {
-#   source_policy_documents = [
-#     data.s3_read_policy_document,
-#     data.s3_write_policy_document,
-#     data.sqs_read_policy_document,
-#     data.sqs_write_policy_document,
-#     data.dynamodb_read_policy_document,
-#     data.dynamodb_write_policy_document
-#   ]
-# }

@@ -97,10 +97,10 @@ output "sqs_url" {
   value = aws_sqs_queue.sqs_queue.url
 }
 
-output "sqs_read_policy_document" {
-  value       = data.aws_iam_policy_document.sqs_read_policy.json
-}
+# output "sqs_read_policy_document" {
+#   value       = data.aws_iam_policy_document.sqs_read_policy.json
+# }
 
-output "sqs_write_policy_document" {
-  value       = data.aws_iam_policy_document.sqs_write_policy.json
-}
+# output "sqs_write_policy_document" {
+#   value       = data.aws_iam_policy_document.sqs_write_policy.json
+# }

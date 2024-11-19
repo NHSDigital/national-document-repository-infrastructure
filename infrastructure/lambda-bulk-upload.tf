@@ -3,18 +3,13 @@ module "bulk-upload-lambda" {
   name    = "BulkUploadLambda"
   handler = "handlers.bulk_upload_handler.lambda_handler"
   iam_role_policy_documents = [
-    data.aws_iam_policy_document.combined_policies.json,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-app-config.app_config_policy_arn,
     aws_iam_policy.ssm_access_policy.arn,
-    # module.ndr-bulk-staging-store.s3_object_access_policy,
-    # module.ndr-lloyd-george-store.s3_object_access_policy,
-    # module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
-    # module.bulk_upload_report_dynamodb_table.dynamodb_policy,
-    # module.sqs-lg-bulk-upload-metadata-queue.sqs_policy,
-    # module.sqs-lg-bulk-upload-invalid-queue.sqs_policy,
-    # module.sqs-nrl-queue.sqs_policy
+    aws_iam_policy.lambda_sqs_combined_policy.arn,
+    aws_iam_policy.lambda_s3_combined_policy.arn,
+    aws_iam_policy.lambda_dynamodb_combined_policy.arn
   ]
   rest_api_id       = null
   api_execution_arn = null
@@ -107,16 +102,4 @@ module "bulk-upload-alarm-topic" {
   })
 
   depends_on = [module.bulk-upload-lambda, module.sns_encryption_key]
-}
-
-
-data "aws_iam_policy_document" "combined_policies" {
-  source_policy_documents = [
-    data.s3_read_policy_document,
-    data.s3_write_policy_document,
-    data.sqs_read_policy_document,
-    data.sqs_write_policy_document,
-    data.dynamodb_read_policy_document,
-    data.dynamodb_write_policy_document
-  ]
 }
