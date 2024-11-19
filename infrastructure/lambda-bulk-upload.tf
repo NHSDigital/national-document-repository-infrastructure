@@ -109,31 +109,14 @@ module "bulk-upload-alarm-topic" {
   depends_on = [module.bulk-upload-lambda, module.sns_encryption_key]
 }
 
-data "aws_iam_policy_document" "combined_policies" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "s3:GetObject",
-      "s3:ListBucket",
-      "s3:PutObject"
-    ]
-    resources = [
-      module.ndr-bulk-staging-store.s3_object_access_policy,
-      module.ndr-lloyd-george-store.s3_object_access_policy
-    ]
-  }
 
-  statement {
-    effect = "Allow"
-    actions = [
-      "dynamodb:Query",
-      "dynamodb:Scan",
-      "dynamodb:GetItem",
-      "dynamodb:PutItem"
-    ]
-    resources = [
-      module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
-      module.bulk_upload_report_dynamodb_table.dynamodb_policy
-    ]
-  }
+data "aws_iam_policy_document" "combined_policies" {
+  source_policy_documents = [
+    data.s3_read_policy_document,
+    data.s3_write_policy_document,
+    data.sqs_read_policy_document,
+    data.sqs_write_policy_document,
+    data.dynamodb_read_policy_document,
+    data.dynamodb_write_policy_document
+  ]
 }
