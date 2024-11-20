@@ -8,8 +8,10 @@ module "bulk-upload-lambda" {
     module.ndr-app-config.app_config_policy_arn,
     aws_iam_policy.ssm_access_policy.arn,
     aws_iam_policy.lambda_sqs_combined_policy.arn,
-    aws_iam_policy.lambda_s3_combined_policy.arn,
-    aws_iam_policy.lambda_dynamodb_combined_policy.arn
+    module.ndr-bulk-staging-store.s3_object_access_policy,
+    module.ndr-lloyd-george-store.s3_object_access_policy,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
+    module.bulk_upload_report_dynamodb_table.dynamodb_policy,
   ]
   rest_api_id       = null
   api_execution_arn = null
