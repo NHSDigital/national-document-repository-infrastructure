@@ -22,7 +22,6 @@ resource "aws_iam_policy" "sqs_queue_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      # "Sid"    = "shsqsstatement",
       "Effect" = "Allow",
       "Action" = [
         "sqs:SendMessage",
@@ -75,32 +74,3 @@ resource "aws_sqs_queue_redrive_policy" "dlq_redrive" {
     maxReceiveCount     = var.max_receive_count
   })
 }
-
-# data "aws_iam_policy_document" "sqs_read_policy" {
-#   statement {
-#     effect = "Allow"
-#     actions = [
-#       "sqs:ReceiveMessage",
-#       "sqs:GetQueueAttributes",
-#       "sqs:GetQueueUrl"
-#     ]
-#     resources = [
-#       aws_sqs_queue.sqs_queue.arn,
-#       aws_sqs_queue.queue_deadletter[0].arn
-#     ]
-#   }
-# }
-
-# data "aws_iam_policy_document" "sqs_write_policy" {
-#   statement {
-#     effect = "Allow"
-#     actions = [
-#       "sqs:SendMessage",
-#       "sqs:DeleteMessage"
-#     ]
-#     resources = [
-#       aws_sqs_queue.sqs_queue.arn,
-#       aws_sqs_queue.queue_deadletter[0].arn
-#     ]
-#   }
-# }

@@ -94,8 +94,3 @@ output "lambda_execution_role_name" {
 output "lambda_execution_role_arn" {
   value = aws_iam_role.lambda_execution_role.arn
 }
-
-# output "combined_policies" {
-#   value       = data.aws_iam_policy_document.combined_policies.json
-#   description = "The combined IAM policy document for the Lambda"
-# }
