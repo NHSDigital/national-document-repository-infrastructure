@@ -61,9 +61,9 @@ resource "aws_iam_role" "lambda_execution_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
-  count      = length(var.iam_role_policy_documents)
+  count      = length(var.iam_role_policies)
   role       = aws_iam_role.lambda_execution_role.name
-  policy_arn = var.iam_role_policy_documents[count.index]
+  policy_arn = var.iam_role_policies[count.index]
 }
 
 data "archive_file" "lambda" {

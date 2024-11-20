@@ -19,7 +19,7 @@ module "login_redirect_lambda" {
   source  = "./modules/lambda"
   name    = "LoginRedirectHandler"
   handler = "handlers.login_redirect_handler.lambda_handler"
-  iam_role_policy_documents = [
+  iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_oidc.arn,

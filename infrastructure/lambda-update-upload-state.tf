@@ -66,7 +66,7 @@ module "update-upload-state-lambda" {
   source  = "./modules/lambda"
   name    = "UpdateUploadStateLambda"
   handler = "handlers.update_upload_state_handler.lambda_handler"
-  iam_role_policy_documents = [
+  iam_role_policies = [
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
