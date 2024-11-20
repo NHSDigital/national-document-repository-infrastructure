@@ -57,7 +57,7 @@ module "create-token-lambda" {
     aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
     module.ndr-app-config
   ]
-  memory_size = 256
+  memory_size = 1769
 }
 
 module "create_token-alarm" {
