@@ -45,7 +45,7 @@ module "data-collection-lambda" {
   name           = "DataCollectionLambda"
   handler        = "handlers.data_collection_handler.lambda_handler"
   lambda_timeout = 900
-  iam_role_policies = [
+  iam_role_policy_documents = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-app-config.app_config_policy_arn,

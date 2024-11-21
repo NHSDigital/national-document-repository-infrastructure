@@ -23,7 +23,7 @@ module "back_channel_logout_lambda" {
   source  = "./modules/lambda"
   name    = "BackChannelLogoutHandler"
   handler = "handlers.back_channel_logout_handler.lambda_handler"
-  iam_role_policies = [
+  iam_role_policy_documents = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_oidc.arn,
