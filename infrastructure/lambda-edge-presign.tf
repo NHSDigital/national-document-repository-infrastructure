@@ -45,7 +45,7 @@ module "edge-presign-lambda" {
   lambda_timeout = 5
   name           = "EdgePresignLambda"
   handler        = "handlers.edge_presign_handler.lambda_handler"
-  iam_role_policy_documents = [
+  iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     aws_iam_policy.ssm_policy_oidc.arn,
     module.auth_state_dynamodb_table.dynamodb_policy,
