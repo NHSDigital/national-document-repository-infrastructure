@@ -52,9 +52,10 @@ If a manual or CRON destroy fails and results in a state lock, follow these step
 1. Log in to the AWS console.
 1. Navigate to `AWS Backup -> Vaults`.
 1. Confirm there are no `Recovery points` associated with the sandbox environment you're trying to destroy.
-1. If any recovery points exist, manually delete them.  
-    > [!WARNING]
-    > Terraform destroy will **fail** if recovery points are not deleted.
+1. If any recovery points exist, manually delete them.
+
+> [!WARNING]
+> Terraform destroy will **fail** if recovery points are not deleted.
 
 #### Step 2: Export AWS Credentials
 
@@ -92,7 +93,7 @@ Copy your AWS account environment variables (e.g. `AWS_ACCESS_KEY_ID`, `AWS_SECR
     terraform force-unlock <Lock Info ID>
     ```
 
-    > [!IMPORTANT]
-    > When prompted, type `yes` to confirm the unlock.
+> [!IMPORTANT]
+> When prompted, type `yes` to confirm the unlock.
 
 #### Step 5: Re-run the failed Terraform Destroy Workflow through GitHub Actions
