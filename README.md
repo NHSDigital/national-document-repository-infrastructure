@@ -20,7 +20,7 @@ Ensure the following Prereqs are installed first (can use brew on Mac/Linux or C
 
 We provide a `makefile` to ensure consistency and provide simplicity. It is strongly advised, both when planning and applying Terraform, that this is done via the `makefile`.
 
-The `make pre-commit` command this will format all Terraform code, and re-create all `README.md` files. This should be run before every commit to keep the code base clean.
+The `make pre-commit` command will format all Terraform code, and re-create all `README.md` files. This should be run before every commit to keep the code base clean.
 
 ## Using Workspaces
 
@@ -43,13 +43,30 @@ The details on how to run this Terraform process on a new AWS account can be fou
 
 ## Troubleshooting
 
-### Error acquiring the state lock for a Sandbox
+### Resolving "Error: Error acquiring the state lock" for Sandboxes
 
-For sandboxes that fail on a manual or a CRON destroy and result in a state lock:
+If a manual or CRON destroy fails and results in a state lock, follow these steps to resolve the issue:
 
-1. Login to the AWS console go to `AWS Backup -> Vaults` and make sure there are no `Recovery points` associated with the environment you're trying to destroy. If there are any, manually delete these first otherwise the Terraform destroy WILL FAIL.
-1. Copy your AWS account environment variables from the AWS console into a terminal.
-1. Retrieve the state lock ID from the GitHub Actions console output related to the Terraform workspace which failed e.g.:
+#### Step 1: Check for Recovery Points
+
+1. Log in to the AWS console.
+1. Navigate to `AWS Backup -> Vaults`.
+1. Confirm there are no `Recovery points` associated with the sandbox environment you're trying to destroy.
+1. If any recovery points exist, manually delete them.  
+    > [!WARNING]
+    > Terraform destroy will **fail** if recovery points are not deleted.
+
+#### Step 2: Export AWS Credentials
+
+Copy your AWS account environment variables (e.g. `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, etc.) from the AWS console into a terminal session.
+
+> [!IMPORTANT]
+> Ensure the credentials match the environment you're troubleshooting.
+
+#### Step 3: Retrieve the State Lock ID
+
+1. Open the GitHub Actions console for the failed Terraform workflow.
+1. Locate the `Lock Info` details in the error message output. Example:
 
     ```text
     Error message: ConditionalCheckFailedException: The conditional request
@@ -64,13 +81,18 @@ For sandboxes that fail on a manual or a CRON destroy and result in a state lock
     │   Info:
     ```
 
-1. In the a terminal with your exported AWS credentials:
+#### Step 4: Force Unlock the State
+
+1. Open a terminal where your AWS credentials are configured.
+1. Run the following commands, replacing `<workspace>` and `<Lock Info ID>` with the appropriate values:
 
     ```bash
     cd infrastructure/
-    terraform workspace select {workspace}
-    terraform force-unlock {Lock Info ID}
+    terraform workspace select <workspace>
+    terraform force-unlock <Lock Info ID>
     ```
 
-    > Select `yes` when prompted.
-1. Re-run the Terraform destroy workflow.
+    > [!IMPORTANT]
+    > When prompted, type `yes` to confirm the unlock.
+
+#### Step 5: Re-run the failed Terraform Destroy Workflow through GitHub Actions
