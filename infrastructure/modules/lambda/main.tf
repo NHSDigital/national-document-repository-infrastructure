@@ -68,6 +68,19 @@ resource "aws_iam_role" "lambda_execution_role" {
 
 data "aws_iam_policy_document" "merged_policy" {
   source_policy_documents = var.iam_role_policy_documents
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "lambda:InvokeFunction",
+      "lambda:GetFunction"
+    ]
+    resources = [
+      "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+      "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+      var.additional_policy_arns
+    ]
+  }
 }
 
 # added

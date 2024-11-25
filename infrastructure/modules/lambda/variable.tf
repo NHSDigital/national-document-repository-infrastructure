@@ -45,6 +45,11 @@ variable "iam_role_policy_documents" {
   type = list(string)
 }
 
+variable "additional_policy_arns" {
+  type    = list(string)
+  default = []
+}
+
 variable "lambda_timeout" {
   type    = number
   default = 30
