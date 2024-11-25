@@ -19,13 +19,20 @@ module "bulk-upload-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
     module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
+    module.sqs-nrl-queue.sqs_read_policy_document,
+    module.sqs-nrl-queue.sqs_write_policy_document,
+    module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
+    module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
+    module.sqs-lg-bulk-upload-invalid-queue.sqs_read_policy_document,
+    module.sqs-lg-bulk-upload-invalid-queue.sqs_write_policy_document
+
   ]
 
   additional_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_access_policy.arn,
-    aws_iam_policy.lambda_sqs_combined_policy.arn,
+    # aws_iam_policy.lambda_sqs_combined_policy.arn,
     module.ndr-app-config.app_config_policy_arn
   ]
 
