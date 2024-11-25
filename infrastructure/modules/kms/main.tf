@@ -17,7 +17,7 @@ resource "aws_kms_alias" "encryption_key_alias" {
 }
 
 
-data "aws_iam_policy_document" "kmn_key_base" {
+data "aws_iam_policy_document" "kms_key_base" {
   statement {
     effect = "Allow"
     principals {

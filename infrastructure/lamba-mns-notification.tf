@@ -28,13 +28,6 @@ module "mns-notification-lambda" {
   is_invoked_from_gateway        = false
   lambda_timeout                 = 900
   reserved_concurrent_executions = local.mns_notification_lambda_concurrent_limit
-
-  depends_on = [
-    module.lloyd_george_reference_dynamodb_table,
-    aws_iam_policy.ssm_access_policy,
-    module.ndr-app-config,
-    module.sqs-mns-notification-queue
-  ]
 }
 
 resource "aws_lambda_event_source_mapping" "mns_notification_lambda" {
