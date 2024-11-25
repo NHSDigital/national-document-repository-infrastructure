@@ -8,11 +8,29 @@ module "bulk-upload-lambda" {
     module.ndr-app-config.app_config_policy_arn,
     aws_iam_policy.ssm_access_policy.arn,
     aws_iam_policy.lambda_sqs_combined_policy.arn,
-    module.ndr-bulk-staging-store.s3_object_access_policy,
-    module.ndr-lloyd-george-store.s3_object_access_policy,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
-    module.bulk_upload_report_dynamodb_table.dynamodb_policy,
+    module.ndr-bulk-staging-store.s3_read_policy_document,
+    module.ndr-bulk-staging-store.s3_write_policy_document,
+    module.ndr-lloyd-george-store.s3_read_policy_document,
+    module.ndr-lloyd-george-store.s3_write_policy_document,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
+    module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
   ]
+
+  #   iam_role_policies = [
+  #   "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+  #   "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+  #   module.ndr-bulk-staging-store.s3_object_access_policy,
+  #   module.ndr-lloyd-george-store.s3_object_access_policy,
+  #   module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
+  #   module.bulk_upload_report_dynamodb_table.dynamodb_policy,
+  #   module.sqs-lg-bulk-upload-metadata-queue.sqs_policy,
+  #   module.sqs-lg-bulk-upload-invalid-queue.sqs_policy,
+  #   aws_iam_policy.ssm_access_policy.arn,
+  #   module.ndr-app-config.app_config_policy_arn,
+  #   module.sqs-nrl-queue.sqs_policy
+  # ]
   rest_api_id       = null
   api_execution_arn = null
 
