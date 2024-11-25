@@ -10,12 +10,15 @@ module "bulk-upload-lambda" {
     aws_iam_policy.lambda_sqs_combined_policy.arn,
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
-    module.ndr-lloyd-george-store.s3_read_policy_document,
-    module.ndr-lloyd-george-store.s3_write_policy_document,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
-    module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
-    module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
+    module.ndr-lloyd-george-store.s3_object_access_policy,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
+    module.bulk_upload_report_dynamodb_table.dynamodb_policy,
+    # module.ndr-lloyd-george-store.s3_read_policy_document,
+    # module.ndr-lloyd-george-store.s3_write_policy_document,
+    # module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
+    # module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
+    # module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
+    # module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
   ]
 
   #   iam_role_policies = [
