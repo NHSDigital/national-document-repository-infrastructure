@@ -90,7 +90,12 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
     actions = [
       "dynamodb:Query",
       "dynamodb:Scan",
-      "dynamodb:GetItem"
+      "dynamodb:GetItem",
+      # Stream-specific actions
+      "dynamodb:GetRecords",
+      "dynamodb:GetShardIterator",
+      "dynamodb:DescribeStream",
+      "dynamodb:ListStreams"
     ]
     resources = [
       aws_dynamodb_table.ndr_dynamodb_table.arn,
