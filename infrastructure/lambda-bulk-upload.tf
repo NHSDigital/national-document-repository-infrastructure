@@ -81,7 +81,8 @@ module "bulk-upload-lambda" {
     module.lloyd_george_reference_dynamodb_table,
     module.bulk_upload_report_dynamodb_table,
     aws_iam_policy.ssm_access_policy,
-    module.ndr-app-config
+    module.ndr-app-config,
+    module.sqs-nrl-queue
   ]
 }
 
