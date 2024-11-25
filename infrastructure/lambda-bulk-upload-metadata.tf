@@ -3,7 +3,7 @@ module "bulk-upload-metadata-lambda" {
   name           = "BulkUploadMetadataLambda"
   handler        = "handlers.bulk_upload_metadata_handler.lambda_handler"
   lambda_timeout = 900
-  iam_role_policy_documents = [
+  additional_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     module.ndr-bulk-staging-store.s3_object_access_policy,

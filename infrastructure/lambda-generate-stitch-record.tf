@@ -47,7 +47,7 @@ module "generate-lloyd-george-stitch-lambda" {
   lambda_timeout           = 900
   lambda_ephemeral_storage = 512
   memory_size              = 512
-  iam_role_policy_documents = [
+  additional_policy_arns = [
     module.ndr-document-store.s3_object_access_policy,
     module.ndr-lloyd-george-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",

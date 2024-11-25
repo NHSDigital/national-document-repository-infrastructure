@@ -2,7 +2,7 @@ module "authoriser-lambda" {
   source  = "./modules/lambda"
   name    = "AuthoriserLambda"
   handler = "handlers.authoriser_handler.lambda_handler"
-  iam_role_policy_documents = [
+  additional_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_policy_authoriser.arn,

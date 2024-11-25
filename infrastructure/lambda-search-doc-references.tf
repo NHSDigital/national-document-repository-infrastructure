@@ -67,7 +67,7 @@ module "search-document-references-lambda" {
   source  = "./modules/lambda"
   name    = "SearchDocumentReferencesLambda"
   handler = "handlers.document_reference_search_handler.lambda_handler"
-  iam_role_policy_documents = [
+  additional_policy_arns = [
     module.document_reference_dynamodb_table.dynamodb_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
