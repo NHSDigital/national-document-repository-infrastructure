@@ -8,7 +8,8 @@ module "mns-notification-lambda" {
     module.sqs-mns-notification-queue.sqs_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     aws_iam_policy.ssm_access_policy.arn,
-    module.ndr-app-config.app_config_policy_arn
+    module.ndr-app-config.app_config_policy_arn,
+    aws_iam_policy.kms_lambda_access_policy.arn,
   ]
   rest_api_id       = null
   api_execution_arn = null
@@ -90,4 +91,22 @@ module "mns-notification-alarm-topic" {
   })
 
   depends_on = [module.mns-notification-lambda, module.sns_encryption_key]
+}
+
+resource "aws_iam_policy" "kms_lambda_access_policy" {
+  name        = "mns_notification_lambda_access_policy"
+  description = "KMS policy to allow lambda to read MNS SQS messages"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "kms:Decrypt",
+        ]
+        Effect   = "Allow"
+        Resource = module.mns_encryption_key.arn
+      },
+    ]
+  })
 }
