@@ -105,7 +105,7 @@ resource "aws_iam_policy" "kms_lambda_access_policy" {
           "kms:Decrypt",
         ]
         Effect   = "Allow"
-        Resource = module.mns_encryption_key.arn
+        Resource = module.mns_encryption_key.kms_arn
       },
     ]
   })
