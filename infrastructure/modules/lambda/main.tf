@@ -75,11 +75,7 @@ data "aws_iam_policy_document" "merged_policy" {
       "lambda:InvokeFunction",
       "lambda:GetFunction"
     ]
-    resources = [
-      "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-      "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-      var.additional_policy_arns
-    ]
+    resources = var.additional_policy_arns
   }
 }
 
