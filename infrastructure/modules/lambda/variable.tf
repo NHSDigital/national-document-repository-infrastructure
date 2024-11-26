@@ -101,3 +101,11 @@ output "lambda_execution_role_name" {
 output "lambda_execution_role_arn" {
   value = aws_iam_role.lambda_execution_role.arn
 }
+
+output "additional_policy_arns_debug" {
+  value = var.additional_policy_arns
+}
+
+output "merged_policy_debug" {
+  value = data.aws_iam_policy_document.merged_policy.json
+}
