@@ -60,22 +60,28 @@ resource "aws_iam_role" "lambda_execution_role" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
-# resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
-#   count      = length(var.iam_role_policy_documents)
-#   role       = aws_iam_role.lambda_execution_role.name
-#   policy_arn = var.iam_role_policy_documents[count.index]
-# }
+resource "aws_iam_role_policy_attachment" "lambda_managed_policies" {
+  for_each = toset([
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
+  ])
+  role       = aws_iam_role.lambda_execution_role.name
+  policy_arn = each.value
+}
 
 data "aws_iam_policy_document" "merged_policy" {
   source_policy_documents = var.iam_role_policy_documents
 
+  # Filter only valid resource ARNs for Lambda permissions
   statement {
-    effect = "Allow"
-    actions = [
+    effect    = "Allow"
+    actions   = [
       "lambda:InvokeFunction",
       "lambda:GetFunction"
     ]
-    resources = var.additional_policy_arns
+    resources = [
+      var.additional_policy_arns
+    ]
   }
 }
 
