@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "kms_key_generate" {
 
 data "aws_iam_policy_document" "combined_policy_documents" {
   source_policy_documents = flatten([
-    data.aws_iam_policy_document.kmn_key_base.json,
+    data.aws_iam_policy_document.kms_key_base.json,
     length(var.aws_identifiers) > 0 ? [data.aws_iam_policy_document.kms_key_generate[0].json] : []
   ])
 }
