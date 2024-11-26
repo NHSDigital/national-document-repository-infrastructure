@@ -81,7 +81,7 @@ data "aws_iam_policy_document" "merged_policy" {
 
 # added
 resource "aws_iam_policy" "lambda_combined_policy" {
-  name   = "${var.name}_combined_policy"
+  name   = "${terraform.workspace}_${var.name}_combined_policy"
   policy = data.aws_iam_policy_document.merged_policy.json
 }
 
