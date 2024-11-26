@@ -29,8 +29,8 @@ module "bulk-upload-lambda" {
   ]
 
   additional_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
     aws_iam_policy.ssm_access_policy.arn,
     # aws_iam_policy.lambda_sqs_combined_policy.arn,
     module.ndr-app-config.app_config_policy_arn
