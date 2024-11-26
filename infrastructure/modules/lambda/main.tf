@@ -79,9 +79,7 @@ data "aws_iam_policy_document" "merged_policy" {
       "lambda:InvokeFunction",
       "lambda:GetFunction"
     ]
-    resources = [
-      var.additional_policy_arns
-    ]
+    resources = var.additional_policy_arns
   }
 }
 
