@@ -54,7 +54,9 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config=backend.conf
+        run: |
+         export TF_LOG="DEBUG"
+         terraform init -backend-config=backend.conf
         working-directory: ./infrastructure
         shell: bash
 
