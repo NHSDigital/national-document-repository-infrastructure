@@ -46,8 +46,8 @@ module "data-collection-lambda" {
   handler        = "handlers.data_collection_handler.lambda_handler"
   lambda_timeout = 900
   additional_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     module.ndr-app-config.app_config_policy_arn,
     module.statistics_dynamodb_table.dynamodb_policy,
     module.ndr-lloyd-george-store.s3_list_object_policy,

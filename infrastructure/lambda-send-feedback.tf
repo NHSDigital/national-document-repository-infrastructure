@@ -79,8 +79,8 @@ module "send-feedback-lambda" {
   name    = "SendFeedbackLambda"
   handler = "handlers.send_feedback_handler.lambda_handler"
   additional_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     aws_iam_policy.ssm_access_policy.arn,
     aws_iam_policy.ses_send_email_policy.arn,
     module.ndr-app-config.app_config_policy_arn

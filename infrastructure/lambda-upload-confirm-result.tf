@@ -66,8 +66,8 @@ module "upload_confirm_result_lambda" {
   name    = "UploadConfirmResultLambda"
   handler = "handlers.upload_confirm_result_handler.lambda_handler"
   additional_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
+    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     module.ndr-app-config.app_config_policy_arn,
     module.ndr-bulk-staging-store.s3_object_access_policy,
     module.ndr-document-store.s3_object_access_policy,

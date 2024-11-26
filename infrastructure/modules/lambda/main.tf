@@ -63,16 +63,20 @@ resource "aws_iam_role" "lambda_execution_role" {
 resource "aws_iam_role_policy_attachment" "lambda_managed_policies" {
   for_each = toset([
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
+    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
+    # data.app_config_policy_arn
   ])
   role       = aws_iam_role.lambda_execution_role.name
   policy_arn = each.value
 }
 
+locals {
+  filtered_arns = [for arn in var.additional_policy_arns : arn if can(regex("^arn:aws:iam::.*", arn))]
+}
+
 data "aws_iam_policy_document" "merged_policy" {
   source_policy_documents = var.iam_role_policy_documents
 
-  # Filter only valid resource ARNs for Lambda permissions
   statement {
     effect    = "Allow"
     actions   = [
@@ -80,6 +84,7 @@ data "aws_iam_policy_document" "merged_policy" {
       "lambda:GetFunction"
     ]
     resources = var.additional_policy_arns
+    # resources = local.filtered_arns
   }
 }
 
