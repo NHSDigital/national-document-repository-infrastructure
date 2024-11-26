@@ -56,7 +56,6 @@ jobs:
         id: init
         run: |
          export TF_LOG="DEBUG"
-        # remove before PR
          terraform init -backend-config=backend.conf
         working-directory: ./infrastructure
         shell: bash
@@ -82,6 +81,5 @@ jobs:
       - name: Terraform Apply
         run: |
          export TF_LOG="DEBUG"
-        # remove before PR
          terraform apply -auto-approve -input=false tf.plan
         working-directory: ./infrastructure
