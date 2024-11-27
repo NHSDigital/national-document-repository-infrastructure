@@ -64,7 +64,6 @@ resource "aws_iam_role_policy_attachment" "lambda_managed_policies" {
   for_each = toset([
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
-    # data.app_config_policy_arn
   ])
   role       = aws_iam_role.lambda_execution_role.name
   policy_arn = each.value
