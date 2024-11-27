@@ -2,13 +2,6 @@ data "aws_ssm_parameter" "mns_lambda_role" {
   name = "/ndr/${var.environment}/mns/lambda_role"
 }
 
-data "aws_ssm_parameter" "mns_sns_resources" {
-  name = "/ndr/${var.environment}/mns/sns_resource"
-}
-
-locals {
-  mns_sns_source_arns = split(",", data.aws_ssm_parameter.mns_sns_resources.value)
-}
 
 module "mns_encryption_key" {
   source                = "./modules/kms"
@@ -20,7 +13,6 @@ module "mns_encryption_key" {
   service_identifiers   = ["sns.amazonaws.com"]
   aws_identifiers       = [data.aws_ssm_parameter.mns_lambda_role.value]
   allow_decrypt_for_arn = true
-  allowed_arn           = local.mns_sns_source_arns
 }
 
 module "sqs-mns-notification-queue" {
@@ -42,19 +34,6 @@ resource "aws_sqs_queue_policy" "mns_sqs_access_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          Service = "sns.amazonaws.com"
-        },
-        Action   = "SQS:SendMessage",
-        Resource = module.sqs-mns-notification-queue.sqs_arn,
-        Condition = {
-          "StringEquals" = {
-            "aws:SourceArn" = local.mns_sns_source_arns
-          }
-        }
-      },
       {
         Effect = "Allow",
         Principal = {
