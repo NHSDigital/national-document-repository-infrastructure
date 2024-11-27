@@ -60,37 +60,14 @@ resource "aws_iam_role" "lambda_execution_role" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
-# resource "aws_iam_role_policy_attachment" "lambda_managed_policies" {
-#   for_each = toset([
-#     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-#     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-#   ])
-#   role       = aws_iam_role.lambda_execution_role.name
-#   policy_arn = each.value
-# }
-
-# locals {
-#   filtered_arns = [for arn in var.additional_policy_arns : arn if can(regex("^arn:aws:iam::.*", arn))]
-# }
-
 data "aws_iam_policy_document" "merged_policy" {
   source_policy_documents = var.iam_role_policy_documents
-
-  # statement {
-  #   effect = "Allow"
-  #   actions = [
-  #     "lambda:InvokeFunction",
-  #     "lambda:GetFunction"
-  #   ]
-  #   # resources = var.additional_policy_arns
-  #   resources = local.filtered_arns
-  # }
 }
 
 # added
 resource "aws_iam_policy" "lambda_combined_policy" {
   name   = "${terraform.workspace}_${var.name}_combined_policy"
-  policy = jsonencode(data.aws_iam_policy_document.merged_policy)
+  policy = data.aws_iam_policy_document.merged_policy.json
 }
 
 variable "default_policies" {
