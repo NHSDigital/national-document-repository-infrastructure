@@ -48,12 +48,14 @@ module "generate-document-manifest-lambda" {
   lambda_ephemeral_storage = 512
   memory_size              = 512
   iam_role_policy_documents = [
-    module.ndr-document-store.s3_object_access_policy,
-    module.ndr-lloyd-george-store.s3_object_access_policy,
-    module.zip_store_reference_dynamodb_table.dynamodb_policy,
-    module.ndr-zip-request-store.s3_object_access_policy,
-    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
+    module.ndr-document-store.s3_read_policy_document,
+    module.ndr-document-store.s3_write_policy_document,
+    module.ndr-lloyd-george-store.s3_read_policy_document,
+    module.ndr-lloyd-george-store.s3_write_policy_document,
+    module.zip_store_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.zip_store_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.ndr-zip-request-store.s3_read_policy_document,
+    module.ndr-zip-request-store.s3_write_policy_document,
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.dynamodb_stream_manifest.policy
   ]

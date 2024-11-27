@@ -20,8 +20,6 @@ module "login_redirect_lambda" {
   name    = "LoginRedirectHandler"
   handler = "handlers.login_redirect_handler.lambda_handler"
   iam_role_policy_documents = [
-    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     aws_iam_policy.ssm_policy_oidc.policy,
     module.auth_state_dynamodb_table.dynamodb_read_policy_document,
     module.auth_state_dynamodb_table.dynamodb_write_policy_document,

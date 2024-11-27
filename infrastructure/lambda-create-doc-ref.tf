@@ -80,8 +80,6 @@ module "create-doc-ref-lambda" {
     module.ndr-document-store.s3_read_policy_document,
     module.ndr-document-store.s3_write_policy_document,
 
-    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy,
   ]

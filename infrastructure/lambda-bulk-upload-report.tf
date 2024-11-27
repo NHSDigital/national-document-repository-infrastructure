@@ -3,8 +3,6 @@ module "bulk-upload-report-lambda" {
   name    = "BulkUploadReportLambda"
   handler = "handlers.bulk_upload_report_handler.lambda_handler"
   iam_role_policy_documents = [
-    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     module.statistical-reports-store.s3_read_policy_document,
     module.statistical-reports-store.s3_write_policy_document,
     module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,

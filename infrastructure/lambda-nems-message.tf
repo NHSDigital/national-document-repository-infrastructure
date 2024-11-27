@@ -5,8 +5,6 @@ module "nems-message-lambda" {
   handler        = "handlers.nems_message_handler.lambda_handler"
   lambda_timeout = 60
   iam_role_policy_documents = [
-    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.sqs-nems-queue[0].sqs_read_policy_document,

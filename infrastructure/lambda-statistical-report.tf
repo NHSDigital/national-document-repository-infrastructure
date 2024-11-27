@@ -46,8 +46,6 @@ module "statistical-report-lambda" {
   handler        = "handlers.statistical_report_handler.lambda_handler"
   lambda_timeout = 900
   iam_role_policy_documents = [
-    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     module.ndr-app-config.app_config_policy,
     module.statistics_dynamodb_table.dynamodb_read_policy_document,
     module.statistics_dynamodb_table.dynamodb_write_policy_document,

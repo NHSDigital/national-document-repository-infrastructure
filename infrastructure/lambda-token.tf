@@ -24,8 +24,6 @@ module "create-token-lambda" {
   name    = "TokenRequestHandler"
   handler = "handlers.token_handler.lambda_handler"
   iam_role_policy_documents = [
-    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     aws_iam_policy.ssm_policy_token.policy,
     module.auth_session_dynamodb_table.dynamodb_read_policy_document,
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,

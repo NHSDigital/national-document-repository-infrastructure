@@ -4,8 +4,6 @@ module "manage-nrl-pointer-lambda" {
   handler        = "handlers.manage_nrl_pointer_handler.lambda_handler"
   lambda_timeout = 600
   iam_role_policy_documents = [
-    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     module.ndr-app-config.app_config_policy,
     module.sqs-nrl-queue.sqs_read_policy_document,
     module.sqs-nrl-queue.sqs_write_policy_document,

@@ -67,8 +67,6 @@ module "search-patient-details-lambda" {
   name    = "SearchPatientDetailsLambda"
   handler = "handlers.search_patient_details_handler.lambda_handler"
   iam_role_policy_documents = [
-    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy
   ]

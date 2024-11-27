@@ -72,8 +72,6 @@ module "search-document-references-lambda" {
     module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
-    # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     module.ndr-app-config.app_config_policy
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
