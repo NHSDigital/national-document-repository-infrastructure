@@ -66,7 +66,6 @@ module "virus_scan_result_lambda" {
   source      = "./modules/lambda"
   name        = "VirusScanResult"
   handler     = "handlers.virus_scan_result_handler.lambda_handler"
-  memory_size = 256
   iam_role_policies = [
     module.ndr-bulk-staging-store.s3_object_access_policy,
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
