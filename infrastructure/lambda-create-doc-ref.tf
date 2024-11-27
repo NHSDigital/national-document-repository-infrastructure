@@ -67,18 +67,18 @@ module "create-doc-ref-lambda" {
   name    = "CreateDocRefLambda"
   handler = "handlers.create_document_reference_handler.lambda_handler"
   iam_role_policy_documents = [
-        module.document_reference_dynamodb_table.dynamodb_write_policy_document,
-        module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-        module.stitch_metadata_reference_dynamodb_table.dynamodb_read_policy_document,
-        module.stitch_metadata_reference_dynamodb_table.dynamodb_write_policy_document,
-        module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
-        module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
-        module.ndr-bulk-staging-store.s3_read_policy_document,
-        module.ndr-bulk-staging-store.s3_write_policy_document,
-        module.ndr-lloyd-george-store.s3_write_policy_document,
-        module.ndr-lloyd-george-store.s3_read_policy_document,
-        module.ndr-document-store.s3_read_policy_document,
-        module.ndr-document-store.s3_write_policy_document
+    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.stitch_metadata_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.stitch_metadata_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.ndr-bulk-staging-store.s3_read_policy_document,
+    module.ndr-bulk-staging-store.s3_write_policy_document,
+    module.ndr-lloyd-george-store.s3_write_policy_document,
+    module.ndr-lloyd-george-store.s3_read_policy_document,
+    module.ndr-document-store.s3_read_policy_document,
+    module.ndr-document-store.s3_write_policy_document
   ]
   additional_policy_arns = [
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",

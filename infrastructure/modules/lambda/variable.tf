@@ -42,7 +42,7 @@ variable "api_execution_arn" {
 }
 
 variable "iam_role_policy_documents" {
-  type = list(string)
+  type    = list(string)
   default = []
 
 }

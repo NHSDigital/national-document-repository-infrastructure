@@ -77,8 +77,8 @@ data "aws_iam_policy_document" "merged_policy" {
   source_policy_documents = var.iam_role_policy_documents
 
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "lambda:InvokeFunction",
       "lambda:GetFunction"
     ]

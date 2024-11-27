@@ -106,8 +106,8 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
   dynamic "statement" {
     for_each = var.global_secondary_indexes
     content {
-      effect = "Allow"
-      actions = ["dynamodb:Query"]
+      effect    = "Allow"
+      actions   = ["dynamodb:Query"]
       resources = ["${aws_dynamodb_table.ndr_dynamodb_table.arn}/index/${statement.value.name}"]
     }
   }
