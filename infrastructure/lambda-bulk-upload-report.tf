@@ -5,10 +5,12 @@ module "bulk-upload-report-lambda" {
   iam_role_policy_documents = [
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
-    module.statistical-reports-store.s3_object_access_policy,
-    module.bulk_upload_report_dynamodb_table.dynamodb_policy,
-    aws_iam_policy.dynamodb_policy_scan_bulk_report.arn,
-    module.ndr-app-config.app_config_policy_arn
+    module.statistical-reports-store.s3_read_policy_document,
+    module.statistical-reports-store.s3_write_policy_document,
+    module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
+    module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
+    aws_iam_policy.dynamodb_policy_scan_bulk_report.policy,
+    # module.ndr-app-config.app_config_policy_arn
   ]
   rest_api_id       = null
   api_execution_arn = null
