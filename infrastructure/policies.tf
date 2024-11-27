@@ -18,6 +18,24 @@ resource "aws_iam_policy" "ssm_access_policy" {
   })
 }
 
+data "aws_iam_policy_document" "ssm_policy" {
+  statement {
+        effect = "Allow",
+        actions = [
+          "ssm:GetParameter",
+          "ssm:GetParameters",
+          "ssm:PutParameter"
+        ],
+        resources = [
+          "arn:aws:ssm:*:*:parameter/*",
+        ]
+      }
+}
+
+output "ssm_policy_test" {
+  value = data.aws_iam_policy_document.ssm_policy.json
+}
+
 data "aws_iam_policy_document" "combined_sqs_policies" {
   source_policy_documents = [
     module.sqs-lg-bulk-upload-metadata-queue.sqs_policy_json,
@@ -25,6 +43,7 @@ data "aws_iam_policy_document" "combined_sqs_policies" {
     module.sqs-nrl-queue.sqs_policy_json
   ]
 }
+
 
 resource "aws_iam_policy" "lambda_sqs_combined_policy" {
   name        = "${terraform.workspace}-lambda-sqs-combined-policy"
