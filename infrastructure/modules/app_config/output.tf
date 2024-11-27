@@ -13,3 +13,7 @@ output "app_config_configuration_profile_id" {
 output "app_config_policy" {
   value = aws_iam_policy.app_config_policy.policy
 }
+
+output "app_config_policy_arn" {
+  value = aws_iam_policy.app_config_policy.arn
+}

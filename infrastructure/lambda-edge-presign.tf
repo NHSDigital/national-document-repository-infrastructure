@@ -49,7 +49,7 @@ module "edge-presign-lambda" {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     aws_iam_policy.ssm_policy_oidc.arn,
     module.auth_state_dynamodb_table.dynamodb_policy,
-    module.ndr-app-config.app_config_policy
+    module.ndr-app-config.app_config_policy_arn
   ]
   providers = {
     aws = aws.us_east_1
