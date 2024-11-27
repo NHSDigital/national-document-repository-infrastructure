@@ -90,7 +90,7 @@ data "aws_iam_policy_document" "merged_policy" {
 # added
 resource "aws_iam_policy" "lambda_combined_policy" {
   name   = "${terraform.workspace}_${var.name}_combined_policy"
-  policy = data.aws_iam_policy_document.merged_policy.json
+  policy = jsonencode(data.aws_iam_policy_document.merged_policy)
 }
 
 variable "default_policies" {
