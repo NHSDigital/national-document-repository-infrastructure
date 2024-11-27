@@ -78,9 +78,8 @@ module "create-doc-ref-lambda" {
     module.ndr-lloyd-george-store.s3_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-document-store.s3_read_policy_document,
-    module.ndr-document-store.s3_write_policy_document
-  ]
-  additional_policy_arns = [
+    module.ndr-document-store.s3_write_policy_document,
+
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     aws_iam_policy.ssm_access_policy.arn,

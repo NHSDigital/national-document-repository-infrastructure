@@ -66,7 +66,7 @@ module "lloyd-george-stitch-lambda" {
   source  = "./modules/lambda"
   name    = "LloydGeorgeStitchLambda"
   handler = "handlers.lloyd_george_record_stitch_handler.lambda_handler"
-  additional_policy_arns = [
+  iam_role_policy_documents = [
     module.ndr-lloyd-george-store.s3_object_access_policy,
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
