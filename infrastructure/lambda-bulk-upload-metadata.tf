@@ -10,7 +10,7 @@ module "bulk-upload-metadata-lambda" {
     module.ndr-bulk-staging-store.s3_write_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
-    # module.ndr-app-config.app_config_policy_arn
+    module.ndr-app-config.app_config_policy
   ]
 
   rest_api_id       = null

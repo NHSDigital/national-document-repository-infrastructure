@@ -8,7 +8,7 @@ module "authoriser-lambda" {
     aws_iam_policy.ssm_policy_authoriser.policy,
     module.auth_session_dynamodb_table.dynamodb_read_policy_document,
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,
-    # module.ndr-app-config.app_config_policy_arn
+    module.ndr-app-config.app_config_policy
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn

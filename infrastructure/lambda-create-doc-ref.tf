@@ -83,7 +83,7 @@ module "create-doc-ref-lambda" {
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
     aws_iam_policy.ssm_access_policy.policy,
-    # module.ndr-app-config.app_config_policy_arn,
+    module.ndr-app-config.app_config_policy,
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.create-doc-ref-gateway.gateway_resource_id

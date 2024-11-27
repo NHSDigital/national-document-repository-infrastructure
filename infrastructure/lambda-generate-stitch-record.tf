@@ -52,8 +52,8 @@ module "generate-lloyd-george-stitch-lambda" {
     module.ndr-lloyd-george-store.s3_object_access_policy,
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
-    module.ndr-app-config.app_config_policy_arn,
-    aws_iam_policy.dynamodb_stream_stitch_policy.arn,
+    module.ndr-app-config.app_config_policy,
+    aws_iam_policy.dynamodb_stream_stitch_policy.policy,
     module.stitch_metadata_reference_dynamodb_table.dynamodb_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy
   ]

@@ -19,7 +19,7 @@ module "bulk-upload-lambda" {
     module.sqs-lg-bulk-upload-invalid-queue.sqs_write_policy_document,
 
     aws_iam_policy.ssm_access_policy.policy,
-    # module.ndr-app-config.app_config_policy_arn
+    module.ndr-app-config.app_config_policy
   ]
   rest_api_id       = null
   api_execution_arn = null

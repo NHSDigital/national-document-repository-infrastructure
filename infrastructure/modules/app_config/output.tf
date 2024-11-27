@@ -10,6 +10,6 @@ output "app_config_configuration_profile_id" {
   value = aws_appconfig_configuration_profile.ndr-app-config-profile.configuration_profile_id
 }
 
-output "app_config_policy_arn" {
-  value = aws_iam_policy.app_config_policy.arn
+output "app_config_policy" {
+  value = aws_iam_policy.app_config_policy.policy
 }

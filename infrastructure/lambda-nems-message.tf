@@ -7,9 +7,11 @@ module "nems-message-lambda" {
   iam_role_policy_documents = [
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
-    module.sqs-nems-queue[0].sqs_policy,
-    module.ndr-app-config.app_config_policy_arn
+    module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.sqs-nems-queue[0].sqs_read_policy_document,
+    module.sqs-nems-queue[0].sqs_write_policy_document,
+    module.ndr-app-config.app_config_policy
   ]
   rest_api_id       = null
   api_execution_arn = null

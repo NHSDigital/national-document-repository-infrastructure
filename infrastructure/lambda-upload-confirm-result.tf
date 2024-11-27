@@ -68,7 +68,7 @@ module "upload_confirm_result_lambda" {
   iam_role_policy_documents = [
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
-    # module.ndr-app-config.app_config_policy_arn,
+    module.ndr-app-config.app_config_policy,
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
     module.ndr-document-store.s3_read_policy_document,

@@ -10,7 +10,7 @@ module "bulk-upload-report-lambda" {
     module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
     module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
     aws_iam_policy.dynamodb_policy_scan_bulk_report.policy,
-    # module.ndr-app-config.app_config_policy_arn
+    module.ndr-app-config.app_config_policy
   ]
   rest_api_id       = null
   api_execution_arn = null

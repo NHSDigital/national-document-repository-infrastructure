@@ -22,9 +22,10 @@ module "login_redirect_lambda" {
   iam_role_policy_documents = [
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
-    aws_iam_policy.ssm_policy_oidc.arn,
-    module.auth_state_dynamodb_table.dynamodb_policy,
-    module.ndr-app-config.app_config_policy_arn
+    aws_iam_policy.ssm_policy_oidc.policy,
+    module.auth_state_dynamodb_table.dynamodb_read_policy_document,
+    module.auth_state_dynamodb_table.dynamodb_write_policy_document,
+    module.ndr-app-config.app_config_policy
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = aws_api_gateway_resource.login_resource.id

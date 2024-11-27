@@ -54,8 +54,8 @@ module "generate-document-manifest-lambda" {
     module.ndr-zip-request-store.s3_object_access_policy,
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
-    module.ndr-app-config.app_config_policy_arn,
-    aws_iam_policy.dynamodb_stream_manifest.arn
+    module.ndr-app-config.app_config_policy,
+    aws_iam_policy.dynamodb_stream_manifest.policy
   ]
   rest_api_id       = null
   api_execution_arn = null

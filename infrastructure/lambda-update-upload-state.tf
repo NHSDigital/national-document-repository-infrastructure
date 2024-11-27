@@ -67,11 +67,13 @@ module "update-upload-state-lambda" {
   name    = "UpdateUploadStateLambda"
   handler = "handlers.update_upload_state_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.document_reference_dynamodb_table.dynamodb_policy,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
+    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     # "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     # "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",,
-    module.ndr-app-config.app_config_policy_arn,
+    module.ndr-app-config.app_config_policy,
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.update-upload-state-gateway.gateway_resource_id
