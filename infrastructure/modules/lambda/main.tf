@@ -76,15 +76,15 @@ locals {
 data "aws_iam_policy_document" "merged_policy" {
   source_policy_documents = var.iam_role_policy_documents
 
-  statement {
-    effect = "Allow"
-    actions = [
-      "lambda:InvokeFunction",
-      "lambda:GetFunction"
-    ]
-    # resources = var.additional_policy_arns
-    resources = local.filtered_arns
-  }
+  # statement {
+  #   effect = "Allow"
+  #   actions = [
+  #     "lambda:InvokeFunction",
+  #     "lambda:GetFunction"
+  #   ]
+  #   # resources = var.additional_policy_arns
+  #   resources = local.filtered_arns
+  # }
 }
 
 # added
