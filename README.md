@@ -2,49 +2,56 @@
 
 ## Prerequisites
 
-Ensure the following Prereqs are installed
+Ensure the following Prereqs are installed:
 
-### [Terraform Docs](https://terraform-docs.io/) - for formatting Terraform documentation
+1. [Terraform Docs](https://terraform-docs.io/) - For formatting Terraform documentation:
 
-#### If using Windows
-```bash
-chocolatey install terraform-docs
-```
+    If using Windows:
 
-#### If using Mac:
-```bash
-brew install terraform-docs
-```
-   
-##### If using Linux/WSL
-- Install precompiled binary: - (this documentation assumes latest version is `v0.19.0`) - latest binary can be found here https://github.com/terraform-docs/terraform-docs/releases
     ```bash
-    curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.19.0/terraform-docs-v0.19.0-$(uname)-amd64.tar.gz
-    tar -xzf terraform-docs.tar.gz
-    chmod +x terraform-docs
+    chocolatey install terraform-docs
     ```
 
-- Add to your $PATH (replace `YOURUSERNAME` with your linux username):
+    If using Mac:
+
     ```bash
-    mv terraform-docs /home/YOURUSERNAME/.local/bin/terraform-docs
-    ```
-  
-- Verify this has worked with:
-    ```bash
-    whereis terraform-docs
-    ```
-  
-- Make sure that the line endings on the `create-terraform-docs.sh` script are in UNIX format by running:
-    ```bash
-    cd scripts
-    dos2unix create-terraform-docs.sh
+    brew install terraform-docs
     ```
 
+    If using Linux/WSL:
 
-### [findutils](https://www.gnu.org/software/findutils/) - Needed for scripts running on MacOSX
-```bash
-brew install findutils
-```
+    - Install precompiled binary: - (this documentation assumes latest version is `v0.19.0`) - latest binary can be found here <https://github.com/terraform-docs/terraform-docs/releases>
+
+        ```bash
+        curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.19.0/terraform-docs-v0.19.0-$(uname)-amd64.tar.gz
+        tar -xzf terraform-docs.tar.gz
+        chmod +x terraform-docs
+        ```
+
+    - Add to your $PATH (replace `YOURUSERNAME` with your linux username):
+
+        ```bash
+        mv terraform-docs /home/YOURUSERNAME/.local/bin/terraform-docs
+        ```
+
+    - Verify this has worked with:
+
+        ```bash
+        whereis terraform-docs
+        ```
+
+    - Make sure that the line endings on the `create-terraform-docs.sh` script are in UNIX format by running:
+
+        ```bash
+        cd scripts
+        dos2unix create-terraform-docs.sh
+        ```
+
+2. [findutils](https://www.gnu.org/software/findutils/) - *If running on MacOSX*
+
+    ```bash
+    brew install findutils
+    ```
 
 ## Repository best practices
 
