@@ -93,16 +93,22 @@ resource "aws_iam_policy" "lambda_combined_policy" {
   policy = data.aws_iam_policy_document.merged_policy.json
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
-  for_each = toset([
+variable "default_policies" {
+  default = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    aws_iam_policy.lambda_combined_policy.arn
-  ])
+    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
+  ]
+}
+
+resource "aws_iam_role_policy_attachment" "default_policies" {
+  for_each = toset(var.default_policies)
   role       = aws_iam_role.lambda_execution_role.name
   policy_arn = each.value
-  # role       = aws_iam_role.lambda_execution_role.name
-  # policy_arn = aws_iam_policy.lambda_combined_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
+  role       = aws_iam_role.lambda_execution_role.name
+  policy_arn = aws_iam_policy.lambda_combined_policy.arn
 }
 
 data "archive_file" "lambda" {
