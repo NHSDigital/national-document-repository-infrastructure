@@ -20,14 +20,14 @@ resource "aws_iam_policy" "ssm_access_policy" {
 
 data "aws_iam_policy_document" "ssm_policy" {
   statement {
-        effect = "Allow",
+        effect = "Allow"
         actions = [
           "ssm:GetParameter",
           "ssm:GetParameters",
           "ssm:PutParameter"
-        ],
+        ]
         resources = [
-          "arn:aws:ssm:*:*:parameter/*",
+          "arn:aws:ssm:*:*:parameter/*"
         ]
       }
 }
