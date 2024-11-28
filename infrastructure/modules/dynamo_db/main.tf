@@ -125,8 +125,8 @@ data "aws_iam_policy_document" "dynamodb_write_policy" {
       "dynamodb:BatchWriteItem"
     ]
     resources = [
-      # aws_dynamodb_table.ndr_dynamodb_table.arn,
-      "*"
+      aws_dynamodb_table.ndr_dynamodb_table.arn,
+      # "*"
     ]
   }
 }
