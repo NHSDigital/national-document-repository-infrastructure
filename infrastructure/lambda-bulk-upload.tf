@@ -17,7 +17,8 @@ module "bulk-upload-lambda" {
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_write_policy_document,
-    ssm_policy_test,
+
+    aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy
   ]
   rest_api_id       = null
