@@ -56,8 +56,8 @@ module "generate-document-manifest-lambda" {
     module.zip_store_reference_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-zip-request-store.s3_read_policy_document,
     module.ndr-zip-request-store.s3_write_policy_document,
-    # module.ndr-app-config.app_config_policy,
-    # aws_iam_policy.dynamodb_stream_manifest.policy
+    module.ndr-app-config.app_config_policy,
+    aws_iam_policy.dynamodb_stream_manifest.policy
   ]
   rest_api_id       = null
   api_execution_arn = null

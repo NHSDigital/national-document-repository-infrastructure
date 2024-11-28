@@ -4,10 +4,10 @@ module "manage-nrl-pointer-lambda" {
   handler        = "handlers.manage_nrl_pointer_handler.lambda_handler"
   lambda_timeout = 600
   iam_role_policy_documents = [
-    # module.ndr-app-config.app_config_policy,
+    module.ndr-app-config.app_config_policy,
     module.sqs-nrl-queue.sqs_read_policy_document,
     module.sqs-nrl-queue.sqs_write_policy_document,
-    # aws_iam_policy.ssm_access_policy.policy
+    aws_iam_policy.ssm_access_policy.policy
   ]
   rest_api_id       = null
   api_execution_arn = null
