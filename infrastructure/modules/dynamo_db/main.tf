@@ -91,7 +91,7 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
       "dynamodb:Query",
       "dynamodb:Scan",
       "dynamodb:GetItem",
-      # Stream-specific actions
+      # Stream-specific actions TODO confirm if these policies are needed
       "dynamodb:GetRecords",
       "dynamodb:GetShardIterator",
       "dynamodb:DescribeStream",
@@ -107,7 +107,6 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
     content {
       effect    = "Allow"
       actions   = ["dynamodb:Query"]
-      # resources = ["*"]
       resources = ["${aws_dynamodb_table.ndr_dynamodb_table.arn}/index/${statement.value.name}"]
     }
   }
@@ -124,7 +123,6 @@ data "aws_iam_policy_document" "dynamodb_write_policy" {
     ]
     resources = [
       aws_dynamodb_table.ndr_dynamodb_table.arn,
-      # "*"
     ]
   }
 }
