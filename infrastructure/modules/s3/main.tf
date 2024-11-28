@@ -133,9 +133,9 @@ data "aws_iam_policy_document" "s3_read_policy" {
   statement {
     actions = ["s3:GetObject", "s3:ListBucket"]
     resources = [
-      # aws_s3_bucket.bucket.arn,
-      # "${aws_s3_bucket.bucket.arn}/*"
-      "*"
+      aws_s3_bucket.bucket.arn,
+      "${aws_s3_bucket.bucket.arn}/*"
+      # "*"
     ]
   }
 }
@@ -145,7 +145,6 @@ data "aws_iam_policy_document" "s3_write_policy" {
     actions = ["s3:PutObject"]
     resources = [
       "${aws_s3_bucket.bucket.arn}/*"
-      # "*"
     ]
   }
 }
