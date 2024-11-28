@@ -67,8 +67,8 @@ module "search-patient-details-lambda" {
   name    = "SearchPatientDetailsLambda"
   handler = "handlers.search_patient_details_handler.lambda_handler"
   iam_role_policy_documents = [
-    # aws_iam_policy.ssm_access_policy.policy,
-    # module.ndr-app-config.app_config_policy
+    aws_iam_policy.ssm_access_policy.policy,
+    module.ndr-app-config.app_config_policy
   ]
   rest_api_id  = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id  = module.search-patient-details-gateway.gateway_resource_id
