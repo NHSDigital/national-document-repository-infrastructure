@@ -97,11 +97,11 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
       "dynamodb:DescribeStream",
       "dynamodb:ListStreams"
     ]
-    # resources = [
-    #   aws_dynamodb_table.ndr_dynamodb_table.arn,
-    #   aws_dynamodb_table.ndr_dynamodb_table.stream_arn
-    # ]
-    resources = ["*"]
+    resources = [
+      aws_dynamodb_table.ndr_dynamodb_table.arn,
+      aws_dynamodb_table.ndr_dynamodb_table.stream_arn
+    ]
+    # resources = ["*"]
   }
 
   dynamic "statement" {
