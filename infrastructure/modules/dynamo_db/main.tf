@@ -97,10 +97,11 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
       "dynamodb:DescribeStream",
       "dynamodb:ListStreams"
     ]
-    resources = [
-      aws_dynamodb_table.ndr_dynamodb_table.arn,
-      aws_dynamodb_table.ndr_dynamodb_table.stream_arn
-    ]
+    # resources = [
+    #   aws_dynamodb_table.ndr_dynamodb_table.arn,
+    #   aws_dynamodb_table.ndr_dynamodb_table.stream_arn
+    # ]
+    resources = ["*"]
   }
 
   dynamic "statement" {
@@ -108,7 +109,8 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
     content {
       effect    = "Allow"
       actions   = ["dynamodb:Query"]
-      resources = ["${aws_dynamodb_table.ndr_dynamodb_table.arn}/index/${statement.value.name}"]
+      resources = ["*"]
+      # resources = ["${aws_dynamodb_table.ndr_dynamodb_table.arn}/index/${statement.value.name}"]
     }
   }
 }
@@ -123,7 +125,8 @@ data "aws_iam_policy_document" "dynamodb_write_policy" {
       "dynamodb:BatchWriteItem"
     ]
     resources = [
-      aws_dynamodb_table.ndr_dynamodb_table.arn,
+      # aws_dynamodb_table.ndr_dynamodb_table.arn,
+      "*"
     ]
   }
 }

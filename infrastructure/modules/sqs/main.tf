@@ -83,10 +83,11 @@ data "aws_iam_policy_document" "sqs_read_policy" {
       "sqs:GetQueueAttributes",
       "sqs:GetQueueUrl"
     ]
-    resources = concat(
-      [aws_sqs_queue.sqs_queue.arn],
-      var.enable_dlq ? [aws_sqs_queue.queue_deadletter[0].arn] : []
-    )
+    # resources = concat(
+    #   [aws_sqs_queue.sqs_queue.arn],
+    #   var.enable_dlq ? [aws_sqs_queue.queue_deadletter[0].arn] : []
+    # )
+    resources = ["*"]
   }
 }
 
@@ -97,9 +98,10 @@ data "aws_iam_policy_document" "sqs_write_policy" {
       "sqs:SendMessage",
       "sqs:DeleteMessage"
     ]
-    resources = concat(
-      [aws_sqs_queue.sqs_queue.arn],
-      var.enable_dlq ? [aws_sqs_queue.queue_deadletter[0].arn] : []
-    )
+    # resources = concat(
+    #   [aws_sqs_queue.sqs_queue.arn],
+    #   var.enable_dlq ? [aws_sqs_queue.queue_deadletter[0].arn] : []
+    # )
+    resources = ["*"]
   }
 }
