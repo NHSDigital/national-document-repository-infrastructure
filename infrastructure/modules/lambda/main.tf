@@ -78,7 +78,7 @@ variable "default_policies" {
 }
 
 resource "aws_iam_role_policy_attachment" "default_policies" {
-  for_each = toset(var.default_policies)
+  for_each   = toset(var.default_policies)
   role       = aws_iam_role.lambda_execution_role.name
   policy_arn = each.value
 }

@@ -20,16 +20,16 @@ resource "aws_iam_policy" "ssm_access_policy" {
 
 data "aws_iam_policy_document" "ssm_policy" {
   statement {
-        effect = "Allow"
-        actions = [
-          "ssm:GetParameter",
-          "ssm:GetParameters",
-          "ssm:PutParameter"
-        ]
-        resources = [
-          "arn:aws:ssm:*:*:parameter/*"
-        ]
-      }
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameter",
+      "ssm:GetParameters",
+      "ssm:PutParameter"
+    ]
+    resources = [
+      "arn:aws:ssm:*:*:parameter/*"
+    ]
+  }
 }
 
 output "ssm_policy_test" {

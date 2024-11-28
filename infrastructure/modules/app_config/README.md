@@ -40,4 +40,5 @@ No modules.
 | <a name="output_app_config_application_id"></a> [app\_config\_application\_id](#output\_app\_config\_application\_id) | n/a |
 | <a name="output_app_config_configuration_profile_id"></a> [app\_config\_configuration\_profile\_id](#output\_app\_config\_configuration\_profile\_id) | n/a |
 | <a name="output_app_config_environment_id"></a> [app\_config\_environment\_id](#output\_app\_config\_environment\_id) | n/a |
+| <a name="output_app_config_policy"></a> [app\_config\_policy](#output\_app\_config\_policy) | n/a |
 | <a name="output_app_config_policy_arn"></a> [app\_config\_policy\_arn](#output\_app\_config\_policy\_arn) | n/a |
