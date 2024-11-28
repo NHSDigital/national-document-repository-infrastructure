@@ -99,9 +99,7 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
     ]
     resources = [
       aws_dynamodb_table.ndr_dynamodb_table.arn,
-      # aws_dynamodb_table.ndr_dynamodb_table.stream_arn
     ]
-    # resources = ["*"]
   }
 
   dynamic "statement" {
@@ -109,8 +107,8 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
     content {
       effect    = "Allow"
       actions   = ["dynamodb:Query"]
-      resources = ["*"]
-      # resources = ["${aws_dynamodb_table.ndr_dynamodb_table.arn}/index/${statement.value.name}"]
+      # resources = ["*"]
+      resources = ["${aws_dynamodb_table.ndr_dynamodb_table.arn}/index/${statement.value.name}"]
     }
   }
 }
