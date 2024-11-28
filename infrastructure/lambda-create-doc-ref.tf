@@ -79,7 +79,6 @@ module "create-doc-ref-lambda" {
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-document-store.s3_read_policy_document,
     module.ndr-document-store.s3_write_policy_document,
-
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy,
   ]

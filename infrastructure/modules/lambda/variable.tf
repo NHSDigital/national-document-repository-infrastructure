@@ -44,7 +44,6 @@ variable "api_execution_arn" {
 variable "iam_role_policy_documents" {
   type    = list(string)
   default = []
-
 }
 
 variable "lambda_timeout" {
