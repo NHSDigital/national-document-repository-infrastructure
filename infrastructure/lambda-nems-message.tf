@@ -9,7 +9,7 @@ module "nems-message-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.sqs-nems-queue[0].sqs_read_policy_document,
     module.sqs-nems-queue[0].sqs_write_policy_document,
-    module.ndr-app-config.app_config_policy
+    # module.ndr-app-config.app_config_policy
   ]
   rest_api_id       = null
   api_execution_arn = null

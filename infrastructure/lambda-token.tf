@@ -24,12 +24,12 @@ module "create-token-lambda" {
   name    = "TokenRequestHandler"
   handler = "handlers.token_handler.lambda_handler"
   iam_role_policy_documents = [
-    aws_iam_policy.ssm_policy_token.policy,
+    # aws_iam_policy.ssm_policy_token.policy,
     module.auth_session_dynamodb_table.dynamodb_read_policy_document,
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,
     module.auth_state_dynamodb_table.dynamodb_read_policy_document,
     module.auth_state_dynamodb_table.dynamodb_write_policy_document,
-    module.ndr-app-config.app_config_policy
+    # module.ndr-app-config.app_config_policy
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.create-token-gateway.gateway_resource_id

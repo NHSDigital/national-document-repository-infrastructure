@@ -69,7 +69,7 @@ module "lloyd-george-stitch-lambda" {
   iam_role_policy_documents = [
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-lloyd-george-store.s3_write_policy_document,
-    module.ndr-app-config.app_config_policy,
+    # module.ndr-app-config.app_config_policy,
     module.stitch_metadata_reference_dynamodb_table.dynamodb_read_policy_document,
     module.stitch_metadata_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
