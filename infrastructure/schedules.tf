@@ -99,5 +99,9 @@ resource "aws_iam_role" "ods_weekly_update_ecs_execution" {
       },
     ]
   })
-  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"]
+}
+
+resource "aws_iam_role_policy_attachment" "test-attach" {
+  role       = aws_iam_role.ods_weekly_update_ecs_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
 }
