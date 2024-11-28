@@ -71,6 +71,7 @@
 | <a name="module_generate-lloyd-george-stitch-alarm-topic"></a> [generate-lloyd-george-stitch-alarm-topic](#module\_generate-lloyd-george-stitch-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_generate-lloyd-george-stitch-lambda"></a> [generate-lloyd-george-stitch-lambda](#module\_generate-lloyd-george-stitch-lambda) | ./modules/lambda | n/a |
 | <a name="module_get-doc-nrl-gateway"></a> [get-doc-nrl-gateway](#module\_get-doc-nrl-gateway) | ./modules/gateway | n/a |
+| <a name="module_get-doc-nrl-lambda"></a> [get-doc-nrl-lambda](#module\_get-doc-nrl-lambda) | ./modules/lambda | n/a |
 | <a name="module_lambda-layer-core"></a> [lambda-layer-core](#module\_lambda-layer-core) | ./modules/lambda_layers | n/a |
 | <a name="module_lambda-layer-data"></a> [lambda-layer-data](#module\_lambda-layer-data) | ./modules/lambda_layers | n/a |
 | <a name="module_lloyd-george-stitch-gateway"></a> [lloyd-george-stitch-gateway](#module\_lloyd-george-stitch-gateway) | ./modules/gateway | n/a |

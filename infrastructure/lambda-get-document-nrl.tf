@@ -19,7 +19,7 @@ module "get-doc-nrl-gateway" {
   ]
 }
 
-module "back_channel_logout_lambda" {
+module "get-doc-nrl-lambda" {
   source  = "./modules/lambda"
   name    = "GetDocument"
   handler = "handlers.get_doc.lambda_handler"
