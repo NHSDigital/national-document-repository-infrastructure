@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.73.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.66.0 |
 
 ## Modules
 
@@ -70,6 +70,7 @@
 | <a name="module_generate-lloyd-george-stitch-alarm"></a> [generate-lloyd-george-stitch-alarm](#module\_generate-lloyd-george-stitch-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_generate-lloyd-george-stitch-alarm-topic"></a> [generate-lloyd-george-stitch-alarm-topic](#module\_generate-lloyd-george-stitch-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_generate-lloyd-george-stitch-lambda"></a> [generate-lloyd-george-stitch-lambda](#module\_generate-lloyd-george-stitch-lambda) | ./modules/lambda | n/a |
+| <a name="module_get-doc-nrl-gateway"></a> [get-doc-nrl-gateway](#module\_get-doc-nrl-gateway) | ./modules/gateway | n/a |
 | <a name="module_lambda-layer-core"></a> [lambda-layer-core](#module\_lambda-layer-core) | ./modules/lambda_layers | n/a |
 | <a name="module_lambda-layer-data"></a> [lambda-layer-data](#module\_lambda-layer-data) | ./modules/lambda_layers | n/a |
 | <a name="module_lloyd-george-stitch-gateway"></a> [lloyd-george-stitch-gateway](#module\_lloyd-george-stitch-gateway) | ./modules/gateway | n/a |
@@ -146,6 +147,7 @@
 
 | Name | Type |
 |------|------|
+| [aws_api_gateway_api_key.apim](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_api_key) | resource |
 | [aws_api_gateway_authorizer.repo_authoriser](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer) | resource |
 | [aws_api_gateway_base_path_mapping.api_mapping](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
 | [aws_api_gateway_deployment.ndr_api_deploy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_deployment) | resource |
@@ -156,6 +158,8 @@
 | [aws_api_gateway_resource.auth_resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource) | resource |
 | [aws_api_gateway_resource.login_resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource) | resource |
 | [aws_api_gateway_rest_api.ndr_doc_store_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_rest_api) | resource |
+| [aws_api_gateway_usage_plan.apim](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_usage_plan) | resource |
+| [aws_api_gateway_usage_plan_key.apim](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_usage_plan_key) | resource |
 | [aws_backup_plan.cross_account_backup_schedule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/backup_plan) | resource |
 | [aws_backup_plan.s3_continuous_backup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/backup_plan) | resource |
 | [aws_backup_selection.cross_account_backup_selection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/backup_selection) | resource |
@@ -278,7 +282,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_auth_session_dynamodb_table_name"></a> [auth\_session\_dynamodb\_table\_name](#input\_auth\_session\_dynamodb\_table\_name) | The name of dynamodb table to store user login sessions | `string` | `"AuthSessionReferenceMetadata"` | no |
 | <a name="input_auth_state_dynamodb_table_name"></a> [auth\_state\_dynamodb\_table\_name](#input\_auth\_state\_dynamodb\_table\_name) | The name of dynamodb table to store the state values (for CIS2 authorisation) | `string` | `"AuthStateReferenceMetadata"` | no |
-| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | This is a list that specifies all the Availability Zones that will have a pair of public and private subnets | `list(string)` | <pre>[<br/>  "eu-west-2a",<br/>  "eu-west-2b",<br/>  "eu-west-2c"<br/>]</pre> | no |
+| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | This is a list that specifies all the Availability Zones that will have a pair of public and private subnets | `list(string)` | <pre>[<br>  "eu-west-2a",<br>  "eu-west-2b",<br>  "eu-west-2c"<br>]</pre> | no |
 | <a name="input_bulk_upload_report_dynamodb_table_name"></a> [bulk\_upload\_report\_dynamodb\_table\_name](#input\_bulk\_upload\_report\_dynamodb\_table\_name) | The name of dynamodb table to store bulk upload status | `string` | `"BulkUploadReport"` | no |
 | <a name="input_certificate_domain"></a> [certificate\_domain](#input\_certificate\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_certificate_subdomain_name_prefix"></a> [certificate\_subdomain\_name\_prefix](#input\_certificate\_subdomain\_name\_prefix) | Prefix to add to subdomains on certification configurations, dev envs use api-{env}, prod envs use api.{env} | `string` | `"api-"` | no |
