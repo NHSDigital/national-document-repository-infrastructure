@@ -24,7 +24,7 @@ resource "aws_api_gateway_usage_plan" "apim" {
 
   api_stages {
     api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-    stage  = aws_api_gateway_deployment.ndr_api_deploy.stage_name
+    stage  = aws_api_gateway_stage.ndr_api.stage_name
   }
 }
 
