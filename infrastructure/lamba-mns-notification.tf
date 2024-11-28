@@ -37,11 +37,6 @@ resource "aws_lambda_event_source_mapping" "mns_notification_lambda" {
   scaling_config {
     maximum_concurrency = local.mns_notification_lambda_concurrent_limit
   }
-
-  depends_on = [
-    module.mns-notification-lambda,
-    module.sqs-mns-notification-queue
-  ]
 }
 
 module "mns-notification-alarm" {
@@ -52,7 +47,6 @@ module "mns-notification-alarm" {
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.mns-notification-alarm-topic.arn]
   ok_actions           = [module.mns-notification-alarm-topic.arn]
-  depends_on           = [module.mns-notification-lambda, module.mns-notification-alarm-topic]
 }
 
 module "mns-notification-alarm-topic" {
@@ -82,11 +76,9 @@ module "mns-notification-alarm-topic" {
       }
     ]
   })
-
-  depends_on = [module.mns-notification-lambda, module.sns_encryption_key]
 }
 
-resource "aws_iam_policy" "kms_lambda_access_policy" {
+resource "aws_iam_policy" "kms_lambda_access" {
   name        = "mns_notification_lambda_access_policy"
   description = "KMS policy to allow lambda to read MNS SQS messages"
 

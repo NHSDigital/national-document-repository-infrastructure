@@ -28,7 +28,7 @@ module "sqs-mns-notification-queue" {
   kms_master_key_id = module.mns_encryption_key.id
 }
 
-resource "aws_sqs_queue_policy" "mns_sqs_access_policy" {
+resource "aws_sqs_queue_policy" "mns_sqs_access" {
   queue_url = module.sqs-mns-notification-queue.sqs_url
 
   policy = jsonencode({
