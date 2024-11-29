@@ -45,8 +45,8 @@ module "generate-lloyd-george-stitch-lambda" {
   name                     = "GenerateLloydGeorgeStitch"
   handler                  = "handlers.generate_lloyd_george_stitch_handler.lambda_handler"
   lambda_timeout           = 900
-  lambda_ephemeral_storage = 512
-  memory_size              = 512
+  lambda_ephemeral_storage = 1024
+  memory_size              = 1769
   iam_role_policy_documents = [
     module.ndr-document-store.s3_read_policy_document,
     module.ndr-document-store.s3_write_policy_document,

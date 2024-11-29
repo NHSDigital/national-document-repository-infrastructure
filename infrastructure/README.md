@@ -324,6 +324,4 @@
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_ssm_policy_test"></a> [ssm\_policy\_test](#output\_ssm\_policy\_test) | n/a |
+No outputs.

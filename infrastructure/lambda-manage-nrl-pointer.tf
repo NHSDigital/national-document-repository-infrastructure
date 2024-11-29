@@ -11,13 +11,14 @@ module "manage-nrl-pointer-lambda" {
   ]
   rest_api_id       = null
   api_execution_arn = null
-
+  memory_size       = 512
   lambda_environment_variables = {
     APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
-    NRL_API_ENDPOINT        = local.is_production ? "https://${var.nrl_api_endpoint}" : "https://int.${var.nrl_api_endpoint}"
+    NRL_API_ENDPOINT        = local.is_production ? "https://${var.nrl_api_endpoint_suffix}" : "https://int.${var.nrl_api_endpoint_suffix}"
+    NRL_END_USER_ODS_CODE   = data.aws_ssm_parameter.end_user_ods_code.name
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
@@ -70,15 +71,18 @@ module "manage-nrl-pointer-alarm-topic" {
 }
 
 resource "aws_lambda_event_source_mapping" "nrl_pointer_lambda" {
+  event_source_arn = module.sqs-nrl-queue.endpoint
+  function_name    = module.manage-nrl-pointer-lambda.lambda_arn
+
   filter_criteria {
     filter {
       pattern = jsonencode({
-        "body" : { "action" : [""]
-      } })
+        body = {
+          "action" : [""]
+        }
+      })
     }
   }
-  event_source_arn = module.sqs-nrl-queue.endpoint
-  function_name    = module.manage-nrl-pointer-lambda.lambda_arn
 
   scaling_config {
     maximum_concurrency = local.bulk_upload_lambda_concurrent_limit
@@ -88,4 +92,9 @@ resource "aws_lambda_event_source_mapping" "nrl_pointer_lambda" {
     module.sqs-nrl-queue,
     module.manage-nrl-pointer-lambda
   ]
+}
+
+
+data "aws_ssm_parameter" "end_user_ods_code" {
+  name = "ndr_ods_code"
 }
