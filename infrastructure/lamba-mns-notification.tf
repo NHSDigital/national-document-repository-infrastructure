@@ -9,7 +9,7 @@ module "mns-notification-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
     aws_iam_policy.ssm_access_policy.arn,
     module.ndr-app-config.app_config_policy_arn,
-    aws_iam_policy.kms_lambda_access_policy.arn,
+    aws_iam_policy.kms_lambda_access.arn,
   ]
   rest_api_id       = null
   api_execution_arn = null
