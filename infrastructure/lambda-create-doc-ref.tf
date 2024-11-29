@@ -86,7 +86,6 @@ module "create-doc-ref-lambda" {
   resource_id    = module.create-doc-ref-gateway.gateway_resource_id
   http_methods   = ["POST"]
   memory_size    = 512
-  lambda_timeout = 900
 
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
