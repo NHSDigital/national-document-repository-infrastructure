@@ -60,6 +60,9 @@ jobs:
           build: npm run build
           working-directory: ./app
       
+      - name: Install NPM serve    
+        run: npm install serve -g
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
