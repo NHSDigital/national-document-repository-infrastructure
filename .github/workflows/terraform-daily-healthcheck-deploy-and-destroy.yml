@@ -103,20 +103,68 @@ jobs:
     with:
       build_branch: ${{ github.event.inputs.build_branch}}
 
-  cypress_build_job:
-    name: Build UI version for E2E Tests
+  cypress-run-job:
+    runs-on: ubuntu-22.04
     needs: [ terraform_process ]
-    uses: nhsconnect/national-document-repository/.github/workflows/base-cypress-build.yml@main
-    with:
-      build_branch: ${{ github.event.inputs.build_branch}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: nhsconnect/national-document-repository
 
-  cypress_test_job:
-    name: Run Cypress E2E Tests
-    needs: [cypress_build_job]
-    uses: nhsconnect/national-document-repository/.github/workflows/base-cypress-test-all-env.yml@main
-    with:
-      cypress_base_url: $CYPRESS_BASE_URL
-      build_branch: ${{ github.event.inputs.build_branch}}
+      - name: Download the build folder
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: ./app/build
+
+      # Npm run will run the app locally, we want to test the built application with env vars using serve
+      - name: Install serve globally
+        run: npm install -g serve
+
+      - name: Cypress install
+        run: |
+          npm install --legacy-peer-deps
+        working-directory: ./app
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          start: serve -s build
+          browser: ${{ inputs.cypress_browser}}
+          working-directory: ./app
+        env:
+          CYPRESS_BASE_URL: ${{ inputs.cypress_base_url }}
+          CYPRESS_grepTags: 'regression'
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/screenshots
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-videos
+          path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/videos
+          if-no-files-found: ignore
+
+  #  cypress_build_job:
+#    name: Build UI version for E2E Tests
+#    needs: [ terraform_process ]
+#    uses: nhsconnect/national-document-repository/.github/workflows/base-cypress-build.yml@main
+#    with:
+#      build_branch: ${{ github.event.inputs.build_branch}}
+#
+#  cypress_test_job:
+#    name: Run Cypress E2E Tests
+#    needs: [cypress_build_job]
+#    uses: nhsconnect/national-document-repository/.github/workflows/base-cypress-test-all-env.yml@main
+#    with:
+#      cypress_base_url: $CYPRESS_BASE_URL
+#      build_branch: ${{ github.event.inputs.build_branch}}
 
   publish_all_lambda_layers:
     name: Publish all Lambda Layers
