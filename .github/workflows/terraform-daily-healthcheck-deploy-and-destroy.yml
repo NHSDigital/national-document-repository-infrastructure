@@ -20,11 +20,6 @@ on:
         required: true
         type: 'string'
 
-env:
-  ENVIRONMENT: development
-  SANDBOX: ndrd
-  BRANCH: main
-
 permissions:
   pull-requests: write
   id-token: write # This is required for requesting the JWT
@@ -33,14 +28,14 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: ${{ env.ENVIRONMENT }}
+    environment: development
 
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ env.BRANCH }}
+          ref: main
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -87,24 +82,24 @@ jobs:
         run: terraform apply -auto-approve -input=false tf.plan
         working-directory: ./infrastructure
 
-  # run_full_deploy_to_sandbox:
-  #   name: Full Deploy of Main to Sandbox and Run Tests
-  #   needs: [ 'terraform_process' ]
-  #   uses: nhsconnect/national-document-repository/.github/workflows/full-deploy-to-sandbox.yml@main
-  #   with:
-  #     build_branch: ${{ env.BRANCH }}
-  #     sandbox: ${{ env.SANDBOX }}
-  #     environment: ${{ env.ENVIRONMENT }}
-  #   secrets:
-  #     AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+  run_full_deploy_to_sandbox:
+    name: Full Deploy of Main to Sandbox and Run Tests
+    needs: [ 'terraform_process' ]
+    uses: nhsconnect/national-document-repository/.github/workflows/full-deploy-to-sandbox.yml@PRMP-1291
+    with:
+      build_branch: main
+      sandbox: ndrd
+      environment: development
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   destroy_test_environment:
     name: Destroy the Sandbox Environment from previous job
-    needs: [ 'terraform_process' ]
+    needs: [ 'run_full_deploy_to_sandbox' ]
     uses: ./.github/workflows/terraform-destroy-environment-manual.yml
     with:
-      build_branch: ${{ env.BRANCH }}
-      environment: ${{ env.ENVIRONMENT }}
-      sandbox_workspace: ${{ env.SANDBOX }}
+      build_branch: main
+      environment: development
+      sandbox_workspace: ndrd
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
