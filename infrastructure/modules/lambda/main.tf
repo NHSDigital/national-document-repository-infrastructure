@@ -87,7 +87,7 @@ resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
   policy_arn = aws_iam_policy.lambda_combined_policy.arn
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }
 }
 
