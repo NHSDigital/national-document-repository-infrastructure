@@ -34,7 +34,7 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: $ENVIRONMENT
+    environment: ${{ github.event.inputs.environment}}
 
     steps:
       # Checkout the repository to the GitHub Actions runner
@@ -94,21 +94,21 @@ jobs:
     uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-test.yml@main
     with:
       python_version: "3.11"
-      build_branch: $BRANCH
+      build_branch: ${{ github.event.inputs.build_branch}}
 
   react_testing_job:
     name: Run UI Unit Tests
     needs: [ terraform_process ]
     uses: nhsconnect/national-document-repository/.github/workflows/base-jest-test.yml@main
     with:
-      build_branch: $BRANCH
+      build_branch: ${{ github.event.inputs.build_branch}}
 
   cypress_build_job:
     name: Build UI version for E2E Tests
     needs: [ terraform_process ]
     uses: nhsconnect/national-document-repository/.github/workflows/base-cypress-build.yml@main
     with:
-      build_branch: $BRANCH
+      build_branch: ${{ github.event.inputs.build_branch}}
 
   cypress_test_job:
     name: Run Cypress E2E Tests
@@ -116,16 +116,16 @@ jobs:
     uses: nhsconnect/national-document-repository/.github/workflows/base-cypress-test-all-env.yml@main
     with:
       cypress_base_url: $CYPRESS_BASE_URL
-      build_branch: $BRANCH
+      build_branch: ${{ github.event.inputs.build_branch}}
 
   publish_all_lambda_layers:
     name: Publish all Lambda Layers
     needs: [ terraform_process ]
     uses: nhsconnect/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
     with:
-      build_branch: $BRANCH
-      sandbox: $SANDBOX
-      environment: $ENVIRONMENT
+      build_branch: ${{ github.event.inputs.build_branch}}
+      sandbox: ${{ github.event.inputs.sandboxWorkspace}}
+      environment: ${{ github.event.inputs.environment}}
       python_version: "3.11"
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
@@ -135,9 +135,9 @@ jobs:
     uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
     needs: ["publish_all_lambda_layers"]
     with:
-      build_branch: $BRANCH
-      sandbox: $SANDBOX
-      environment: $ENVIRONMENT
+      build_branch: ${{ github.event.inputs.build_branch}}
+      sandbox: ${{ github.event.inputs.sandboxWorkspace}}
+      environment: ${{ github.event.inputs.environment}}
       python_version: "3.11"
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
@@ -147,9 +147,9 @@ jobs:
     needs: [ terraform_process ]
     uses: nhsconnect/national-document-repository/.github/workflows/base-deploy-ui.yml@main
     with:
-      build_branch: $BRANCH
-      environment: $ENVIRONMENT
-      sandbox: $SANDBOX
+      build_branch: ${{ github.event.inputs.build_branch}}
+      environment: ${{ github.event.inputs.environment}}
+      sandbox: ${{ github.event.inputs.sandboxWorkspace}}
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
