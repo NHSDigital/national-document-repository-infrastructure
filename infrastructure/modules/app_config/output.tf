@@ -11,7 +11,7 @@ output "app_config_configuration_profile_id" {
 }
 
 output "app_config_policy" {
-  value = aws_iam_policy.app_config_policy.policy
+  value = data.aws_iam_policy_document.app_config_policy.json
 }
 
 output "app_config_policy_arn" {
