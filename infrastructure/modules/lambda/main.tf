@@ -69,13 +69,6 @@ resource "aws_iam_policy" "lambda_combined_policy" {
   policy = data.aws_iam_policy_document.merged_policy.json
 }
 
-variable "default_policies" {
-  default = [
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
-  ]
-}
-
 resource "aws_iam_role_policy_attachment" "default_policies" {
   for_each   = toset(var.default_policies)
   role       = aws_iam_role.lambda_execution_role.name

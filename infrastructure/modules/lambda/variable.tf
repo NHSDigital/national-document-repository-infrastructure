@@ -67,6 +67,13 @@ variable "reserved_concurrent_executions" {
   default     = -1
 }
 
+variable "default_policies" {
+  default = [
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
+  ]
+}
+
 output "invoke_arn" {
   value = aws_lambda_function.lambda.invoke_arn
 }
