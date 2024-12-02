@@ -41,7 +41,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: $BRANCH
+          ref: ${{ github.event.inputs.build_branch}}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
