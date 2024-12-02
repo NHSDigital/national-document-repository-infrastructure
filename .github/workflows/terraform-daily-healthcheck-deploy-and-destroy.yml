@@ -90,8 +90,6 @@ jobs:
       build_branch: main
       sandbox: ndrd
       environment: development
-    secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   destroy_test_environment:
     name: Destroy the Sandbox Environment from previous job
@@ -101,5 +99,3 @@ jobs:
       build_branch: main
       environment: development
       sandbox_workspace: ndrd
-    secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
