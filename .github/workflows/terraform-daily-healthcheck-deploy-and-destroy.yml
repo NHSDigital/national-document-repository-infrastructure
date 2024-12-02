@@ -62,7 +62,7 @@ jobs:
 
       - name: Terraform Set Workspace
         id: workspace
-        run: terraform workspace select -or-create $SANDBOX
+        run: terraform workspace select -or-create ndrd
         working-directory: ./infrastructure
         shell: bash
 
