@@ -98,13 +98,13 @@ jobs:
   #   secrets:
   #     AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
-  # destroy_test_environment:
-  #   name: Destroy the Sandbox Environment from previous job
-  #   needs: [ 'run_full_deploy_to_sandbox' ]
-  #   uses: ./.github/workflows/terraform-destroy-environment-manual.yml
-  #   with:
-  #     build_branch: ${{ env.BRANCH }}
-  #     environment: ${{ env.ENVIRONMENT }}
-  #     sandbox_workspace: ${{ env.SANDBOX }}
-  #   secrets:
-      # AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+  destroy_test_environment:
+    name: Destroy the Sandbox Environment from previous job
+    needs: [ 'terraform_process' ]
+    uses: ./.github/workflows/terraform-destroy-environment-manual.yml
+    with:
+      build_branch: ${{ env.BRANCH }}
+      environment: ${{ env.ENVIRONMENT }}
+      sandbox_workspace: ${{ env.SANDBOX }}
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
