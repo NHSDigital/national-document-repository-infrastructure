@@ -199,5 +199,3 @@ jobs:
       sandbox_workspace: ndrd
       terraform_vars: dev.tfvars
       backend: backend.conf
-    secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
