@@ -24,6 +24,7 @@ env:
   ENVIRONMENT: development
   SANDBOX: ndrd
   BRANCH: main
+  CYPRESS_BASE_URL: http://localhost:3000
 
 permissions:
   pull-requests: write
@@ -31,72 +32,140 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
-  terraform_process:
+  greeting_job:
     runs-on: ubuntu-latest
-    environment: $ENVIRONMENT
-
     steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: $BRANCH
+      - name: "Test local vars"
+        run: echo "Deploying $BRANCH to $SANDBOX, testing with Cypress URL $CYPRESS_BASE_URL"
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          role-skip-session-tagging: true
-          aws-region: ${{ vars.AWS_REGION }}
+#  terraform_process:
+#    runs-on: ubuntu-latest
+#    environment: $ENVIRONMENT
+#
+#    steps:
+#      # Checkout the repository to the GitHub Actions runner
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#        with:
+#          ref: $BRANCH
+#
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v2
+#        with:
+#          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+#          role-skip-session-tagging: true
+#          aws-region: ${{ vars.AWS_REGION }}
+#
+#      - name: View AWS Role
+#        run: aws sts get-caller-identity
+#
+#      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+#      - name: Setup Terraform
+#        uses: hashicorp/setup-terraform@v2
+#        with:
+#          terraform_version: 1.5.4
+#          terraform_wrapper: false
+#
+#      - name: Terraform Init
+#        id: init
+#        run: terraform init -backend-config=backend.conf
+#        working-directory: ./infrastructure
+#        shell: bash
+#
+#      - name: Terraform Set Workspace
+#        id: workspace
+#        run: terraform workspace select -or-create $SANDBOX
+#        working-directory: ./infrastructure
+#        shell: bash
+#
+#        # Checks that all Terraform configuration files adhere to a canonical format
+#      - name: Terraform Format
+#        run: terraform fmt -check
+#        working-directory: ./infrastructure
+#
+#      - name: Terraform Plan
+#        id: plan
+#        run: |
+#          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
+#        working-directory: ./infrastructure
+#        shell: bash
+#
+#      - name: Terraform Apply
+#        run: terraform apply -auto-approve -input=false tf.plan
+#        working-directory: ./infrastructure
+#
+#  lambda_test_job:
+#    name: Run Lambda Unit Tests
+#    uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-test.yml@main
+#    with:
+#      python_version: "3.11"
+#      build_branch: $BRANCH
+#
+#  react_testing_job:
+#    name: Run UI Unit Tests
+#    uses: nhsconnect/national-document-repository/.github/workflows/base-jest-test.yml@main
+#    with:
+#      build_branch: $BRANCH
+#
+#  cypress_build_job:
+#    name: Build UI version for E2E Tests
+#    uses: nhsconnect/national-document-repository/.github/workflows/base-cypress-build.yml@main
+#    with:
+#      build_branch: $BRANCH
+#
+#  cypress_test_job:
+#    name: Run Cypress E2E Tests
+#    needs: [cypress_build_job]
+#    uses: nhsconnect/national-document-repository/.github/workflows/base-cypress-test-all-env.yml@main
+#    with:
+#      cypress_base_url: ${{ vars.CYPRESS_BASE_URL }}
+#      build_branch: $BRANCH
+#
+#  publish_all_lambda_layers:
+#    name: Publish all Lambda Layers
+#    uses: nhsconnect/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
+#    with:
+#      build_branch: $BRANCH
+#      sandbox: $SANDBOX
+#      environment: $ENVIRONMENT
+#      python_version: "3.11"
+#    secrets:
+#      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+#
+#  deploy_all_lambdas:
+#    name: Deploy all Lambdas
+#    uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
+#    needs: ["publish_all_lambda_layers"]
+#    with:
+#      build_branch: $BRANCH
+#      sandbox: $SANDBOX
+#      environment: $ENVIRONMENT
+#      python_version: "3.11"
+#    secrets:
+#      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+#
+#  deploy_ui:
+#    name: Deploy UI
+#    uses: nhsconnect/national-document-repository/.github/workflows/base-deploy-ui.yml@main
+#    with:
+#      build_branch: $BRANCH
+#      environment: $ENVIRONMENT
+#      sandbox: $SANDBOX
+#    secrets:
+#      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+########################################################
 
-      - name: View AWS Role
-        run: aws sts get-caller-identity
 
-      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.4
-          terraform_wrapper: false
-
-      - name: Terraform Init
-        id: init
-        run: terraform init -backend-config=backend.conf
-        working-directory: ./infrastructure
-        shell: bash
-
-      - name: Terraform Set Workspace
-        id: workspace
-        run: terraform workspace select -or-create $SANDBOX
-        working-directory: ./infrastructure
-        shell: bash
-
-        # Checks that all Terraform configuration files adhere to a canonical format
-      - name: Terraform Format
-        run: terraform fmt -check
-        working-directory: ./infrastructure
-
-      - name: Terraform Plan
-        id: plan
-        run: |
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
-        working-directory: ./infrastructure
-        shell: bash
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false tf.plan
-        working-directory: ./infrastructure
-
-  run_full_deploy_to_sandbox:
-    name: Full Deploy of Main to Sandbox and Run Tests
-    needs: [ 'terraform_process' ]
-    uses: nhsconnect/national-document-repository/.github/workflows/full-deploy-to-sandbox.yml@main
-    with:
-      build_branch: $BRANCH
-      sandbox: $SANDBOX
-      environment: $ENVIRONMENT
-    secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+#  run_full_deploy_to_sandbox:
+#    name: Full Deploy of Main to Sandbox and Run Tests
+#    needs: [ 'terraform_process' ]
+#    uses: nhsconnect/national-document-repository/.github/workflows/full-deploy-to-sandbox.yml@main
+#    with:
+#      build_branch: $BRANCH
+#      sandbox: $SANDBOX
+#      environment: $ENVIRONMENT
+#    secrets:
+#      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
 #  destroy_test_environment:
 #    name: Destroy the Sandbox Environment from previous job
