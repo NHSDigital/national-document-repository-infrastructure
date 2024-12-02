@@ -99,3 +99,5 @@ jobs:
       build_branch: main
       environment: development
       sandbox_workspace: ndrd
+      terraform_vars: dev.tfvars
+      backend: backend.conf
