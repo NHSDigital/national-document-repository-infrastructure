@@ -76,7 +76,9 @@ module "delete-doc-ref-lambda" {
     module.ndr-lloyd-george-store.s3_write_policy_document,
     module.ndr-app-config.app_config_policy,
     module.stitch_metadata_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.stitch_metadata_reference_dynamodb_table.dynamodb_write_policy_document
+    module.stitch_metadata_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.sqs-nrl-queue.sqs_read_policy_document,
+    module.sqs-nrl-queue.sqs_write_policy_document
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.delete-doc-ref-gateway.gateway_resource_id
