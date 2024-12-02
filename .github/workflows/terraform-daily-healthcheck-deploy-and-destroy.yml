@@ -2,7 +2,7 @@ name: 'Daily Healthcheck Deploy and Destroy'
 
 #on:
 #  schedule:
-#    - cron: 45 7 * * 1-5
+#    - cron: 30 4 * * 1-5
 on:
   workflow_dispatch:
     inputs:
@@ -20,6 +20,11 @@ on:
         required: true
         type: 'string'
 
+env:
+  ENVIRONMENT: development
+  SANDBOX: ndrd
+  BRANCH: main
+
 permissions:
   pull-requests: write
   id-token: write # This is required for requesting the JWT
@@ -28,14 +33,14 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+    environment: $ENVIRONMENT
 
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.buildBranch}}
+          ref: $BRANCH
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -62,7 +67,7 @@ jobs:
 
       - name: Terraform Set Workspace
         id: workspace
-        run: terraform workspace select -or-create ${{ github.event.inputs.sandboxWorkspace}}
+        run: terraform workspace select -or-create $SANDBOX
         working-directory: ./infrastructure
         shell: bash
 
@@ -82,39 +87,24 @@ jobs:
         run: terraform apply -auto-approve -input=false tf.plan
         working-directory: ./infrastructure
 
-  run_main_repo_deploy_lambdas:
-    name: Deploy Lambdas on NDR Functional Repo
-    needs: ['terraform_process']
-#    if: github.ref == 'refs/heads/main'
-    uses: nhsconnect/national-document-repository/.github/workflows/lambdas-deploy-feature-to-sandbox.yml@main
+  run_full_deploy_to_sandbox:
+    name: Full Deploy of Main to Sandbox and Run Tests
+    needs: [ 'terraform_process' ]
+    uses: nhsconnect/national-document-repository/.github/workflows/full-deploy-to-sandbox.yml@main
     with:
-      build_branch: main
-      sandbox: ${{ github.event.inputs.sandboxWorkspace}}
-      environment: development
+      build_branch: $BRANCH
+      sandbox: $SANDBOX
+      environment: $ENVIRONMENT
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
-  run_main_repo_deploy_ui:
-    name: Deploy Lambdas on NDR Functional Repo
-    needs: ['terraform_process']
-#    if: github.ref == 'refs/heads/main'
-    uses: nhsconnect/national-document-repository/.github/workflows/ui-deploy-feature-to-sandbox-manual.yml@main
+  destroy_test_environment:
+    name: Destroy the Sandbox Environment from previous job
+    needs: [ 'run_full_deploy_to_sandbox' ]
+    uses: ./.github/workflows/terraform-destroy-environment-manual.yml
     with:
-      build_branch: main
-      sandbox: ${{ github.event.inputs.sandboxWorkspace}}
-      environment: development
+      build_branch: $BRANCH
+      environment: $ENVIRONMENT
+      sandbox_workspace: $SANDBOX
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-
-#  destroy_test_environment:
-#    name: Destroy the test environment
-#    needs: ['run_main_repo_deploy_ui']
-##    if: github.ref == 'refs/heads/main'
-#    uses: nhsconnect/national-document-repository-infrastructure/.github/workflows/terraform-destroy-environment-manual.yml@main
-#    with:
-#      build_branch: main
-#      sandbox: ${{ github.event.inputs.sandboxWorkspace}}
-#      environment: development
-#    secrets:
-#      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-
