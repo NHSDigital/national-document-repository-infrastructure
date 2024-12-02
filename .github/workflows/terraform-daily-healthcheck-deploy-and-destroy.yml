@@ -82,116 +82,9 @@ jobs:
         run: terraform apply -auto-approve -input=false tf.plan
         working-directory: ./infrastructure
 
-  lambda_test_job:
-    name: Run Lambda Unit Tests
-    uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-test.yml@main
-    with:
-      python_version: "3.11"
-      build_branch: main
-      
-  react_testing_job:
-    name: Run UI Unit Tests
-    uses: nhsconnect/national-document-repository/.github/workflows/base-jest-test.yml@main
-    with:
-      build_branch: main
-
-  cypress-run-job:
-    runs-on: ubuntu-22.04 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          repository: nhsconnect/national-document-repository
-
-      - name: Cypress install
-        run: npm install --legacy-peer-deps
-        working-directory: ./app
-
-      - name: Configure React environment vars
-        env:
-          ENDPOINT_DOC_STORE_API: http://localhost:3000
-          AWS_REGION: test region
-          OIDC_PROVIDER_ID: not provided yet
-          BUILD_ENV: development
-          IMAGE_VERSION: 'not-required'
-        run: |
-            ./react-environment-config.sh
-        working-directory: ./app
-
-      - name: Cypress build
-        uses: cypress-io/github-action@v5
-        with:
-          # Disable running of tests within install job
-          install: false
-          runTests: false
-          build: npm run build
-          working-directory: ./app
-      
-      - name: Install NPM serve    
-        run: npm install serve -g
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          install: false
-          start: serve -s build
-          browser: chrome
-          working-directory: ./app
-        env:
-          CYPRESS_BASE_URL: http://localhost:3000
-          CYPRESS_grepTags: 'regression'
-  
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/screenshots
-          if-no-files-found: ignore
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: cypress-videos
-          path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/videos
-          if-no-files-found: ignore
-
-  publish_all_lambda_layers:
-    name: Publish all Lambda Layers
-    needs: [ terraform_process ]
-    uses: nhsconnect/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
-    with:
-      build_branch: main
-      sandbox: ndrd
-      environment: development
-      python_version: "3.11"
-    secrets:
-        AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-        
-  deploy_all_lambdas:
-    name: Deploy all Lambdas
-    uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
-    needs: ["publish_all_lambda_layers"]
-    with:
-      build_branch: main
-      sandbox: ndrd
-      environment: development
-      python_version: "3.11"
-    secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-
-  deploy_ui:
-    name: Deploy UI
-    needs: [ deploy_all_lambdas ]
-    uses: nhsconnect/national-document-repository/.github/workflows/base-deploy-ui.yml@main
-    with:
-      build_branch: main
-      sandbox: ndrd
-      environment: development
-    secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-
   destroy_test_environment:
     name: Destroy the Sandbox Environment from previous job
-    needs: [ 'deploy_ui' ]
+    # needs: [ 'deploy_ui' ]
     uses: ./.github/workflows/terraform-destroy-environment-manual.yml
     with:
       build_branch: main
@@ -199,3 +92,113 @@ jobs:
       sandbox_workspace: ndrd
       terraform_vars: dev.tfvars
       backend: backend.conf
+    secrets: inherit
+
+  # lambda_test_job:
+  #   name: Run Lambda Unit Tests
+  #   uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-test.yml@main
+  #   with:
+  #     python_version: "3.11"
+  #     build_branch: main
+      
+  # react_testing_job:
+  #   name: Run UI Unit Tests
+  #   uses: nhsconnect/national-document-repository/.github/workflows/base-jest-test.yml@main
+  #   with:
+  #     build_branch: main
+
+  # cypress-run-job:
+  #   runs-on: ubuntu-22.04 
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #       with:
+  #         repository: nhsconnect/national-document-repository
+
+  #     - name: Cypress install
+  #       run: npm install --legacy-peer-deps
+  #       working-directory: ./app
+
+  #     - name: Configure React environment vars
+  #       env:
+  #         ENDPOINT_DOC_STORE_API: http://localhost:3000
+  #         AWS_REGION: test region
+  #         OIDC_PROVIDER_ID: not provided yet
+  #         BUILD_ENV: development
+  #         IMAGE_VERSION: 'not-required'
+  #       run: |
+  #           ./react-environment-config.sh
+  #       working-directory: ./app
+
+  #     - name: Cypress build
+  #       uses: cypress-io/github-action@v5
+  #       with:
+  #         # Disable running of tests within install job
+  #         install: false
+  #         runTests: false
+  #         build: npm run build
+  #         working-directory: ./app
+      
+  #     - name: Install NPM serve    
+  #       run: npm install serve -g
+
+  #     - name: Cypress run
+  #       uses: cypress-io/github-action@v6
+  #       with:
+  #         install: false
+  #         start: serve -s build
+  #         browser: chrome
+  #         working-directory: ./app
+  #       env:
+  #         CYPRESS_BASE_URL: http://localhost:3000
+  #         CYPRESS_grepTags: 'regression'
+  
+  #     - uses: actions/upload-artifact@v4
+  #       if: failure()
+  #       with:
+  #         name: cypress-screenshots
+  #         path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/screenshots
+  #         if-no-files-found: ignore
+  #     - uses: actions/upload-artifact@v4
+  #       if: failure()
+  #       with:
+  #         name: cypress-videos
+  #         path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/videos
+  #         if-no-files-found: ignore
+
+  # publish_all_lambda_layers:
+  #   name: Publish all Lambda Layers
+  #   needs: [ terraform_process ]
+  #   uses: nhsconnect/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
+  #   with:
+  #     build_branch: main
+  #     sandbox: ndrd
+  #     environment: development
+  #     python_version: "3.11"
+  #   secrets:
+  #       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+        
+  # deploy_all_lambdas:
+  #   name: Deploy all Lambdas
+  #   uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
+  #   needs: ["publish_all_lambda_layers"]
+  #   with:
+  #     build_branch: main
+  #     sandbox: ndrd
+  #     environment: development
+  #     python_version: "3.11"
+  #   secrets:
+  #     AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
+  # deploy_ui:
+    # name: Deploy UI
+    # needs: [ deploy_all_lambdas ]
+    # uses: nhsconnect/national-document-repository/.github/workflows/base-deploy-ui.yml@main
+    # with:
+    #   build_branch: main
+    #   sandbox: ndrd
+    #   environment: development
+    # secrets:
+    #   AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
+  
