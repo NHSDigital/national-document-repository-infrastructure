@@ -107,10 +107,8 @@ module "create-doc-ref-lambda" {
     module.lloyd_george_reference_dynamodb_table,
     module.ndr-bulk-staging-store,
     module.create-doc-ref-gateway,
-    # module.ndr-app-config,
+    module.ndr-app-config,
     module.lloyd_george_reference_dynamodb_table,
     module.stitch_metadata_reference_dynamodb_table,
-    aws_iam_policy.ssm_access_policy,
-
   ]
 }
