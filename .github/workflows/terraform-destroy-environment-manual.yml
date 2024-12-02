@@ -24,6 +24,32 @@ on:
         default: 'backend.conf'
         description: 'Terraform backend configuration.'
         required: true
+  workflow_call:
+    inputs:
+      build_branch:
+        default: 'main'
+        description: 'Branch to use for the destroy action.'
+        required: true
+        type: "string"
+      sandbox_workspace:
+        description: 'The sandbox workspace to destroy.'
+        required: true
+        type: "string"
+      terraform_vars:
+        default: 'dev.tfvars'
+        description: 'Terraform vars file to use.'
+        required: true
+        type: "string"
+      environment:
+        default: 'development'
+        description: 'Environment for destruction.'
+        required: true
+        type: "string"
+      backend:
+        default: 'backend.conf'
+        description: 'Terraform backend configuration.'
+        required: true
+        type: "string"
 
 permissions:
   pull-requests: write
