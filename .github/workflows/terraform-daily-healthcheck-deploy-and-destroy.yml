@@ -36,20 +36,71 @@ jobs:
 
       - run: ls
 
-      - name: Download the build folder
-        uses: actions/download-artifact@v3
+      - name: Cypress install
+        run: npm install --legacy-peer-deps
+        working-directory: ./app
+
+      - name: Configure React environment vars
+        env:
+          ENDPOINT_DOC_STORE_API: http://localhost:3000
+          AWS_REGION: test region
+          OIDC_PROVIDER_ID: not provided yet
+          BUILD_ENV: development
+          IMAGE_VERSION: 'not-required'
+        run: |
+            ./react-environment-config.sh
+        working-directory: ./app
+
+      - name: Cypress build
+        uses: cypress-io/github-action@v5
         with:
-          name: build
-          path: ./app/build
+          # Disable running of tests within install job
+          install: false
+          runTests: false
+          build: npm run build
+          working-directory: ./app
+      
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          start: serve -s build
+          browser: chrome
+          working-directory: ./app
+        env:
+          CYPRESS_BASE_URL: http://localhost:3000
+          CYPRESS_grepTags: 'regression'
+  
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/screenshots
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-videos
+          path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/videos
+          if-no-files-found: ignore
+
+      # - name: Save build folder
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: build
+      #     if-no-files-found: error
+      #     path: ./app/build
+
+      # - name: Download the build folder
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: build
+      #     path: ./app/build
+
 
       # # Npm run will run the app locally, we want to test the built application with env vars using serve
       # - name: Install serve globally
       #   run: npm install -g serve
-
-      # - name: Cypress install
-      #   run: |
-      #     npm install --legacy-peer-deps
-      #   working-directory: ./app
 
   # terraform_process:
   #   runs-on: ubuntu-latest
