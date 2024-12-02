@@ -36,11 +36,11 @@ jobs:
 
       - run: ls
 
-      # - name: Download the build folder
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: build
-      #     path: ./app/build
+      - name: Download the build folder
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: ./app/build
 
       # # Npm run will run the app locally, we want to test the built application with env vars using serve
       # - name: Install serve globally
