@@ -1,24 +1,8 @@
-name: 'Daily Healthcheck Deploy and Destroy'
+name: 'Daily Healthcheck Deploy, Test and Destroy'
 
-#on:
-#  schedule:
-#    - cron: 30 4 * * 1-5
 on:
-  workflow_dispatch:
-    inputs:
-      buildBranch:
-        description: 'Feature branch to push to sandbox.'
-        required: true
-        type: 'string'
-      sandboxWorkspace:
-        description: 'Which Sandbox to push to.'
-        required: true
-        type: 'string'
-      environment:
-        default: 'development'
-        description: 'Which environment should this run against'
-        required: true
-        type: 'string'
+ schedule:
+   - cron: 30 4 * * 1-5
 
 permissions:
   pull-requests: write

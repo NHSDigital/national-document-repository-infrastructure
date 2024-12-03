@@ -69,6 +69,17 @@ jobs:
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
+  cleanup_versions_process:
+    name: Cleanup Versions Process
+    uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
+    with:
+      build_branch: ${{ inputs.build_branch }}
+      sandbox: ${{ inputs.sandbox_workspace }}
+      environment: ${{ inputs.environment }}
+      python_version: 3.11
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
   terraform_destroy_process:
     name: Terraform Destroy Process
     runs-on: ubuntu-latest
