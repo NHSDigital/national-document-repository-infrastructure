@@ -5,7 +5,7 @@ module "get-doc-nrl-gateway" {
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
   http_methods        = ["GET"]
   authorization       = "NONE"
-  gateway_path        = "GetDocument"
+  gateway_path        = "DocumentReference"
   require_credentials = false
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
   api_key_required    = true
@@ -21,7 +21,7 @@ module "get-doc-nrl-gateway" {
 
 module "get-doc-nrl-lambda" {
   source  = "./modules/lambda"
-  name    = "GetDocument"
+  name    = "GetDocumentReference"
   handler = "handlers.get_doc.lambda_handler"
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
