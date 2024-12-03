@@ -1,4 +1,4 @@
-resource "aws_api_gateway_method" "proxy_method" {
+resource "aws_api_gateway_method" "document_ref_get" {
   rest_api_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id      = module.create-doc-ref-gateway.gateway_resource_id
   http_method      = "GET"
@@ -26,4 +26,5 @@ module "get-doc-nrl-lambda" {
     WORKSPACE               = terraform.workspace
     ENVIRONMENT             = var.environment
   }
+  depends_on = [aws_api_gateway_method.document_ref_get]
 }
