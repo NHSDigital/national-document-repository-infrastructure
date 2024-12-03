@@ -131,7 +131,7 @@ resource "aws_s3_bucket_versioning" "bucket_versioning" {
 
 data "aws_iam_policy_document" "s3_read_policy" {
   statement {
-    actions = ["s3:GetObject", "s3:ListBucket"]
+    actions = ["s3:Get*", "s3:List*"]
     resources = [
       aws_s3_bucket.bucket.arn,
       "${aws_s3_bucket.bucket.arn}/*"
@@ -141,7 +141,7 @@ data "aws_iam_policy_document" "s3_read_policy" {
 
 data "aws_iam_policy_document" "s3_write_policy" {
   statement {
-    actions = ["s3:PutObject"]
+    actions = ["s3:Put*", "s3:Delete*", "s3:RestoreObject", "s3:AbortMultipartUpload"]
     resources = [
       "${aws_s3_bucket.bucket.arn}/*"
     ]

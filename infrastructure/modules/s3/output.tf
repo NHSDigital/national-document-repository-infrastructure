@@ -1,7 +1,3 @@
-output "s3_object_access_policy" {
-  value = aws_iam_policy.s3_document_data_policy.arn
-}
-
 output "s3_list_object_policy" {
   value = aws_iam_policy.s3_list_object_policy.arn
 }

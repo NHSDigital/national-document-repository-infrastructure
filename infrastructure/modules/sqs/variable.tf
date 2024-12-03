@@ -88,11 +88,6 @@ output "sqs_id" {
   value = aws_sqs_queue.sqs_queue.id
 }
 
-output "sqs_policy" {
-  value       = aws_iam_policy.sqs_queue_policy.arn
-  description = "Arn for the iam policy for accessing this queue"
-}
-
 output "sqs_url" {
   value = aws_sqs_queue.sqs_queue.url
 }
