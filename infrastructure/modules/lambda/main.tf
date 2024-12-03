@@ -78,10 +78,6 @@ resource "aws_iam_role_policy_attachment" "default_policies" {
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
   role       = aws_iam_role.lambda_execution_role.name
   policy_arn = aws_iam_policy.lambda_combined_policy.arn
-
-  # depends_on = [
-  #   aws_iam_role_policy_attachment.default_policies
-  # ]
 }
 
 data "archive_file" "lambda" {
