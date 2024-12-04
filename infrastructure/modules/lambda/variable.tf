@@ -66,10 +66,6 @@ variable "reserved_concurrent_executions" {
   default     = -1
 }
 
-variable "gateway_request_parameters" {
-  type    = map(string)
-  default = {}
-}
 output "invoke_arn" {
   value = aws_lambda_function.lambda.invoke_arn
 }

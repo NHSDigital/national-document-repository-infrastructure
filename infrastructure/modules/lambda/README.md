@@ -30,7 +30,6 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_api_execution_arn"></a> [api\_execution\_arn](#input\_api\_execution\_arn) | n/a | `string` | n/a | yes |
-| <a name="input_gateway_request_parameters"></a> [gateway\_request\_parameters](#input\_gateway\_request\_parameters) | n/a | `map(string)` | `{}` | no |
 | <a name="input_handler"></a> [handler](#input\_handler) | n/a | `string` | n/a | yes |
 | <a name="input_http_methods"></a> [http\_methods](#input\_http\_methods) | n/a | `list(string)` | `[]` | no |
 | <a name="input_iam_role_policies"></a> [iam\_role\_policies](#input\_iam\_role\_policies) | n/a | `list(string)` | n/a | yes |

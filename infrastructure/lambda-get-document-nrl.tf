@@ -10,6 +10,9 @@ resource "aws_api_gateway_method" "document_ref_get" {
   http_method      = "GET"
   authorization    = "NONE"
   api_key_required = true
+  request_parameters = {
+    "method.request.path.id" = true
+  }
 }
 
 module "get-doc-nrl-lambda" {
@@ -33,7 +36,4 @@ module "get-doc-nrl-lambda" {
     ENVIRONMENT             = var.environment
   }
   depends_on = [aws_api_gateway_method.document_ref_get]
-  gateway_request_parameters = {
-    "method.request.path.id" = true
-  }
 }

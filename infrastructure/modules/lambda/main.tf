@@ -30,7 +30,6 @@ resource "aws_api_gateway_integration" "lambda_integration" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.lambda.invoke_arn
-  request_parameters      = var.gateway_request_parameters
 }
 
 resource "aws_lambda_permission" "lambda_permission" {
