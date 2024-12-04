@@ -1,7 +1,7 @@
 resource "aws_api_gateway_resource" "document_ref_get" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id   = module.create-doc-ref-gateway.gateway_resource_id
-  path_part   = "id"
+  path_part   = "{id}"
 }
 
 resource "aws_api_gateway_method" "document_ref_get" {
