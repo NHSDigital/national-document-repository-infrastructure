@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "merged_policy" {
   source_policy_documents = var.iam_role_policy_documents
 }
 
-resource "aws_iam_policy" "lambda_combined_policy" {
+resource "aws_iam_policy" "combined_policies" {
   name   = "${terraform.workspace}_${var.name}_combined_policy"
   policy = data.aws_iam_policy_document.merged_policy.json
 }
@@ -77,7 +77,7 @@ resource "aws_iam_role_policy_attachment" "default_policies" {
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
   role       = aws_iam_role.lambda_execution_role.name
-  policy_arn = aws_iam_policy.lambda_combined_policy.arn
+  policy_arn = aws_iam_policy.combined_policies.arn
 }
 
 data "archive_file" "lambda" {
