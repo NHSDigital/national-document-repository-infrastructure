@@ -34,6 +34,6 @@ module "get-doc-nrl-lambda" {
   }
   depends_on = [aws_api_gateway_method.document_ref_get]
   gateway_request_parameters = {
-    "method.request.path.accountId" = true
+    "method.request.path.id" = true
   }
 }
