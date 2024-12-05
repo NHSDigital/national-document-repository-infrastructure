@@ -161,7 +161,6 @@ jobs:
 
   deploy_ui:
     name: Deploy UI
-    needs: [ deploy_all_lambdas ]
     uses: nhsconnect/national-document-repository/.github/workflows/base-deploy-ui.yml@main
     with:
       build_branch: main
@@ -172,7 +171,7 @@ jobs:
 
   destroy_test_environment:
     name: Destroy the Sandbox Environment from previous job
-    needs: [ 'deploy_ui' ]
+    needs: [ 'deploy_ui', 'deploy_all_lambdas' ]
     uses: ./.github/workflows/terraform-destroy-environment-manual.yml
     with:
       build_branch: main
