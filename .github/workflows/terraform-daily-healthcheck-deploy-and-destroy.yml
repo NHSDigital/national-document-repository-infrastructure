@@ -22,6 +22,7 @@ on:
         type: 'string'
 
 permissions:
+  pull-requests: write
   id-token: write 
   contents: read
 
