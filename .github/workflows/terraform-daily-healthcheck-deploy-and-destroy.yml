@@ -12,6 +12,8 @@ jobs:
   terraform_process:
     runs-on: ubuntu-latest
     environment: development
+    env:  
+      WORKSPACE: ndrd
 
     steps:
       - name: Checkout
@@ -44,7 +46,7 @@ jobs:
 
       - name: Terraform Set Workspace
         id: workspace
-        run: terraform workspace select -or-create ndrd
+        run: terraform workspace select -or-create ${{ env.WORKSPACE }}
         working-directory: ./infrastructure
         shell: bash
 
