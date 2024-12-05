@@ -6,20 +6,6 @@ name: 'Daily Healthcheck Deploy, Test and Destroy'
 
 on:
   workflow_dispatch:
-    inputs:
-      buildBranch:
-        description: 'Feature branch to push to sandbox.'
-        required: true
-        type: 'string'
-      sandboxWorkspace:
-        description: 'Which Sandbox to push to.'
-        required: true
-        type: 'string'
-      environment:
-        default: 'development'
-        description: 'Which environment should this run against'
-        required: true
-        type: 'string'
 
 permissions:
   pull-requests: write
