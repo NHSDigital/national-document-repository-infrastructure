@@ -16,8 +16,12 @@ jobs:
   env_var:
     runs-on: ubuntu-latest
     outputs:
-      workplace: ndrd
-          
+      workplace: ${{ steps.set-output.outputs.workspace }}
+    steps:
+      - name: Set Output
+        id: set-output
+        run: echo 'workspace=ndrd' >> $GITHUB_OUTPUT      
+
   terraform_process:
     runs-on: ubuntu-latest
     environment: development
