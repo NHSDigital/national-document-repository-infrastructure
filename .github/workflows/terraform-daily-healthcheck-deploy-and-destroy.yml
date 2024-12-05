@@ -1,11 +1,8 @@
 name: 'Daily Healthcheck Deploy, Test and Destroy'
 
-# on:
-#  schedule:
-#    - cron: 30 4 * * 1-5
-
 on:
-  workflow_dispatch:
+ schedule:
+   - cron: 30 4 * * 1-5
 
 permissions:
   pull-requests: write
@@ -13,10 +10,10 @@ permissions:
   contents: read
 
 jobs:
-  env_var:
+  set_workspace:
     runs-on: ubuntu-latest
     outputs:
-      workplace: ${{ steps.set-output.outputs.workspace }}
+      workspace: ${{ steps.set-output.outputs.workspace }}
     steps:
       - name: Set Output
         id: set-output
@@ -25,7 +22,7 @@ jobs:
   terraform_process:
     runs-on: ubuntu-latest
     environment: development
-    needs: ['env_var']
+    needs: ['set_workspace']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -57,7 +54,7 @@ jobs:
 
       - name: Terraform Set Workspace
         id: workspace
-        run: terraform workspace select -or-create ${{ needs.env_var.outputs.workplace }}
+        run: terraform workspace select -or-create ${{ needs.set_workspace.outputs.workspace }}
         working-directory: ./infrastructure
         shell: bash
 
@@ -149,11 +146,11 @@ jobs:
 
   publish_all_lambda_layers:
     name: Publish all Lambda Layers
-    needs: ['env_var', 'terraform_process']
+    needs: ['set_workspace', 'terraform_process']
     uses: nhsconnect/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
     with:
       build_branch: main
-      sandbox: ${{ needs.env_var.outputs.workplace }}
+      sandbox: ${{ needs.set_workspace.outputs.workspace }}
       environment: development
       python_version: "3.11"
     secrets:
@@ -162,10 +159,10 @@ jobs:
   deploy_all_lambdas:
     name: Deploy all Lambdas
     uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
-    needs: ['env_var', 'publish_all_lambda_layers']
+    needs: ['set_workspace', 'publish_all_lambda_layers']
     with:
       build_branch: main
-      sandbox: ${{ needs.env_var.outputs.workplace }}
+      sandbox: ${{ needs.set_workspace.outputs.workspace }}
       environment: development
       python_version: "3.11"
     secrets:
@@ -174,22 +171,22 @@ jobs:
   deploy_ui:
     name: Deploy UI
     uses: nhsconnect/national-document-repository/.github/workflows/base-deploy-ui.yml@main
-    needs: ['env_var']
+    needs: ['set_workspace']
     with:
       build_branch: main
-      sandbox: ${{ needs.env_var.outputs.workplace }}
+      sandbox: ${{ needs.set_workspace.outputs.workspace }}
       environment: development
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   destroy_test_environment:
     name: Destroy the Sandbox Environment from previous job
-    needs: [ 'env_var', 'deploy_ui', 'deploy_all_lambdas' ]
+    needs: [ 'set_workspace', 'deploy_ui', 'deploy_all_lambdas' ]
     uses: ./.github/workflows/terraform-destroy-environment-manual.yml
     with:
       build_branch: main
       environment: development
-      sandbox_workspace: ${{ needs.env_var.outputs.workplace }}
+      sandbox_workspace: ${{ needs.set_workspace.outputs.workspace }}
       terraform_vars: dev.tfvars
       backend: backend.conf
     secrets: inherit
