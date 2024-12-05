@@ -8,12 +8,13 @@ permissions:
   id-token: write 
   contents: read
 
+env:
+  WORKSPACE: ndrd
+
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
     environment: development
-    env:  
-      WORKSPACE: ndrd
 
     steps:
       - name: Checkout
@@ -104,7 +105,6 @@ jobs:
       - name: Cypress build
         uses: cypress-io/github-action@v5
         with:
-          # Disable running of tests within install job
           install: false
           runTests: false
           build: npm run build
@@ -143,7 +143,7 @@ jobs:
     uses: nhsconnect/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
     with:
       build_branch: main
-      sandbox: ndrd
+      sandbox: ${{ env.WORKSPACE }}
       environment: development
       python_version: "3.11"
     secrets:
@@ -155,7 +155,7 @@ jobs:
     needs: ["publish_all_lambda_layers"]
     with:
       build_branch: main
-      sandbox: ndrd
+      sandbox: ${{ env.WORKSPACE }}
       environment: development
       python_version: "3.11"
     secrets:
@@ -166,7 +166,7 @@ jobs:
     uses: nhsconnect/national-document-repository/.github/workflows/base-deploy-ui.yml@main
     with:
       build_branch: main
-      sandbox: ndrd
+      sandbox: ${{ env.WORKSPACE }}
       environment: development
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
@@ -178,7 +178,7 @@ jobs:
     with:
       build_branch: main
       environment: development
-      sandbox_workspace: ndrd
+      sandbox_workspace: ${{ env.WORKSPACE }}
       terraform_vars: dev.tfvars
       backend: backend.conf
     secrets: inherit
