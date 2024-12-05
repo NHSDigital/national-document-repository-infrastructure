@@ -27,22 +27,15 @@ permissions:
   contents: read
 
 jobs:
-  set-workspace:
-    name: Set Workspace Variable
+  env_var:
     runs-on: ubuntu-latest
     outputs:
-      workspace: ${{ steps.set-output.outputs.workspace }}
-
-    steps:
-      - name: Set Output
-        id: set-output
-        run: echo 'workspace=ndrd' >> $GITHUB_OUTPUT
-
+      workplace: ndrd
+          
   terraform_process:
-    needs: ['set-workspace']
     runs-on: ubuntu-latest
     environment: development
-
+    needs: ['env_var']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -74,7 +67,7 @@ jobs:
 
       - name: Terraform Set Workspace
         id: workspace
-        run: terraform workspace select -or-create ${{ needs.set-workspace.outputs.workspace }}
+        run: terraform workspace select -or-create ${{ needs.env_var.outputs.workplace }}
         working-directory: ./infrastructure
         shell: bash
 
@@ -85,7 +78,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -input=false -no-color -var-file=''${{vars.TF_VARS_FILE}}'' -out tf.plan
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
         working-directory: ./infrastructure
         shell: bash
 
@@ -97,7 +90,7 @@ jobs:
     name: Run Lambda Unit Tests
     uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-test.yml@main
     with:
-      python_version: '3.11'
+      python_version: "3.11"
       build_branch: main
       
   react_testing_job:
@@ -166,47 +159,47 @@ jobs:
 
   publish_all_lambda_layers:
     name: Publish all Lambda Layers
-    needs: [ 'set-workspace', 'terraform_process' ]
+    needs: ['env_var', 'terraform_process']
     uses: nhsconnect/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
     with:
       build_branch: main
-      sandbox: ${{ needs.set-workspace.outputs.workspace }}
+      sandbox: ${{ needs.env_var.outputs.workplace }}
       environment: development
-      python_version: '3.11'
+      python_version: "3.11"
     secrets:
         AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
         
   deploy_all_lambdas:
     name: Deploy all Lambdas
     uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
-    needs: [ 'set-workspace', 'publish_all_lambda_layers' ]
+    needs: ['env_var', 'publish_all_lambda_layers']
     with:
       build_branch: main
-      sandbox: ${{ needs.set-workspace.outputs.workspace }}
+      sandbox: ${{ needs.env_var.outputs.workplace }}
       environment: development
-      python_version: '3.11'
+      python_version: "3.11"
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   deploy_ui:
     name: Deploy UI
-    needs: [ 'set-workspace' ]
     uses: nhsconnect/national-document-repository/.github/workflows/base-deploy-ui.yml@main
+    needs: ['env_var']
     with:
       build_branch: main
-      sandbox: ${{ needs.set-sandbox.outputs.workspace }}
+      sandbox: ${{ needs.env_var.outputs.workplace }}
       environment: development
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   destroy_test_environment:
     name: Destroy the Sandbox Environment from previous job
-    needs: [ 'set-workspace', 'deploy_ui', 'deploy_all_lambdas' ]
+    needs: [ 'env_var', 'deploy_ui', 'deploy_all_lambdas' ]
     uses: ./.github/workflows/terraform-destroy-environment-manual.yml
     with:
       build_branch: main
       environment: development
-      sandbox_workspace: ${{ needs.set-workspace.outputs.workspace }}
+      sandbox_workspace: ${{ needs.env_var.outputs.workplace }}
       terraform_vars: dev.tfvars
       backend: backend.conf
     secrets: inherit
