@@ -66,7 +66,6 @@ module "statistical-report-lambda" {
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
-  memory_size                   = 512
 
   depends_on = [
     module.ndr-app-config,
