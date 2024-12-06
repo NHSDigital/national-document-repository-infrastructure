@@ -24,6 +24,32 @@ on:
         default: 'backend.conf'
         description: 'Terraform backend configuration.'
         required: true
+  workflow_call:
+    inputs:
+      build_branch:
+        default: 'main'
+        description: 'Branch to use for the destroy action.'
+        required: true
+        type: "string"
+      sandbox_workspace:
+        description: 'The sandbox workspace to destroy.'
+        required: true
+        type: "string"
+      terraform_vars:
+        default: 'dev.tfvars'
+        description: 'Terraform vars file to use.'
+        required: true
+        type: "string"
+      environment:
+        default: 'development'
+        description: 'Environment for destruction.'
+        required: true
+        type: "string"
+      backend:
+        default: 'backend.conf'
+        description: 'Terraform backend configuration.'
+        required: true
+        type: "string"
 
 permissions:
   pull-requests: write
@@ -58,13 +84,13 @@ jobs:
     name: Terraform Destroy Process
     runs-on: ubuntu-latest
     needs: [remove_edge_associations] # Ensure this runs after Lambda@Edge removal
-    environment: ${{ github.event.inputs.environment }}
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.build_branch }}
+          ref: ${{ inputs.build_branch }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -81,7 +107,7 @@ jobs:
           terraform_version: 1.5.4
 
       - name: Terraform Init
-        run: terraform init -backend-config=${{ github.event.inputs.backend }}
+        run: terraform init -backend-config=${{ inputs.backend }}
         working-directory: ./infrastructure
 
       - name: Set Terraform Workspace
@@ -89,5 +115,5 @@ jobs:
         working-directory: ./infrastructure
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve -var-file="${{ github.event.inputs.terraform_vars }}"
+        run: terraform destroy -auto-approve -var-file="${{ inputs.terraform_vars }}"
         working-directory: ./infrastructure

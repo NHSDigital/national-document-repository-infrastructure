@@ -79,7 +79,6 @@ module "lloyd-george-stitch-lambda" {
   resource_id       = module.lloyd-george-stitch-gateway.gateway_resource_id
   http_methods      = ["GET", "POST"]
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  memory_size       = 512
   lambda_timeout    = 450
   lambda_environment_variables = {
     APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id

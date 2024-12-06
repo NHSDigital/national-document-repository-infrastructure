@@ -58,7 +58,7 @@ variable "lambda_ephemeral_storage" {
 
 variable "memory_size" {
   type    = number
-  default = 128
+  default = 512
 }
 
 variable "reserved_concurrent_executions" {
