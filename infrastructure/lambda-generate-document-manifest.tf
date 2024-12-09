@@ -46,7 +46,6 @@ module "generate-document-manifest-lambda" {
   handler                  = "handlers.generate_document_manifest_handler.lambda_handler"
   lambda_timeout           = 900
   lambda_ephemeral_storage = 512
-  memory_size              = 512
   iam_role_policies = [
     module.ndr-document-store.s3_object_access_policy,
     module.ndr-lloyd-george-store.s3_object_access_policy,

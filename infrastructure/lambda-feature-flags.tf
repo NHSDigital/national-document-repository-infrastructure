@@ -76,7 +76,6 @@ module "feature-flags-lambda" {
   http_methods      = ["GET"]
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
 
-  memory_size    = 512
   lambda_timeout = 450
 
   lambda_environment_variables = {
