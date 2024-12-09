@@ -171,7 +171,7 @@ jobs:
   deploy_ui:
     name: Deploy UI
     uses: nhsconnect/national-document-repository/.github/workflows/base-deploy-ui.yml@main
-    needs: ['set_workspace']
+    needs: ['terraform_process', 'set_workspace']
     with:
       build_branch: main
       sandbox: ${{ needs.set_workspace.outputs.workspace }}
@@ -180,6 +180,7 @@ jobs:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   destroy_test_environment:
+    if: always()
     name: Destroy the Sandbox Environment from previous job
     needs: [ 'set_workspace', 'deploy_ui', 'deploy_all_lambdas' ]
     uses: ./.github/workflows/terraform-destroy-environment-manual.yml
