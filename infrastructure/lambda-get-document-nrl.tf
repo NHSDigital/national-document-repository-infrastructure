@@ -29,11 +29,14 @@ module "get-doc-nrl-lambda" {
   http_methods      = ["GET"]
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE               = terraform.workspace
-    ENVIRONMENT             = var.environment
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE                  = terraform.workspace
+    ENVIRONMENT                = var.environment
+    PRESIGNED_ASSUME_ROLE      = aws_iam_role.nrl_get_doc_presign_url_role.arn
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    CLOUDFRONT_URL             = module.cloudfront-distribution-lg.cloudfront_url
   }
   depends_on = [aws_api_gateway_method.get_document_reference]
 }
