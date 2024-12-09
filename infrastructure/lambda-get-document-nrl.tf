@@ -18,7 +18,7 @@ resource "aws_api_gateway_method" "get_document_reference" {
 module "get-doc-nrl-lambda" {
   source  = "./modules/lambda"
   name    = "GetDocumentReference"
-  handler = "handlers.get_doc.lambda_handler"
+  handler = "handlers.nrl_get_document_reference_handler.lambda_handler"
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
