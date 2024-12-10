@@ -37,7 +37,6 @@ resource "aws_api_gateway_resource" "auth_resource" {
 # API Config
 resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  stage_name  = ""
   triggers = {
     redeployment = sha1(jsonencode([
       aws_api_gateway_rest_api.ndr_doc_store_api.body,
@@ -112,11 +111,11 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   }
 }
 
-resource "aws_api_gateway_stage" "ndr_api" {
-  deployment_id = aws_api_gateway_deployment.ndr_api_deploy.id
-  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  stage_name    = var.environment
-}
+# resource "aws_api_gateway_stage" "ndr_api" {
+#   deployment_id = aws_api_gateway_deployment.ndr_api_deploy.id
+#   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
+#   stage_name    = var.environment
+# }
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response" {
   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
