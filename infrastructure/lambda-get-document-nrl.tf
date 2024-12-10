@@ -19,12 +19,10 @@ module "get-doc-nrl-lambda" {
   source  = "./modules/lambda"
   name    = "GetDocumentReference"
   handler = "handlers.nrl_get_document_reference_handler.lambda_handler"
-  iam_role_policies = [
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    module.ndr-app-config.app_config_policy_arn,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
-    aws_iam_policy.ssm_access_policy.arn,
+  iam_role_policy_documents = [
+    module.ndr-app-config.app_config_policy,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
+    aws_iam_policy.ssm_access_policy.policy,
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = aws_api_gateway_resource.get_document_reference.id
