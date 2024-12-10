@@ -119,8 +119,8 @@ resource "aws_api_gateway_stage" "ndr_api" {
 }
 
 moved {
-  from = aws_api_gateway_deployment.ndr_api_deploy.stage_name
-  to   = aws_api_gateway_stage.ndr_api.stage_name
+  from = aws_api_gateway_deployment.ndr_api_deploy
+  to   = aws_api_gateway_stage.ndr_api
 }
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response" {
