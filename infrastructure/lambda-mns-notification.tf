@@ -2,7 +2,7 @@ module "mns-notification-lambda" {
   source  = "./modules/lambda"
   name    = "MNSNotificationLambda"
   handler = "handlers.mns_notification_handler.lambda_handler"
-  iam_role_policies = [
+  iam_role_policy_documents = [
     module.sqs-mns-notification-queue.sqs_read_policy_document,
     module.sqs-mns-notification-queue.sqs_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
