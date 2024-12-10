@@ -75,6 +75,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
+    aws_api_gateway_stage.ndr_api,
     module.authoriser-lambda,
     module.back-channel-logout-gateway,
     module.back_channel_logout_lambda,
@@ -108,7 +109,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   ]
 
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
   }
 }
 
