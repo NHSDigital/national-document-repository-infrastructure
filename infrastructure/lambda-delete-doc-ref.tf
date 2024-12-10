@@ -65,20 +65,24 @@ module "delete-doc-ref-lambda" {
   source  = "./modules/lambda"
   name    = "DeleteDocRefLambda"
   handler = "handlers.delete_document_reference_handler.lambda_handler"
-  iam_role_policies = [
-    module.document_reference_dynamodb_table.dynamodb_policy,
-    module.ndr-document-store.s3_object_access_policy,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_policy,
-    module.ndr-lloyd-george-store.s3_object_access_policy,
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy",
-    module.ndr-app-config.app_config_policy_arn,
-    module.stitch_metadata_reference_dynamodb_table.dynamodb_policy
+  iam_role_policy_documents = [
+    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.ndr-document-store.s3_read_policy_document,
+    module.ndr-document-store.s3_write_policy_document,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.ndr-lloyd-george-store.s3_read_policy_document,
+    module.ndr-lloyd-george-store.s3_write_policy_document,
+    module.ndr-app-config.app_config_policy,
+    module.stitch_metadata_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.stitch_metadata_reference_dynamodb_table.dynamodb_write_policy_document,
+    module.sqs-nrl-queue.sqs_read_policy_document,
+    module.sqs-nrl-queue.sqs_write_policy_document
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.delete-doc-ref-gateway.gateway_resource_id
   http_methods      = ["DELETE"]
-  memory_size       = 256
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
