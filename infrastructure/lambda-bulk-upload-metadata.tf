@@ -3,6 +3,7 @@ module "bulk-upload-metadata-lambda" {
   name           = "BulkUploadMetadataLambda"
   handler        = "handlers.bulk_upload_metadata_handler.lambda_handler"
   lambda_timeout = 900
+  memory_size    = 1769
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
@@ -24,12 +25,6 @@ module "bulk-upload-metadata-lambda" {
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
-
-  depends_on = [
-    module.ndr-bulk-staging-store,
-    module.sqs-lg-bulk-upload-metadata-queue,
-    module.ndr-app-config
-  ]
 }
 
 module "bulk-upload-metadata-alarm" {
