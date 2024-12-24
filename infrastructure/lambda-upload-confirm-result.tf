@@ -79,6 +79,7 @@ module "upload_confirm_result_lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.sqs-nrl-queue.sqs_read_policy_document,
     module.sqs-nrl-queue.sqs_write_policy_document,
+    aws_iam_policy.ssm_access_policy.policy,
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.upload_confirm_result_gateway.gateway_resource_id
