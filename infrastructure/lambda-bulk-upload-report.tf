@@ -1,7 +1,9 @@
 module "bulk-upload-report-lambda" {
-  source  = "./modules/lambda"
-  name    = "BulkUploadReportLambda"
-  handler = "handlers.bulk_upload_report_handler.lambda_handler"
+  source         = "./modules/lambda"
+  name           = "BulkUploadReportLambda"
+  handler        = "handlers.bulk_upload_report_handler.lambda_handler"
+  lambda_timeout = 900
+  memory_size    = 1769
   iam_role_policy_documents = [
     module.statistical-reports-store.s3_read_policy_document,
     module.statistical-reports-store.s3_write_policy_document,
@@ -23,13 +25,6 @@ module "bulk-upload-report-lambda" {
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
-  lambda_timeout                = 45
-
-  depends_on = [
-    module.statistical-reports-store,
-    module.bulk_upload_report_dynamodb_table,
-    module.ndr-app-config
-  ]
 }
 
 resource "aws_iam_policy" "dynamodb_policy_scan_bulk_report" {
