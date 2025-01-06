@@ -4,8 +4,8 @@ module "mns-notification-lambda" {
   name    = "MNSNotificationLambda"
   handler = "handlers.mns_notification_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.sqs-mns-notification-queue.sqs_read_policy_document,
-    module.sqs-mns-notification-queue.sqs_write_policy_document,
+    module.sqs-mns-notification-queue[0].sqs_read_policy_document,
+    module.sqs-mns-notification-queue[0].sqs_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
@@ -21,7 +21,7 @@ module "mns-notification-lambda" {
     APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                  = terraform.workspace
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    MNS_NOTIFICATION_QUEUE_URL = module.sqs-mns-notification-queue.sqs_url
+    MNS_NOTIFICATION_QUEUE_URL = module.sqs-mns-notification-queue[0].sqs_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
   }
 
