@@ -4,6 +4,7 @@ data "aws_ssm_parameter" "mns_lambda_role" {
 
 
 module "mns_encryption_key" {
+  count                 = local.is_sandbox ? 0 : 1
   source                = "./modules/kms"
   kms_key_name          = "alias/mns-notification-encryption-key-kms-${terraform.workspace}"
   kms_key_description   = "Custom KMS Key to enable server side encryption for mns subscriptions"
