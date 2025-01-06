@@ -33,7 +33,7 @@ module "mns-notification-lambda" {
 
 resource "aws_lambda_event_source_mapping" "mns_notification_lambda" {
   count            = local.is_sandbox ? 0 : 1
-  event_source_arn = module.sqs-mns-notification-queue.endpoint
+  event_source_arn = module.sqs-mns-notification-queue[0].endpoint
   function_name    = module.mns-notification-lambda[0].lambda_arn
 
   scaling_config {
