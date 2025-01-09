@@ -78,10 +78,6 @@ jobs:
     needs: ['terraform_process']
     if: github.ref == 'refs/heads/main'
     uses: nhsconnect/national-document-repository/.github/workflows/lambdas-dev-to-main-ci.yml@PRMP-1421
-    with:
-      build_branch: main
-      sandbox: ndr-dev
-      environment: development
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
   
@@ -90,10 +86,6 @@ jobs:
     needs: ['terraform_process']
     if: github.ref == 'refs/heads/main'
     uses: nhsconnect/national-document-repository/.github/workflows/ui-dev-to-main-ci.yml@PRMP-1421
-    with:
-      build_branch: main
-      sandbox: ndr-dev
-      environment: development
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
         
