@@ -75,7 +75,7 @@ jobs:
   
   run_main_repo_deploy_lambdas:
     name: Deploy Lambdas on NDR Functional Repo
-    if: github.ref == 'refs/heads/main'
+    needs: ['terraform_process']
     uses: nhsconnect/national-document-repository/.github/workflows/lambdas-dev-to-main-ci.yml@PRMP-1421
   
   run_main_repo_deploy_ui:
