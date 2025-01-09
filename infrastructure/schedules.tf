@@ -61,6 +61,7 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
   count       = local.is_sandbox ? 0 : 1
   name_prefix = "${terraform.workspace}_ods_weekly_update_ecs"
   description = "A weekly trigger for the ods update run"
+  state       = "DISABLED"
 
   flexible_time_window {
     mode = "OFF"
