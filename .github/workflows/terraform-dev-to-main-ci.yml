@@ -78,15 +78,12 @@ jobs:
     needs: ['terraform_process']
     if: github.ref == 'refs/heads/main'
     uses: nhsconnect/national-document-repository/.github/workflows/lambdas-dev-to-main-ci.yml@PRMP-1421
-    secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
   
   run_main_repo_deploy_ui:
     name: Deploy Lambdas on NDR Functional Repo
     needs: ['terraform_process']
     if: github.ref == 'refs/heads/main'
     uses: nhsconnect/national-document-repository/.github/workflows/ui-dev-to-main-ci.yml@PRMP-1421
-    secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
         
         
