@@ -60,7 +60,7 @@ resource "aws_lambda_permission" "bulk_upload_report_schedule_permission" {
 resource "aws_cloudwatch_event_rule" "data_collection_schedule" {
   name                = "${terraform.workspace}_data_collection_schedule"
   description         = "Schedule for Data Collection Lambda"
-  schedule_expression = "cron(0 20 * * ? *)"
+  schedule_expression = "cron(0 20 ? * SAT *)"
 }
 
 resource "aws_cloudwatch_event_target" "data_collection_schedule_event" {
