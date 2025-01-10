@@ -41,10 +41,12 @@ module "data-collection-alarm-topic" {
 }
 
 module "data-collection-lambda" {
-  source         = "./modules/lambda"
-  name           = "DataCollectionLambda"
-  handler        = "handlers.data_collection_handler.lambda_handler"
-  lambda_timeout = 900
+  source                   = "./modules/lambda"
+  name                     = "DataCollectionLambda"
+  handler                  = "handlers.data_collection_handler.lambda_handler"
+  lambda_timeout           = 900
+  lambda_ephemeral_storage = 10240
+  memory_size              = 10240
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     module.statistics_dynamodb_table.dynamodb_read_policy_document,
