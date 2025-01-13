@@ -14,7 +14,6 @@ module "mns-notification-lambda" {
   ]
   rest_api_id       = null
   api_execution_arn = null
-
   lambda_environment_variables = {
     APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
@@ -24,21 +23,15 @@ module "mns-notification-lambda" {
     MNS_NOTIFICATION_QUEUE_URL = module.sqs-mns-notification-queue[0].sqs_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
   }
-
-  is_gateway_integration_needed  = false
-  is_invoked_from_gateway        = false
-  lambda_timeout                 = 900
-  reserved_concurrent_executions = local.mns_notification_lambda_concurrent_limit
+  is_gateway_integration_needed = false
+  is_invoked_from_gateway       = false
+  lambda_timeout                = 900
 }
 
 resource "aws_lambda_event_source_mapping" "mns_notification_lambda" {
   count            = local.is_sandbox ? 0 : 1
   event_source_arn = module.sqs-mns-notification-queue[0].endpoint
   function_name    = module.mns-notification-lambda[0].lambda_arn
-
-  scaling_config {
-    maximum_concurrency = local.mns_notification_lambda_concurrent_limit
-  }
 }
 
 module "mns-notification-alarm" {
