@@ -41,10 +41,12 @@ module "statistical-report-alarm-topic" {
 }
 
 module "statistical-report-lambda" {
-  source         = "./modules/lambda"
-  name           = "StatisticalReportLambda"
-  handler        = "handlers.statistical_report_handler.lambda_handler"
-  lambda_timeout = 900
+  source                   = "./modules/lambda"
+  name                     = "StatisticalReportLambda"
+  handler                  = "handlers.statistical_report_handler.lambda_handler"
+  lambda_timeout           = 900
+  lambda_ephemeral_storage = local.is_production ? 10240 : 1769
+  memory_size              = local.is_production ? 10240 : 1769
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     module.statistics_dynamodb_table.dynamodb_read_policy_document,
