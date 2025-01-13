@@ -20,9 +20,10 @@ resource "aws_iam_role" "splunk_sqs_forwarder" {
   assume_role_policy = data.aws_iam_policy_document.splunk_trust_policy.json
 }
 
-resource "aws_iam_role_policy" "test_policy" {
-  name = "${var.environment}_splunk_access_policy"
-  role = aws_iam_role.splunk_sqs_forwarder.id
+resource "aws_iam_role_policy" "splunk_access_policy" {
+  name  = "${var.environment}_splunk_access_policy"
+  count = local.is_sandbox ? 0 : 1
+  role  = aws_iam_role.splunk_sqs_forwarder[0].id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
