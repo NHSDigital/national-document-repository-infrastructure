@@ -40,6 +40,17 @@ module "edge_presign_alarm_topic" {
   })
 }
 
+resource "aws_cloudwatch_log_metric_filter" "edge_presign_error_filter" {
+  name           = "EdgePresignError"
+  pattern        = "%LambdaError%"
+  log_group_name = "aws/lambda/us-east-1.${terraform.workspace}_EdgePresignLambda"
+  metric_transformation {
+    name      = "ErrorCount"
+    namespace = "EdgeLambdaInsights"
+    value     = "1"
+  }
+}
+
 module "edge-presign-lambda" {
   source         = "./modules/lambda_edge"
   lambda_timeout = 5
