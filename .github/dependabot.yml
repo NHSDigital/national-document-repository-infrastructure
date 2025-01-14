@@ -1,0 +1,37 @@
+version: 2
+updates:
+  - package-ecosystem: "terraform"
+    directory: "/infrastructure"
+    schedule:
+      interval: "weekly"
+      timezone: "Europe/London"
+      time: "09:00"
+    open-pull-requests-limit: 100
+  - package-ecosystem: "terraform"
+    directory: "/infrastructure/modules/lambda_edge"
+    schedule:
+      interval: "weekly"
+      timezone: "Europe/London"
+      time: "09:00"
+    open-pull-requests-limit: 100
+  - package-ecosystem: "terraform"
+    directory: "/bootstrap"
+    schedule:
+      interval: "weekly"
+      timezone: "Europe/London"
+      time: "09:00"
+    open-pull-requests-limit: 100
+  - package-ecosystem: "terraform"
+    directory: "/virusscanner/terraform"
+    schedule:
+      interval: "weekly"
+      timezone: "Europe/London"
+      time: "09:00"
+    open-pull-requests-limit: 100
+  - package-ecosystem: "terraform"
+    directory: "/backup-vault/teraform"
+    schedule:
+      interval: "weekly"
+      timezone: "Europe/London"
+      time: "09:00"
+    open-pull-requests-limit: 100
