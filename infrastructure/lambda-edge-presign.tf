@@ -43,13 +43,13 @@ module "edge_presign_alarm_topic" {
 resource "aws_cloudwatch_log_metric_filter" "edge_presign_error_filter" {
   name           = "EdgePresignError"
   pattern        = "%LambdaError%"
-  log_group_name = ndr_cloud_watch_log_group.cloudwatch_log_group_name
+  log_group_name = aws_cloudwatch_log_group.ndr_cloudwatch_log_group.name
   metric_transformation {
     name      = "ErrorCount"
     namespace = "EdgeLambdaInsights"
     value     = "1"
   }
-  depends_on     = [module.edge-presign-lambda, module.edge_presign_alarm_topic]
+  depends_on = [module.edge-presign-lambda, module.edge_presign_alarm_topic]
 
 }
 
