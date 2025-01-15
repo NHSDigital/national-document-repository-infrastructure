@@ -49,7 +49,7 @@ resource "aws_cloudwatch_log_metric_filter" "edge_presign_error_filter" {
     namespace = "EdgeLambdaInsights"
     value     = "1"
   }
-  depends_on = [module.edge-presign-lambda, module.edge_presign_alarm_topic]
+  depends_on = [module.edge-presign-lambda, module.edge_presign_alarm_topic, aws_cloudwatch_log_group.ndr_cloudwatch_log_group]
 
 }
 
