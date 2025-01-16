@@ -43,7 +43,7 @@ module "edge_presign_alarm_topic" {
 resource "aws_cloudwatch_log_metric_filter" "edge_presign_error_filter" {
   name           = "EdgePresignError"
   pattern        = "%LambdaError%"
-  log_group_name = "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-groups:/aws/lambda/us-east-1.${module.edge-presign-lambda.function_name}"
+  log_group_name = "/aws/lambda/us-east-1.${module.edge-presign-lambda.function_name}"
   metric_transformation {
     name      = "ErrorCount"
     namespace = "EdgeLambdaInsights"
