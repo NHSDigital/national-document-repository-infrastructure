@@ -2,6 +2,7 @@ module "bulk-upload-lambda" {
   source  = "./modules/lambda"
   name    = "BulkUploadLambda"
   handler = "handlers.bulk_upload_handler.lambda_handler"
+
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
@@ -11,7 +12,6 @@ module "bulk-upload-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
     module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
-    module.sqs-nrl-queue.sqs_read_policy_document,
     module.sqs-nrl-queue.sqs_write_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
@@ -36,6 +36,7 @@ module "bulk-upload-lambda" {
     INVALID_SQS_QUEUE_URL      = module.sqs-lg-bulk-upload-invalid-queue.sqs_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
     NRL_SQS_URL                = module.sqs-nrl-queue.sqs_url
+    APIM_API_URL               = data.aws_ssm_parameter.apim_url.value
   }
 
   is_gateway_integration_needed  = false

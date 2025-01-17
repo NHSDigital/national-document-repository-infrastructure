@@ -165,6 +165,7 @@ jobs:
       sandbox: ${{ needs.set_workspace.outputs.workspace }}
       environment: development
       python_version: "3.11"
+      is_sandbox: true
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
