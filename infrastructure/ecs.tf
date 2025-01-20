@@ -119,46 +119,55 @@ resource "aws_iam_role" "ods_weekly_update_task_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "ods_weekly_lloyd_george_reference_dynamodb_table" {
-  role       = aws_iam_role.ods_weekly_update_task_role.name
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.ods_weekly_update_task_role[0].name
   policy_arn = module.lloyd_george_reference_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "ods_weekly_ssm_access_policy" {
-  role       = aws_iam_role.ods_weekly_update_task_role.name
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.ods_weekly_update_task_role[0].name
   policy_arn = aws_iam_policy.ssm_access_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "ods_weekly_statistics_dynamodb_table" {
-  role       = aws_iam_role.ods_weekly_update_task_role.name
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.ods_weekly_update_task_role[0].name
   policy_arn = module.statistics_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "ods_weekly_statistical_reports_store" {
-  role       = aws_iam_role.ods_weekly_update_task_role.name
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.ods_weekly_update_task_role[0].name
   policy_arn = module.statistical-reports-store.s3_object_access_policy
 }
 
 resource "aws_iam_role_policy_attachment" "ods_weekly_app_config" {
-  role       = aws_iam_role.ods_weekly_update_task_role.name
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.ods_weekly_update_task_role[0].name
   policy_arn = module.ndr-app-config.app_config_policy_arn
 }
 
 resource "aws_iam_role_policy_attachment" "ods_weekly_lloyd_george_store" {
-  role       = aws_iam_role.ods_weekly_update_task_role.name
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.ods_weekly_update_task_role[0].name
   policy_arn = module.ndr-lloyd-george-store.s3_list_object_policy
 }
 
 resource "aws_iam_role_policy_attachment" "ods_weekly_document_store" {
-  role       = aws_iam_role.ods_weekly_update_task_role.name
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.ods_weekly_update_task_role[0].name
   policy_arn = module.ndr-document-store.s3_list_object_policy
 }
 
 resource "aws_iam_role_policy_attachment" "ods_weekly_document_reference_dynamodb_table" {
-  role       = aws_iam_role.ods_weekly_update_task_role.name
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.ods_weekly_update_task_role[0].name
   policy_arn = module.document_reference_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "ods_weekly_cloudwatch_log_query_policy" {
-  role       = aws_iam_role.ods_weekly_update_task_role.name
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.ods_weekly_update_task_role[0].name
   policy_arn = aws_iam_policy.cloudwatch_log_query_policy.arn
 }
