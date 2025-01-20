@@ -154,7 +154,7 @@ module "api_endpoint_url_ssm_parameter" {
   name                = "api_endpoint"
   description         = "api endpoint url for ${var.environment}"
   resource_depends_on = aws_api_gateway_deployment.ndr_api_deploy
-  value               = local.api_gateway_full_domain_name
+  value               = "https://${aws_api_gateway_base_path_mapping.api_mapping.domain_name}"
   type                = "SecureString"
   owner               = var.owner
   environment         = var.environment
