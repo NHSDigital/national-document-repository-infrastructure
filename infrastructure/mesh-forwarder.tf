@@ -122,28 +122,42 @@ resource "aws_iam_role" "mesh_forwarder" {
   name               = "${var.environment}-${var.mesh_component_name}-EcsTaskRole"
   assume_role_policy = data.aws_iam_policy_document.ecs-assume-role-policy.json
   description        = "Role assumed by ${var.mesh_component_name} ECS task"
-  inline_policy {
-    name   = "${var.environment}-${var.mesh_component_name}-kms"
-    policy = data.aws_iam_policy_document.kms_policy_doc.json
-  }
-  inline_policy {
-    name   = "${var.environment}-${var.mesh_component_name}-ecr"
-    policy = data.aws_iam_policy_document.ecr_policy_doc.json
-  }
-  inline_policy {
-    name   = "${var.environment}-${var.mesh_component_name}-logs"
-    policy = data.aws_iam_policy_document.logs_policy_doc.json
-  }
-  inline_policy {
-    name   = "${var.environment}-${var.mesh_component_name}-ssm"
-    policy = data.aws_iam_policy_document.ssm_policy_doc.json
-  }
-  inline_policy {
-    name   = "${var.environment}-${var.mesh_component_name}-sns"
-    policy = data.aws_iam_policy_document.sns_policy_doc[0].json
-  }
 }
 
+resource "aws_iam_role_policy" "mesh_kms_policy" {
+  count  = local.is_mesh_forwarder_enable ? 1 : 0
+  name   = "${var.environment}-${var.mesh_component_name}-kms"
+  role   = aws_iam_role.mesh_forwarder[0].id
+  policy = data.aws_iam_policy_document.kms_policy_doc.json
+}
+
+resource "aws_iam_role_policy" "mesh_ecr_policy" {
+  count  = local.is_mesh_forwarder_enable ? 1 : 0
+  name   = "${var.environment}-${var.mesh_component_name}-ecr"
+  role   = aws_iam_role.mesh_forwarder[0].id
+  policy = data.aws_iam_policy_document.ecr_policy_doc.json
+}
+
+resource "aws_iam_role_policy" "mesh_logs_policy" {
+  count  = local.is_mesh_forwarder_enable ? 1 : 0
+  name   = "${var.environment}-${var.mesh_component_name}-logs"
+  policy = data.aws_iam_policy_document.logs_policy_doc.json
+  role   = aws_iam_role.mesh_forwarder[0].id
+}
+
+resource "aws_iam_role_policy" "mesh_ssm_policy" {
+  count  = local.is_mesh_forwarder_enable ? 1 : 0
+  name   = "${var.environment}-${var.mesh_component_name}-ssm"
+  policy = data.aws_iam_policy_document.ssm_policy_doc.json
+  role   = aws_iam_role.mesh_forwarder[0].id
+}
+
+resource "aws_iam_role_policy" "mesh_sns_policy" {
+  count  = local.is_mesh_forwarder_enable ? 1 : 0
+  name   = "${var.environment}-${var.mesh_component_name}-sns"
+  policy = data.aws_iam_policy_document.sns_policy_doc[0].json
+  role   = aws_iam_role.mesh_forwarder[0].id
+}
 
 data "aws_iam_policy_document" "ecs-assume-role-policy" {
   statement {
@@ -210,10 +224,13 @@ resource "aws_iam_role" "ecs_execution" {
   name               = "${var.environment}-deductions-mesh-forwarder-task"
   description        = "ECS task role for launching mesh s3 forwarder"
   assume_role_policy = data.aws_iam_policy_document.ecs-assume-role-policy.json
-  inline_policy {
-    name   = "${var.environment}-${var.mesh_component_name}-ecs-execution"
-    policy = data.aws_iam_policy_document.ecs_execution[0].json
-  }
+}
+
+resource "aws_iam_role_policy" "ecs_execution" {
+  count  = local.is_mesh_forwarder_enable ? 1 : 0
+  name   = "${var.environment}-${var.mesh_component_name}-ecs-execution"
+  role   = aws_iam_role.ecs_execution[0].id
+  policy = data.aws_iam_policy_document.ecs_execution[0].json
 }
 
 data "aws_iam_policy_document" "ecs_execution" {
@@ -337,10 +354,12 @@ resource "aws_iam_role" "sns_failure_feedback_role" {
   name               = "${terraform.workspace}-${var.mesh_component_name}-sns-failure-feedback-role"
   assume_role_policy = data.aws_iam_policy_document.sns_service_assume_role_policy.json
   description        = "Allows logging of SNS delivery failures in ${var.mesh_component_name}"
-  inline_policy {
-    name   = "${var.environment}-${var.mesh_component_name}-sns-failure-feedback"
-    policy = data.aws_iam_policy_document.sns_failure_feedback_policy.json
-  }
+}
+
+resource "aws_iam_role_policy" "sns_failure_feedback" {
+  name   = "${var.environment}-${var.mesh_component_name}-sns-failure-feedback"
+  policy = data.aws_iam_policy_document.sns_failure_feedback_policy.json
+  role   = aws_iam_role.sns_failure_feedback_role[0].id
 }
 
 data "aws_iam_policy_document" "sns_service_assume_role_policy" {

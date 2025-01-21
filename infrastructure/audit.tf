@@ -18,28 +18,31 @@ resource "aws_iam_role" "splunk_sqs_forwarder" {
   name               = "${var.environment}_splunk_sqs_forwarder_role"
   description        = "Role to allow Repo to integrate with Splunk"
   assume_role_policy = data.aws_iam_policy_document.splunk_trust_policy.json
-  inline_policy {
-    name = "${var.environment}_splunk_access_policy"
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Effect = "Allow"
-          Action = [
-            "sqs:GetQueueAttributes",
-            "sqs:ListQueues",
-            "sqs:ReceiveMessage",
-            "sqs:GetQueueUrl",
-            "sqs:SendMessage",
-            "sqs:DeleteMessage"
-          ]
-          Resource = [
-            module.sqs-splunk-queue[0].sqs_arn,
-          ]
-        },
-      ]
-    })
-  }
+}
+
+resource "aws_iam_role_policy" "splunk_access_policy" {
+  name  = "${var.environment}_splunk_access_policy"
+  count = local.is_sandbox ? 0 : 1
+  role  = aws_iam_role.splunk_sqs_forwarder[0].id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:GetQueueAttributes",
+          "sqs:ListQueues",
+          "sqs:ReceiveMessage",
+          "sqs:GetQueueUrl",
+          "sqs:SendMessage",
+          "sqs:DeleteMessage"
+        ]
+        Resource = [
+          module.sqs-splunk-queue[0].sqs_arn,
+        ]
+      },
+    ]
+  })
 }
 
 resource "aws_iam_policy" "lambda_audit_splunk_sqs_queue_send_policy" {
