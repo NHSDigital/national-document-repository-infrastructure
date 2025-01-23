@@ -1,0 +1,19 @@
+{
+    "resourceType": "OperationOutcome",
+    "issue": [
+        {
+            "severity": "error",
+            "code": "exception",
+            "details": {
+                "coding": [
+                    {
+                        "system": "http://hl7.org/fhir/issue-type",
+                        "code": "invalid",
+                        "display": "Invalid"
+                    }
+                ]
+            },
+            "diagnostics":"Invalid request"
+        }
+    ]
+}
