@@ -45,12 +45,21 @@ resource "aws_cloudwatch_log_metric_filter" "edge_presign_error_filter" {
   pattern        = "%LambdaError%"
   log_group_name = "/aws/lambda/us-east-1.${module.edge-presign-lambda.function_name}"
   metric_transformation {
-    name      = "ErrorCount"
+    name      = "EdgePresignErrorCount"
     namespace = "EdgeLambdaInsights"
     value     = "1"
   }
+}
 
-
+resource "aws_cloudwatch_metric_alarm" "edge_presign_lambda_error_alarm"{
+  alarm_name = "${module.edge-presign-lambda.function_name}_error_alarm"
+  metric_name = "EdgePresignErrorCount"
+  threshold = 0
+  statistic = ""
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods = ""
+  alarm_actions = []
+  alarm_description = "Alarm to trigger when Lambda Errors are detected on Edge Presign"
 }
 
 module "edge-presign-lambda" {
