@@ -4,10 +4,10 @@
   "description": "National Document Repository Infrastructure  -",
   "main": "index.js",
   "dependencies": {
-    "husky": "^8.0.3"
+    "husky": "^9.1.7"
   },
   "devDependencies": {
-    "husky": "^8.0.0"
+    "husky": "^9.1.7"
   },
   "scripts": {
     "prepare": "husky install ./.husky"
