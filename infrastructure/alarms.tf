@@ -75,14 +75,14 @@ resource "aws_sns_topic" "alarm_notifications_topic" {
       }
     ]
   })
-  count = local.is_sandbox ? 1 : 1
+  count = local.is_sandbox ? 0 : 1
 }
 
 resource "aws_sns_topic_subscription" "alarm_notifications_sns_topic_subscription" {
-  for_each  = local.is_sandbox ? toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))) : toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
+  for_each  = local.is_sandbox ? [] : toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
   endpoint  = each.value
   protocol  = "email"
-  topic_arn = local.is_sandbox ? aws_sns_topic.alarm_notifications_topic[0].arn : aws_sns_topic.alarm_notifications_topic[0].arn
+  topic_arn = local.is_sandbox ? "" : aws_sns_topic.alarm_notifications_topic[0].arn
 }
 
 data "aws_ssm_parameter" "cloud_security_notification_email_list" {
