@@ -20,18 +20,18 @@ resource "aws_cloudwatch_log_metric_filter" "edge_presign_error_filter" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "edge_presign_lambda_error_alarm"{
-  alarm_name = "${module.edge-presign-lambda.function_name}_error_alarm"
-  metric_name = "EdgePresignErrorCount"
-  threshold = 0
-  statistic = "Sum"
-  period = "300"
+resource "aws_cloudwatch_metric_alarm" "edge_presign_lambda_error_alarm" {
+  alarm_name          = "${module.edge-presign-lambda.function_name}_error_alarm"
+  metric_name         = "EdgePresignErrorCount"
+  threshold           = 0
+  statistic           = "Sum"
+  period              = "300"
   comparison_operator = "GreaterThanThreshold"
-  evaluation_periods = "1"
-  alarm_actions        = [module.edge_presign_alarm_topic.arn]
-  ok_actions           = [module.edge_presign_alarm_topic.arn]
-  depends_on           = [module.edge-presign-lambda, module.edge_presign_alarm_topic]
-  alarm_description = "Triggers when Edge Presign Lambda errors."
+  evaluation_periods  = "1"
+  alarm_actions       = [module.edge_presign_alarm_topic.arn]
+  ok_actions          = [module.edge_presign_alarm_topic.arn]
+  depends_on          = [module.edge-presign-lambda, module.edge_presign_alarm_topic]
+  alarm_description   = "Triggers when Edge Presign Lambda errors."
 }
 
 module "edge_presign_alarm_topic" {
