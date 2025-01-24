@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.66.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.72.1 |
 
 ## Modules
 
@@ -162,12 +162,12 @@
 | [aws_api_gateway_domain_name.custom_api_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_domain_name) | resource |
 | [aws_api_gateway_gateway_response.bad_gateway_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_gateway_response) | resource |
 | [aws_api_gateway_gateway_response.unauthorised_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_gateway_response) | resource |
-| [aws_api_gateway_integration.get_document_reference_mock_integration](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration) | resource |
-| [aws_api_gateway_integration_response.get_documenet_reference_mock_200_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
-| [aws_api_gateway_integration_response.get_documenet_reference_mock_400_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
-| [aws_api_gateway_integration_response.get_documenet_reference_mock_401_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
-| [aws_api_gateway_integration_response.get_documenet_reference_mock_403_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
-| [aws_api_gateway_integration_response.get_documenet_reference_mock_404_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
+| [aws_api_gateway_integration.get_document_reference_mock](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration) | resource |
+| [aws_api_gateway_integration_response.get_document_reference_mock_200_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
+| [aws_api_gateway_integration_response.get_document_reference_mock_400_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
+| [aws_api_gateway_integration_response.get_document_reference_mock_401_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
+| [aws_api_gateway_integration_response.get_document_reference_mock_403_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
+| [aws_api_gateway_integration_response.get_document_reference_mock_404_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
 | [aws_api_gateway_method.get_document_reference](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method) | resource |
 | [aws_api_gateway_method.login_proxy_method](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method) | resource |
 | [aws_api_gateway_method.sandbox_get_document_reference](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method) | resource |
@@ -181,7 +181,7 @@
 | [aws_api_gateway_resource.login_resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource) | resource |
 | [aws_api_gateway_resource.nrl_sandbox](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource) | resource |
 | [aws_api_gateway_resource.sandbox_get_document_reference](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource) | resource |
-| [aws_api_gateway_resource.sandbox_get_document_reference_path_parametre](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource) | resource |
+| [aws_api_gateway_resource.sandbox_get_document_reference_path_parameter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource) | resource |
 | [aws_api_gateway_rest_api.ndr_doc_store_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_rest_api) | resource |
 | [aws_api_gateway_stage.ndr_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_stage) | resource |
 | [aws_api_gateway_usage_plan.apim](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_usage_plan) | resource |
@@ -341,7 +341,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_auth_session_dynamodb_table_name"></a> [auth\_session\_dynamodb\_table\_name](#input\_auth\_session\_dynamodb\_table\_name) | The name of dynamodb table to store user login sessions | `string` | `"AuthSessionReferenceMetadata"` | no |
 | <a name="input_auth_state_dynamodb_table_name"></a> [auth\_state\_dynamodb\_table\_name](#input\_auth\_state\_dynamodb\_table\_name) | The name of dynamodb table to store the state values (for CIS2 authorisation) | `string` | `"AuthStateReferenceMetadata"` | no |
-| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | This is a list that specifies all the Availability Zones that will have a pair of public and private subnets | `list(string)` | <pre>[<br>  "eu-west-2a",<br>  "eu-west-2b",<br>  "eu-west-2c"<br>]</pre> | no |
+| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | This is a list that specifies all the Availability Zones that will have a pair of public and private subnets | `list(string)` | <pre>[<br/>  "eu-west-2a",<br/>  "eu-west-2b",<br/>  "eu-west-2c"<br/>]</pre> | no |
 | <a name="input_bulk_upload_report_dynamodb_table_name"></a> [bulk\_upload\_report\_dynamodb\_table\_name](#input\_bulk\_upload\_report\_dynamodb\_table\_name) | The name of dynamodb table to store bulk upload status | `string` | `"BulkUploadReport"` | no |
 | <a name="input_certificate_domain"></a> [certificate\_domain](#input\_certificate\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_certificate_subdomain_name_prefix"></a> [certificate\_subdomain\_name\_prefix](#input\_certificate\_subdomain\_name\_prefix) | Prefix to add to subdomains on certification configurations, dev envs use api-{env}, prod envs use api.{env} | `string` | `"api-"` | no |
