@@ -13,7 +13,7 @@
                     }
                 ]
             },
-            "diagnostics":"User is unauthorised to view record"
+            "diagnostics": "User is unauthorised to view record"
         }
     ]
 }
