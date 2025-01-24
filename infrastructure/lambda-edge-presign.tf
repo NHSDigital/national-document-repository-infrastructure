@@ -29,9 +29,9 @@ resource "aws_cloudwatch_metric_alarm" "edge_presign_lambda_error_alarm" {
   period              = "300"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
-  alarm_actions       = [module.edge_presign_alarm_topic.arn]
+  alarm_actions       = [aws_sns_topic.alarm_notifications_topic[0].arn]
   ok_actions          = [module.edge_presign_alarm_topic.arn]
-  depends_on          = [module.edge-presign-lambda, module.edge_presign_alarm_topic]
+  depends_on          = [module.edge-presign-lambda, aws_sns_topic.alarm_notifications_topic[0]]
   alarm_description   = "Triggers when Edge Presign Lambda errors."
 }
 
