@@ -24,7 +24,13 @@ variable "topic_protocol" {
 }
 
 variable "topic_endpoint" {
-  type = any
+  type    = any
+  default = null
+}
+
+variable "topic_endpoint_set" {
+  type    = any
+  default = false
 }
 
 variable "current_account_id" {

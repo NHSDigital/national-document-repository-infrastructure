@@ -35,7 +35,7 @@ module "nrl-dlq-alarm-topic" {
   current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "nrl-dlq-topic"
   topic_protocol        = "email"
-  topic_endpoint        = local.is_sandbox ? "" : data.aws_ssm_parameter.cloud_security_notification_email_list.value
+  topic_endpoint_set    = toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
