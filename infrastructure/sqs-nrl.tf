@@ -13,7 +13,7 @@ module "sqs-nrl-queue" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "nrl_dlq_new_messages_alarm" {
-  alarm_name          = "NRL_DLQ_MESSAGES"
+  alarm_name          = "NRL_dlq_messages"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "ApproximateNumberOfMessagesVisible"
@@ -28,3 +28,37 @@ resource "aws_cloudwatch_metric_alarm" "nrl_dlq_new_messages_alarm" {
     QueueName = module.sqs-nrl-queue.dlq_name
   }
 }
+
+module "nrl-dlq-alarm-topic" {
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "nrl-dlq-topic"
+  topic_protocol        = "email"
+  topic_endpoint        = local.is_sandbox ? "" : data.aws_ssm_parameter.cloud_security_notification_email_list.value
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+
+  depends_on = [module.sqs-nrl-queue, aws_cloudwatch_metric_alarm.nrl_dlq_new_messages_alarm]
+}
+
+
+
