@@ -9,6 +9,7 @@ module "sqs-nrl-queue" {
   max_visibility       = 601
   enable_deduplication = true
   enable_dlq           = true
+  max_receive_count    = 3
 }
 
 resource "aws_cloudwatch_metric_alarm" "nrl_dlq_new_messages_alarm" {
@@ -21,6 +22,7 @@ resource "aws_cloudwatch_metric_alarm" "nrl_dlq_new_messages_alarm" {
   statistic           = "Sum"
   threshold           = 0
   alarm_description   = "Alarm when there are new messages in the nrl dlq queue"
+
 
   dimensions = {
     QueueName = module.sqs-nrl-queue.dlq_name
