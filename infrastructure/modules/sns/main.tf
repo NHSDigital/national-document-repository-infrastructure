@@ -10,7 +10,7 @@ resource "aws_sns_topic" "sns_topic" {
 }
 
 resource "aws_sns_topic_subscription" "sns_subscription_single" {
-  count                = var.topic_endpoint ? 1 : 0
+  count                = local.is_topic_endpoint ? 1 : 0
   topic_arn            = aws_sns_topic.sns_topic.arn
   protocol             = var.topic_protocol
   endpoint             = var.topic_endpoint
@@ -18,7 +18,7 @@ resource "aws_sns_topic_subscription" "sns_subscription_single" {
 }
 
 resource "aws_sns_topic_subscription" "sns_subscription_list" {
-  for_each             = var.topic_endpoint_set ? var.topic_endpoint_set : []
+  for_each             = toset(var.topic_endpoint_list)
   topic_arn            = aws_sns_topic.sns_topic.arn
   protocol             = var.topic_protocol
   endpoint             = each.value

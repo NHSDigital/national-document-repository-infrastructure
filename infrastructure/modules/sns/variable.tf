@@ -28,9 +28,13 @@ variable "topic_endpoint" {
   default = null
 }
 
-variable "topic_endpoint_set" {
+locals {
+  is_topic_endpoint = length(var.topic_endpoint) > 0
+}
+
+variable "topic_endpoint_list" {
   type    = any
-  default = false
+  default = []
 }
 
 variable "current_account_id" {
