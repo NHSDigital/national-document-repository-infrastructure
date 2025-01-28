@@ -8,4 +8,5 @@ module "sqs-nrl-queue" {
   enable_fifo          = true
   max_visibility       = 601
   enable_deduplication = true
+  enable_dlq           = true
 }
