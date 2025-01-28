@@ -28,9 +28,6 @@ variable "topic_endpoint" {
   default = null
 }
 
-locals {
-  is_topic_endpoint = length(var.topic_endpoint) > 0
-}
 
 variable "topic_endpoint_list" {
   type    = any
@@ -53,4 +50,8 @@ variable "sqs_feedback" {
 
 variable "raw_message_delivery" {
   default = false
+}
+
+locals {
+  is_topic_endpoint = var.topic_endpoint == null ? false : true
 }
