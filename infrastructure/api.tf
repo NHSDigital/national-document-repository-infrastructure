@@ -14,6 +14,7 @@ resource "aws_api_gateway_rest_api" "ndr_doc_store_api" {
 resource "aws_api_gateway_domain_name" "custom_api_domain" {
   domain_name              = local.api_gateway_full_domain_name
   regional_certificate_arn = module.ndr-ecs-fargate-app.certificate_arn
+  security_policy          = "TLS_1_2"
 
   endpoint_configuration {
     types = ["REGIONAL"]

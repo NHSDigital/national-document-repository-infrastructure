@@ -171,6 +171,11 @@ resource "aws_s3_bucket" "logs_bucket" {
   }
 }
 
+resource "aws_s3_bucket_acl" "logs_bucket" {
+  bucket     = aws_s3_bucket.logs_bucket.id
+  acl        = "log-delivery-write"
+}
+
 resource "aws_s3_bucket_policy" "logs_bucket_policy" {
   bucket = aws_s3_bucket.logs_bucket.id
   policy = jsonencode({
