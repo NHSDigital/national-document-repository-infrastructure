@@ -52,6 +52,7 @@ variable "raw_message_delivery" {
   default = false
 }
 
-locals {
-  is_topic_endpoint = var.topic_endpoint == null ? false : true
+variable "is_topic_endpoint_list" {
+  default = false
+  type    = bool
 }
