@@ -9,6 +9,7 @@ on:
     branches:
     - main
 
+
 permissions:
   pull-requests: write
   id-token: write # This is required for requesting the JWT
@@ -76,24 +77,17 @@ jobs:
     name: Deploy Lambdas on NDR Functional Repo
     needs: ['terraform_process']
     if: github.ref == 'refs/heads/main'
-    uses: nhsconnect/national-document-repository/.github/workflows/lambdas-deploy-feature-to-sandbox.yml@main
-    with:
-      build_branch: main
-      sandbox: ndr-dev
-      environment: development
+    uses: nhsconnect/national-document-repository/.github/workflows/lambdas-dev-to-main-ci.yml@main
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
   
   run_main_repo_deploy_ui:
-    name: Deploy Lambdas on NDR Functional Repo
+    name: Deploy UI on NDR Functional Repo
     needs: ['terraform_process']
     if: github.ref == 'refs/heads/main'
-    uses: nhsconnect/national-document-repository/.github/workflows/ui-deploy-feature-to-sandbox-manual.yml@main
-    with:
-      build_branch: main
-      sandbox: ndr-dev
-      environment: development
+    uses: nhsconnect/national-document-repository/.github/workflows/ui-dev-to-main-ci.yml@main
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
         
         

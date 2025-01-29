@@ -37,8 +37,6 @@ resource "aws_api_gateway_resource" "auth_resource" {
 # API Config
 resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  stage_name  = var.environment
-
   triggers = {
     redeployment = sha1(jsonencode([
       aws_api_gateway_rest_api.ndr_doc_store_api.body,
@@ -104,12 +102,19 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.upload_confirm_result_gateway,
     module.upload_confirm_result_lambda,
     module.virus_scan_result_gateway,
-    module.virus_scan_result_lambda
+    module.virus_scan_result_lambda,
+    module.get-doc-nrl-lambda
   ]
 
   lifecycle {
     create_before_destroy = true
   }
+}
+
+resource "aws_api_gateway_stage" "ndr_api" {
+  deployment_id = aws_api_gateway_deployment.ndr_api_deploy.id
+  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  stage_name    = var.environment
 }
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response" {
@@ -149,7 +154,7 @@ module "api_endpoint_url_ssm_parameter" {
   name                = "api_endpoint"
   description         = "api endpoint url for ${var.environment}"
   resource_depends_on = aws_api_gateway_deployment.ndr_api_deploy
-  value               = aws_api_gateway_deployment.ndr_api_deploy.invoke_url
+  value               = "https://${aws_api_gateway_base_path_mapping.api_mapping.domain_name}"
   type                = "SecureString"
   owner               = var.owner
   environment         = var.environment
