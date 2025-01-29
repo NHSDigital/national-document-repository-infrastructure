@@ -33,6 +33,7 @@ jobs:
         role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
         role-skip-session-tagging: true
         aws-region: ${{ vars.AWS_REGION }}
+        mask-aws-account-id: true
       
     - name: View AWS Role
       run: aws sts get-caller-identity
