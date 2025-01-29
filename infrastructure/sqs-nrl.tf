@@ -6,23 +6,23 @@ module "sqs-nrl-queue" {
   message_retention    = 1800
   enable_sse           = true
   enable_fifo          = true
-  max_visibility       = 601
+  max_visibility       = 60
   enable_deduplication = true
   enable_dlq           = true
-  max_receive_count    = 3
+  max_receive_count    = 1
 }
 
 resource "aws_cloudwatch_metric_alarm" "nrl_dlq_new_messages" {
-  alarm_name          = "NRL_dlq_messages"
+  alarm_name          = "${terraform.workspace}_NRL_dlq_messages"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "ApproximateNumberOfMessagesVisible"
   namespace           = "AWS/SQS"
-  period              = 600
+  period              = 60
   statistic           = "Sum"
   threshold           = 0
   alarm_description   = "Alarm when there are new messages in the nrl dlq"
-
+  alarm_actions       = [module.nrl-dlq-alarm-topic.arn]
 
   dimensions = {
     QueueName = module.sqs-nrl-queue.dlq_name
