@@ -58,7 +58,7 @@ module "nrl-dlq-alarm-topic" {
     ]
   })
 
-  depends_on = [module.sqs-nrl-queue, aws_cloudwatch_metric_alarm.nrl_dlq_new_messages]
+  depends_on = [module.sqs-nrl-queue]
 }
 
 
