@@ -10,7 +10,7 @@ resource "aws_sns_topic" "sns_topic" {
 }
 
 resource "aws_sns_topic_subscription" "sns_subscription_single" {
-  count                = var.is_topic_endpoint_list ? 1 : 0
+  count                = var.is_topic_endpoint_list ? 0 : 1
   topic_arn            = aws_sns_topic.sns_topic.arn
   protocol             = var.topic_protocol
   endpoint             = var.topic_endpoint
