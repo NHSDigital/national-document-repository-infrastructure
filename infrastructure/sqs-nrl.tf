@@ -3,7 +3,7 @@ module "sqs-nrl-queue" {
   name                 = "nrl-queue.fifo"
   environment          = var.environment
   owner                = var.owner
-  message_retention    = 1800
+  message_retention    = 1209600
   enable_sse           = true
   enable_fifo          = true
   max_visibility       = 60
