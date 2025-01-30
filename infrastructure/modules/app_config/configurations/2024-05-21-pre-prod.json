@@ -14,6 +14,9 @@
       },
       "useSmartcardAuth": {
           "name": "useSmartcardAuth"
+      },
+      "lloydGeorgeValidationStrictMode": {
+          "name": "lloydGeorgeValidationStrictMode"
       }
   },
   "values": {
@@ -31,6 +34,9 @@
       },
       "useSmartcardAuth": {
           "enabled": "false"
+      },
+      "lloydGeorgeValidationStrictMode": {
+          "enabled": "true"
       }
   },
   "version": "1"
