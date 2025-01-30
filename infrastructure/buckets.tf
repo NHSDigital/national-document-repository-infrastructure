@@ -192,7 +192,14 @@ resource "aws_s3_bucket_policy" "logs_bucket_policy" {
         "Action" : "s3:PutObject",
         "Resource" : "${aws_s3_bucket.logs_bucket.arn}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
         "Effect" : "Allow",
-      }
+      },
+      { "Sid": S3_deny_http_requests,    
+        "Effect": "Deny",    
+        "Principal": "*",   
+        "Action": "s3:*",  
+        "Resource": "${aws_s3_bucket.logs_bucket.arn}:aws:s3:::logs_bucket/*",    
+        "Condition": {          
+          "Bool": { "aws:SecureTransport": "false" }'}}
     ]
   })
   depends_on = [aws_s3_bucket.logs_bucket]
