@@ -1,8 +1,13 @@
-# .github/workflows/terraform-dev
-name: 'Deploy and Version Main to Pre-Prod'
+name: 'Deploy to Pre-Prod'
 
 on:
   workflow_dispatch:
+    inputs:
+      branch_or_tag:
+        description: "What branch or tagged version do you want to deploy to pre-prod?"
+        required: true
+        type: "string"
+        default: "main"
 
 permissions:
   pull-requests: write
@@ -10,40 +15,39 @@ permissions:
   contents: read  # This is required for actions/checkout
     
 jobs:
-
   tag_and_release:
     runs-on: ubuntu-latest
     outputs:
-      tag: ${{steps.versioning.outputs.tag}}
-      new_tag: ${{steps.versioning.outputs.new_tag}}
+      tag: ${{ steps.version.outputs.tag || github.event.inputs.branch_or_tag }}
     permissions: write-all
 
     steps:
-
-    - uses: actions/checkout@v4
+    - name: Checkout main
+      if: ${{ github.event.inputs.branch_or_tag == 'main' }}
+      uses: actions/checkout@v4
       with:
         ref: main
         fetch-depth: '0'
 
     - name: Bump version and push tag
-      id: versioning
+      id: version
+      if: ${{ github.event.inputs.branch_or_tag == 'main' }}
       uses: anothrNick/github-tag-action@1.64.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: false
         DEFAULT_BUMP: patch
-    
-    - name: View outputs
-      run: |
-        echo Current tag: ${{steps.versioning.outputs.tag}} 
-        echo New tag: ${{steps.versioning.outputs.new_tag}}
 
   terraform_process:
     runs-on: ubuntu-latest
     needs: ['tag_and_release']
     environment: pre-prod
+
     steps:
-    # Checkout the repository to the GitHub Actions runner
+    - name: View outputs
+      run: |
+        echo Deploying branch or tagged version to pre-prod: ${{ needs.tag_and_release.outputs.tag }}
+
     - name: Checkout
       uses: actions/checkout@v4
       with:
@@ -57,11 +61,7 @@ jobs:
         role-skip-session-tagging: true
         aws-region: ${{ vars.AWS_REGION }}
         mask-aws-account-id: true
-      
-    - name: View AWS Role
-      run: aws sts get-caller-identity
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
@@ -79,8 +79,7 @@ jobs:
       run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
       working-directory: ./infrastructure 
       shell: bash
-      
-      # Checks that all Terraform configuration files adhere to a canonical format
+
     - name: Terraform Format
       run: terraform fmt -check
       working-directory: ./infrastructure 
@@ -95,5 +94,3 @@ jobs:
     - name: Terraform Apply 
       run: terraform apply -auto-approve -input=false tf.plan
       working-directory: ./infrastructure
-        
-        
