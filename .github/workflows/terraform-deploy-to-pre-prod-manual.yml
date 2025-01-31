@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       branch_or_tag:
-        description: "What branch or tagged version do you want to deploy to pre-prod?"
+        description: "Which branch or tag do you want to deploy to pre-prod?"
         required: true
         type: "string"
         default: "main"
