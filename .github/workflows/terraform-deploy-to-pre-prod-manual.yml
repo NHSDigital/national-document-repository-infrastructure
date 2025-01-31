@@ -18,7 +18,7 @@ jobs:
   tag_and_release:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.version.outputs.tag || github.event.inputs.branch_or_tag }}
+      version: ${{ steps.versioning.outputs.tag || github.event.inputs.branch_or_tag }}
     permissions: write-all
 
     steps:
@@ -30,8 +30,8 @@ jobs:
         fetch-depth: '0'
 
     - name: Bump version and push tag
-      id: version
       if: ${{ github.event.inputs.branch_or_tag == 'main' }}
+      id: versioning
       uses: anothrNick/github-tag-action@1.64.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
