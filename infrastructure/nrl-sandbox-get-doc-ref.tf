@@ -75,24 +75,6 @@ resource "aws_api_gateway_integration_response" "get_document_reference_mock_200
   }
 }
 
-resource "aws_api_gateway_method_response" "response_400" {
-  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id = aws_api_gateway_resource.sandbox_get_document_reference_path_parameter.id
-  http_method = aws_api_gateway_method.sandbox_get_document_reference.http_method
-  status_code = "400"
-}
-
-resource "aws_api_gateway_integration_response" "get_document_reference_mock_400_response" {
-  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = aws_api_gateway_resource.sandbox_get_document_reference_path_parameter.id
-  http_method       = aws_api_gateway_method.sandbox_get_document_reference.http_method
-  status_code       = aws_api_gateway_method_response.response_400.status_code
-  selection_pattern = "400"
-  response_templates = {
-    "application/json" = local.mock_400_response
-  }
-}
-
 resource "aws_api_gateway_method_response" "response_401" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id = aws_api_gateway_resource.sandbox_get_document_reference_path_parameter.id
