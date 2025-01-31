@@ -18,7 +18,7 @@ jobs:
   tag_and_release:
     runs-on: ubuntu-latest
     outputs:
-      tag: ${{ steps.version.outputs.tag || github.event.inputs.branch_or_tag }}
+      version: ${{ steps.version.outputs.tag || github.event.inputs.branch_or_tag }}
     permissions: write-all
 
     steps:
@@ -46,12 +46,12 @@ jobs:
     steps:
     - name: View outputs
       run: |
-        echo Deploying branch or tagged version to pre-prod: ${{ needs.tag_and_release.outputs.tag }}
+        echo Deploying branch or tagged version to pre-prod: ${{ needs.tag_and_release.outputs.version }}
 
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        ref: ${{needs.tag_and_release.outputs.tag}}
+        ref: ${{needs.tag_and_release.outputs.version}}
         fetch-depth: '0'
 
     - name: Configure AWS Credentials
