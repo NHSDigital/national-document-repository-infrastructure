@@ -1,6 +1,5 @@
 locals {
   mock_200_response = file("${path.module}/nrl_mock_responses/200_response.json")
-  mock_400_response = file("${path.module}/nrl_mock_responses/400_response.json")
   mock_401_response = file("${path.module}/nrl_mock_responses/401_response.json")
   mock_403_response = file("${path.module}/nrl_mock_responses/403_response.json")
   mock_404_response = file("${path.module}/nrl_mock_responses/404_response.json")
@@ -46,13 +45,11 @@ resource "aws_api_gateway_integration" "get_document_reference_mock" {
     {
       #if ( $input.params('id') == '16521000000101~f9ed81db-f90a-42d4-b7e4-d554d8f338fd' )
         "statusCode": 200
-      #elseif ( $input.params('id') == '400' )
-        "statusCode": 400
       #elseif ( $input.params('id') == '401' ) 
         "statusCode": 401 
       #elseif ( $input.params('id') == '403' ) 
         "statusCode": 403
-      #elseif ( $input.params('id') == '404' ) 
+      #else 
         "statusCode": 404    
       #end
     }
