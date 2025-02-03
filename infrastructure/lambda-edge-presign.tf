@@ -9,8 +9,8 @@ module "edge_presign_alarm" {
   depends_on           = [module.edge-presign-lambda, module.edge_presign_alarm_topic]
 }
 
-resource "aws_cloudwatch_log_metric_filter" "edge_presign_error_filter" {
-  name           = "EdgePresignError"
+resource "aws_cloudwatch_log_metric_filter" "edge_presign_error" {
+  name           = "EdgePresignErrorFilter"
   pattern        = "%LambdaError%"
   log_group_name = "/aws/lambda/us-east-1.${module.edge-presign-lambda.function_name}"
   metric_transformation {
@@ -20,7 +20,7 @@ resource "aws_cloudwatch_log_metric_filter" "edge_presign_error_filter" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "edge_presign_lambda_error_alarm" {
+resource "aws_cloudwatch_metric_alarm" "edge_presign_lambda_error" {
   alarm_name          = "${module.edge-presign-lambda.function_name}_error_alarm"
   metric_name         = "EdgePresignErrorCount"
   namespace           = "EdgeLambdaInsights"
