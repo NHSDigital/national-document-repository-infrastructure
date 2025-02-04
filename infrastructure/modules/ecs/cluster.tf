@@ -19,5 +19,6 @@ resource "aws_ecs_cluster" "ndr_ecs_cluster" {
 }
 
 resource "aws_cloudwatch_log_group" "ecs_cluster_logs" {
-  name = "${terraform.workspace}-${var.ecs_cluster_name}-logs"
+  name              = "${terraform.workspace}-${var.ecs_cluster_name}-logs"
+  retention_in_days = 0
 }
