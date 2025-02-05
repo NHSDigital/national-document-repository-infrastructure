@@ -35,5 +35,6 @@ resource "aws_ecs_task_definition" "ndr_ecs_task" {
 }
 
 resource "aws_cloudwatch_log_group" "awslogs-ndr-ecs" {
-  name = "${terraform.workspace}-ecs-task-${var.ecs_cluster_name}"
+  name              = "${terraform.workspace}-ecs-task-${var.ecs_cluster_name}"
+  retention_in_days = 0
 }

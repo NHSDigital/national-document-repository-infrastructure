@@ -10,7 +10,16 @@ resource "aws_s3_bucket" "bucket" {
   }
 }
 
-data "aws_iam_policy_document" "s3_defaut_policy" {
+resource "aws_s3_bucket_public_access_block" "bucket" {
+  bucket = aws_s3_bucket.bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+data "aws_iam_policy_document" "s3_default_policy" {
   statement {
     effect = "Deny"
 
@@ -46,7 +55,7 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
     }
 
     actions = [
-      "s3:GetObject",
+      "s3:*",
     ]
 
     resources = [
@@ -86,7 +95,7 @@ data "aws_iam_policy_document" "s3_cloudfront_policy" {
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
   bucket = aws_s3_bucket.bucket.id
-  policy = var.cloudfront_enabled ? data.aws_iam_policy_document.s3_cloudfront_policy.json : data.aws_iam_policy_document.s3_defaut_policy.json
+  policy = var.cloudfront_enabled ? data.aws_iam_policy_document.s3_cloudfront_policy.json : data.aws_iam_policy_document.s3_default_policy.json
 }
 
 resource "aws_s3_bucket_acl" "bucket_acl" {
