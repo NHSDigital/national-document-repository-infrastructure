@@ -72,8 +72,6 @@ module "search-document-references-lambda" {
     module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
-    module.auth_session_dynamodb_table.dynamodb_write_policy_document,
-
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-document-store.s3_read_policy_document,
     module.ndr-app-config.app_config_policy
@@ -86,7 +84,6 @@ module "search-document-references-lambda" {
     APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    AUTH_SESSION_TABLE_NAME = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     DYNAMODB_TABLE_LIST     = "[\u0022${terraform.workspace}_${var.docstore_dynamodb_table_name}\u0022, \u0022${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}\u0022]"
     WORKSPACE               = terraform.workspace
   }
