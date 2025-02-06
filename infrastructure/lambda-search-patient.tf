@@ -70,6 +70,7 @@ module "search-patient-details-lambda" {
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy,
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,
+    module.auth_session_dynamodb_table.dynamodb_read_policy_document,
   ]
   rest_api_id  = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id  = module.search-patient-details-gateway.gateway_resource_id
