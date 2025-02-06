@@ -180,27 +180,51 @@ resource "aws_s3_bucket_public_access_block" "logs_bucket" {
   restrict_public_buckets = true
 }
 
+data "aws_iam_policy_document" "logs_bucket_policy" {
+  statement {
+    effect = "Deny"
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:*",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.logs_bucket.arn}/*",
+    ]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_elb_service_account.main.arn]
+    }
+
+    actions = [
+      "s3:PutObject",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.logs_bucket.arn}/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
+    ]
+  }
+}
+
 resource "aws_s3_bucket_policy" "logs_bucket_policy" {
   bucket = aws_s3_bucket.logs_bucket.id
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Principal" : {
-          "AWS" : data.aws_elb_service_account.main.arn
-        },
-        "Action" : "s3:PutObject",
-        "Resource" : "${aws_s3_bucket.logs_bucket.arn}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
-        "Effect" : "Allow",
-      },
-      { "Sid": S3_deny_http_requests,    
-        "Effect": "Deny",    
-        "Principal": "*",   
-        "Action": "s3:*",  
-        "Resource": "${aws_s3_bucket.logs_bucket.arn}:aws:s3:::logs_bucket/*",    
-        "Condition": {          
-          "Bool": { "aws:SecureTransport": "false" }'}}
-    ]
-  })
-  depends_on = [aws_s3_bucket.logs_bucket]
+  policy = data.aws_iam_policy_document.logs_bucket_policy.json
 }
+
+
