@@ -26,7 +26,7 @@ resource "aws_lambda_event_source_mapping" "pdf-stitching-lambda" {
 }
 
 module "pdf-stitching-lambda-alarms" {
-  source          = "./modules/lambda_alarms"
+  source               = "./modules/lambda_alarms"
   lambda_function_name = module.pdf-stitching-lambda.function_name
   lambda_timeout       = module.pdf-stitching-lambda.timeout
   lambda_name          = "pdf-stitching-lambda"
