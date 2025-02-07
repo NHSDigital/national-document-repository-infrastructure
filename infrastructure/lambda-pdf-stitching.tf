@@ -7,7 +7,7 @@ module "pdf-stitching-lambda" {
     module.ndr-lloyd-george-store.s3_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.sqs-nrl-queue.sqs_write_policy_document,
-    module.sqs-stitching-queue-deadletter.sqs_write_policy_document,
+    module.sqs-stitching-queue.sqs_write_policy_document,
     module.sqs-stitching-queue.sqs_read_policy_document
   ]
   rest_api_id             = null
@@ -16,17 +16,17 @@ module "pdf-stitching-lambda" {
 }
 
 resource "aws_lambda_event_source_mapping" "pdf-stitching-lambda" {
-  event_source_arn = module.sqs-stitching-queue.arn
+  event_source_arn = module.sqs-stitching-queue.endpoint
   function_name    = module.pdf-stitching-lambda.lambda_arn
 
-  depends_on [
-    module.pdf-stitching-lambda
-    module.sqs-stitching
+  depends_on = [
+    module.pdf-stitching-lambda,
+    module.sqs-stitching-queue
   ]
 }
 
 module "pdf-stitching-lambda-alarms" {
-  source          = "modules/lambda_alarms"
+  source          = "./modules/lambda_alarms"
   lambda_function_name = module.pdf-stitching-lambda.function_name
   lambda_timeout       = module.pdf-stitching-lambda.timeout
   lambda_name          = "pdf-stitching-lambda"
