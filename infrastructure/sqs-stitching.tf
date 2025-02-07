@@ -5,6 +5,6 @@ module "sqs-stitching-queue" {
   owner             = var.owner
   message_retention = 1800
   enable_sse        = true
-  max_visibility    = 601
+  max_visibility    = 1200
   enable_dlq        = true
 }
