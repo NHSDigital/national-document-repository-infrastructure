@@ -8,4 +8,5 @@ module "sqs-stitching-queue" {
   max_visibility       = 601
   enable_deduplication = true
   enable_fifo          = true
+  enable_dlq           = true
 }
