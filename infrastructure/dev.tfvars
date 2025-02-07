@@ -17,4 +17,3 @@ mesh_ca_cert_ssm_param_name     = "/repo/dev/user-input/external/mesh-mailbox-ca
 
 standalone_vpc_tag                     = "ndr-dev"
 standalone_vpc_ig_tag                  = "ndr-dev"
-cloud_security_email_param_environment = "dev"
