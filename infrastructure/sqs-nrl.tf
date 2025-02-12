@@ -6,7 +6,7 @@ module "sqs-nrl-queue" {
   message_retention    = 1209600
   enable_sse           = true
   enable_fifo          = true
-  max_visibility       = 60
+  max_visibility       = 601
   enable_deduplication = true
   enable_dlq           = true
   max_receive_count    = 1
