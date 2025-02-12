@@ -171,6 +171,16 @@ resource "aws_s3_bucket" "logs_bucket" {
   }
 }
 
+resource "aws_s3_bucket_versioning" "logs_bucket" {
+  count = local.is_production ? 1 : 0
+
+  bucket = aws_s3_bucket.logs_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 resource "aws_s3_bucket_public_access_block" "logs_bucket" {
   bucket = aws_s3_bucket.logs_bucket.id
 
