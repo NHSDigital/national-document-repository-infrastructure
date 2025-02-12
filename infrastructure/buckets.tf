@@ -6,7 +6,7 @@ locals {
 # Bucket Modules
 module "ndr-document-store" {
   source                    = "./modules/s3/"
-  access_logs_enabled       = true
+  access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
   bucket_name               = var.docstore_bucket_name
   enable_cors_configuration = true
@@ -31,7 +31,7 @@ module "ndr-document-store" {
 
 module "ndr-zip-request-store" {
   source                    = "./modules/s3/"
-  access_logs_enabled       = true
+  access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
   bucket_name               = var.zip_store_bucket_name
   enable_cors_configuration = true
@@ -48,7 +48,7 @@ module "ndr-zip-request-store" {
 
 module "ndr-lloyd-george-store" {
   source                    = "./modules/s3/"
-  access_logs_enabled       = true
+  access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
   cloudfront_enabled        = true
   cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
@@ -75,7 +75,7 @@ module "ndr-lloyd-george-store" {
 
 module "statistical-reports-store" {
   source                    = "./modules/s3/"
-  access_logs_enabled       = true
+  access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
   bucket_name               = var.statistical_reports_bucket_name
   enable_cors_configuration = true
@@ -93,7 +93,7 @@ module "statistical-reports-store" {
 
 module "ndr-bulk-staging-store" {
   source                    = "./modules/s3/"
-  access_logs_enabled       = true
+  access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
   bucket_name               = var.staging_store_bucket_name
   enable_cors_configuration = true
