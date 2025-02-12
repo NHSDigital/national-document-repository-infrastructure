@@ -78,6 +78,7 @@ module "get-report-by-ods-lambda" {
   lambda_environment_variables = {
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     STATISTICAL_REPORTS_BUCKET = "${terraform.workspace}-${var.statistical_reports_bucket_name}"
+    PRESIGNED_ASSUME_ROLE      = aws_iam_role.ods_report_presign_url_role.arn
   }
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   depends_on = [
