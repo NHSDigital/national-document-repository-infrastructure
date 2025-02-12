@@ -171,6 +171,16 @@ resource "aws_s3_bucket" "logs_bucket" {
   }
 }
 
+resource "aws_s3_bucket_versioning" "logs_bucket" {
+  bucket = aws_s3_bucket.logs_bucket.id
+
+  versioning_configuration {
+    status = contains(["pre-prod", "prod"], terraform.workspace) ? "Enabled" : "Disabled"
+  }
+
+  depends_on = [aws_s3_bucket.logs_bucket]
+}
+
 resource "aws_s3_bucket_public_access_block" "logs_bucket" {
   bucket = aws_s3_bucket.logs_bucket.id
 
