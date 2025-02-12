@@ -139,7 +139,7 @@ resource "aws_s3_bucket_versioning" "bucket_versioning" {
 }
 
 resource "aws_s3_bucket_logging" "bucket_logging" {
-  count         = var.access_logs_enabled ? 0 : 1
+  count         = var.access_logs_enabled ? 1 : 0
   bucket        = aws_s3_bucket.bucket.id
   target_bucket = var.access_logs_bucket_id
   target_prefix = "${aws_s3_bucket.bucket.id}/"
