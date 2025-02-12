@@ -173,7 +173,7 @@ resource "aws_s3_bucket" "logs_bucket" {
 }
 
 resource "aws_s3_bucket_versioning" "logs_bucket" {
-  count  = local.is_production ? 1 : 0
+  count = local.is_production ? 1 : 0
 
   bucket = aws_s3_bucket.logs_bucket.id
 
