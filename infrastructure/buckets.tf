@@ -27,7 +27,7 @@ module "ndr-zip-request-store" {
   source                    = "./modules/s3/"
   bucket_name               = var.zip_store_bucket_name
   enable_cors_configuration = true
-  enable_bucket_versioning  = contains(["pre-prod", "prod"], terraform.workspace) ? true : false
+  enable_bucket_versioning  = local.is_production ? true : false
   environment               = var.environment
   owner                     = var.owner
   force_destroy             = local.is_force_destroy
@@ -176,7 +176,7 @@ resource "aws_s3_bucket_versioning" "logs_bucket" {
   bucket = aws_s3_bucket.logs_bucket.id
 
   versioning_configuration {
-    status = contains(["pre-prod", "prod"], terraform.workspace) ? "Enabled" : "Disabled"
+    status = local.is_production ? "Enabled" : "Disabled"
   }
 
   depends_on = [aws_s3_bucket.logs_bucket]
