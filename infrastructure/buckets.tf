@@ -1,6 +1,13 @@
-# Document Store Bucket
+locals {
+  access_logs_bucket_id = !local.is_production ? aws_s3_bucket.access_logs[0].id : null
+  access_logs_count     = !local.is_production ? 1 : 0
+}
+
+# Bucket Modules
 module "ndr-document-store" {
   source                    = "./modules/s3/"
+  access_logs_enabled       = true
+  access_logs_bucket_id     = local.access_logs_bucket_id
   bucket_name               = var.docstore_bucket_name
   enable_cors_configuration = true
   enable_bucket_versioning  = true
@@ -22,9 +29,10 @@ module "ndr-document-store" {
   ]
 }
 
-# Zip Request Store Bucket
 module "ndr-zip-request-store" {
   source                    = "./modules/s3/"
+  access_logs_enabled       = true
+  access_logs_bucket_id     = local.access_logs_bucket_id
   bucket_name               = var.zip_store_bucket_name
   enable_cors_configuration = true
   environment               = var.environment
@@ -37,9 +45,11 @@ module "ndr-zip-request-store" {
     }
   ]
 }
-# Lloyd George Store Bucket
+
 module "ndr-lloyd-george-store" {
   source                    = "./modules/s3/"
+  access_logs_enabled       = true
+  access_logs_bucket_id     = local.access_logs_bucket_id
   cloudfront_enabled        = true
   cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
   bucket_name               = var.lloyd_george_bucket_name
@@ -63,9 +73,10 @@ module "ndr-lloyd-george-store" {
   ]
 }
 
-
 module "statistical-reports-store" {
   source                    = "./modules/s3/"
+  access_logs_enabled       = true
+  access_logs_bucket_id     = local.access_logs_bucket_id
   bucket_name               = var.statistical_reports_bucket_name
   enable_cors_configuration = true
   enable_bucket_versioning  = true
@@ -80,6 +91,30 @@ module "statistical-reports-store" {
   ]
 }
 
+module "ndr-bulk-staging-store" {
+  source                    = "./modules/s3/"
+  access_logs_enabled       = true
+  access_logs_bucket_id     = local.access_logs_bucket_id
+  bucket_name               = var.staging_store_bucket_name
+  enable_cors_configuration = true
+  enable_bucket_versioning  = true
+  environment               = var.environment
+  owner                     = var.owner
+  force_destroy             = local.is_force_destroy
+  cors_rules = [
+    {
+      allowed_headers = ["*"]
+      allowed_methods = ["POST", "PUT", "DELETE"]
+      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
+      expose_headers  = ["ETag"]
+      max_age_seconds = 3000
+    },
+    {
+      allowed_methods = ["GET"]
+      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
+    }
+  ]
+}
 
 # Lifecycle Rules
 resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
@@ -135,28 +170,79 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
   }
 }
 
-# Staging Bucket for bulk uploads
-module "ndr-bulk-staging-store" {
-  source                    = "./modules/s3/"
-  bucket_name               = var.staging_store_bucket_name
-  enable_cors_configuration = true
-  enable_bucket_versioning  = true
-  environment               = var.environment
-  owner                     = var.owner
-  force_destroy             = local.is_force_destroy
-  cors_rules = [
-    {
-      allowed_headers = ["*"]
-      allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
-      expose_headers  = ["ETag"]
-      max_age_seconds = 3000
-    },
-    {
-      allowed_methods = ["GET"]
-      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
+# Logging Buckets
+resource "aws_s3_bucket" "access_logs" {
+  count         = local.access_logs_count
+  bucket        = "${terraform.workspace}-ndr-access-logs"
+  force_destroy = local.is_force_destroy
+
+  tags = {
+    Name        = "${terraform.workspace}-ndr-access-logs"
+    Owner       = var.owner
+    Environment = var.environment
+    Workspace   = terraform.workspace
+  }
+}
+
+data "aws_iam_policy_document" "access_logs" {
+  count = local.access_logs_count
+  statement {
+    sid     = "AllowS3AccessLogsPolicy"
+    effect  = "Allow"
+    actions = ["s3:PutObject"]
+    resources = [
+      "${aws_s3_bucket.access_logs[0].arn}/*",
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["logging.s3.amazonaws.com"]
     }
-  ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
+    }
+  }
+  statement {
+    sid    = "DenyS3AccessLogsPolicy"
+    effect = "Deny"
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:*",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.access_logs[0].arn}/*",
+    ]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "access_logs" {
+  count  = local.access_logs_count
+  bucket = aws_s3_bucket.access_logs[0].id
+  policy = data.aws_iam_policy_document.access_logs[0].json
+}
+
+resource "aws_s3_bucket_versioning" "access_logs" {
+  count  = local.access_logs_count
+  bucket = aws_s3_bucket.access_logs[0].id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket" "logs_bucket" {

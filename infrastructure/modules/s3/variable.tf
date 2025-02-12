@@ -42,3 +42,14 @@ variable "cloudfront_enabled" {
   default     = false
   description = "Enables the correct policy config for CloudFront associated S3 bucket"
 }
+
+variable "access_logs_enabled" {
+  type    = bool
+  default = false
+}
+
+variable "access_logs_bucket_id" {
+  type        = string
+  default     = null
+  description = "Enables access logs on the module's bucket"
+}
