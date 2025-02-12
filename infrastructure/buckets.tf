@@ -27,7 +27,6 @@ module "ndr-zip-request-store" {
   source                    = "./modules/s3/"
   bucket_name               = var.zip_store_bucket_name
   enable_cors_configuration = true
-  enable_bucket_versioning  = local.is_production
   environment               = var.environment
   owner                     = var.owner
   force_destroy             = local.is_force_destroy
