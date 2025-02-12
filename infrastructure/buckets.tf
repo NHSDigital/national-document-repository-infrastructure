@@ -1,6 +1,6 @@
 locals {
-  access_logs_bucket_id = !local.is_production ? aws_s3_bucket.access_logs[0].id : null
-  access_logs_count     = !local.is_production ? 1 : 0
+  access_logs_bucket_id = local.is_production ? aws_s3_bucket.access_logs[0].id : null
+  access_logs_count     = local.is_production ? 1 : 0
 }
 
 # Bucket Modules
