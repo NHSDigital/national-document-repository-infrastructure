@@ -178,8 +178,6 @@ resource "aws_s3_bucket_versioning" "logs_bucket" {
   versioning_configuration {
     status = local.is_production ? "Enabled" : "Disabled"
   }
-
-  depends_on = [aws_s3_bucket.logs_bucket]
 }
 
 resource "aws_s3_bucket_public_access_block" "logs_bucket" {
