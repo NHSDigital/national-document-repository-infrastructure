@@ -33,7 +33,7 @@ resource "aws_cloudwatch_metric_alarm" "edge_presign_lambda_error" {
   ok_actions          = [module.edge_presign_alarm_topic.arn]
   depends_on          = [module.edge-presign-lambda, aws_sns_topic.alarm_notifications_topic[0]]
   alarm_description   = "Triggers when Edge Presign Lambda errors."
-  count = local.is_sandbox ? 0 : 1
+  count               = local.is_sandbox ? 0 : 1
 }
 
 module "edge_presign_alarm_topic" {
