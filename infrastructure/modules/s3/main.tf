@@ -138,6 +138,13 @@ resource "aws_s3_bucket_versioning" "bucket_versioning" {
   depends_on = [aws_s3_bucket.bucket]
 }
 
+resource "aws_s3_bucket_logging" "bucket_logging" {
+  count         = var.access_logs_enabled ? 1 : 0
+  bucket        = aws_s3_bucket.bucket.id
+  target_bucket = var.access_logs_bucket_id
+  target_prefix = "${aws_s3_bucket.bucket.id}/"
+}
+
 data "aws_iam_policy_document" "s3_read_policy" {
   statement {
     actions = ["s3:Get*", "s3:List*"]
