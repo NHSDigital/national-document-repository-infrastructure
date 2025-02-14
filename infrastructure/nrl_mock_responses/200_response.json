@@ -1,0 +1,85 @@
+{
+    "resourceType": "DocumentReference",
+    "status": "current",
+    "type": {
+        "coding": [
+            {
+                "system": "http://snomed.info/sct",
+                "code": "16521000000101",
+                "display": "Lloyd George record folder"
+            }
+        ]
+    },
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "734163000",
+                    "display": "Care plan"
+                }
+            ]
+        }
+    ],
+    "subject": {
+        "identifier": {
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
+            "value": "9000000009"
+        }
+    },
+    "author": [
+        {
+            "identifier": {
+                "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+                "value": "Y12345"
+            }
+        }
+    ],
+    "custodian": {
+        "identifier": {
+            "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+            "value": "Y12345"
+        }
+    },
+    "content": [
+        {
+            "attachment": {
+                "contentType": "application/pdf",
+                "language": "en-GB",
+                "url": "https://fake-url.com",
+                "title": "document.pdf",
+                "creation": "2024-01-01T12:00:00.000Z"
+            },
+            "format": {
+                "system": "https://fhir.nhs.uk/England/CodeSystem/England-NRLFormatCode",
+                "code": "urn:nhs-ic:unstructured",
+                "display": "Unstructured Document"
+            },
+            "extension": [
+                {
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "https://fhir.nhs.uk/England/CodeSystem/England-NRLContentStability",
+                                "code": "static",
+                                "display": "Static"
+                            }
+                        ]
+                    },
+                    "url": "https://fhir.nhs.uk/England/StructureDefinition/Extension-England-ContentStability"
+                }
+            ]
+        }
+    ],
+    "context": {
+        "practiceSetting": {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "1060971000000108",
+                    "display": "General practice service"
+                }
+            ]
+        }
+    }
+}

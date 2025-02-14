@@ -14,6 +14,7 @@ resource "aws_api_gateway_rest_api" "ndr_doc_store_api" {
 resource "aws_api_gateway_domain_name" "custom_api_domain" {
   domain_name              = local.api_gateway_full_domain_name
   regional_certificate_arn = module.ndr-ecs-fargate-app.certificate_arn
+  security_policy          = "TLS_1_2"
 
   endpoint_configuration {
     types = ["REGIONAL"]
@@ -40,6 +41,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   triggers = {
     redeployment = sha1(jsonencode([
       aws_api_gateway_rest_api.ndr_doc_store_api.body,
+      aws_api_gateway_authorizer.repo_authoriser,
       module.authoriser-lambda,
       module.back-channel-logout-gateway,
       module.back_channel_logout_lambda,
@@ -112,9 +114,10 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
 }
 
 resource "aws_api_gateway_stage" "ndr_api" {
-  deployment_id = aws_api_gateway_deployment.ndr_api_deploy.id
-  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  stage_name    = var.environment
+  deployment_id        = aws_api_gateway_deployment.ndr_api_deploy.id
+  rest_api_id          = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  stage_name           = var.environment
+  xray_tracing_enabled = false
 }
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response" {
