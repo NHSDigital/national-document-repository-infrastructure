@@ -24,7 +24,14 @@ variable "topic_protocol" {
 }
 
 variable "topic_endpoint" {
-  type = any
+  type    = any
+  default = null
+}
+
+
+variable "topic_endpoint_list" {
+  type    = any
+  default = []
 }
 
 variable "current_account_id" {
@@ -43,4 +50,9 @@ variable "sqs_feedback" {
 
 variable "raw_message_delivery" {
   default = false
+}
+
+variable "is_topic_endpoint_list" {
+  default = false
+  type    = bool
 }
