@@ -99,3 +99,6 @@ output "sqs_read_policy_document" {
 output "sqs_write_policy_document" {
   value = data.aws_iam_policy_document.sqs_write_policy.json
 }
+output "dlq_name" {
+  value = var.enable_dlq ? aws_sqs_queue.queue_deadletter[0].name : null
+}
