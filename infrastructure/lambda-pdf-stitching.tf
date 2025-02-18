@@ -57,6 +57,4 @@ module "pdf-stitching-alarm-topic" {
       }
     ]
   })
-
-  depends_on = [module.pdf-stitching-lambda, module.sns_encryption_key]
 }
