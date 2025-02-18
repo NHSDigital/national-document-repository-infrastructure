@@ -1,7 +1,7 @@
 module "pdf-stitching-lambda" {
   source         = "./modules/lambda"
   name           = "PdfStitchingLambda"
-  handler        = "handlers.pdf_stitching_lambda_handler.lambda_handler"
+  handler        = "handlers.pdf_stitching_handler.lambda_handler"
   lambda_timeout = 900
   iam_role_policy_documents = [
     module.ndr-lloyd-george-store.s3_write_policy_document,
