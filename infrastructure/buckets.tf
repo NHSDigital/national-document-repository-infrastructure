@@ -91,22 +91,6 @@ module "statistical-reports-store" {
   ]
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "statistical-reports-store-lifecycle-rules" {
-  bucket = module.statistical-reports-store.bucket_id
-  rule {
-    id     = "Delete objects in ods-reports folder that have existed for 24 hours"
-    status = "Enabled"
-
-    expiration {
-      days = 1
-    }
-
-    filter {
-      prefix = "ods-reports/"
-    }
-  }
-}
-
 module "ndr-bulk-staging-store" {
   source                    = "./modules/s3/"
   access_logs_enabled       = local.is_production
