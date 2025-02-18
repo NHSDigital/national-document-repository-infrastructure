@@ -1,6 +1,6 @@
 module "pdf-stitching-lambda" {
   source         = "./modules/lambda"
-  name           = "pdf-stitching-lambda"
+  name           = "PdfStitchingLambda"
   handler        = "handlers.pdf-stitching-lambda.lambda_handler"
   lambda_timeout = 900
   iam_role_policy_documents = [
@@ -18,18 +18,13 @@ module "pdf-stitching-lambda" {
 resource "aws_lambda_event_source_mapping" "pdf-stitching-lambda" {
   event_source_arn = module.sqs-stitching-queue.endpoint
   function_name    = module.pdf-stitching-lambda.lambda_arn
-
-  depends_on = [
-    module.pdf-stitching-lambda,
-    module.sqs-stitching-queue
-  ]
 }
 
 module "pdf-stitching-lambda-alarms" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.pdf-stitching-lambda.function_name
   lambda_timeout       = module.pdf-stitching-lambda.timeout
-  lambda_name          = "pdf-stitching-lambda"
+  lambda_name          = "PdfStitchingLambda"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.pdf-stitching-alarm-topic.arn]
   ok_actions           = [module.pdf-stitching-alarm-topic.arn]
