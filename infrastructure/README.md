@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.86.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.73.0 |
 
 ## Modules
 
@@ -111,6 +111,9 @@
 | <a name="module_nems-message-lambda-alarm"></a> [nems-message-lambda-alarm](#module\_nems-message-lambda-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_nems-message-lambda-alarm-topic"></a> [nems-message-lambda-alarm-topic](#module\_nems-message-lambda-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_nrl-dlq-alarm-topic"></a> [nrl-dlq-alarm-topic](#module\_nrl-dlq-alarm-topic) | ./modules/sns | n/a |
+| <a name="module_pdf-stitching-alarm-topic"></a> [pdf-stitching-alarm-topic](#module\_pdf-stitching-alarm-topic) | ./modules/sns | n/a |
+| <a name="module_pdf-stitching-lambda"></a> [pdf-stitching-lambda](#module\_pdf-stitching-lambda) | ./modules/lambda | n/a |
+| <a name="module_pdf-stitching-lambda-alarms"></a> [pdf-stitching-lambda-alarms](#module\_pdf-stitching-lambda-alarms) | ./modules/lambda_alarms | n/a |
 | <a name="module_route53_fargate_ui"></a> [route53\_fargate\_ui](#module\_route53\_fargate\_ui) | ./modules/route53 | n/a |
 | <a name="module_search-document-references-gateway"></a> [search-document-references-gateway](#module\_search-document-references-gateway) | ./modules/gateway | n/a |
 | <a name="module_search-document-references-lambda"></a> [search-document-references-lambda](#module\_search-document-references-lambda) | ./modules/lambda | n/a |
@@ -132,6 +135,7 @@
 | <a name="module_sqs-nems-queue"></a> [sqs-nems-queue](#module\_sqs-nems-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-nrl-queue"></a> [sqs-nrl-queue](#module\_sqs-nrl-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-splunk-queue"></a> [sqs-splunk-queue](#module\_sqs-splunk-queue) | ./modules/sqs | n/a |
+| <a name="module_sqs-stitching-queue"></a> [sqs-stitching-queue](#module\_sqs-stitching-queue) | ./modules/sqs | n/a |
 | <a name="module_statistical-report-alarm"></a> [statistical-report-alarm](#module\_statistical-report-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_statistical-report-alarm-topic"></a> [statistical-report-alarm-topic](#module\_statistical-report-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_statistical-report-lambda"></a> [statistical-report-lambda](#module\_statistical-report-lambda) | ./modules/lambda | n/a |
@@ -286,6 +290,7 @@
 | [aws_lambda_event_source_mapping.mns_notification_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_event_source_mapping.nems_message_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_event_source_mapping.nrl_pointer_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
+| [aws_lambda_event_source_mapping.pdf-stitching-lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_permission.bulk_upload_metadata_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.bulk_upload_report_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.data_collection_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
