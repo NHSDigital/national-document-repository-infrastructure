@@ -110,6 +110,7 @@
 | <a name="module_nems-message-lambda"></a> [nems-message-lambda](#module\_nems-message-lambda) | ./modules/lambda | n/a |
 | <a name="module_nems-message-lambda-alarm"></a> [nems-message-lambda-alarm](#module\_nems-message-lambda-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_nems-message-lambda-alarm-topic"></a> [nems-message-lambda-alarm-topic](#module\_nems-message-lambda-alarm-topic) | ./modules/sns | n/a |
+| <a name="module_nrl-dlq-alarm-topic"></a> [nrl-dlq-alarm-topic](#module\_nrl-dlq-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_route53_fargate_ui"></a> [route53\_fargate\_ui](#module\_route53\_fargate\_ui) | ./modules/route53 | n/a |
 | <a name="module_search-document-references-gateway"></a> [search-document-references-gateway](#module\_search-document-references-gateway) | ./modules/gateway | n/a |
 | <a name="module_search-document-references-lambda"></a> [search-document-references-lambda](#module\_search-document-references-lambda) | ./modules/lambda | n/a |
@@ -206,6 +207,7 @@
 | [aws_cloudwatch_metric_alarm.edge_presign_lambda_error](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.error_log_alarm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.inbox-messages-not-consumed](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.nrl_dlq_new_messages](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.sns_topic_error_log_alarm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_ecs_cluster.mesh-forwarder-ecs-cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster) | resource |
 | [aws_ecs_service.mesh_forwarder](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |

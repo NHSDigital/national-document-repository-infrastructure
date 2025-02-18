@@ -46,6 +46,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_dlq_name"></a> [dlq\_name](#output\_dlq\_name) | n/a |
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Same as sqs queue arn. For use when setting the queue as endpoint of sns topic |
 | <a name="output_sqs_arn"></a> [sqs\_arn](#output\_sqs\_arn) | n/a |
 | <a name="output_sqs_id"></a> [sqs\_id](#output\_sqs\_id) | n/a |
