@@ -41,6 +41,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   triggers = {
     redeployment = sha1(jsonencode([
       aws_api_gateway_rest_api.ndr_doc_store_api.body,
+      aws_api_gateway_authorizer.repo_authoriser,
       module.authoriser-lambda,
       module.back-channel-logout-gateway,
       module.back_channel_logout_lambda,

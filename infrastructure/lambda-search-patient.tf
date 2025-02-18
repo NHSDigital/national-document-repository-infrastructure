@@ -68,7 +68,9 @@ module "search-patient-details-lambda" {
   handler = "handlers.search_patient_details_handler.lambda_handler"
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
-    module.ndr-app-config.app_config_policy
+    module.ndr-app-config.app_config_policy,
+    module.auth_session_dynamodb_table.dynamodb_write_policy_document,
+    module.auth_session_dynamodb_table.dynamodb_read_policy_document,
   ]
   rest_api_id  = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id  = module.search-patient-details-gateway.gateway_resource_id
@@ -82,6 +84,7 @@ module "search-patient-details-lambda" {
     PDS_FHIR_IS_STUBBED            = local.is_sandbox,
     SPLUNK_SQS_QUEUE_URL           = try(module.sqs-splunk-queue[0].sqs_url, null)
     WORKSPACE                      = terraform.workspace
+    AUTH_SESSION_TABLE_NAME        = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
   }
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   depends_on = [
