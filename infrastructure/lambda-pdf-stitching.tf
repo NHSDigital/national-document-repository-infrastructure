@@ -1,7 +1,7 @@
 module "pdf-stitching-lambda" {
   source         = "./modules/lambda"
   name           = "PdfStitchingLambda"
-  handler        = "handlers.pdf-stitching-lambda.lambda_handler"
+  handler        = "handlers.pdf_stitching_lambda_handler.lambda_handler"
   lambda_timeout = 900
   iam_role_policy_documents = [
     module.ndr-lloyd-george-store.s3_write_policy_document,
@@ -28,7 +28,6 @@ module "pdf-stitching-lambda-alarms" {
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.pdf-stitching-alarm-topic.arn]
   ok_actions           = [module.pdf-stitching-alarm-topic.arn]
-  depends_on           = [module.pdf-stitching-lambda, module.pdf-stitching-alarm-topic]
 }
 
 module "pdf-stitching-alarm-topic" {
