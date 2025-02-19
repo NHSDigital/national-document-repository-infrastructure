@@ -75,6 +75,7 @@ module "get-report-by-ods-lambda" {
   resource_id  = module.get-report-by-ods-gateway.gateway_resource_id
   http_methods = ["GET"]
   memory_size  = 1769
+  lambda_timeout = 900
   lambda_environment_variables = {
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     STATISTICAL_REPORTS_BUCKET = "${terraform.workspace}-${var.statistical_reports_bucket_name}"
