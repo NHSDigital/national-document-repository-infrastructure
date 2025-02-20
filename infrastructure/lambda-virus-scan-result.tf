@@ -63,9 +63,9 @@ module "virus_scan_result_alarm_topic" {
 }
 
 module "virus_scan_result_lambda" {
-  source      = "./modules/lambda"
-  name        = "VirusScanResult"
-  handler     = "handlers.virus_scan_result_handler.lambda_handler"
+  source  = "./modules/lambda"
+  name    = "VirusScanResult"
+  handler = "handlers.virus_scan_result_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
