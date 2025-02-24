@@ -89,7 +89,7 @@ module "lloyd_george_reference_dynamodb_table" {
   ]
 }
 
-  module "lloyd_george_unstitched_reference_dynamodb_table" {
+module "lloyd_george_unstitched_reference_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.lloyd_george_unstitched_dynamodb_table_name
   hash_key                       = "ID"

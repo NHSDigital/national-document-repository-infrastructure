@@ -81,6 +81,7 @@
 | <a name="module_lloyd-george-stitch_alarm"></a> [lloyd-george-stitch\_alarm](#module\_lloyd-george-stitch\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_lloyd-george-stitch_topic"></a> [lloyd-george-stitch\_topic](#module\_lloyd-george-stitch\_topic) | ./modules/sns | n/a |
 | <a name="module_lloyd_george_reference_dynamodb_table"></a> [lloyd\_george\_reference\_dynamodb\_table](#module\_lloyd\_george\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
+| <a name="module_lloyd_george_unstitched_reference_dynamodb_table"></a> [lloyd\_george\_unstitched\_reference\_dynamodb\_table](#module\_lloyd\_george\_unstitched\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_login_redirect-alarm_topic"></a> [login\_redirect-alarm\_topic](#module\_login\_redirect-alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_login_redirect_alarm"></a> [login\_redirect\_alarm](#module\_login\_redirect\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_login_redirect_lambda"></a> [login\_redirect\_lambda](#module\_login\_redirect\_lambda) | ./modules/lambda | n/a |
@@ -372,6 +373,7 @@
 | <a name="input_environment"></a> [environment](#input\_environment) | Tag Variables | `string` | n/a | yes |
 | <a name="input_lloyd_george_bucket_name"></a> [lloyd\_george\_bucket\_name](#input\_lloyd\_george\_bucket\_name) | The name of S3 bucket to store Lloyd George documents | `string` | `"lloyd-george-store"` | no |
 | <a name="input_lloyd_george_dynamodb_table_name"></a> [lloyd\_george\_dynamodb\_table\_name](#input\_lloyd\_george\_dynamodb\_table\_name) | The name of dynamodb table to store the metadata of Lloyd George documents | `string` | `"LloydGeorgeReferenceMetadata"` | no |
+| <a name="input_lloyd_george_unstitched_dynamodb_table_name"></a> [lloyd\_george\_unstitched\_dynamodb\_table\_name](#input\_lloyd\_george\_unstitched\_dynamodb\_table\_name) | The name of dynamodb table to store the unstitched metadata of Lloyd George documents | `string` | `"UnstitchedLloydGeorgeReferenceMetadata"` | no |
 | <a name="input_log_level"></a> [log\_level](#input\_log\_level) | n/a | `string` | `"debug"` | no |
 | <a name="input_mesh_ca_cert_ssm_param_name"></a> [mesh\_ca\_cert\_ssm\_param\_name](#input\_mesh\_ca\_cert\_ssm\_param\_name) | Name of SSM parameter containing MESH CA certificate | `string` | n/a | yes |
 | <a name="input_mesh_client_cert_ssm_param_name"></a> [mesh\_client\_cert\_ssm\_param\_name](#input\_mesh\_client\_cert\_ssm\_param\_name) | Name of SSM parameter containing MESH client certificate | `string` | n/a | yes |
