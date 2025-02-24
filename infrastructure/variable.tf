@@ -60,6 +60,12 @@ variable "lloyd_george_dynamodb_table_name" {
   default     = "LloydGeorgeReferenceMetadata"
 }
 
+variable "lloyd_george_unstitched_dynamodb_table_name" {
+  type = string
+  description = "The name of dynamodb table to store the unstitched metadata of Lloyd George documents"
+  default     = "UnstitchedLloydGeorgeReferenceMetadata"
+}
+
 variable "cloudfront_edge_table_name" {
   type        = string
   description = "The name of dynamodb table to store the presigned url reference of CloudFront requests"
