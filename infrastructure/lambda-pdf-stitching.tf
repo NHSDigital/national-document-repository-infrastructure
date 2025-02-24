@@ -8,7 +8,7 @@ module "pdf-stitching-lambda" {
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.sqs-nrl-queue.sqs_write_policy_document,
     module.sqs-stitching-queue.sqs_write_policy_document,
-    module.sqs-stitching-queue.sqs_read_policy_document
+    module.sqs-stitching-queue.sqs_read_policy_document,
     module.lloyd_george_unstitched_reference_dynamodb_table.dynamodb_write_policy
   ]
   rest_api_id             = null
