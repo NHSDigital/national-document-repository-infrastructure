@@ -17,6 +17,9 @@
         },
         "lloydGeorgeValidationStrictMode": {
             "name": "lloydGeorgeValidationStrictMode"
+        },
+        "odsReportLambdaEnabled": {
+            "name": "odsReportLambdaEnabled"
         }
     },
     "values": {
@@ -37,6 +40,9 @@
         },
         "lloydGeorgeValidationStrictMode": {
             "enabled": "true"
+        },
+        "odsReportLambdaEnabled": {
+            "enabled": "false"
         }
     },
     "version": "1"

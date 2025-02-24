@@ -55,10 +55,14 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
       module.document-manifest-job-lambda,
       module.feature-flags-gateway,
       module.feature-flags-lambda,
+      module.get-doc-nrl-lambda,
+      module.get-report-by-ods-gateway,
+      module.get-report-by-ods-lambda,
       module.lloyd-george-stitch-gateway,
       module.lloyd-george-stitch-lambda,
       module.logout-gateway,
       module.logout_lambda,
+      module.pdf-stitching-lambda,
       module.search-document-references-gateway,
       module.search-document-references-lambda,
       module.search-patient-details-gateway,
@@ -75,37 +79,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   }
 
   depends_on = [
-    aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.authoriser-lambda,
-    module.back-channel-logout-gateway,
-    module.back_channel_logout_lambda,
-    module.create-doc-ref-gateway,
-    module.create-doc-ref-lambda,
-    module.create-token-gateway,
-    module.create-token-lambda,
-    module.delete-doc-ref-gateway,
-    module.delete-doc-ref-lambda,
-    module.document-manifest-job-gateway,
-    module.document-manifest-job-lambda,
-    module.feature-flags-gateway,
-    module.feature-flags-lambda,
-    module.lloyd-george-stitch-gateway,
-    module.lloyd-george-stitch-lambda,
-    module.logout-gateway,
-    module.logout_lambda,
-    module.search-document-references-gateway,
-    module.search-document-references-lambda,
-    module.search-patient-details-gateway,
-    module.search-patient-details-lambda,
-    module.send-feedback-gateway,
-    module.send-feedback-lambda,
-    module.update-upload-state-gateway,
-    module.update-upload-state-lambda,
-    module.upload_confirm_result_gateway,
-    module.upload_confirm_result_lambda,
-    module.virus_scan_result_gateway,
-    module.virus_scan_result_lambda,
-    module.get-doc-nrl-lambda
+    aws_api_gateway_rest_api.ndr_doc_store_api
   ]
 
   lifecycle {
