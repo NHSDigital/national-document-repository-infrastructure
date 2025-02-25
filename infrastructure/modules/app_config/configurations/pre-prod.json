@@ -17,26 +17,32 @@
         },
         "lloydGeorgeValidationStrictMode": {
             "name": "lloydGeorgeValidationStrictMode"
+        },
+        "odsReportLambdaEnabled": {
+            "name": "odsReportLambdaEnabled"
         }
     },
     "values": {
         "nemsEnabled": {
-            "enabled": "true"
+            "enabled": "false"
         },
         "uploadLloydGeorgeWorkflowEnabled": {
-            "enabled": "true"
+            "enabled": "false"
         },
         "uploadLambdaEnabled": {
-            "enabled": "true"
+            "enabled": "false"
         },
         "uploadArfWorkflowEnabled": {
             "enabled": "true"
         },
         "useSmartcardAuth": {
-            "enabled": "false"
+          " enabled": "false"
         },
         "lloydGeorgeValidationStrictMode": {
             "enabled": "true"
+        },
+        "odsReportLambdaEnabled": {
+            "enabled": "false"
         }
     },
     "version": "1"
