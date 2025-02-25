@@ -87,13 +87,27 @@ module "lloyd_george_reference_dynamodb_table" {
       type = "S"
     }
   ]
+
+  global_secondary_indexes = [
+    {
+      name            = "FileLocationsIndex"
+      hash_key        = "FileLocation"
+      projection_type = "ALL"
+    },
+    {
+      name            = "NhsNumberIndex"
+      hash_key        = "NhsNumber"
+      projection_type = "ALL"
+    }
+  ]
+
   environment = var.environment
   owner       = var.owner
 }
 
-module "lloyd_george_unstitched_reference_dynamodb_table" {
+module "unstitched_lloyd_george_reference_dynamodb_table" {
   source                         = "./modules/dynamo_db"
-  table_name                     = var.lloyd_george_unstitched_dynamodb_table_name
+  table_name                     = var.unstitched_lloyd_george_dynamodb_table_name
   hash_key                       = "ID"
   deletion_protection_enabled    = local.is_production
   stream_enabled                 = true
