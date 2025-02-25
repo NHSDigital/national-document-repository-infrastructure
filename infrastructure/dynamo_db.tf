@@ -87,6 +87,8 @@ module "lloyd_george_reference_dynamodb_table" {
       type = "S"
     }
   ]
+  environment = var.environment
+  owner       = var.owner
 }
 
 module "lloyd_george_unstitched_reference_dynamodb_table" {
