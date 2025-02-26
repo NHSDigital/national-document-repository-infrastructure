@@ -36,7 +36,7 @@
             "enabled": "true"
         },
         "useSmartcardAuth": {
-          " enabled": "false"
+          "enabled": "false"
         },
         "lloydGeorgeValidationStrictMode": {
             "enabled": "true"
