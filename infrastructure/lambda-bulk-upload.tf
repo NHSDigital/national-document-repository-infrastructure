@@ -35,6 +35,7 @@ module "bulk-upload-lambda" {
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
     INVALID_SQS_QUEUE_URL      = module.sqs-lg-bulk-upload-invalid-queue.sqs_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
+    PDF_STITCHER_SQS_URL       = module.sqs-stitching-queue.sqs_url
     APIM_API_URL               = data.aws_ssm_parameter.apim_url.value
   }
 
