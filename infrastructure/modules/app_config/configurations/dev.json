@@ -1,0 +1,49 @@
+{
+    "flags": {
+        "nemsEnabled": {
+            "name": "nemsEnabled"
+        },
+        "uploadLloydGeorgeWorkflowEnabled": {
+            "name": "uploadLloydGeorgeWorkflowEnabled"
+        },
+        "uploadLambdaEnabled": {
+            "name": "uploadLambdaEnabled"
+        },
+        "uploadArfWorkflowEnabled": {
+            "name": "uploadArfWorkflowEnabled"
+        },
+        "useSmartcardAuth": {
+            "name": "useSmartcardAuth"
+        },
+        "lloydGeorgeValidationStrictMode": {
+            "name": "lloydGeorgeValidationStrictMode"
+        },
+        "odsReportLambdaEnabled": {
+            "name": "odsReportLambdaEnabled"
+        }
+    },
+    "values": {
+        "nemsEnabled": {
+            "enabled": "true"
+        },
+        "uploadLloydGeorgeWorkflowEnabled": {
+            "enabled": "true"
+        },
+        "uploadLambdaEnabled": {
+            "enabled": "true"
+        },
+        "uploadArfWorkflowEnabled": {
+            "enabled": "true"
+        },
+        "useSmartcardAuth": {
+            "enabled": "false"
+        },
+        "lloydGeorgeValidationStrictMode": {
+            "enabled": "true"
+        },
+        "odsReportLambdaEnabled": {
+            "enabled": "true"
+        }
+    },
+    "version": "1"
+}
