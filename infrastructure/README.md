@@ -395,7 +395,7 @@
 | <a name="input_statistical_reports_bucket_name"></a> [statistical\_reports\_bucket\_name](#input\_statistical\_reports\_bucket\_name) | The name of S3 bucket to store weekly generated statistical reports | `string` | `"statistical-reports"` | no |
 | <a name="input_statistics_dynamodb_table_name"></a> [statistics\_dynamodb\_table\_name](#input\_statistics\_dynamodb\_table\_name) | The name of dynamodb table to store application statistics | `string` | `"ApplicationStatistics"` | no |
 | <a name="input_stitch_metadata_dynamodb_table_name"></a> [stitch\_metadata\_dynamodb\_table\_name](#input\_stitch\_metadata\_dynamodb\_table\_name) | n/a | `string` | `"LloydGeorgeStitchJobMetadata"` | no |
-| <a name="input_unstitched_lloyd_george_dynamodb_table_name"></a> [unstitched\_lloyd\_george\_dynamodb\_table\_name](#input\_unstitched\_lloyd\_george\_dynamodb\_table\_name) | The name of dynamodb table to store the metadata of un-stitchedLloyd George documents | `string` | `"UnstitchedLloydGeorgeReferenceMetadata"` | no |
+| <a name="input_unstitched_lloyd_george_dynamodb_table_name"></a> [unstitched\_lloyd\_george\_dynamodb\_table\_name](#input\_unstitched\_lloyd\_george\_dynamodb\_table\_name) | The name of dynamodb table to store the metadata of un-stitchedLloyd George documents | `string` | `"Unstitched LloydGeorgeReferenceMetadata"` | no |
 | <a name="input_zip_store_bucket_name"></a> [zip\_store\_bucket\_name](#input\_zip\_store\_bucket\_name) | n/a | `string` | `"zip-request-store"` | no |
 | <a name="input_zip_store_dynamodb_table_name"></a> [zip\_store\_dynamodb\_table\_name](#input\_zip\_store\_dynamodb\_table\_name) | n/a | `string` | `"ZipStoreReferenceMetadata"` | no |
 
