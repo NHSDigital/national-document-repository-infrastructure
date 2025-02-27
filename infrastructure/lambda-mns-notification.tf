@@ -79,7 +79,7 @@ resource "aws_iam_policy" "kms_mns_lambda_access" {
   # count = local.is_sandbox ? 0 : 1
 
   name        = "${terraform.workspace}_mns_notification_lambda_access_policy"
-  description = "KMS policy to allow lambda to read MNS SQS messages"
+  description = "KMS policy to allow lambda to read and write MNS SQS messages"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -87,6 +87,7 @@ resource "aws_iam_policy" "kms_mns_lambda_access" {
       {
         Action = [
           "kms:Decrypt",
+          "kms:GenerateDataKey"
         ]
         Effect   = "Allow"
         Resource = module.mns_encryption_key.kms_arn
