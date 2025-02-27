@@ -50,3 +50,51 @@ resource "aws_sqs_queue_policy" "mns_sqs_access" {
     ]
   })
 }
+
+resource "aws_cloudwatch_metric_alarm" "msn_dlq_new_message" {
+  alarm_name          = "${terraform.workspace}_MNS_dlq_messages"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name = "ApproximateNumberOfMessagesVisible"
+  namespace = "AWS/SQS"
+  period = 60
+  statistic = "Sum"
+  threshold = 0
+  alarm_description = "Alarm for when there are new messages in the MNS DLQ"
+  alarm_actions = [module.mns-dlq-alarm-topic.arn]
+
+  dimensions = {
+    QueueName = module.sqs-mns-notification-queue
+  }
+}
+
+module "mns-dlq-alarm-topic" {
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
+  current_account_id     = data.aws_caller_identity.current.account_id
+  topic_name             = "mns-dlq-topic"
+  topic_protocol         = "email"
+  is_topic_endpoint_list = true
+  topic_endpoint_list = nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+  depends_on = [module.sqs-mns-notification-queue]
+}
