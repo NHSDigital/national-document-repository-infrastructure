@@ -64,7 +64,7 @@ resource "aws_cloudwatch_metric_alarm" "msn_dlq_new_message" {
   alarm_actions       = [module.mns-dlq-alarm-topic.arn]
 
   dimensions = {
-    QueueName = module.sqs-mns-notification-queue
+    QueueName = module.sqs-mns-notification-queue.dlq_name
   }
 }
 
