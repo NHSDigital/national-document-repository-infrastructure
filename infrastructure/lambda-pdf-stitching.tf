@@ -16,7 +16,7 @@ module "pdf-stitching-lambda" {
     module.unstitched_lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document
   ]
   lambda_environment_variables = {
-    PDF_STITCHER_SQS_URL = module.sqs-stitching-queue.sqs_url
+    PDF_STITCHING_SQS_URL = module.sqs-stitching-queue.sqs_url
   }
   rest_api_id             = null
   api_execution_arn       = null
