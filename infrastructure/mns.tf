@@ -55,13 +55,13 @@ resource "aws_cloudwatch_metric_alarm" "msn_dlq_new_message" {
   alarm_name          = "${terraform.workspace}_MNS_dlq_messages"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
-  metric_name = "ApproximateNumberOfMessagesVisible"
-  namespace = "AWS/SQS"
-  period = 60
-  statistic = "Sum"
-  threshold = 0
-  alarm_description = "Alarm for when there are new messages in the MNS DLQ"
-  alarm_actions = [module.mns-dlq-alarm-topic.arn]
+  metric_name         = "ApproximateNumberOfMessagesVisible"
+  namespace           = "AWS/SQS"
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 0
+  alarm_description   = "Alarm for when there are new messages in the MNS DLQ"
+  alarm_actions       = [module.mns-dlq-alarm-topic.arn]
 
   dimensions = {
     QueueName = module.sqs-mns-notification-queue
@@ -75,7 +75,7 @@ module "mns-dlq-alarm-topic" {
   topic_name             = "mns-dlq-topic"
   topic_protocol         = "email"
   is_topic_endpoint_list = true
-  topic_endpoint_list = nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  topic_endpoint_list    = nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
