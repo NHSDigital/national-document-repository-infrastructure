@@ -19,12 +19,12 @@ module "pdf-stitching-lambda" {
   api_execution_arn       = null
   is_invoked_from_gateway = false
   lambda_environment_variables = {
-    PDF_STITCHING_SQS_URL         = module.sqs-stitching-queue.sqs_url
-    NRL_SQS_URL                   = module.sqs-nrl-queue.sqs_url
-    LLOYD_GEORGE_BUCKET_NAME      = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
-    LLOYD_GEORGE_DYNAMODB_NAME    = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    STITCH_METADATA_DYNAMODB_NAME = "${terraform.workspace}_${var.unstitched_lloyd_george_dynamodb_table_name}"
-    WORKSPACE                     = terraform.workspace
+    PDF_STITCHING_SQS_URL                 = module.sqs-stitching-queue.sqs_url
+    NRL_SQS_URL                           = module.sqs-nrl-queue.sqs_url
+    LLOYD_GEORGE_BUCKET_NAME              = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
+    LLOYD_GEORGE_DYNAMODB_NAME            = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    UNSTITCHED_LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.unstitched_lloyd_george_dynamodb_table_name}"
+    WORKSPACE                             = terraform.workspace
   }
 }
 
