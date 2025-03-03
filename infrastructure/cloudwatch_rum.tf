@@ -3,7 +3,7 @@ locals {
   rum_role_name     = "${terraform.workspace}-rum-service-role"
 }
 
-resource "aws_iam_role" "rum_service_role" {
+resource "aws_iam_role" "cloudwatch_rum" {
   name = local.rum_role_name
 
   assume_role_policy = jsonencode({
@@ -20,7 +20,7 @@ resource "aws_iam_role" "rum_service_role" {
   })
 }
 
-resource "aws_iam_role" "cognito_unauth_role" {
+resource "aws_iam_role" "cognito_unauthenticated" {
   name = local.cognito_role_name
 
   assume_role_policy = jsonencode({
@@ -34,7 +34,7 @@ resource "aws_iam_role" "cognito_unauth_role" {
         Action = "sts:AssumeRoleWithWebIdentity",
         Condition = {
           StringEquals = {
-            "cognito-identity.amazonaws.com:aud" = aws_cognito_identity_pool.rum_identity_pool[0].id
+            "cognito-identity.amazonaws.com:aud" = aws_cognito_identity_pool.cloudwatch_rum[0].id
           },
           "ForAnyValue:StringLike" = {
             "cognito-identity.amazonaws.com:amr" = "unauthenticated"
@@ -45,8 +45,8 @@ resource "aws_iam_role" "cognito_unauth_role" {
   })
 }
 
-resource "aws_iam_policy" "cognito_access_policy" {
-  name        = "${terraform.workspace}-cognito-access-policy"
+resource "aws_iam_policy" "cloudwatch_rum_cognito_access" {
+  name        = "${terraform.workspace}-cloudwatch-rum-cognito-access-policy"
   description = "Policy for unauthenticated Cognito identities"
 
   policy = jsonencode(
@@ -56,14 +56,14 @@ resource "aws_iam_policy" "cognito_access_policy" {
         {
           "Effect" : "Allow",
           "Action" : "rum:PutRumEvents",
-          "Resource" : "arn:aws:rum:${local.current_region}:${local.current_account_id}:appmonitor/${terraform.workspace}-app-monitor"
+          "Resource" : "arn:aws:rum:${local.current_region}:${local.current_account_id}:appmonitor/${aws_rum_app_monitor.this.id}"
         }
       ]
   })
 }
 
-resource "aws_iam_policy" "rum_management_policy" {
-  name        = "${terraform.workspace}-rum-management-policy"
+resource "aws_iam_policy" "cloudwatch_rum_management" {
+  name        = "${terraform.workspace}-cloudwatch-rum-management-policy"
   description = "Policy to manage RUM app monitors and associated logs"
 
   policy = jsonencode({
@@ -88,39 +88,39 @@ resource "aws_iam_policy" "rum_management_policy" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "cognito_unauth_policy_attachment" {
-  role       = aws_iam_role.cognito_unauth_role.name
-  policy_arn = aws_iam_policy.cognito_access_policy.arn
+resource "aws_iam_role_policy_attachment" "cloudwatch_rum_cognito_unauth" {
+  role       = aws_iam_role.cognito_unauthenticated.name
+  policy_arn = aws_iam_policy.cloudwatch_rum_cognito_access.arn
 }
 
-resource "aws_iam_role_policy_attachment" "rum_policy_attachment" {
-  role       = aws_iam_role.rum_service_role.name
-  policy_arn = aws_iam_policy.rum_management_policy.arn
+resource "aws_iam_role_policy_attachment" "cloudwatch_rum_management" {
+  role       = aws_iam_role.cloudwatch_rum.name
+  policy_arn = aws_iam_policy.cloudwatch_rum_management.arn
 }
 
-resource "aws_cognito_identity_pool_roles_attachment" "identity_role_attachment" {
+resource "aws_cognito_identity_pool_roles_attachment" "cloudwatch_rum" {
   count            = local.is_production ? 0 : 1
-  identity_pool_id = aws_cognito_identity_pool.rum_identity_pool[0].id
+  identity_pool_id = aws_cognito_identity_pool.cloudwatch_rum[0].id
 
   roles = {
-    unauthenticated = aws_iam_role.cognito_unauth_role.arn
+    unauthenticated = aws_iam_role.cognito_unauthenticated.arn
   }
 }
 
-resource "aws_cognito_identity_pool" "rum_identity_pool" {
+resource "aws_cognito_identity_pool" "cloudwatch_rum" {
   count                            = local.is_production ? 0 : 1
-  identity_pool_name               = "${terraform.workspace}-rum-identity-pool"
+  identity_pool_name               = "${terraform.workspace}-cloudwatch-rum-identity-pool"
   allow_unauthenticated_identities = true
 }
 
-resource "aws_rum_app_monitor" "app_monitor" {
+resource "aws_rum_app_monitor" "this" {
   count          = local.is_production ? 0 : 1
   name           = "${terraform.workspace}-app-monitor"
   domain         = "*.patient-deductions.nhs.uk"
   cw_log_enabled = false
 
   app_monitor_configuration {
-    identity_pool_id    = aws_cognito_identity_pool.rum_identity_pool[0].id
+    identity_pool_id    = aws_cognito_identity_pool.cloudwatch_rum[0].id
     allow_cookies       = true
     enable_xray         = true
     session_sample_rate = 1.0
@@ -128,6 +128,6 @@ resource "aws_rum_app_monitor" "app_monitor" {
   }
 
   tags = {
-    ServiceRole = aws_iam_role.rum_service_role.arn
+    ServiceRole = aws_iam_role.cloudwatch_rum.arn
   }
 }
