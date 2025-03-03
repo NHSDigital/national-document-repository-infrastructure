@@ -20,7 +20,7 @@ module "pdf-stitching-lambda" {
   is_invoked_from_gateway = false
   lambda_environment_variables = {
     PDF_STITCHING_SQS_URL         = module.sqs-stitching-queue.sqs_url
-    NRL_SQS_QUEUE_URL             = module.sqs-nrl-queue.sqs_url
+    NRL_SQS_URL                   = module.sqs-nrl-queue.sqs_url
     LLOYD_GEORGE_DYNAMODB_NAME    = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     STITCH_METADATA_DYNAMODB_NAME = "${terraform.workspace}_${var.unstitched_lloyd_george_dynamodb_table_name}"
     WORKSPACE                     = terraform.workspace
