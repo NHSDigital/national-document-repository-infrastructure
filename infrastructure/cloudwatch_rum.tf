@@ -4,7 +4,8 @@ locals {
 }
 
 resource "aws_iam_role" "cloudwatch_rum" {
-  name = local.rum_role_name
+  count = local.is_production ? 0 : 1
+  name  = local.rum_role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -21,7 +22,8 @@ resource "aws_iam_role" "cloudwatch_rum" {
 }
 
 resource "aws_iam_role" "cognito_unauthenticated" {
-  name = local.cognito_role_name
+  count = local.is_production ? 0 : 1
+  name  = local.cognito_role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -46,6 +48,7 @@ resource "aws_iam_role" "cognito_unauthenticated" {
 }
 
 resource "aws_iam_policy" "cloudwatch_rum_cognito_access" {
+  count       = local.is_production ? 0 : 1
   name        = "${terraform.workspace}-cloudwatch-rum-cognito-access-policy"
   description = "Policy for unauthenticated Cognito identities"
 
@@ -56,13 +59,14 @@ resource "aws_iam_policy" "cloudwatch_rum_cognito_access" {
         {
           "Effect" : "Allow",
           "Action" : "rum:PutRumEvents",
-          "Resource" : "arn:aws:rum:${local.current_region}:${local.current_account_id}:appmonitor/${aws_rum_app_monitor.this.id}"
+          "Resource" : "arn:aws:rum:${local.current_region}:${local.current_account_id}:appmonitor/${aws_rum_app_monitor.this[0].id}"
         }
       ]
   })
 }
 
 resource "aws_iam_policy" "cloudwatch_rum_management" {
+  count       = local.is_production ? 0 : 1
   name        = "${terraform.workspace}-cloudwatch-rum-management-policy"
   description = "Policy to manage RUM app monitors and associated logs"
 
@@ -89,13 +93,15 @@ resource "aws_iam_policy" "cloudwatch_rum_management" {
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_rum_cognito_unauth" {
-  role       = aws_iam_role.cognito_unauthenticated.name
-  policy_arn = aws_iam_policy.cloudwatch_rum_cognito_access.arn
+  count      = local.is_production ? 0 : 1
+  role       = aws_iam_role.cognito_unauthenticated[0].name
+  policy_arn = aws_iam_policy.cloudwatch_rum_cognito_access[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_rum_management" {
-  role       = aws_iam_role.cloudwatch_rum.name
-  policy_arn = aws_iam_policy.cloudwatch_rum_management.arn
+  count      = local.is_production ? 0 : 1
+  role       = aws_iam_role.cloudwatch_rum[0].name
+  policy_arn = aws_iam_policy.cloudwatch_rum_management[0].arn
 }
 
 resource "aws_cognito_identity_pool_roles_attachment" "cloudwatch_rum" {
@@ -103,7 +109,7 @@ resource "aws_cognito_identity_pool_roles_attachment" "cloudwatch_rum" {
   identity_pool_id = aws_cognito_identity_pool.cloudwatch_rum[0].id
 
   roles = {
-    unauthenticated = aws_iam_role.cognito_unauthenticated.arn
+    unauthenticated = aws_iam_role.cognito_unauthenticated[0].arn
   }
 }
 
@@ -128,6 +134,6 @@ resource "aws_rum_app_monitor" "this" {
   }
 
   tags = {
-    ServiceRole = aws_iam_role.cloudwatch_rum.arn
+    ServiceRole = aws_iam_role.cloudwatch_rum[0].arn
   }
 }
