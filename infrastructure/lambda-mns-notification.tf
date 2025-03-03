@@ -20,7 +20,7 @@ module "mns-notification-lambda" {
     APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                  = terraform.workspace
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    MNS_NOTIFICATION_QUEUE_URL = module.sqs-mns-notification-queue.sqs_url
+    MNS_NOTIFICATION_QUEUE_URL = module.sqs-mns-notification-queue[0].sqs_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
   }
   is_gateway_integration_needed = false
@@ -30,15 +30,15 @@ module "mns-notification-lambda" {
 
 resource "aws_lambda_event_source_mapping" "mns_notification_lambda" {
   count            = 1
-  event_source_arn = module.sqs-mns-notification-queue.endpoint
-  function_name    = module.mns-notification-lambda.lambda_arn
+  event_source_arn = module.sqs-mns-notification-queue[0].endpoint
+  function_name    = module.mns-notification-lambda[0].lambda_arn
 }
 
 module "mns-notification-alarm" {
   count                = 1
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.mns-notification-lambda.function_name
-  lambda_timeout       = module.mns-notification-lambda.timeout
+  lambda_function_name = module.mns-notification-lambda[0].function_name
+  lambda_timeout       = module.mns-notification-lambda[0].timeout
   lambda_name          = "mns_notification_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.mns-notification-alarm-topic[0].arn]
