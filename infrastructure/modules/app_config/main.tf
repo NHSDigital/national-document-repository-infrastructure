@@ -2,8 +2,8 @@ locals {
   is_sandbox_dev_or_test = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-dev", "ndr-test"], terraform.workspace)
   current_config_path = (
     local.is_sandbox_dev_or_test
-    ? "${path.module}/configurations/2024-02-21-dev.json"
-    : "${path.module}/configurations/2024-05-21-${terraform.workspace}.json"
+    ? "${path.module}/configurations/dev.json"
+    : "${path.module}/configurations/${terraform.workspace}.json"
   )
 }
 
