@@ -132,8 +132,8 @@ resource "aws_rum_app_monitor" "ndr" {
     session_sample_rate = 1.0
     telemetries         = ["errors", "performance", "http"]
   }
-
-  tags = {
-    ServiceRole = aws_iam_role.cloudwatch_rum[0].arn
-  }
 }
+#   tags = {
+#     ServiceRole = aws_iam_role.cloudwatch_rum[0].arn
+#   }
+# }
