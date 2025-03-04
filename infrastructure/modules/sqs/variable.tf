@@ -69,6 +69,7 @@ variable "enable_dlq" {
 variable "dlq_visibility_timeout" {
   type    = number
   default = 0
+}
 
 # Tags
 variable "environment" {
