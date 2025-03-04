@@ -66,6 +66,11 @@ variable "enable_dlq" {
   default = false
 }
 
+variable "dlq_visibility_timeout" {
+  type   = number
+  defaut = var.max_visibility
+}
+
 # Tags
 variable "environment" {
   type = string
