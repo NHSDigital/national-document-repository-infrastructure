@@ -67,8 +67,8 @@ variable "enable_dlq" {
 }
 
 variable "dlq_visibility_timeout" {
-  type   = number
-  defaut = var.max_visibility
+  type    = number
+  default = var.max_visibility
 }
 
 # Tags
