@@ -1,25 +1,25 @@
 locals {
   cognito_role_name = "${terraform.workspace}-cognito-unauth-role"
-  rum_role_name     = "${terraform.workspace}-rum-service-role"
+  # rum_role_name     = "${terraform.workspace}-rum-service-role"
 }
 
-resource "aws_iam_role" "cloudwatch_rum" {
-  count = local.is_production ? 0 : 1
-  name  = local.rum_role_name
+# resource "aws_iam_role" "cloudwatch_rum" {
+#   count = local.is_production ? 0 : 1
+#   name  = local.rum_role_name
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          Service = "rum.amazonaws.com"
-        },
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-}
+#   assume_role_policy = jsonencode({
+#     Version = "2012-10-17",
+#     Statement = [
+#       {
+#         Effect = "Allow",
+#         Principal = {
+#           Service = "rum.amazonaws.com"
+#         },
+#         Action = "sts:AssumeRole"
+#       }
+#     ]
+#   })
+# }
 
 resource "aws_iam_role" "cognito_unauthenticated" {
   count = local.is_production ? 0 : 1
@@ -59,38 +59,38 @@ resource "aws_iam_policy" "cloudwatch_rum_cognito_access" {
         {
           "Effect" : "Allow",
           "Action" : "rum:PutRumEvents",
-          "Resource" : "arn:aws:rum:${local.current_region}:${local.current_account_id}:appmonitor/${aws_rum_app_monitor.this[0].id}"
+          "Resource" : "arn:aws:rum:${local.current_region}:${local.current_account_id}:appmonitor/${aws_rum_app_monitor.ndr[0].id}"
         }
       ]
   })
 }
 
-resource "aws_iam_policy" "cloudwatch_rum_management" {
-  count       = local.is_production ? 0 : 1
-  name        = "${terraform.workspace}-cloudwatch-rum-management-policy"
-  description = "Policy to manage RUM app monitors and associated logs"
+# resource "aws_iam_policy" "cloudwatch_rum_management" {
+#   count       = local.is_production ? 0 : 1
+#   name        = "${terraform.workspace}-cloudwatch-rum-management-policy"
+#   description = "Policy to manage RUM app monitors and associated logs"
 
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "rum:CreateAppMonitor",
-          "rum:DescribeAppMonitor",
-          "rum:DeleteAppMonitor",
-          "rum:UpdateAppMonitor",
-          "rum:TagResource",
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "iam:PassRole"
-        ],
-        Resource = "*"
-      }
-    ]
-  })
-}
+#   policy = jsonencode({
+#     Version = "2012-10-17",
+#     Statement = [
+#       {
+#         Effect = "Allow",
+#         Action = [ 
+#           "rum:CreateAppMonitor",
+#           "rum:DescribeAppMonitor",
+#           "rum:DeleteAppMonitor",
+#           "rum:UpdateAppMonitor",
+#           "rum:TagResource",
+#           "logs:CreateLogGroup",
+#           "logs:CreateLogStream",
+#           "logs:PutLogEvents",
+#           "iam:PassRole"
+#         ],
+#         Resource = "*"
+#       }
+#     ]
+#   })
+# }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_rum_cognito_unauth" {
   count      = local.is_production ? 0 : 1
@@ -98,11 +98,11 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_rum_cognito_unauth" {
   policy_arn = aws_iam_policy.cloudwatch_rum_cognito_access[0].arn
 }
 
-resource "aws_iam_role_policy_attachment" "cloudwatch_rum_management" {
-  count      = local.is_production ? 0 : 1
-  role       = aws_iam_role.cloudwatch_rum[0].name
-  policy_arn = aws_iam_policy.cloudwatch_rum_management[0].arn
-}
+# resource "aws_iam_role_policy_attachment" "cloudwatch_rum_management" {
+#   count      = local.is_production ? 0 : 1
+#   role       = aws_iam_role.cloudwatch_rum[0].name
+#   policy_arn = aws_iam_policy.cloudwatch_rum_management[0].arn
+# }
 
 resource "aws_cognito_identity_pool_roles_attachment" "cloudwatch_rum" {
   count            = local.is_production ? 0 : 1
@@ -119,16 +119,16 @@ resource "aws_cognito_identity_pool" "cloudwatch_rum" {
   allow_unauthenticated_identities = true
 }
 
-resource "aws_rum_app_monitor" "this" {
+resource "aws_rum_app_monitor" "ndr" {
   count          = local.is_production ? 0 : 1
   name           = "${terraform.workspace}-app-monitor"
-  domain         = "*.patient-deductions.nhs.uk"
+  domain         = "*.${var.domain}"
   cw_log_enabled = false
 
   app_monitor_configuration {
     identity_pool_id    = aws_cognito_identity_pool.cloudwatch_rum[0].id
     allow_cookies       = true
-    enable_xray         = true
+    enable_xray         = false
     session_sample_rate = 1.0
     telemetries         = ["errors", "performance", "http"]
   }
