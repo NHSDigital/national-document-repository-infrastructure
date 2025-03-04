@@ -1,25 +1,6 @@
 locals {
   cognito_role_name = "${terraform.workspace}-cognito-unauth-role"
-  # rum_role_name     = "${terraform.workspace}-rum-service-role"
 }
-
-# resource "aws_iam_role" "cloudwatch_rum" {
-#   count = local.is_production ? 0 : 1
-#   name  = local.rum_role_name
-
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17",
-#     Statement = [
-#       {
-#         Effect = "Allow",
-#         Principal = {
-#           Service = "rum.amazonaws.com"
-#         },
-#         Action = "sts:AssumeRole"
-#       }
-#     ]
-#   })
-# }
 
 resource "aws_iam_role" "cognito_unauthenticated" {
   count = local.is_production ? 0 : 1
@@ -65,44 +46,11 @@ resource "aws_iam_policy" "cloudwatch_rum_cognito_access" {
   })
 }
 
-# resource "aws_iam_policy" "cloudwatch_rum_management" {
-#   count       = local.is_production ? 0 : 1
-#   name        = "${terraform.workspace}-cloudwatch-rum-management-policy"
-#   description = "Policy to manage RUM app monitors and associated logs"
-
-#   policy = jsonencode({
-#     Version = "2012-10-17",
-#     Statement = [
-#       {
-#         Effect = "Allow",
-#         Action = [ 
-#           "rum:CreateAppMonitor",
-#           "rum:DescribeAppMonitor",
-#           "rum:DeleteAppMonitor",
-#           "rum:UpdateAppMonitor",
-#           "rum:TagResource",
-#           "logs:CreateLogGroup",
-#           "logs:CreateLogStream",
-#           "logs:PutLogEvents",
-#           "iam:PassRole"
-#         ],
-#         Resource = "*"
-#       }
-#     ]
-#   })
-# }
-
 resource "aws_iam_role_policy_attachment" "cloudwatch_rum_cognito_unauth" {
   count      = local.is_production ? 0 : 1
   role       = aws_iam_role.cognito_unauthenticated[0].name
   policy_arn = aws_iam_policy.cloudwatch_rum_cognito_access[0].arn
 }
-
-# resource "aws_iam_role_policy_attachment" "cloudwatch_rum_management" {
-#   count      = local.is_production ? 0 : 1
-#   role       = aws_iam_role.cloudwatch_rum[0].name
-#   policy_arn = aws_iam_policy.cloudwatch_rum_management[0].arn
-# }
 
 resource "aws_cognito_identity_pool_roles_attachment" "cloudwatch_rum" {
   count            = local.is_production ? 0 : 1
@@ -133,7 +81,3 @@ resource "aws_rum_app_monitor" "ndr" {
     telemetries         = ["errors", "performance", "http"]
   }
 }
-#   tags = {
-#     ServiceRole = aws_iam_role.cloudwatch_rum[0].arn
-#   }
-# }
