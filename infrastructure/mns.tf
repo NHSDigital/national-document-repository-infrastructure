@@ -24,7 +24,7 @@ module "sqs-mns-notification-queue" {
   message_retention      = 60 * 60 * 24 * 14 # 14 days
   environment            = var.environment
   owner                  = var.owner
-  max_visibility         = 60
+  max_visibility         = 901
   delay                  = 60
   enable_sse             = null
   kms_master_key_id      = module.mns_encryption_key[0].id
