@@ -396,19 +396,19 @@ module "access_audit_dynamodb_table" {
 
   global_secondary_indexes = [
     {
-      name               = "UserSessionIDIndex"
-      hash_key           = "UserSessionID"
-      projection_type    = "ALL"
+      name            = "UserSessionIDIndex"
+      hash_key        = "UserSessionID"
+      projection_type = "ALL"
     },
     {
-      name               = "UserIDIndex"
-      hash_key           = "UserID"
-      projection_type    = "ALL"
+      name            = "UserIDIndex"
+      hash_key        = "UserID"
+      projection_type = "ALL"
     },
     {
-      name               = "UserOdsCodeIndex"
-      hash_key           = "UserOdsCode"
-      projection_type    = "ALL"
+      name            = "UserOdsCodeIndex"
+      hash_key        = "UserOdsCode"
+      projection_type = "ALL"
     }
   ]
 
