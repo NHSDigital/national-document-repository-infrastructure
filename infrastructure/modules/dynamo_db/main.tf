@@ -122,13 +122,11 @@ data "aws_iam_policy_document" "dynamodb_write_policy" {
   }
 }
 
-data "aws_iam_policy_document" "dynamodb_write_without_update_policy" {
+data "aws_iam_policy_document" "dynamodb_put_item_policy" {
   statement {
     effect = "Allow"
     actions = [
-      "dynamodb:PutItem",
-      "dynamodb:DeleteItem",
-      "dynamodb:BatchWriteItem"
+      "dynamodb:PutItem"
     ]
     resources = [
       aws_dynamodb_table.ndr_dynamodb_table.arn,
