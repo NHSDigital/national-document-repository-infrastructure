@@ -379,18 +379,6 @@ module "access_audit_dynamodb_table" {
     {
       name = "UserOdsCode"
       type = "S"
-    },
-    {
-      name = "Timestamp"
-      type = "N"
-    },
-    {
-      name = "ReasonCodes"
-      type = "S"
-    },
-    {
-      name = "CustomReason"
-      type = "S"
     }
   ]
 
