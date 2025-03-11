@@ -1,5 +1,6 @@
 locals {
   cognito_role_name = "${terraform.workspace}-cognito-unauth-role"
+  cw_log_group      = "/aws/rum/my-rum-monitor/${terraform.workspace}-app-monitor"
 }
 
 resource "aws_iam_role" "cognito_unauthenticated" {
@@ -72,6 +73,7 @@ resource "aws_rum_app_monitor" "ndr" {
   name           = "${terraform.workspace}-app-monitor"
   domain         = "*.${var.domain}"
   cw_log_enabled = true
+  cw_log_group   = local.cw_log_group
 
   app_monitor_configuration {
     identity_pool_id    = aws_cognito_identity_pool.cloudwatch_rum[0].id
@@ -80,4 +82,48 @@ resource "aws_rum_app_monitor" "ndr" {
     session_sample_rate = 1.0
     telemetries         = ["errors", "performance", "http"]
   }
+}
+
+resource "aws_cloudwatch_log_group" "rum_logs" {
+  name              = local.cw_log_group
+  retention_in_days = 30
+}
+
+resource "aws_iam_role" "rum_role" {
+  name = "rum-monitor-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Service = "rum.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_policy" "rum_logging_policy" {
+  name        = "${terraform.workspace}-rum-logging-policy"
+  description = "Allows AWS RUM to write logs to CloudWatch"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = aws_cloudwatch_log_group.rum_logs.arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "rum_logging_attachment" {
+  role       = aws_iam_role.rum_role.name
+  policy_arn = aws_iam_policy.rum_logging_policy.arn
 }
