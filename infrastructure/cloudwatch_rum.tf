@@ -47,6 +47,27 @@ resource "aws_iam_policy" "cloudwatch_rum_cognito_access" {
   })
 }
 
+resource "aws_cloudwatch_log_resource_policy" "rum_log_policy" {
+  policy_name = "AWSRUMLoggingPolicy"
+
+  policy_document = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "rum.amazonaws.com"
+        },
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Resource = "arn:aws:logs:eu-west-2:533825906475:log-group:/aws/vendedlogs/RUMService_*"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "cloudwatch_rum_cognito_unauth" {
   count      = local.is_production ? 0 : 1
   role       = aws_iam_role.cognito_unauthenticated[0].name
