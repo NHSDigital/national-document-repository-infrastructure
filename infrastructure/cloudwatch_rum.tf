@@ -106,4 +106,6 @@ resource "aws_rum_app_monitor" "ndr" {
     session_sample_rate = 1.0
     telemetries         = ["errors", "performance", "http"]
   }
+
+  depends_on = [aws_cloudwatch_log_resource_policy.rum_log_policy]
 }
