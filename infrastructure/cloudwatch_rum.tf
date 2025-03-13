@@ -63,10 +63,13 @@ resource "aws_cloudwatch_log_resource_policy" "rum_log_policy" {
           "logs:PutLogEvents",
           "logs:DeleteResourcePolicy"
         ],
-        Resource = "arn:aws:logs:eu-west-2:533825906475:log-group:/aws/vendedlogs/RUMService_*"
+        Resource = "arn:aws:logs:eu-west-2:533825906475:log-group:/aws/vendedlogs/RUMService-*"
       }
     ]
   })
+    lifecycle {
+    prevent_destroy = false
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_rum_cognito_unauth" {
