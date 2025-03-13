@@ -67,7 +67,7 @@ resource "aws_cloudwatch_log_resource_policy" "rum_log_policy" {
       }
     ]
   })
-    lifecycle {
+  lifecycle {
     prevent_destroy = false
   }
 }
