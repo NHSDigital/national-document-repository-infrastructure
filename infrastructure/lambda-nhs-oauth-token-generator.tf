@@ -4,7 +4,7 @@ module "nhs-oauth-token-generator-lambda" {
   handler        = "handlers.nhs_oauth_token_generator_handler.lambda_handler"
   lambda_timeout = 60
   iam_role_policy_documents = [
-    aws_iam_policy.ssm_access_policy,
+    aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy
   ]
 
