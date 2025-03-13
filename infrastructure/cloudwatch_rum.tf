@@ -61,7 +61,9 @@ resource "aws_cloudwatch_log_resource_policy" "rum_log_policy" {
         Action = [
           "logs:CreateLogStream",
           "logs:PutLogEvents",
-          "logs:DeleteResourcePolicy"
+          "logs:DeleteResourcePolicy",
+          "logs:DeleteLogGroup",
+          "logs:DescribeLogGroups"
         ],
         Resource = "arn:aws:logs:eu-west-2:533825906475:log-group:/aws/vendedlogs/RUMService-*"
       }
