@@ -18,5 +18,44 @@ module "nhs-oauth-token-generator-lambda" {
   is_invoked_from_gateway       = false
 }
 
-# TODO PRMP-1580 Need to add the infra for the CloudWatch alarm in the event of a failure
-#  Can probably use bulk-upload-metadata-alarm as a reference
+module "nhs-oauth-token-generator-alarm" {
+  source               = "./modules/lambda_alarms"
+  lambda_function_name = module.nhs-oauth-token-generator-lambda.function_name
+  lambda_timeout       = module.nhs-oauth-token-generator-lambda.timeout
+  lambda_name          = "nhs_oauth_token_generator_handler"
+  namespace            = "AWS/Lambda"
+  alarm_actions        = [module.nhs-oauth-token-generator-alarm-topic.arn]
+  ok_actions           = [module.nhs-oauth-token-generator-alarm-topic.arn]
+  depends_on           = [module.nhs-oauth-token-generator-lambda, module.nhs-oauth-token-generator-alarm-topic]
+}
+
+module "nhs-oauth-token-generator-alarm-topic" {
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "nhs-oauth-token-generator-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.nhs-oauth-token-generator-lambda.lambda_arn
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : [
+          "SNS:Publish",
+        ],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        }
+        "Resource" : "*"
+      }
+    ]
+  })
+
+  depends_on = [module.nhs-oauth-token-generator-lambda, module.sns_encryption_key]
+}
