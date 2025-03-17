@@ -85,6 +85,10 @@ module "lloyd_george_reference_dynamodb_table" {
     {
       name = "NhsNumber"
       type = "S"
+    },
+    {
+      name = "CurrentGpOds"
+      type = "S"
     }
   ]
 
@@ -97,6 +101,11 @@ module "lloyd_george_reference_dynamodb_table" {
     {
       name            = "NhsNumberIndex"
       hash_key        = "NhsNumber"
+      projection_type = "ALL"
+    },
+    {
+      name            = "OdsCodeIndex"
+      hash_key        = "CurrentGpOds"
       projection_type = "ALL"
     }
   ]
@@ -341,6 +350,61 @@ module "statistics_dynamodb_table" {
       name            = "OdsCodeIndex"
       hash_key        = "OdsCode"
       range_key       = "Date"
+      projection_type = "ALL"
+    }
+  ]
+
+  environment = var.environment
+  owner       = var.owner
+}
+
+module "access_audit_dynamodb_table" {
+  source                         = "./modules/dynamo_db"
+  table_name                     = var.access_audit_dynamodb_table_name
+  hash_key                       = "Type"
+  sort_key                       = "ID"
+  deletion_protection_enabled    = local.is_production
+  stream_enabled                 = false
+  ttl_enabled                    = false
+  point_in_time_recovery_enabled = !local.is_sandbox
+
+  attributes = [
+    {
+      name = "Type"
+      type = "S"
+    },
+    {
+      name = "ID"
+      type = "S"
+    },
+    {
+      name = "UserSessionID"
+      type = "S"
+    },
+    {
+      name = "UserID"
+      type = "S"
+    },
+    {
+      name = "UserOdsCode"
+      type = "S"
+    }
+  ]
+
+  global_secondary_indexes = [
+    {
+      name            = "UserSessionIDIndex"
+      hash_key        = "UserSessionID"
+      projection_type = "ALL"
+    },
+    {
+      name            = "UserIDIndex"
+      hash_key        = "UserID"
+      projection_type = "ALL"
+    },
+    {
+      name            = "UserOdsCodeIndex"
+      hash_key        = "UserOdsCode"
       projection_type = "ALL"
     }
   ]
