@@ -2,7 +2,7 @@ module "nhs-oauth-token-generator-lambda" {
   source         = "./modules/lambda"
   name           = "NhsOauthTokenGeneratorLambda"
   handler        = "handlers.nhs_oauth_token_generator_handler.lambda_handler"
-  lambda_timeout = 60
+  lambda_timeout = 120
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy
@@ -26,7 +26,6 @@ module "nhs-oauth-token-generator-alarm" {
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.nhs-oauth-token-generator-alarm-topic.arn]
   ok_actions           = [module.nhs-oauth-token-generator-alarm-topic.arn]
-  depends_on           = [module.nhs-oauth-token-generator-lambda, module.nhs-oauth-token-generator-alarm-topic]
 }
 
 module "nhs-oauth-token-generator-alarm-topic" {
@@ -56,6 +55,4 @@ module "nhs-oauth-token-generator-alarm-topic" {
       }
     ]
   })
-
-  depends_on = [module.nhs-oauth-token-generator-lambda, module.sns_encryption_key]
 }

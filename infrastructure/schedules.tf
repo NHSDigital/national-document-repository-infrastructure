@@ -172,25 +172,16 @@ resource "aws_cloudwatch_event_rule" "nhs_oauth_token_generator_schedule" {
   schedule_expression = "rate(9 minutes)"
 }
 
-resource "aws_cloudwatch_event_target" "nhs_oauth_token_generator_schedule_event" {
+resource "aws_cloudwatch_event_target" "nhs_oauth_token_generator_schedule" {
   rule      = aws_cloudwatch_event_rule.nhs_oauth_token_generator_schedule.name
   target_id = "nhs_oauth_token_generator_schedule"
-
   arn = module.nhs-oauth-token-generator-lambda.lambda_arn
-  depends_on = [
-    module.nhs-oauth-token-generator-lambda,
-    aws_cloudwatch_event_rule.nhs_oauth_token_generator_schedule
-  ]
 }
 
-resource "aws_lambda_permission" "nhs_oauth_token_generator_schedule_permission" {
+resource "aws_lambda_permission" "nhs_oauth_token_generator_schedule" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
   function_name = module.nhs-oauth-token-generator-lambda.function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.nhs_oauth_token_generator_schedule.arn
-  depends_on = [
-    module.nhs-oauth-token-generator-lambda,
-    aws_cloudwatch_event_rule.nhs_oauth_token_generator_schedule
-  ]
 }
