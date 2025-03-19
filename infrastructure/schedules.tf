@@ -175,7 +175,7 @@ resource "aws_cloudwatch_event_rule" "nhs_oauth_token_generator_schedule" {
 resource "aws_cloudwatch_event_target" "nhs_oauth_token_generator_schedule" {
   rule      = aws_cloudwatch_event_rule.nhs_oauth_token_generator_schedule.name
   target_id = "nhs_oauth_token_generator_schedule"
-  arn = module.nhs-oauth-token-generator-lambda.lambda_arn
+  arn       = module.nhs-oauth-token-generator-lambda.lambda_arn
 }
 
 resource "aws_lambda_permission" "nhs_oauth_token_generator_schedule" {
