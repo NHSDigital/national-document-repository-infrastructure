@@ -47,7 +47,7 @@ resource "aws_iam_policy" "cloudwatch_rum_cognito_access" {
   })
 }
 
-resource "aws_cloudwatch_log_resource_policy" "rum_log_policy" {
+resource "aws_cloudwatch_log_resource_policy" "rum_log" {
   policy_name = "AWSRUMLoggingPolicy"
 
   policy_document = jsonencode({
