@@ -87,5 +87,7 @@ module "access-audit-lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
+    module.access-audit-gateway,
+    module.ndr-app-config,
   ]
 }
