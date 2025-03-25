@@ -175,16 +175,6 @@ variable "cloud_only_service_instances" {
 
 variable "poll_frequency" {}
 
-variable "log_level" {
-  type    = string
-  default = "debug"
-}
-
-
-variable "message_destination" {
-  default = "sns"
-}
-
 variable "cloudwatch_alarm_evaluation_periods" {}
 
 locals {
