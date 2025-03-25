@@ -14,6 +14,10 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_access-audit-alarm"></a> [access-audit-alarm](#module\_access-audit-alarm) | ./modules/lambda_alarms | n/a |
+| <a name="module_access-audit-alarm-topic"></a> [access-audit-alarm-topic](#module\_access-audit-alarm-topic) | ./modules/sns | n/a |
+| <a name="module_access-audit-gateway"></a> [access-audit-gateway](#module\_access-audit-gateway) | ./modules/gateway | n/a |
+| <a name="module_access-audit-lambda"></a> [access-audit-lambda](#module\_access-audit-lambda) | ./modules/lambda | n/a |
 | <a name="module_access_audit_dynamodb_table"></a> [access\_audit\_dynamodb\_table](#module\_access\_audit\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_api_endpoint_url_ssm_parameter"></a> [api\_endpoint\_url\_ssm\_parameter](#module\_api\_endpoint\_url\_ssm\_parameter) | ./modules/ssm_parameter | n/a |
 | <a name="module_auth_session_dynamodb_table"></a> [auth\_session\_dynamodb\_table](#module\_auth\_session\_dynamodb\_table) | ./modules/dynamo_db | n/a |
@@ -315,6 +319,7 @@
 | [aws_lambda_event_source_mapping.nems_message_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_event_source_mapping.nrl_pointer_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_event_source_mapping.pdf-stitching-lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
+| [aws_lambda_event_source_mapping.unstitched_lloyd_george_dynamodb_stream](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
 | [aws_lambda_permission.bulk_upload_metadata_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.bulk_upload_report_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.data_collection_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
