@@ -1,8 +1,5 @@
 {
     "flags": {
-        "nemsEnabled": {
-            "name": "nemsEnabled"
-        },
         "uploadLloydGeorgeWorkflowEnabled": {
             "name": "uploadLloydGeorgeWorkflowEnabled"
         },
@@ -26,9 +23,6 @@
         }
     },
     "values": {
-        "nemsEnabled": {
-            "enabled": "true"
-        },
         "uploadLloydGeorgeWorkflowEnabled": {
             "enabled": "true"
         },
