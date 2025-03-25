@@ -15,9 +15,6 @@
         "lloydGeorgeValidationStrictMode": {
             "name": "lloydGeorgeValidationStrictMode"
         },
-        "odsReportLambdaEnabled": {
-            "name": "odsReportLambdaEnabled"
-        },
         "downloadOdsReportEnabled": {
             "name": "downloadOdsReportEnabled"
         }
