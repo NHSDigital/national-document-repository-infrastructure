@@ -27,7 +27,7 @@
             "enabled": "false"
         },
         "uploadArfWorkflowEnabled": {
-            "enabled": "true"
+            "enabled": "false"
         },
         "useSmartcardAuth": {
             "enabled": "false"
