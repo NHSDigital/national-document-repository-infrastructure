@@ -5,7 +5,7 @@ locals {
     terraform.workspace
   )
 
-  domain = "${local.domain_prefix}.${var.domain}"
+  domain = local.is_production ? "${var.domain}" : "${local.domain_prefix}.${var.domain}"
 }
 
 module "ndr-feedback-mailbox" {
