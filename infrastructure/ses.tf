@@ -1,11 +1,9 @@
 locals {
   domain_prefix = (
-    local.is_production ? var.environment :
-    local.is_sandbox ? "ndr-dev" :
-    terraform.workspace
+    local.is_production ? var.environment : terraform.workspace
   )
 
-  domain = local.is_production ? "${var.domain}" : "${local.domain_prefix}.${var.domain}"
+  domain = "${local.domain_prefix}.${var.domain}"
 }
 
 module "ndr-feedback-mailbox" {

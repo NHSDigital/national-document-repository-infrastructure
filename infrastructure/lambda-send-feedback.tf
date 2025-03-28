@@ -1,6 +1,5 @@
 locals {
   ses_feedback_sender_email_address = (
-    local.is_production ? "feedback@${var.certificate_domain}" :
     local.is_sandbox ? "feedback@ndr-dev.${var.domain}" :
     "feedback@${terraform.workspace}.${var.domain}"
   )
