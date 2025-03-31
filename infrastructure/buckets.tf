@@ -173,7 +173,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
 resource "aws_s3_bucket_lifecycle_configuration" "ndr-zip-request-store-lifecycle-rules" {
   bucket = module.ndr-zip-request-store.bucket_id
   rule {
-    id     = "Delete objects that have existed for 24 hours"
+    id     = "Delete objects in the zip request store bucket that have existed for 24 hours"
     status = "Enabled"
 
     expiration {
