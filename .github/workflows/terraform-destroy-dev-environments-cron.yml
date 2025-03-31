@@ -15,7 +15,6 @@ jobs:
     uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
     strategy:
       matrix:
-        # Update with new sandbox environments here
         sandbox-name: [ndra, ndrb, ndrc, ndrd]
     with:
       sandbox_workspace: ${{ matrix.sandbox-name }}
@@ -31,7 +30,6 @@ jobs:
     uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
     strategy:
       matrix:
-        # Update with new sandbox environments here
         sandbox-name: [ndra, ndrb, ndrc, ndrd]
     with:
       build_branch: main
@@ -48,11 +46,10 @@ jobs:
 
     strategy:
       matrix:
-        # Can't use an env var here unfortunately, we will have to update here with new sandbox environments
         sandbox-name: [ndra, ndrb, ndrc, ndrd]
+      fail-fast: false
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -69,7 +66,6 @@ jobs:
       - name: View AWS Role
         run: aws sts get-caller-identity
 
-      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
