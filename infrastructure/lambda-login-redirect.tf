@@ -20,7 +20,7 @@ module "login_redirect_lambda" {
   name    = "LoginRedirectHandler"
   handler = "handlers.login_redirect_handler.lambda_handler"
   iam_role_policy_documents = [
-    aws_iam_policy.ssm_policy.policy,
+    aws_iam_policy.ssm_access_policy.policy,
     module.auth_state_dynamodb_table.dynamodb_read_policy_document,
     module.auth_state_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-app-config.app_config_policy
@@ -40,7 +40,7 @@ module "login_redirect_lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     aws_api_gateway_resource.login_resource,
-    aws_iam_policy.ssm_policy,
+    aws_iam_policy.ssm_access_policy,
     module.auth_state_dynamodb_table,
     module.ndr-app-config
   ]

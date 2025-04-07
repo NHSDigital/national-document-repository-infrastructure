@@ -189,23 +189,3 @@ resource "aws_iam_role_policy_attachment" "ods_report_presign_url" {
   role       = aws_iam_role.ods_report_presign_url_role.name
   policy_arn = aws_iam_policy.s3_document_data_policy_for_ods_report_lambda.arn
 }
-
-resource "aws_iam_policy" "ssm_policy" {
-  name = "${terraform.workspace}_ssm_policy"
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "ssm:GetParameters",
-          "ssm:GetParameter",
-          "ssm:GetParametersByPath"
-        ],
-        Resource = [
-          "arn:aws:ssm:*:*:parameter/*",
-        ]
-      }
-    ]
-  })
-}
