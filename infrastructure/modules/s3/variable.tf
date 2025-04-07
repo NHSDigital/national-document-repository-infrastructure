@@ -50,6 +50,5 @@ variable "access_logs_enabled" {
 
 variable "access_logs_bucket_id" {
   type        = string
-  default     = null
   description = "Enables access logs on the module's bucket"
 }
