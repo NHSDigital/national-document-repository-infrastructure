@@ -12,11 +12,8 @@
         "useSmartcardAuth": {
             "name": "useSmartcardAuth"
         },
-        "lloydGeorgeValidationStrictMode": {
-            "name": "lloydGeorgeValidationStrictMode"
-        },
-        "downloadOdsReportEnabled": {
-            "name": "downloadOdsReportEnabled"
+        "lloydGeorgeValidationStrictModeEnabled": {
+            "name": "lloydGeorgeValidationStrictModeEnabled"
         }
     },
     "values": {
@@ -32,10 +29,7 @@
         "useSmartcardAuth": {
             "enabled": "false"
         },
-        "lloydGeorgeValidationStrictMode": {
-            "enabled": "true"
-        },
-        "downloadOdsReportEnabled": {
+        "lloydGeorgeValidationStrictModeEnabled": {
             "enabled": "true"
         }
     },
