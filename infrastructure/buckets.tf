@@ -1,5 +1,5 @@
 locals {
-  access_logs_bucket_id = local.is_production ? aws_s3_bucket.access_logs[0].id : null
+  access_logs_bucket_id = local.is_production ? aws_s3_bucket.access_logs[0].id : ""
   access_logs_count     = local.is_production ? 1 : 0
 }
 
@@ -329,4 +329,9 @@ resource "aws_s3_bucket_policy" "logs_bucket_policy" {
   policy = data.aws_iam_policy_document.logs_bucket_policy.json
 }
 
-
+resource "aws_s3_bucket_logging" "logs_bucket_logging" {
+  count         = local.access_logs_count
+  bucket        = aws_s3_bucket.logs_bucket.id
+  target_bucket = local.access_logs_bucket_id
+  target_prefix = "${aws_s3_bucket.logs_bucket.id}/"
+}
