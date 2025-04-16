@@ -1,3 +1,11 @@
+module "data-collection-log-group" {
+  source                   = "./modules/cloudwatch"
+  log_group_name           = "/aws/lambda/${module.data-collection-lambda.function_name}"
+  log_group_encryption_key = module.logs_encryption_key.kms_arn
+  environment              = var.environment
+  owner                    = var.owner
+}
+
 module "data-collection-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.data-collection-lambda.function_name
@@ -59,7 +67,8 @@ module "data-collection-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.document_reference_dynamodb_table.dynamodb_read_policy_document,
     module.document_reference_dynamodb_table.dynamodb_write_policy_document,
-    aws_iam_policy.cloudwatch_log_query_policy.policy
+    aws_iam_policy.cloudwatch_log_query_policy.policy,
+    module.logs_encryption_key.kms_decrypt_policy
   ]
   rest_api_id       = null
   api_execution_arn = null
@@ -79,12 +88,6 @@ module "data-collection-lambda" {
   is_invoked_from_gateway       = false
 
   depends_on = [
-    module.ndr-app-config,
-    module.statistics_dynamodb_table,
-    module.lloyd_george_reference_dynamodb_table,
-    module.document_reference_dynamodb_table,
-    module.ndr-document-store,
-    module.ndr-lloyd-george-store,
     aws_iam_policy.cloudwatch_log_query_policy
   ]
 }

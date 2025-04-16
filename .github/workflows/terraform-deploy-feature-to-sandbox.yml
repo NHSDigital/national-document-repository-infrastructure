@@ -4,12 +4,12 @@ name: 'Deploy Feature Branch to Sandbox'
 on:
   workflow_dispatch:
     inputs:
-      buildBranch:
-        description: 'Feature branch to push to sandbox.'
+      build_branch:
+        description: 'Feature branch to push to a workspace.'
         required: true
         type: 'string'
-      sandboxWorkspace:
-        description: 'Which Sandbox to push to.'
+      workspace:
+        description: 'Which Terraform workspace to push to.'
         required: true
         type: 'string'
       environment:
@@ -33,7 +33,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.buildBranch}}
+          ref: ${{ github.event.inputs.build_branch}}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -61,7 +61,7 @@ jobs:
 
       - name: Terraform Set Workspace
         id: workspace
-        run: terraform workspace select -or-create ${{ github.event.inputs.sandboxWorkspace}}
+        run: terraform workspace select -or-create ${{ github.event.inputs.workspace}}
         working-directory: ./infrastructure
         shell: bash
 
@@ -69,6 +69,18 @@ jobs:
       - name: Terraform Format
         run: terraform fmt -check
         working-directory: ./infrastructure
+
+      # TODO : Temporary steps to update existing log groups with KMS, to remove after next deployment to production
+      - name: Set up Python ${{ inputs.python_version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Terraform KMS log group update
+        id: log-update
+        run: |
+          python3 scripts/import_existing_lambda_log_groups.py ${{ inputs.workspace }} ${{ inputs.environment }}
+      # TODO : End
 
       - name: Terraform Plan
         id: plan

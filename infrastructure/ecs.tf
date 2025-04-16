@@ -171,3 +171,14 @@ resource "aws_iam_role_policy_attachment" "ods_weekly_cloudwatch_log_query_polic
   role       = aws_iam_role.ods_weekly_update_task_role[0].name
   policy_arn = aws_iam_policy.cloudwatch_log_query_policy.arn
 }
+
+resource "aws_iam_policy" "kms_decrypt_policy" {
+  name   = "${terraform.workspace}_ods_weekly_logs_decrypt_policy"
+  policy = module.logs_encryption_key.kms_decrypt_policy
+}
+
+resource "aws_iam_role_policy_attachment" "ods_weekly_logs_decrypt_policy" {
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.ods_weekly_update_task_role[0].name
+  policy_arn = aws_iam_policy.kms_decrypt_policy.arn
+}

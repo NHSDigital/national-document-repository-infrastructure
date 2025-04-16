@@ -17,21 +17,17 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_cloudwatch_log_group.ndr_cloudwatch_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
-| [aws_cloudwatch_log_stream.log_stream](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_stream) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#input\_cloudwatch\_log\_group\_name) | Name of the Cloudwatch log group | `string` | `null` | no |
-| <a name="input_cloudwatch_log_steam_name"></a> [cloudwatch\_log\_steam\_name](#input\_cloudwatch\_log\_steam\_name) | Name of the Cloudwatch log stream | `string` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
+| <a name="input_log_group_encryption_key"></a> [log\_group\_encryption\_key](#input\_log\_group\_encryption\_key) | The ARN of an AWS-managed customer master key (CMK) to encrypt logs | `string` | `null` | no |
+| <a name="input_log_group_name"></a> [log\_group\_name](#input\_log\_group\_name) | Name of the Cloudwatch log group | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
-| <a name="input_retention_in_days"></a> [retention\_in\_days](#input\_retention\_in\_days) | Name of the Cloudwatch log group | `number` | `3` | no |
+| <a name="input_retention_in_days"></a> [retention\_in\_days](#input\_retention\_in\_days) | Days to retain log group messages (Indefinite by default) | `number` | `0` | no |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#output\_cloudwatch\_log\_group\_arn) | n/a |
-| <a name="output_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#output\_cloudwatch\_log\_group\_name) | n/a |
+No outputs.

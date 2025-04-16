@@ -49,3 +49,7 @@ output "kms_arn" {
 output "id" {
   value = aws_kms_key.encryption_key.id
 }
+
+output "kms_decrypt_policy" {
+  value = data.aws_iam_policy_document.kms_key_decrypt.json
+}

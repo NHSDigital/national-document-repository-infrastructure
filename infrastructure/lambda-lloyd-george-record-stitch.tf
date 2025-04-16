@@ -1,3 +1,11 @@
+module "lloyd-george-stitch-log-group" {
+  source                   = "./modules/cloudwatch"
+  log_group_name           = "/aws/lambda/${module.lloyd-george-stitch-lambda.function_name}"
+  log_group_encryption_key = module.logs_encryption_key.kms_arn
+  environment              = var.environment
+  owner                    = var.owner
+}
+
 module "lloyd-george-stitch-gateway" {
   # Gateway Variables
   source              = "./modules/gateway"

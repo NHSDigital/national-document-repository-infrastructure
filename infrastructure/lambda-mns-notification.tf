@@ -1,3 +1,11 @@
+module "mns-notification-log-group" {
+  source                   = "./modules/cloudwatch"
+  log_group_name           = "/aws/lambda/${module.mns-notification-lambda[0].function_name}"
+  log_group_encryption_key = module.logs_encryption_key.kms_arn
+  environment              = var.environment
+  owner                    = var.owner
+}
+
 module "mns-notification-lambda" {
   count   = 1
   source  = "./modules/lambda"

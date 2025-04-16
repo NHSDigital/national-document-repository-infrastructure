@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.84.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.86.1 |
 
 ## Modules
 
@@ -18,6 +18,7 @@
 | <a name="module_access-audit-alarm-topic"></a> [access-audit-alarm-topic](#module\_access-audit-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_access-audit-gateway"></a> [access-audit-gateway](#module\_access-audit-gateway) | ./modules/gateway | n/a |
 | <a name="module_access-audit-lambda"></a> [access-audit-lambda](#module\_access-audit-lambda) | ./modules/lambda | n/a |
+| <a name="module_access-audit-log-group"></a> [access-audit-log-group](#module\_access-audit-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_access_audit_dynamodb_table"></a> [access\_audit\_dynamodb\_table](#module\_access\_audit\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_api_endpoint_url_ssm_parameter"></a> [api\_endpoint\_url\_ssm\_parameter](#module\_api\_endpoint\_url\_ssm\_parameter) | ./modules/ssm_parameter | n/a |
 | <a name="module_auth_session_dynamodb_table"></a> [auth\_session\_dynamodb\_table](#module\_auth\_session\_dynamodb\_table) | ./modules/dynamo_db | n/a |
@@ -25,26 +26,33 @@
 | <a name="module_authoriser-alarm"></a> [authoriser-alarm](#module\_authoriser-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_authoriser-alarm-topic"></a> [authoriser-alarm-topic](#module\_authoriser-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_authoriser-lambda"></a> [authoriser-lambda](#module\_authoriser-lambda) | ./modules/lambda | n/a |
+| <a name="module_authoriser-log-group"></a> [authoriser-log-group](#module\_authoriser-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_back-channel-logout-gateway"></a> [back-channel-logout-gateway](#module\_back-channel-logout-gateway) | ./modules/gateway | n/a |
+| <a name="module_back-channel-logout-log-group"></a> [back-channel-logout-log-group](#module\_back-channel-logout-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_back_channel_logout_alarm"></a> [back\_channel\_logout\_alarm](#module\_back\_channel\_logout\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_back_channel_logout_alarm_topic"></a> [back\_channel\_logout\_alarm\_topic](#module\_back\_channel\_logout\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_back_channel_logout_lambda"></a> [back\_channel\_logout\_lambda](#module\_back\_channel\_logout\_lambda) | ./modules/lambda | n/a |
 | <a name="module_bulk-upload-alarm"></a> [bulk-upload-alarm](#module\_bulk-upload-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_bulk-upload-alarm-topic"></a> [bulk-upload-alarm-topic](#module\_bulk-upload-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_bulk-upload-lambda"></a> [bulk-upload-lambda](#module\_bulk-upload-lambda) | ./modules/lambda | n/a |
+| <a name="module_bulk-upload-log-group"></a> [bulk-upload-log-group](#module\_bulk-upload-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_bulk-upload-metadata-alarm"></a> [bulk-upload-metadata-alarm](#module\_bulk-upload-metadata-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_bulk-upload-metadata-alarm-topic"></a> [bulk-upload-metadata-alarm-topic](#module\_bulk-upload-metadata-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_bulk-upload-metadata-lambda"></a> [bulk-upload-metadata-lambda](#module\_bulk-upload-metadata-lambda) | ./modules/lambda | n/a |
+| <a name="module_bulk-upload-metadata-log-group"></a> [bulk-upload-metadata-log-group](#module\_bulk-upload-metadata-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_bulk-upload-report-alarm"></a> [bulk-upload-report-alarm](#module\_bulk-upload-report-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_bulk-upload-report-alarm-topic"></a> [bulk-upload-report-alarm-topic](#module\_bulk-upload-report-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_bulk-upload-report-lambda"></a> [bulk-upload-report-lambda](#module\_bulk-upload-report-lambda) | ./modules/lambda | n/a |
+| <a name="module_bulk-upload-report-log-group"></a> [bulk-upload-report-log-group](#module\_bulk-upload-report-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_bulk_upload_report_dynamodb_table"></a> [bulk\_upload\_report\_dynamodb\_table](#module\_bulk\_upload\_report\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_cloudfront-distribution-lg"></a> [cloudfront-distribution-lg](#module\_cloudfront-distribution-lg) | ./modules/cloudfront/ | n/a |
 | <a name="module_cloudfront_edge_dynamodb_table"></a> [cloudfront\_edge\_dynamodb\_table](#module\_cloudfront\_edge\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_create-doc-ref-gateway"></a> [create-doc-ref-gateway](#module\_create-doc-ref-gateway) | ./modules/gateway | n/a |
 | <a name="module_create-doc-ref-lambda"></a> [create-doc-ref-lambda](#module\_create-doc-ref-lambda) | ./modules/lambda | n/a |
+| <a name="module_create-doc-ref-log-group"></a> [create-doc-ref-log-group](#module\_create-doc-ref-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_create-token-gateway"></a> [create-token-gateway](#module\_create-token-gateway) | ./modules/gateway | n/a |
 | <a name="module_create-token-lambda"></a> [create-token-lambda](#module\_create-token-lambda) | ./modules/lambda | n/a |
+| <a name="module_create-token-log-group"></a> [create-token-log-group](#module\_create-token-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_create_doc_alarm"></a> [create\_doc\_alarm](#module\_create\_doc\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_create_doc_alarm_topic"></a> [create\_doc\_alarm\_topic](#module\_create\_doc\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_create_token-alarm"></a> [create\_token-alarm](#module\_create\_token-alarm) | ./modules/lambda_alarms | n/a |
@@ -52,15 +60,19 @@
 | <a name="module_data-collection-alarm"></a> [data-collection-alarm](#module\_data-collection-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_data-collection-alarm-topic"></a> [data-collection-alarm-topic](#module\_data-collection-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_data-collection-lambda"></a> [data-collection-lambda](#module\_data-collection-lambda) | ./modules/lambda | n/a |
+| <a name="module_data-collection-log-group"></a> [data-collection-log-group](#module\_data-collection-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_delete-doc-ref-gateway"></a> [delete-doc-ref-gateway](#module\_delete-doc-ref-gateway) | ./modules/gateway | n/a |
 | <a name="module_delete-doc-ref-lambda"></a> [delete-doc-ref-lambda](#module\_delete-doc-ref-lambda) | ./modules/lambda | n/a |
+| <a name="module_delete-doc-ref-log-group"></a> [delete-doc-ref-log-group](#module\_delete-doc-ref-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_delete-document-object-alarm"></a> [delete-document-object-alarm](#module\_delete-document-object-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_delete-document-object-alarm-topic"></a> [delete-document-object-alarm-topic](#module\_delete-document-object-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_delete-document-object-lambda"></a> [delete-document-object-lambda](#module\_delete-document-object-lambda) | ./modules/lambda | n/a |
+| <a name="module_delete-document-object-log-group"></a> [delete-document-object-log-group](#module\_delete-document-object-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_delete_doc_alarm"></a> [delete\_doc\_alarm](#module\_delete\_doc\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_delete_doc_alarm_topic"></a> [delete\_doc\_alarm\_topic](#module\_delete\_doc\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_document-manifest-job-gateway"></a> [document-manifest-job-gateway](#module\_document-manifest-job-gateway) | ./modules/gateway | n/a |
 | <a name="module_document-manifest-job-lambda"></a> [document-manifest-job-lambda](#module\_document-manifest-job-lambda) | ./modules/lambda | n/a |
+| <a name="module_document-manifest-job-log-group"></a> [document-manifest-job-log-group](#module\_document-manifest-job-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_document_manifest_alarm"></a> [document\_manifest\_alarm](#module\_document\_manifest\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_document_manifest_alarm_topic"></a> [document\_manifest\_alarm\_topic](#module\_document\_manifest\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_document_reference_dynamodb_table"></a> [document\_reference\_dynamodb\_table](#module\_document\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
@@ -69,41 +81,52 @@
 | <a name="module_edge_presign_alarm_topic"></a> [edge\_presign\_alarm\_topic](#module\_edge\_presign\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_feature-flags-gateway"></a> [feature-flags-gateway](#module\_feature-flags-gateway) | ./modules/gateway | n/a |
 | <a name="module_feature-flags-lambda"></a> [feature-flags-lambda](#module\_feature-flags-lambda) | ./modules/lambda | n/a |
+| <a name="module_feature-flags-log-group"></a> [feature-flags-log-group](#module\_feature-flags-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_feature_flags_alarm"></a> [feature\_flags\_alarm](#module\_feature\_flags\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_feature_flags_alarm_topic"></a> [feature\_flags\_alarm\_topic](#module\_feature\_flags\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_firewall_waf_v2"></a> [firewall\_waf\_v2](#module\_firewall\_waf\_v2) | ./modules/firewall_waf_v2 | n/a |
 | <a name="module_generate-document-manifest-alarm"></a> [generate-document-manifest-alarm](#module\_generate-document-manifest-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_generate-document-manifest-alarm-topic"></a> [generate-document-manifest-alarm-topic](#module\_generate-document-manifest-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_generate-document-manifest-lambda"></a> [generate-document-manifest-lambda](#module\_generate-document-manifest-lambda) | ./modules/lambda | n/a |
+| <a name="module_generate-document-manifest-log-group"></a> [generate-document-manifest-log-group](#module\_generate-document-manifest-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_generate-lloyd-george-stitch-alarm"></a> [generate-lloyd-george-stitch-alarm](#module\_generate-lloyd-george-stitch-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_generate-lloyd-george-stitch-alarm-topic"></a> [generate-lloyd-george-stitch-alarm-topic](#module\_generate-lloyd-george-stitch-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_generate-lloyd-george-stitch-lambda"></a> [generate-lloyd-george-stitch-lambda](#module\_generate-lloyd-george-stitch-lambda) | ./modules/lambda | n/a |
+| <a name="module_generate-lloyd-george-stitch-log-group"></a> [generate-lloyd-george-stitch-log-group](#module\_generate-lloyd-george-stitch-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_get-doc-nrl-lambda"></a> [get-doc-nrl-lambda](#module\_get-doc-nrl-lambda) | ./modules/lambda | n/a |
+| <a name="module_get-doc-nrl-log-group"></a> [get-doc-nrl-log-group](#module\_get-doc-nrl-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_get-report-by-ods-alarm"></a> [get-report-by-ods-alarm](#module\_get-report-by-ods-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_get-report-by-ods-alarm-topic"></a> [get-report-by-ods-alarm-topic](#module\_get-report-by-ods-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_get-report-by-ods-gateway"></a> [get-report-by-ods-gateway](#module\_get-report-by-ods-gateway) | ./modules/gateway | n/a |
 | <a name="module_get-report-by-ods-lambda"></a> [get-report-by-ods-lambda](#module\_get-report-by-ods-lambda) | ./modules/lambda | n/a |
+| <a name="module_get-report-by-ods-log-group"></a> [get-report-by-ods-log-group](#module\_get-report-by-ods-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_lambda-layer-core"></a> [lambda-layer-core](#module\_lambda-layer-core) | ./modules/lambda_layers | n/a |
 | <a name="module_lambda-layer-data"></a> [lambda-layer-data](#module\_lambda-layer-data) | ./modules/lambda_layers | n/a |
 | <a name="module_lloyd-george-stitch-gateway"></a> [lloyd-george-stitch-gateway](#module\_lloyd-george-stitch-gateway) | ./modules/gateway | n/a |
 | <a name="module_lloyd-george-stitch-lambda"></a> [lloyd-george-stitch-lambda](#module\_lloyd-george-stitch-lambda) | ./modules/lambda | n/a |
+| <a name="module_lloyd-george-stitch-log-group"></a> [lloyd-george-stitch-log-group](#module\_lloyd-george-stitch-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_lloyd-george-stitch_alarm"></a> [lloyd-george-stitch\_alarm](#module\_lloyd-george-stitch\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_lloyd-george-stitch_topic"></a> [lloyd-george-stitch\_topic](#module\_lloyd-george-stitch\_topic) | ./modules/sns | n/a |
 | <a name="module_lloyd_george_reference_dynamodb_table"></a> [lloyd\_george\_reference\_dynamodb\_table](#module\_lloyd\_george\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
+| <a name="module_login-redirect-log-group"></a> [login-redirect-log-group](#module\_login-redirect-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_login_redirect-alarm_topic"></a> [login\_redirect-alarm\_topic](#module\_login\_redirect-alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_login_redirect_alarm"></a> [login\_redirect\_alarm](#module\_login\_redirect\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_login_redirect_lambda"></a> [login\_redirect\_lambda](#module\_login\_redirect\_lambda) | ./modules/lambda | n/a |
 | <a name="module_logout-gateway"></a> [logout-gateway](#module\_logout-gateway) | ./modules/gateway | n/a |
+| <a name="module_logout-log-group"></a> [logout-log-group](#module\_logout-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_logout_alarm"></a> [logout\_alarm](#module\_logout\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_logout_alarm_topic"></a> [logout\_alarm\_topic](#module\_logout\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_logout_lambda"></a> [logout\_lambda](#module\_logout\_lambda) | ./modules/lambda | n/a |
+| <a name="module_logs_encryption_key"></a> [logs\_encryption\_key](#module\_logs\_encryption\_key) | ./modules/kms | n/a |
 | <a name="module_manage-nrl-pointer-alarm"></a> [manage-nrl-pointer-alarm](#module\_manage-nrl-pointer-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_manage-nrl-pointer-alarm-topic"></a> [manage-nrl-pointer-alarm-topic](#module\_manage-nrl-pointer-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_manage-nrl-pointer-lambda"></a> [manage-nrl-pointer-lambda](#module\_manage-nrl-pointer-lambda) | ./modules/lambda | n/a |
+| <a name="module_manage-nrl-pointer-log-group"></a> [manage-nrl-pointer-log-group](#module\_manage-nrl-pointer-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_mns-dlq-alarm-topic"></a> [mns-dlq-alarm-topic](#module\_mns-dlq-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_mns-notification-alarm"></a> [mns-notification-alarm](#module\_mns-notification-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_mns-notification-alarm-topic"></a> [mns-notification-alarm-topic](#module\_mns-notification-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_mns-notification-lambda"></a> [mns-notification-lambda](#module\_mns-notification-lambda) | ./modules/lambda | n/a |
+| <a name="module_mns-notification-log-group"></a> [mns-notification-log-group](#module\_mns-notification-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_mns_encryption_key"></a> [mns\_encryption\_key](#module\_mns\_encryption\_key) | ./modules/kms | n/a |
 | <a name="module_ndr-app-config"></a> [ndr-app-config](#module\_ndr-app-config) | ./modules/app_config | n/a |
 | <a name="module_ndr-bulk-staging-store"></a> [ndr-bulk-staging-store](#module\_ndr-bulk-staging-store) | ./modules/s3/ | n/a |
@@ -120,15 +143,19 @@
 | <a name="module_nhs-oauth-token-generator-alarm"></a> [nhs-oauth-token-generator-alarm](#module\_nhs-oauth-token-generator-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_nhs-oauth-token-generator-alarm-topic"></a> [nhs-oauth-token-generator-alarm-topic](#module\_nhs-oauth-token-generator-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_nhs-oauth-token-generator-lambda"></a> [nhs-oauth-token-generator-lambda](#module\_nhs-oauth-token-generator-lambda) | ./modules/lambda | n/a |
+| <a name="module_nhs-oauth-token-generator-log-group"></a> [nhs-oauth-token-generator-log-group](#module\_nhs-oauth-token-generator-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_nrl-dlq-alarm-topic"></a> [nrl-dlq-alarm-topic](#module\_nrl-dlq-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_pdf-stitching-alarm-topic"></a> [pdf-stitching-alarm-topic](#module\_pdf-stitching-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_pdf-stitching-lambda"></a> [pdf-stitching-lambda](#module\_pdf-stitching-lambda) | ./modules/lambda | n/a |
 | <a name="module_pdf-stitching-lambda-alarms"></a> [pdf-stitching-lambda-alarms](#module\_pdf-stitching-lambda-alarms) | ./modules/lambda_alarms | n/a |
+| <a name="module_pdf-stitching-log-group"></a> [pdf-stitching-log-group](#module\_pdf-stitching-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_route53_fargate_ui"></a> [route53\_fargate\_ui](#module\_route53\_fargate\_ui) | ./modules/route53 | n/a |
 | <a name="module_search-document-references-gateway"></a> [search-document-references-gateway](#module\_search-document-references-gateway) | ./modules/gateway | n/a |
 | <a name="module_search-document-references-lambda"></a> [search-document-references-lambda](#module\_search-document-references-lambda) | ./modules/lambda | n/a |
+| <a name="module_search-document-references-log-group"></a> [search-document-references-log-group](#module\_search-document-references-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_search-patient-details-gateway"></a> [search-patient-details-gateway](#module\_search-patient-details-gateway) | ./modules/gateway | n/a |
 | <a name="module_search-patient-details-lambda"></a> [search-patient-details-lambda](#module\_search-patient-details-lambda) | ./modules/lambda | n/a |
+| <a name="module_search-patient-details-log-group"></a> [search-patient-details-log-group](#module\_search-patient-details-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_search_doc_alarm"></a> [search\_doc\_alarm](#module\_search\_doc\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_search_doc_alarm_topic"></a> [search\_doc\_alarm\_topic](#module\_search\_doc\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_search_patient_alarm"></a> [search\_patient\_alarm](#module\_search\_patient\_alarm) | ./modules/lambda_alarms | n/a |
@@ -137,6 +164,7 @@
 | <a name="module_send-feedback-alarm-topic"></a> [send-feedback-alarm-topic](#module\_send-feedback-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_send-feedback-gateway"></a> [send-feedback-gateway](#module\_send-feedback-gateway) | ./modules/gateway | n/a |
 | <a name="module_send-feedback-lambda"></a> [send-feedback-lambda](#module\_send-feedback-lambda) | ./modules/lambda | n/a |
+| <a name="module_send-feedback-log-group"></a> [send-feedback-log-group](#module\_send-feedback-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_sns_encryption_key"></a> [sns\_encryption\_key](#module\_sns\_encryption\_key) | ./modules/kms | n/a |
 | <a name="module_sqs-lg-bulk-upload-invalid-queue"></a> [sqs-lg-bulk-upload-invalid-queue](#module\_sqs-lg-bulk-upload-invalid-queue) | ./modules/sqs | n/a |
 | <a name="module_sqs-lg-bulk-upload-metadata-queue"></a> [sqs-lg-bulk-upload-metadata-queue](#module\_sqs-lg-bulk-upload-metadata-queue) | ./modules/sqs | n/a |
@@ -147,6 +175,7 @@
 | <a name="module_statistical-report-alarm"></a> [statistical-report-alarm](#module\_statistical-report-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_statistical-report-alarm-topic"></a> [statistical-report-alarm-topic](#module\_statistical-report-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_statistical-report-lambda"></a> [statistical-report-lambda](#module\_statistical-report-lambda) | ./modules/lambda | n/a |
+| <a name="module_statistical-report-log-group"></a> [statistical-report-log-group](#module\_statistical-report-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_statistical-reports-store"></a> [statistical-reports-store](#module\_statistical-reports-store) | ./modules/s3/ | n/a |
 | <a name="module_statistics_dynamodb_table"></a> [statistics\_dynamodb\_table](#module\_statistics\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_stitch_metadata_reference_dynamodb_table"></a> [stitch\_metadata\_reference\_dynamodb\_table](#module\_stitch\_metadata\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
@@ -154,12 +183,15 @@
 | <a name="module_unstitched_lloyd_george_reference_dynamodb_table"></a> [unstitched\_lloyd\_george\_reference\_dynamodb\_table](#module\_unstitched\_lloyd\_george\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_update-upload-state-gateway"></a> [update-upload-state-gateway](#module\_update-upload-state-gateway) | ./modules/gateway | n/a |
 | <a name="module_update-upload-state-lambda"></a> [update-upload-state-lambda](#module\_update-upload-state-lambda) | ./modules/lambda | n/a |
+| <a name="module_update-upload-state-log-group"></a> [update-upload-state-log-group](#module\_update-upload-state-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_update_upload_state_alarm"></a> [update\_upload\_state\_alarm](#module\_update\_upload\_state\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_update_upload_state_alarm_topic"></a> [update\_upload\_state\_alarm\_topic](#module\_update\_upload\_state\_alarm\_topic) | ./modules/sns | n/a |
+| <a name="module_upload-confirm-result-log-group"></a> [upload-confirm-result-log-group](#module\_upload-confirm-result-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_upload_confirm_result_alarm"></a> [upload\_confirm\_result\_alarm](#module\_upload\_confirm\_result\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_upload_confirm_result_alarm_topic"></a> [upload\_confirm\_result\_alarm\_topic](#module\_upload\_confirm\_result\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_upload_confirm_result_gateway"></a> [upload\_confirm\_result\_gateway](#module\_upload\_confirm\_result\_gateway) | ./modules/gateway | n/a |
 | <a name="module_upload_confirm_result_lambda"></a> [upload\_confirm\_result\_lambda](#module\_upload\_confirm\_result\_lambda) | ./modules/lambda | n/a |
+| <a name="module_virus-scan-result-log-group"></a> [virus-scan-result-log-group](#module\_virus-scan-result-log-group) | ./modules/cloudwatch | n/a |
 | <a name="module_virus_scan_result_alarm"></a> [virus\_scan\_result\_alarm](#module\_virus\_scan\_result\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_virus_scan_result_alarm_topic"></a> [virus\_scan\_result\_alarm\_topic](#module\_virus\_scan\_result\_alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_virus_scan_result_gateway"></a> [virus\_scan\_result\_gateway](#module\_virus\_scan\_result\_gateway) | ./modules/gateway | n/a |
@@ -215,6 +247,7 @@
 | [aws_cloudwatch_event_target.nhs_oauth_token_generator_schedule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
 | [aws_cloudwatch_event_target.statistical_report_schedule_event](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
 | [aws_cloudwatch_log_metric_filter.edge_presign_error](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_metric_filter) | resource |
+| [aws_cloudwatch_log_resource_policy.rum_log](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_resource_policy) | resource |
 | [aws_cloudwatch_metric_alarm.api_gateway_alarm_4XX](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.api_gateway_alarm_5XX](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.edge_presign_lambda_error](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
@@ -230,6 +263,7 @@
 | [aws_iam_policy.dynamodb_stream_delete_object_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.dynamodb_stream_manifest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.dynamodb_stream_stitch_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.kms_decrypt_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.kms_mns_lambda_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.s3_document_data_policy_for_get_doc_ref_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -271,6 +305,7 @@
 | [aws_iam_role_policy_attachment.ods_weekly_document_store](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ods_weekly_lloyd_george_reference_dynamodb_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ods_weekly_lloyd_george_store](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.ods_weekly_logs_decrypt_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ods_weekly_ssm_access_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ods_weekly_statistical_reports_store](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ods_weekly_statistics_dynamodb_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -310,6 +345,8 @@
 | [aws_s3_bucket_policy.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_policy.logs_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_public_access_block.logs_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
+| [aws_s3_bucket_server_side_encryption_configuration.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
+| [aws_s3_bucket_server_side_encryption_configuration.logs_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_s3_bucket_versioning.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_s3_bucket_versioning.logs_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_scheduler_schedule.ods_weekly_update_ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule) | resource |

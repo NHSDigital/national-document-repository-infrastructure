@@ -34,6 +34,7 @@ data "aws_iam_policy_document" "kms_key_base" {
       type        = "Service"
     }
     actions = [
+      "kms:Encrypt",
       "kms:Decrypt",
       "kms:GenerateDataKey*"
     ]
@@ -67,5 +68,18 @@ data "aws_iam_policy_document" "combined_policy_documents" {
     data.aws_iam_policy_document.kms_key_base.json,
     length(var.aws_identifiers) > 0 ? [data.aws_iam_policy_document.kms_key_generate[0].json] : []
   ])
+}
+
+data "aws_iam_policy_document" "kms_key_decrypt" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ]
+    resources = [
+      aws_kms_key.encryption_key.arn
+    ]
+  }
 }
 

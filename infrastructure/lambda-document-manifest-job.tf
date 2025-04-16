@@ -1,3 +1,11 @@
+module "document-manifest-job-log-group" {
+  source                   = "./modules/cloudwatch"
+  log_group_name           = "/aws/lambda/${module.document-manifest-job-lambda.function_name}"
+  log_group_encryption_key = module.logs_encryption_key.kms_arn
+  environment              = var.environment
+  owner                    = var.owner
+}
+
 module "document-manifest-job-gateway" {
   # Gateway Variables
   source              = "./modules/gateway"

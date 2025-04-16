@@ -1,22 +1,3 @@
-variable "cloudwatch_log_group_name" {
-  description = "Name of the Cloudwatch log group"
-  type        = string
-  default     = null
-}
-
-variable "cloudwatch_log_steam_name" {
-  description = "Name of the Cloudwatch log stream"
-  type        = string
-  default     = null
-}
-
-variable "retention_in_days" {
-  description = "Name of the Cloudwatch log group"
-  type        = number
-  default     = 3
-}
-
-
 variable "environment" {
   type = string
 }
@@ -25,10 +6,19 @@ variable "owner" {
   type = string
 }
 
-output "cloudwatch_log_group_arn" {
-  value = aws_cloudwatch_log_group.ndr_cloudwatch_log_group.cloudwatch_log_group_arn
+variable "log_group_name" {
+  description = "Name of the Cloudwatch log group"
+  type        = string
 }
 
-output "cloudwatch_log_group_name" {
-  value = aws_cloudwatch_log_group.ndr_cloudwatch_log_group.cloudwatch_log_group_name
+variable "retention_in_days" {
+  description = "Days to retain log group messages (Indefinite by default)"
+  type        = number
+  default     = 0
+}
+
+variable "log_group_encryption_key" {
+  description = "The ARN of an AWS-managed customer master key (CMK) to encrypt logs"
+  type        = string
+  default     = null
 }

@@ -1,3 +1,11 @@
+module "get-doc-nrl-log-group" {
+  source                   = "./modules/cloudwatch"
+  log_group_name           = "/aws/lambda/${module.get-doc-nrl-lambda.function_name}"
+  log_group_encryption_key = module.logs_encryption_key.kms_arn
+  environment              = var.environment
+  owner                    = var.owner
+}
+
 resource "aws_api_gateway_resource" "get_document_reference" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id   = module.create-doc-ref-gateway.gateway_resource_id

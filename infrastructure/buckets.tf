@@ -196,6 +196,18 @@ resource "aws_s3_bucket" "access_logs" {
   }
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "access_logs" {
+  count  = local.access_logs_count
+  bucket = aws_s3_bucket.access_logs[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = module.logs_encryption_key.kms_arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
 data "aws_iam_policy_document" "access_logs" {
   count = local.access_logs_count
   statement {
@@ -260,6 +272,18 @@ resource "aws_s3_bucket" "logs_bucket" {
     Owner       = var.owner
     Environment = var.environment
     Workspace   = terraform.workspace
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "logs_bucket" {
+  #count = local.is_production ? 1 : 0
+  bucket = aws_s3_bucket.logs_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = module.logs_encryption_key.kms_arn
+      sse_algorithm     = "aws:kms"
+    }
   }
 }
 

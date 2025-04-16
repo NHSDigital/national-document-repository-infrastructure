@@ -1,3 +1,11 @@
+module "login-redirect-log-group" {
+  source                   = "./modules/cloudwatch"
+  log_group_name           = "/aws/lambda/${module.login_redirect_lambda.function_name}"
+  log_group_encryption_key = module.logs_encryption_key.kms_arn
+  environment              = var.environment
+  owner                    = var.owner
+}
+
 resource "aws_api_gateway_resource" "login_resource" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id   = aws_api_gateway_resource.auth_resource.id

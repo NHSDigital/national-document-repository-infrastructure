@@ -20,6 +20,7 @@ No modules.
 | [aws_kms_key.encryption_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_iam_policy_document.combined_policy_documents](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.kms_key_base](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.kms_key_decrypt](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.kms_key_generate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
@@ -43,3 +44,4 @@ No modules.
 |------|-------------|
 | <a name="output_id"></a> [id](#output\_id) | n/a |
 | <a name="output_kms_arn"></a> [kms\_arn](#output\_kms\_arn) | n/a |
+| <a name="output_kms_decrypt_policy"></a> [kms\_decrypt\_policy](#output\_kms\_decrypt\_policy) | n/a |
