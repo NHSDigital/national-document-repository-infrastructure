@@ -23,7 +23,7 @@ module "teams-alerting-lambda" {
 resource "aws_sns_topic_subscription" "teams_alerting" {
   endpoint  = module.teams-alerting-lambda.lambda_arn
   protocol  = "lambda"
-  topic_arn = aws_sns_topic.alarm_notifications_topic.arn
+  topic_arn = aws_sns_topic.alarm_notifications_topic[0].arn
 }
 
 resource "aws_lambda_permission" "invoke_with_sns" {
@@ -31,5 +31,5 @@ resource "aws_lambda_permission" "invoke_with_sns" {
   action        = "lambda:InvokeFunction"
   function_name = module.teams-alerting-lambda.lambda_arn
   principal     = "sns.amazonaws.com"
-  source_arn    = aws_sns_topic.alarm_notifications_topic.arn
+  source_arn    = aws_sns_topic.alarm_notifications_topic[0].arn
 }
