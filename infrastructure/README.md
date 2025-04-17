@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.86.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.72.1 |
 
 ## Modules
 
@@ -151,6 +151,7 @@
 | <a name="module_statistics_dynamodb_table"></a> [statistics\_dynamodb\_table](#module\_statistics\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_stitch_metadata_reference_dynamodb_table"></a> [stitch\_metadata\_reference\_dynamodb\_table](#module\_stitch\_metadata\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_stitching-dlq-alarm-topic"></a> [stitching-dlq-alarm-topic](#module\_stitching-dlq-alarm-topic) | ./modules/sns | n/a |
+| <a name="module_teams-alerting-lambda"></a> [teams-alerting-lambda](#module\_teams-alerting-lambda) | ./modules/lambda | n/a |
 | <a name="module_unstitched_lloyd_george_reference_dynamodb_table"></a> [unstitched\_lloyd\_george\_reference\_dynamodb\_table](#module\_unstitched\_lloyd\_george\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_update-upload-state-gateway"></a> [update-upload-state-gateway](#module\_update-upload-state-gateway) | ./modules/gateway | n/a |
 | <a name="module_update-upload-state-lambda"></a> [update-upload-state-lambda](#module\_update-upload-state-lambda) | ./modules/lambda | n/a |
@@ -299,6 +300,7 @@
 | [aws_lambda_permission.bulk_upload_metadata_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.bulk_upload_report_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.data_collection_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
+| [aws_lambda_permission.invoke_with_sns](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.nhs_oauth_token_generator_schedule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.statistical_report_schedule_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_rum_app_monitor.ndr](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rum_app_monitor) | resource |
@@ -317,6 +319,7 @@
 | [aws_scheduler_schedule.ods_weekly_update_ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule) | resource |
 | [aws_sns_topic.alarm_notifications_topic](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
 | [aws_sns_topic_subscription.alarm_notifications_sns_topic_subscription](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
+| [aws_sns_topic_subscription.teams_alerting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
 | [aws_sqs_queue_policy.mns_sqs_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy) | resource |
 | [aws_wafv2_web_acl_association.web_acl_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_association) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
