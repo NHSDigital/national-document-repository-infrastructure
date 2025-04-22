@@ -62,6 +62,20 @@ module "search_patient_alarm_topic" {
   })
 }
 
+resource "aws_sns_topic_subscription" "teams_alerting" {
+  endpoint  = module.teams-alerting-lambda.lambda_arn
+  protocol  = "lambda"
+  topic_arn = module.search_patient_alarm_topic.arn
+}
+
+resource "aws_lambda_permission" "invoke_with_sns" {
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = module.teams-alerting-lambda.lambda_arn
+  principal     = "sns.amazonaws.com"
+  source_arn    = module.search_patient_alarm_topic.arn
+}
+
 module "search-patient-details-lambda" {
   source  = "./modules/lambda"
   name    = "SearchPatientDetailsLambda"
