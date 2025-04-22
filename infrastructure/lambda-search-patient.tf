@@ -33,13 +33,14 @@ module "search_patient_alarm" {
 
 
 module "search_patient_alarm_topic" {
-  source                = "./modules/sns"
-  sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id    = data.aws_caller_identity.current.account_id
-  topic_name            = "search_patient_details_alarms-topic"
-  topic_protocol        = "lambda"
-  topic_endpoint        = module.search-patient-details-lambda.lambda_arn
-  depends_on            = [module.sns_encryption_key]
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
+  current_account_id     = data.aws_caller_identity.current.account_id
+  topic_name             = "search_patient_details_alarms-topic"
+  topic_protocol         = "lambda"
+  is_topic_endpoint_list = true
+  topic_endpoint_list    = [module.search-patient-details-lambda.lambda_arn, module.teams-alerting-lambda.lambda_arn]
+  depends_on             = [module.sns_encryption_key, module.teams-alerting-lambda.lambda_arn]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -62,19 +63,7 @@ module "search_patient_alarm_topic" {
   })
 }
 
-resource "aws_sns_topic_subscription" "teams_alerting" {
-  endpoint  = module.teams-alerting-lambda.lambda_arn
-  protocol  = "lambda"
-  topic_arn = module.search_patient_alarm_topic.arn
-}
 
-resource "aws_lambda_permission" "invoke_with_sns" {
-  statement_id  = "AllowExecutionFromSNS"
-  action        = "lambda:InvokeFunction"
-  function_name = module.teams-alerting-lambda.lambda_arn
-  principal     = "sns.amazonaws.com"
-  source_arn    = module.search_patient_alarm_topic.arn
-}
 
 module "search-patient-details-lambda" {
   source  = "./modules/lambda"
