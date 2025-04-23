@@ -49,6 +49,6 @@ resource "aws_ecs_cluster" "ndr-ecs-fargate-data-collection" {
 }
 
 resource "aws_cloudwatch_log_group" "ecs_cluster_data_collection_logs" {
-  name              = "${terraform.workspace}-${var.ecs_cluster_name}-logs"
+  name              = "${terraform.workspace}-data-collection-logs"
   retention_in_days = 0
 }
