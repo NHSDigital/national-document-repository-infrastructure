@@ -71,16 +71,6 @@ resource "aws_sns_topic_subscription" "search-patient-teams-alert" {
 }
 
 
-resource "aws_lambda_permission" "teams_invoke_with_search_patient_sns" {
-  statement_id  = "AllowExecutionFromSNS"
-  action        = "lambda:InvokeFunction"
-  function_name = module.teams-alerting-lambda.lambda_arn
-  principal     = "sns.amazonaws.com"
-  source_arn    = module.search_patient_alarm_topic.arn
-}
-
-
-
 module "search-patient-details-lambda" {
   source  = "./modules/lambda"
   name    = "SearchPatientDetailsLambda"
