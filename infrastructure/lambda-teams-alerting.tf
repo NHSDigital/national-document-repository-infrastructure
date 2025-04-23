@@ -1,3 +1,7 @@
+data "aws_ssm_parameter" "teams_alerting_webhook_url" {
+  name = "/ndr/${var.environment}/teams/webhook_url"
+}
+
 module "teams-alerting-lambda" {
   source  = "./modules/lambda"
   name    = "TeamsAlertingLambda"
@@ -13,6 +17,7 @@ module "teams-alerting-lambda" {
     APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
+    WEBHOOK_URL             = data.aws_ssm_parameter.teams_alerting_webhook_url.value
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
