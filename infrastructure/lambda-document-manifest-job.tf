@@ -1,5 +1,4 @@
 module "document-manifest-job-gateway" {
-  # Gateway Variables
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
@@ -9,15 +8,6 @@ module "document-manifest-job-gateway" {
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
-
-  # Lambda Variables
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  owner             = var.owner
-  environment       = var.environment
-
-  depends_on = [
-    aws_api_gateway_rest_api.ndr_doc_store_api,
-  ]
 }
 
 module "document_manifest_alarm" {
