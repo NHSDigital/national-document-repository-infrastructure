@@ -40,7 +40,7 @@ module "search_patient_alarm_topic" {
   topic_protocol         = "lambda"
   is_topic_endpoint_list = true
   topic_endpoint_list    = [module.search-patient-details-lambda.lambda_arn, module.teams-alerting-lambda.lambda_arn]
-  depends_on             = [module.sns_encryption_key, module.teams-alerting-lambda.lambda_arn]
+  depends_on             = [module.sns_encryption_key, module.teams-alerting-lambda]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
