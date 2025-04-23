@@ -54,14 +54,6 @@ module "ndr-ecs-fargate-data-collection" {
   task_role                = aws_iam_role.data_collection_task_role[0].arn
   environment_vars = [
     {
-      "name" : "table_name",
-      "value" : module.lloyd_george_reference_dynamodb_table.table_name
-    },
-    {
-      "name" : "PDS_FHIR_IS_STUBBED",
-      "value" : tostring(local.is_sandbox)
-    },
-    {
       "name" : "LLOYD_GEORGE_BUCKET_NAME",
       "value" : "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     },
@@ -116,12 +108,6 @@ resource "aws_iam_role" "data_collection_task_role" {
       ]
     }
   )
-}
-
-resource "aws_iam_role_policy_attachment" "data_collection_lloyd_george_reference_dynamodb_table" {
-  count      = 1
-  role       = aws_iam_role.data_collection_task_role[0].name
-  policy_arn = module.lloyd_george_reference_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_ssm_access_policy" {
