@@ -41,6 +41,4 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_gateway_preflight_method"></a> [gateway\_preflight\_method](#output\_gateway\_preflight\_method) | n/a |
-| <a name="output_gateway_proxy_method"></a> [gateway\_proxy\_method](#output\_gateway\_proxy\_method) | n/a |
 | <a name="output_gateway_resource_id"></a> [gateway\_resource\_id](#output\_gateway\_resource\_id) | n/a |
