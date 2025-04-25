@@ -3,7 +3,8 @@ variable "vpc_id" {
 }
 
 variable "sg_name" {
-  type = string
+  type    = string
+  default = null
 }
 
 variable "ecs_cluster_name" {

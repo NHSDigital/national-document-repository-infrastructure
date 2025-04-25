@@ -39,7 +39,6 @@ module "ndr-ecs-fargate-ods-update" {
   vpc_id                   = module.ndr-vpc-ui.vpc_id
   public_subnets           = module.ndr-vpc-ui.public_subnets
   private_subnets          = module.ndr-vpc-ui.private_subnets
-  sg_name                  = "${terraform.workspace}-ods-weekly-update-sg"
   ecs_launch_type          = "FARGATE"
   ecs_cluster_service_name = "${terraform.workspace}-ods-weekly-update"
   ecr_repository_url       = module.ndr-docker-ecr-weekly-ods-update[0].ecr_repository_url
