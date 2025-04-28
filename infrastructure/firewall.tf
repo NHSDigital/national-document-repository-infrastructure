@@ -1,5 +1,5 @@
 module "firewall_waf_v2" {
-  source = "./modules/firewall_waf_v2"
+  source         = "./modules/firewall_waf_v2"
   cloudfront_acl = false
 
   environment = var.environment
