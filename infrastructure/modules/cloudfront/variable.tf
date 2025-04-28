@@ -12,3 +12,9 @@ variable "qualifed_arn" {
   type        = string
   description = "Lambda@Edge function association"
 }
+
+variable "web_acl_id" {
+  type        = string
+  description = "Web ACL to associate this Cloudfront distribution with"
+}
+

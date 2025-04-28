@@ -1,12 +1,10 @@
 module "firewall_waf_v2" {
   source = "./modules/firewall_waf_v2"
+  cloudfront_acl = false
 
   environment = var.environment
   owner       = var.owner
-  count = (terraform.workspace == "ndra" ||
-    terraform.workspace == "ndrb" ||
-    terraform.workspace == "ndrc" ||
-  terraform.workspace == "ndrd") ? 0 : 1
+  count       = local.is_sandbox ? 0 : 1
 }
 
 resource "aws_wafv2_web_acl_association" "web_acl_association" {
@@ -22,3 +20,4 @@ resource "aws_wafv2_web_acl_association" "web_acl_association" {
     module.firewall_waf_v2[0]
   ]
 }
+
