@@ -136,11 +136,11 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
       launch_type         = "FARGATE"
       network_configuration {
         assign_public_ip = false
-        security_groups  = (
+        security_groups = (
           module.ndr-ecs-fargate-ods-update[0].security_group_id != null ?
           [module.ndr-ecs-fargate-ods-update[0].security_group_id] : []
         )
-        subnets          = [for subnet in module.ndr-vpc-ui.private_subnets : subnet]
+        subnets = [for subnet in module.ndr-vpc-ui.private_subnets : subnet]
       }
     }
   }
