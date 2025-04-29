@@ -3,7 +3,7 @@ output "dns_name" {
 }
 
 output "security_group_id" {
-  value = aws_security_group.ndr_ecs_sg.id
+  value = aws_security_group.ndr_ecs_sg[0].id
 }
 
 output "load_balancer_arn" {
