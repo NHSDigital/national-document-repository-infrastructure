@@ -1,4 +1,6 @@
 resource "aws_security_group" "ndr_ecs_sg" {
+  count       = var.sg_name == null ? 0 : 1
+
   name        = var.sg_name
   description = "Allow TLS inbound traffic"
   vpc_id      = var.vpc_id
