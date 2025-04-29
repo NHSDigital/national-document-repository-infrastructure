@@ -151,7 +151,7 @@
 | <a name="module_statistics_dynamodb_table"></a> [statistics\_dynamodb\_table](#module\_statistics\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_stitch_metadata_reference_dynamodb_table"></a> [stitch\_metadata\_reference\_dynamodb\_table](#module\_stitch\_metadata\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_stitching-dlq-alarm-topic"></a> [stitching-dlq-alarm-topic](#module\_stitching-dlq-alarm-topic) | ./modules/sns | n/a |
-| <a name="module_teams-alarm-tracker-lambda"></a> [teams-alarm-tracker-lambda](#module\_teams-alarm-tracker-lambda) | ./modules.lambda | n/a |
+| <a name="module_teams-alarm-tracker-lambda"></a> [teams-alarm-tracker-lambda](#module\_teams-alarm-tracker-lambda) | ./modules/lambda | n/a |
 | <a name="module_teams-alerting-lambda"></a> [teams-alerting-lambda](#module\_teams-alerting-lambda) | ./modules/lambda | n/a |
 | <a name="module_unstitched_lloyd_george_reference_dynamodb_table"></a> [unstitched\_lloyd\_george\_reference\_dynamodb\_table](#module\_unstitched\_lloyd\_george\_reference\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_update-upload-state-gateway"></a> [update-upload-state-gateway](#module\_update-upload-state-gateway) | ./modules/gateway | n/a |
