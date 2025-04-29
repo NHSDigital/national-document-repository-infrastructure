@@ -11,6 +11,8 @@ resource "aws_security_group" "ndr_ecs_sg" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "ndr_ecs_sg_egress_http" {
+  count       = var.sg_name == null ? 0 : 1
+
   security_group_id = aws_security_group.ndr_ecs_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
@@ -19,6 +21,8 @@ resource "aws_vpc_security_group_egress_rule" "ndr_ecs_sg_egress_http" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ndr_ecs_sg_ingress_http" {
+  count       = var.sg_name == null ? 0 : 1
+
   security_group_id = aws_security_group.ndr_ecs_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
@@ -27,6 +31,8 @@ resource "aws_vpc_security_group_ingress_rule" "ndr_ecs_sg_ingress_http" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "ndr_ecs_sg_egress_https" {
+  count       = var.sg_name == null ? 0 : 1
+
   security_group_id = aws_security_group.ndr_ecs_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 443
@@ -35,6 +41,8 @@ resource "aws_vpc_security_group_egress_rule" "ndr_ecs_sg_egress_https" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ndr_ecs_sg_ingress_https" {
+  count       = var.sg_name == null ? 0 : 1
+
   security_group_id = aws_security_group.ndr_ecs_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 443
