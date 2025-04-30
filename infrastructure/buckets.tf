@@ -168,6 +168,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
       prefix = "user_upload/"
     }
   }
+  rule {
+    id     = "default-to-intelligent-tiering"
+    status = "Enabled"
+    transition {
+      storage_class = "INTELLIGENT_TIERING"
+    }
+  }
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "ndr-zip-request-store-lifecycle-rules" {
