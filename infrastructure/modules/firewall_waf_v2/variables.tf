@@ -5,3 +5,8 @@ variable "environment" {
 variable "owner" {
   type = string
 }
+
+variable "cloudfront_acl" {
+  type = bool
+}
+

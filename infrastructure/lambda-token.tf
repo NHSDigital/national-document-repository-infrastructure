@@ -1,5 +1,4 @@
 module "create-token-gateway" {
-  # Gateway Variables
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_resource.auth_resource.id
@@ -8,15 +7,6 @@ module "create-token-gateway" {
   gateway_path        = "TokenRequest"
   require_credentials = false
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
-  # Lambda Variables
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  owner             = var.owner
-  environment       = var.environment
-
-  depends_on = [
-    aws_api_gateway_rest_api.ndr_doc_store_api,
-    aws_api_gateway_authorizer.repo_authoriser
-  ]
 }
 
 module "create-token-lambda" {
@@ -24,7 +14,7 @@ module "create-token-lambda" {
   name    = "TokenRequestHandler"
   handler = "handlers.token_handler.lambda_handler"
   iam_role_policy_documents = [
-    aws_iam_policy.ssm_policy_token.policy,
+    aws_iam_policy.ssm_access_policy.policy,
     module.auth_session_dynamodb_table.dynamodb_read_policy_document,
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,
     module.auth_state_dynamodb_table.dynamodb_read_policy_document,
@@ -50,7 +40,7 @@ module "create-token-lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    aws_iam_policy.ssm_policy_token,
+    aws_iam_policy.ssm_access_policy,
     module.auth_session_dynamodb_table,
     module.auth_state_dynamodb_table,
     module.create-token-gateway,
@@ -103,25 +93,6 @@ module "create_token-alarm_topic" {
   depends_on = [module.create-token-lambda, module.sns_encryption_key]
 }
 
-resource "aws_iam_policy" "ssm_policy_token" {
-  name = "${terraform.workspace}_ssm_token_private_policy"
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "ssm:GetParameter",
-          "ssm:GetParameters",
-          "ssm:GetParametersByPath"
-        ],
-        Resource = [
-          "arn:aws:ssm:*:*:parameter/*",
-        ]
-      }
-    ]
-  })
-}
 
 resource "aws_iam_role_policy_attachment" "policy_audit_token_lambda" {
   count      = local.is_sandbox ? 0 : 1

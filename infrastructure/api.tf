@@ -38,54 +38,35 @@ resource "aws_api_gateway_resource" "auth_resource" {
 # API Config
 resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  triggers = {
-    redeployment = sha1(jsonencode([
-      aws_api_gateway_rest_api.ndr_doc_store_api.body,
-      aws_api_gateway_authorizer.repo_authoriser,
-      module.authoriser-lambda,
-      module.back-channel-logout-gateway,
-      module.back_channel_logout_lambda,
-      module.create-doc-ref-gateway,
-      module.create-doc-ref-lambda,
-      module.create-token-gateway,
-      module.create-token-lambda,
-      module.delete-doc-ref-gateway,
-      module.delete-doc-ref-lambda,
-      module.document-manifest-job-gateway,
-      module.document-manifest-job-lambda,
-      module.feature-flags-gateway,
-      module.feature-flags-lambda,
-      module.get-doc-nrl-lambda,
-      module.get-report-by-ods-gateway,
-      module.get-report-by-ods-lambda,
-      module.lloyd-george-stitch-gateway,
-      module.lloyd-george-stitch-lambda,
-      module.logout-gateway,
-      module.logout_lambda,
-      module.pdf-stitching-lambda,
-      module.search-document-references-gateway,
-      module.search-document-references-lambda,
-      module.search-patient-details-gateway,
-      module.search-patient-details-lambda,
-      module.send-feedback-gateway,
-      module.send-feedback-lambda,
-      module.update-upload-state-gateway,
-      module.update-upload-state-lambda,
-      module.upload_confirm_result_gateway,
-      module.upload_confirm_result_lambda,
-      module.virus_scan_result_gateway,
-      module.virus_scan_result_lambda,
-      module.access-audit-gateway,
-      module.access-audit-lambda
-    ]))
-  }
 
   depends_on = [
-    aws_api_gateway_rest_api.ndr_doc_store_api
+    aws_api_gateway_rest_api.ndr_doc_store_api,
+    aws_api_gateway_authorizer.repo_authoriser,
+    aws_api_gateway_resource.get_document_reference,
+    module.access-audit-gateway,
+    module.back-channel-logout-gateway,
+    module.create-doc-ref-gateway,
+    module.create-token-gateway,
+    module.delete-doc-ref-gateway,
+    module.document-manifest-job-gateway,
+    module.feature-flags-gateway,
+    module.get-report-by-ods-gateway,
+    module.lloyd-george-stitch-gateway,
+    module.logout-gateway,
+    module.search-document-references-gateway,
+    module.search-patient-details-gateway,
+    module.send-feedback-gateway,
+    module.update-upload-state-gateway,
+    module.upload_confirm_result_gateway,
+    module.virus_scan_result_gateway,
   ]
 
   lifecycle {
     create_before_destroy = true
+  }
+
+  variables = {
+    deployed_at = timestamp()
   }
 }
 

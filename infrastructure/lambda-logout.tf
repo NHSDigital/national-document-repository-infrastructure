@@ -1,5 +1,4 @@
 module "logout-gateway" {
-  # Gateway Variables
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_resource.auth_resource.id
@@ -8,14 +7,6 @@ module "logout-gateway" {
   gateway_path        = "Logout"
   require_credentials = false
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
-  # Lambda Variables
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  owner             = var.owner
-  environment       = var.environment
-
-  depends_on = [
-    aws_api_gateway_rest_api.ndr_doc_store_api,
-  ]
 }
 
 module "logout_lambda" {
@@ -23,7 +14,7 @@ module "logout_lambda" {
   name    = "LogoutHandler"
   handler = "handlers.logout_handler.lambda_handler"
   iam_role_policy_documents = [
-    aws_iam_policy.ssm_policy_oidc.policy,
+    aws_iam_policy.ssm_access_policy.policy,
     module.auth_session_dynamodb_table.dynamodb_read_policy_document,
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-app-config.app_config_policy
@@ -42,7 +33,7 @@ module "logout_lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    aws_iam_policy.ssm_policy_oidc,
+    aws_iam_policy.ssm_access_policy,
     module.auth_session_dynamodb_table,
     module.logout-gateway,
     module.ndr-app-config
