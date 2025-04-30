@@ -1,7 +1,7 @@
 resource "aws_wafv2_web_acl" "waf_v2_acl" {
-  name        = "${terraform.workspace}-fw-waf-v2"
+  name        = "${terraform.workspace}-${var.cloudfront_acl ? "cloudfront" : ""}-fw-waf-v2"
   description = "A WAF to secure the Repo application."
-  scope       = "REGIONAL"
+  scope       = var.cloudfront_acl ? "CLOUDFRONT" : "REGIONAL"
 
   default_action {
     allow {}
@@ -50,6 +50,9 @@ resource "aws_wafv2_web_acl" "waf_v2_acl" {
             for_each = rule.value["excluded_rules"]
             content {
               name = excluded_rule.value
+              action_to_use {
+                allow {}
+              }
             }
           }
 
@@ -98,3 +101,4 @@ resource "aws_wafv2_web_acl" "waf_v2_acl" {
     Workspace   = terraform.workspace
   }
 }
+

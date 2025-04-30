@@ -36,6 +36,7 @@ resource "aws_cloudfront_distribution" "distribution" {
       locations        = ["GB"]
     }
   }
+  web_acl_id = var.web_acl_id
 }
 
 resource "aws_cloudfront_origin_request_policy" "viewer_policy" {
@@ -91,3 +92,4 @@ resource "aws_cloudfront_cache_policy" "nocache" {
     }
   }
 }
+

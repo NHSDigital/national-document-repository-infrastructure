@@ -8,7 +8,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.86.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.95.0 |
 
 ## Modules
 
@@ -39,8 +39,9 @@
 | <a name="module_bulk-upload-report-alarm-topic"></a> [bulk-upload-report-alarm-topic](#module\_bulk-upload-report-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_bulk-upload-report-lambda"></a> [bulk-upload-report-lambda](#module\_bulk-upload-report-lambda) | ./modules/lambda | n/a |
 | <a name="module_bulk_upload_report_dynamodb_table"></a> [bulk\_upload\_report\_dynamodb\_table](#module\_bulk\_upload\_report\_dynamodb\_table) | ./modules/dynamo_db | n/a |
-| <a name="module_cloudfront-distribution-lg"></a> [cloudfront-distribution-lg](#module\_cloudfront-distribution-lg) | ./modules/cloudfront/ | n/a |
+| <a name="module_cloudfront-distribution-lg"></a> [cloudfront-distribution-lg](#module\_cloudfront-distribution-lg) | ./modules/cloudfront | n/a |
 | <a name="module_cloudfront_edge_dynamodb_table"></a> [cloudfront\_edge\_dynamodb\_table](#module\_cloudfront\_edge\_dynamodb\_table) | ./modules/dynamo_db | n/a |
+| <a name="module_cloudfront_firewall_waf_v2"></a> [cloudfront\_firewall\_waf\_v2](#module\_cloudfront\_firewall\_waf\_v2) | ./modules/firewall_waf_v2 | n/a |
 | <a name="module_create-doc-ref-gateway"></a> [create-doc-ref-gateway](#module\_create-doc-ref-gateway) | ./modules/gateway | n/a |
 | <a name="module_create-doc-ref-lambda"></a> [create-doc-ref-lambda](#module\_create-doc-ref-lambda) | ./modules/lambda | n/a |
 | <a name="module_create-token-gateway"></a> [create-token-gateway](#module\_create-token-gateway) | ./modules/gateway | n/a |
@@ -224,6 +225,8 @@
 | [aws_cloudwatch_metric_alarm.stitching_dlq_new_messages](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cognito_identity_pool.cloudwatch_rum](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_identity_pool) | resource |
 | [aws_cognito_identity_pool_roles_attachment.cloudwatch_rum](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_identity_pool_roles_attachment) | resource |
+| [aws_default_security_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | resource |
+| [aws_default_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_vpc) | resource |
 | [aws_iam_policy.cloudwatch_log_query_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.cloudwatch_rum_cognito_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.copy_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -240,9 +243,7 @@
 | [aws_iam_policy.s3_document_data_policy_put_only](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ses_send_email_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ssm_access_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.ssm_policy_authoriser](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.ssm_policy_oidc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.ssm_policy_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.ssm_access_policy_authoriser](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.cognito_unauthenticated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.create_post_presign_url_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.cross_account_backup_iam_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
