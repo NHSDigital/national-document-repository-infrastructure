@@ -89,7 +89,8 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
+          pip install boto3
+          terraform plan -input=false -no-color -var-file="${{ vars.TF_VARS_FILE }}" -out=tf.plan
         working-directory: ./infrastructure
         shell: bash
 
