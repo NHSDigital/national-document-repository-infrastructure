@@ -1,22 +1,22 @@
 # .github/workflows/terraform-dev
-name: 'Deploy Feature Branch to Sandbox'
+name: "Deploy Feature Branch to Sandbox"
 
 on:
   workflow_dispatch:
     inputs:
       build_branch:
-        description: 'Feature branch to push to a workspace.'
+        description: "Feature branch to push to a workspace."
         required: true
-        type: 'string'
+        type: "string"
       workspace:
-        description: 'Which Terraform workspace to push to.'
+        description: "Which Terraform workspace to push to."
         required: true
-        type: 'string'
+        type: "string"
       environment:
-        default: 'development'
-        description: 'Which environment should this run against'
+        default: "development"
+        description: "Which environment should this run against"
         required: true
-        type: 'string'
+        type: "string"
 
 permissions:
   pull-requests: write
@@ -80,8 +80,12 @@ jobs:
         id: log-update
         run: |
           python3 scripts/import_existing_lambda_log_groups.py ${{ inputs.workspace }} ${{ inputs.environment }}
-      # TODO : End
 
+      - name: Terraform Authoriser SSM update
+        id: authoriser-ssm-update
+        run: |
+          python3 scripts/import_existing_ssm_iam_policy.py ${{ inputs.workspace }} ${{ inputs.environment }}
+      # TODO : End
       - name: Terraform Plan
         id: plan
         run: |
