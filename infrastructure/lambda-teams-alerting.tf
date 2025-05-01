@@ -1,9 +1,9 @@
 data "aws_ssm_parameter" "teams_alerting_webhook_url" {
-  name = "/ndr/${var.environment}/teams/webhook_url"
+  name = "/ndr/poc/alerting/teams/webhook_url"
 }
 
 data "aws_ssm_parameter" "teams_alerting_confluence_page" {
-  name = "/ndr/teams/confluence_base_url"
+  name = "/ndr/poc/alerting/confluence"
 }
 
 module "teams-alerting-lambda" {
