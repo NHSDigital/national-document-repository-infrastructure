@@ -7,7 +7,7 @@ module "ndr-docker-ecr-ui" {
   owner       = var.owner
 }
 module "ndr-docker-ecr-data-collection" {
-  count              = 1
+  count              = local.is_sandbox ? 0 : 1
   source             = "./modules/ecr/"
   app_name           = "${terraform.workspace}-data-collection"
   current_account_id = data.aws_caller_identity.current.account_id

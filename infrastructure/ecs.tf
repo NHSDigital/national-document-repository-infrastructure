@@ -33,7 +33,7 @@ module "ndr-ecs-container-port-ssm-parameter" {
 }
 
 module "ndr-ecs-fargate-data-collection" {
-  count                    = 1
+  count                    = local.is_sandbox ? 0 : 1
   source                   = "./modules/ecs"
   ecs_cluster_name         = "data-collection"
   vpc_id                   = module.ndr-vpc-ui.vpc_id
@@ -93,7 +93,7 @@ module "ndr-ecs-fargate-data-collection" {
 }
 
 resource "aws_iam_role" "data_collection_task_role" {
-  count = 1
+  count = local.is_sandbox ? 0 : 1
   name  = "${terraform.workspace}_data_collection_task_role"
   assume_role_policy = jsonencode(
     {
@@ -115,55 +115,55 @@ resource "aws_iam_role" "data_collection_task_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_lloyd_george_reference_dynamodb_table" {
-  count      = 1
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.data_collection_task_role[0].name
   policy_arn = module.lloyd_george_reference_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_ssm_access_policy" {
-  count      = 1
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.data_collection_task_role[0].name
   policy_arn = aws_iam_policy.ssm_access_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_statistics_dynamodb_table" {
-  count      = 1
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.data_collection_task_role[0].name
   policy_arn = module.statistics_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_statistical_reports_store" {
-  count      = 1
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.data_collection_task_role[0].name
   policy_arn = module.statistical-reports-store.s3_object_access_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_app_config" {
-  count      = 1
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.data_collection_task_role[0].name
   policy_arn = module.ndr-app-config.app_config_policy_arn
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_lloyd_george_store" {
-  count      = 1
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.data_collection_task_role[0].name
   policy_arn = module.ndr-lloyd-george-store.s3_list_object_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_document_store" {
-  count      = 1
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.data_collection_task_role[0].name
   policy_arn = module.ndr-document-store.s3_list_object_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_document_reference_dynamodb_table" {
-  count      = 1
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.data_collection_task_role[0].name
   policy_arn = module.document_reference_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_cloudwatch_log_query_policy" {
-  count      = 1
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.data_collection_task_role[0].name
   policy_arn = aws_iam_policy.cloudwatch_log_query_policy.arn
 }
