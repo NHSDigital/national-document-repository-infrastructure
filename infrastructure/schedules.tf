@@ -115,11 +115,10 @@ resource "aws_lambda_permission" "statistical_report_schedule_permission" {
   ]
 }
 
-resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
+resource "aws_scheduler_schedule" "data_collection_ecs" {
   count       = local.is_sandbox ? 0 : 1
-  name_prefix = "${terraform.workspace}_ods_weekly_update_ecs"
-  description = "A weekly trigger for the ods update run"
-  state       = "DISABLED"
+  name_prefix = "${terraform.workspace}_data_collection_ecs"
+  description = "A weekly trigger for the data collection run"
 
   flexible_time_window {
     mode = "OFF"
@@ -128,24 +127,24 @@ resource "aws_scheduler_schedule" "ods_weekly_update_ecs" {
   schedule_expression = "cron(0 4 ? * SAT *)"
 
   target {
-    arn      = module.ndr-ecs-fargate-ods-update[0].ecs_cluster_arn
-    role_arn = aws_iam_role.ods_weekly_update_ecs_execution[0].arn
+    arn      = module.ndr-ecs-fargate-data-collection[0].ecs_cluster_arn
+    role_arn = aws_iam_role.data_collection_ecs_execution[0].arn
     ecs_parameters {
-      task_definition_arn = replace(module.ndr-ecs-fargate-ods-update[0].task_definition_arn, "/:[0-9]+$/", "")
+      task_definition_arn = replace(module.ndr-ecs-fargate-data-collection[0].task_definition_arn, "/:[0-9]+$/", "")
       task_count          = 1
       launch_type         = "FARGATE"
       network_configuration {
         assign_public_ip = false
-        security_groups  = [module.ndr-ecs-fargate-ods-update[0].security_group_id]
+        security_groups  = [module.ndr-ecs-fargate-data-collection[0].security_group_id]
         subnets          = [for subnet in module.ndr-vpc-ui.private_subnets : subnet]
       }
     }
   }
 }
 
-resource "aws_iam_role" "ods_weekly_update_ecs_execution" {
+resource "aws_iam_role" "data_collection_ecs_execution" {
   count = local.is_sandbox ? 0 : 1
-  name  = "${terraform.workspace}_ods_weekly_update_scheduler_role"
+  name  = "${terraform.workspace}_data_collection_scheduler_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -160,9 +159,9 @@ resource "aws_iam_role" "ods_weekly_update_ecs_execution" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "ods_weekly_update_ecs_execution" {
+resource "aws_iam_role_policy_attachment" "data_collection_ecs_execution" {
   count      = local.is_sandbox ? 0 : 1
-  role       = aws_iam_role.ods_weekly_update_ecs_execution[0].name
+  role       = aws_iam_role.data_collection_ecs_execution[0].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
 }
 
