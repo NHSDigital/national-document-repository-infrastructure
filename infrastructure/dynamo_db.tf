@@ -412,3 +412,44 @@ module "access_audit_dynamodb_table" {
   environment = var.environment
   owner       = var.owner
 }
+
+module "alarm_state_history_table" {
+  source                         = "./modules/dynamo_db"
+  table_name                     = var.alarm_state_history_table
+  hash_key                       = "AlarmName"
+  sort_key                       = "TimeCreated"
+  deletion_protection_enabled    = local.is_production
+  point_in_time_recovery_enabled = !local.is_sandbox
+  stream_enabled                 = false
+
+  attributes = [
+    {
+      name = "AlarmName",
+      type = "S"
+    },
+    {
+      name = "TimeCreated"
+      type = "N"
+    },
+    {
+      name = "History"
+      type = "L"
+    },
+    {
+      name = "LastUpdated"
+      type = "N"
+    },
+    {
+      name = "ChannelId"
+      type = "S"
+    },
+    {
+      name = "SlackTimetamp"
+      type = "S"
+    }
+  ]
+
+  environment = var.environment
+  owner       = var.owner
+
+}
