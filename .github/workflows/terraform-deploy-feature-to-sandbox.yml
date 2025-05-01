@@ -84,12 +84,12 @@ jobs:
       - name: Terraform Authoriser SSM update
         id: authoriser-ssm-update
         run: |
+          pip install boto3
           python3 scripts/import_existing_ssm_iam_policy.py ${{ inputs.workspace }} ${{ inputs.environment }}
       # TODO : End
       - name: Terraform Plan
         id: plan
         run: |
-          pip install boto3
           terraform plan -input=false -no-color -var-file="${{ vars.TF_VARS_FILE }}" -out=tf.plan
         working-directory: ./infrastructure
         shell: bash
