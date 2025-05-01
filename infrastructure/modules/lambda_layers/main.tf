@@ -13,4 +13,11 @@ resource "aws_lambda_layer_version" "lambda_layer" {
   layer_name               = local.lambda_layer_aws_name
   compatible_runtimes      = ["python3.11"]
   compatible_architectures = ["x86_64"]
+
+  lifecycle {
+    ignore_changes = [
+      # These are required as Lambdas are deployed via the CI/CD pipelines
+      filename
+    ]
+  }
 }
