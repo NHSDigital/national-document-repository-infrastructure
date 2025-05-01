@@ -25,7 +25,6 @@ resource "aws_lambda_function" "lambda" {
     ignore_changes = [
       # These are required as Lambdas are deployed via the CI/CD pipelines
       source_code_hash,
-      last_modified,
       layers
     ]
   }
