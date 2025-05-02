@@ -43,7 +43,7 @@ jobs:
       uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.5.4
-        terraform_wrapper: false
+        terraform_wrapper: true
       
     - name: Terraform Init
       id: init
@@ -68,8 +68,6 @@ jobs:
         terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
       working-directory: ./infrastructure
       shell: bash
-
-    - run: echo '${{ toJSON(steps.plan.outputs) }}'
 
     - name: Truncate Plan Output
       id: plan-truncated
