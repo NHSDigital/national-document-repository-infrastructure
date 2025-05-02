@@ -6,6 +6,10 @@ data "aws_ssm_parameter" "teams_alerting_confluence_page" {
   name = "/ndr/poc/alerting/confluence"
 }
 
+data "aws_ssm_parameter" "slack_alerting_channel_id" {
+  name = "/ndr/poc/alerting/slack/channel_id"
+}
+
 module "teams-alerting-lambda" {
   source  = "./modules/lambda"
   name    = "TeamsAlertingLambda"
@@ -26,6 +30,7 @@ module "teams-alerting-lambda" {
     WEBHOOK_URL                 = data.aws_ssm_parameter.teams_alerting_webhook_url.value
     CONFLUENCE_BASE_URL         = data.aws_ssm_parameter.teams_alerting_confluence_page.value
     ALARM_HISTORY_DYNAMODB_NAME = "${terraform.workspace}_${var.alarm_state_history_table_name}"
+    ALERTING_SLACK_CHANNEL_ID   = data.aws_ssm_parameter.slack_alerting_channel_id.value
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
