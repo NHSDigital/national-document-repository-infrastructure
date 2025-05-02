@@ -1,4 +1,4 @@
-module "bulk-upload-metadata-preprocessor-lambda" {
+module "bulk_upload_metadata_preprocessor_lambda" {
   source  = "./modules/lambda"
   name    = "BulkUploadMetadataPreprocessor"
   handler = "handlers.bulk_upload_metadata_preprocessor_handler.lambda_handler"
