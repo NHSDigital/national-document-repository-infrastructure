@@ -112,7 +112,7 @@ variable "access_audit_dynamodb_table_name" {
   default     = "AccessAudit"
 }
 
-variable "alarm_state_history_table" {
+variable "alarm_state_history_table_name" {
   type        = string
   description = "The name of the dynamodb table to store the history of recent alarms that have been triggered."
   default     = "AlarmStateHistory"

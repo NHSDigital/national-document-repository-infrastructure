@@ -13,16 +13,19 @@ module "teams-alerting-lambda" {
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy,
+    module.alarm_state_history_table.dynamodb_read_policy_document,
+    module.alarm_state_history_table.dynamodb_write_policy_document
   ]
   rest_api_id       = null
   api_execution_arn = null
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE               = terraform.workspace
-    WEBHOOK_URL             = data.aws_ssm_parameter.teams_alerting_webhook_url.value
-    CONFLUENCE_BASE_URL     = data.aws_ssm_parameter.teams_alerting_confluence_page.value
+    APPCONFIG_APPLICATION       = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT       = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION     = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE                   = terraform.workspace
+    WEBHOOK_URL                 = data.aws_ssm_parameter.teams_alerting_webhook_url.value
+    CONFLUENCE_BASE_URL         = data.aws_ssm_parameter.teams_alerting_confluence_page.value
+    ALARM_HISTORY_DYNAMODB_NAME = "${terraform.workspace}_${var.alarm_state_history_table_name}"
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
