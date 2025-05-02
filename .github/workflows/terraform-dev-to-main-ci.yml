@@ -21,8 +21,6 @@ jobs:
     name: Terraform Process - Development
     runs-on: ubuntu-latest
     environment: development
-    env:
-      environment: development
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -71,6 +69,8 @@ jobs:
       working-directory: ./infrastructure
       shell: bash
 
+    - run: echo '${{ toJSON(steps.plan.outputs) }}'
+
     - name: Truncate Plan Output
       id: plan-truncated
       env:
@@ -93,7 +93,7 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-author: 'github-actions[bot]'
-        body-includes: Terraform Plan - $environment
+        body-includes: Terraform Plan - Development
 
     - name: Get Job Run URL
       id: run-url
@@ -115,7 +115,7 @@ jobs:
         comment-id: ${{ steps.find-comment.outputs.comment-id }}
         edit-mode: replace
         body: |
-          ## Terraform Plan - $environment 📖 `${{ steps.plan.outcome }}`
+          ## Terraform Plan - Development 📖 `${{ steps.plan.outcome }}`
 
           <details><summary>Plan Output</summary>
 
