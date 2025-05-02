@@ -434,20 +434,8 @@ module "alarm_state_history_table" {
       type = "N"
     },
     {
-      name = "History"
-      type = "S"
-    },
-    {
       name = "LastUpdated"
       type = "N"
-    },
-    {
-      name = "ChannelId"
-      type = "S"
-    },
-    {
-      name = "SlackTimetamp"
-      type = "S"
     }
   ]
 
