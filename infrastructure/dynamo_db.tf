@@ -435,7 +435,7 @@ module "alarm_state_history_table" {
     },
     {
       name = "History"
-      type = "L"
+      type = "S"
     },
     {
       name = "LastUpdated"
