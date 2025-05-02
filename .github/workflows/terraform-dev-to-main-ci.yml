@@ -12,13 +12,17 @@ on:
 
 permissions:
   pull-requests: write
+  actions: read # This is required for Plan comment
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout
     
 jobs:
   terraform_process:
+    name: Terraform Process - Development
     runs-on: ubuntu-latest
     environment: development
+    env:
+      environment: development
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -66,6 +70,61 @@ jobs:
         terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
       working-directory: ./infrastructure
       shell: bash
+
+    - name: Truncate Plan Output
+      id: plan-truncated
+      env:
+        LENGTH: 64512
+      run: |
+        PLAN_FULL=$(grep -v 'Refreshing state...' <<'EOF'
+        ${{ steps.plan.outputs.stdout }}
+        EOF
+        )
+        echo "PLAN<<EOF" >> $GITHUB_ENV
+        echo "${PLAN_FULL::$LENGTH}" >> $GITHUB_ENV
+        [ ${#PLAN_FULL} -gt $LENGTH ] && echo "(truncated - see workflow logs for full output)" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+      working-directory: ./infrastructure
+      shell: bash
+
+    - name: Find Comment
+      uses: peter-evans/find-comment@v3
+      id: find-comment
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: Terraform Plan - $environment
+
+    - name: Get Job Run URL
+      id: run-url
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        RUN_URL=$(gh run view ${{ github.run_id }} --json jobs --jq '
+          .jobs[] | select(.name == "Terraform Process - Development")
+          | (.url + (.steps[] | select(.name == "Determine Terraform Plan")
+            | "?pr=${{ github.event.number }}&check_suite_focus#step:\(.number):1"))')
+        echo "url=$RUN_URL" >> $GITHUB_OUTPUT
+
+    - name: Create comment
+      uses: peter-evans/create-or-update-comment@v4
+      env:
+        VALIDATION: ${{ steps.validate.outputs.stdout }}
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        edit-mode: replace
+        body: |
+          ## Terraform Plan - $environment 📖 `${{ steps.plan.outcome }}`
+
+          <details><summary>Plan Output</summary>
+
+          ```hcl
+          ${{ env.PLAN }}
+          ```
+          </details>
+
+          More information can be seen in the [workflow logs](${{ steps.run-url.outputs.url }}).
     
     # Terraform apply will only occur on a push (merge request completion)
     - name: Terraform Apply 
