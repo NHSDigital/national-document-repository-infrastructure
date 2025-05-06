@@ -45,8 +45,6 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
     label       = "error count for search patient, high if about 4, low if between 1 and 3"
     return_data = true
     expression  = "IF(m1 >= 1 AND m1 <= 3, 1, 0)"
-    namespace   = "AWS/Lambda"
-
   }
 
   metric_query {
@@ -55,7 +53,6 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
     metric {
       metric_name = "Errors"
       namespace   = "AWS/Lambda"
-
       period = 120
       stat   = "Sum"
       dimensions = {
