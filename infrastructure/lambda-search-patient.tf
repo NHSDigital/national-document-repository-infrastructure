@@ -53,8 +53,8 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
     metric {
       metric_name = "Errors"
       namespace   = "AWS/Lambda"
-      period = 120
-      stat   = "Sum"
+      period      = 120
+      stat        = "Sum"
       dimensions = {
         FunctionName = module.search-patient-details-lambda.function_name
       }
