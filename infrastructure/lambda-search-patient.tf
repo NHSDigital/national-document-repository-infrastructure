@@ -20,16 +20,62 @@ module "search-patient-details-gateway" {
   ]
 }
 
-module "search_patient_alarm" {
-  source               = "./modules/lambda_alarms"
-  lambda_function_name = module.search-patient-details-lambda.function_name
-  lambda_timeout       = module.search-patient-details-lambda.timeout
-  lambda_name          = "search_patient_details_handler"
-  namespace            = "AWS/Lambda"
-  alarm_actions        = [module.search_patient_alarm_topic.arn]
-  ok_actions           = [module.search_patient_alarm_topic.arn]
-  depends_on           = [module.search-patient-details-lambda, module.search_patient_alarm_topic]
+# module "search_patient_alarm" {
+#   source               = "./modules/lambda_alarms"
+#   lambda_function_name = module.search-patient-details-lambda.function_name
+#   lambda_timeout       = module.search-patient-details-lambda.timeout
+#   lambda_name          = "search_patient_details_handler"
+#   namespace            = "AWS/Lambda"
+#   alarm_actions        = [module.search_patient_alarm_topic.arn]
+#   ok_actions           = [module.search_patient_alarm_topic.arn]
+#   depends_on           = [module.search-patient-details-lambda, module.search_patient_alarm_topic]
+# }
+
+
+resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
+  alarm_name          = "search_patient_error_count_medium"
+  alarm_description   = "Triggers when search patient lambda error count is between 1 and 3 within 2mins"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  evaluation_periods  = 1
+  alarm_actions       = [module.search_patient_alarm_topic.arn]
+  ok_actions          = [module.search_patient_alarm_topic.arn]
+  metric_query {
+    id          = "error"
+    label       = "error count for search patient, high if about 4, low if between 1 and 3"
+    return_data = true
+    expression  = "IF(m1 >= 1 AND m1 <= 3, 1, 0)"
+  }
+
+  metric_query {
+    id = "m1"
+
+    metric {
+      metric_name = "Errors"
+      period      = 120
+      stat        = "Sum"
+      dimensions = {
+        FunctionName = module.search-patient-details-lambda.function_name
+      }
+    }
+  }
 }
+
+resource "aws_cloudwatch_metric_alarm" "error_alarm_count_high" {
+  alarm_name          = "search_patient_error_count_high"
+  alarm_description   = "Triggers when search patient lambda error count is above 3 within 2mins"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  alarm_actions       = [module.search_patient_alarm_topic.arn]
+  threshold           = 3
+  period              = 120
+  dimensions = {
+    FunctionName = module.search-patient-details-lambda.function_name
+  }
+  metric_name        = "Errors"
+  extended_statistic = "Sum"
+}
+
 
 
 module "search_patient_alarm_topic" {
