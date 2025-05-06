@@ -76,6 +76,22 @@ jobs:
       working-directory: ./infrastructure
       shell: bash
 
+    - name: Truncate Plan Output
+      id: plan-truncated
+      env:
+        LENGTH: 64512
+      run: |
+        PLAN_FULL=$(grep -v 'Refreshing state...' <<'EOF'
+        ${{ steps.plan.outputs.stdout }}
+        EOF
+        )
+        echo "PLAN<<EOF" >> $GITHUB_ENV
+        echo "${PLAN_FULL::$LENGTH}" >> $GITHUB_ENV
+        [ ${#PLAN_FULL} -gt $LENGTH ] && echo "(truncated - see workflow logs for full output)" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+      working-directory: ./infrastructure
+      shell: bash
+
     - name: Add PR comment
       uses: actions/github-script@v7
       if: github.event_name == 'pull_request'
@@ -127,7 +143,7 @@ jobs:
           <details><summary>Show Plan (${{ steps.plan.outputs.summary }})</summary>
 
           \`\`\`\n
-          ${{ steps.plan.outputs.stdout }}
+          ${{ env.PLAN }}
           \`\`\`
 
           </details>`;
