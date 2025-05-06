@@ -72,8 +72,8 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_high" {
   dimensions = {
     FunctionName = module.search-patient-details-lambda.function_name
   }
-  metric_name        = "Errors"
-  extended_statistic = "Sum"
+  metric_name = "Errors"
+  statistic   = "Sum"
 }
 
 
