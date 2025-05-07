@@ -56,7 +56,7 @@ resource "aws_lambda_permission" "invoke_with_sns" {
 resource "aws_iam_policy" "alerting_describe_alarms" {
   name = "${terraform.workspace}_alarm_policy"
 
-  policy = jsondecode({
+  policy = jsonencode({
     Version = "2012-10-17",
     Statment = [
       {
