@@ -55,20 +55,17 @@ resource "aws_lambda_permission" "invoke_with_sns" {
 
 resource "aws_iam_policy" "alerting_describe_alarms" {
   name = "${terraform.workspace}_alarm_policy"
-  path = "/"
 
   policy = jsondecode({
-    Version = "2012-10-17"
-    Statment = concat(
-      [
-        {
-          Action = [
-            "cloudwatch:DescribeAlarms"
-          ]
-          Effect   = "Allow"
-          Resource = "arn:aws:cloudwatch:${var.region}:${data.aws_caller_identity.current.account_id}:alarm:*"
-        }
-      ]
-    )
+    Version = "2012-10-17",
+    Statment = [
+      {
+        Action = [
+          "cloudwatch:DescribeAlarms"
+        ],
+        Effect   = "Allow",
+        Resource = ["arn:aws:cloudwatch:${var.region}:${data.aws_caller_identity.current.account_id}:alarm:*", ]
+      }
+    ]
   })
 }
