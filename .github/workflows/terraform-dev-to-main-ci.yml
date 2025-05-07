@@ -111,8 +111,6 @@ jobs:
           // 2. Prepare format of the comment
           const output = `### Report for environment: ndr-dev
           
-          #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-          
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
           <details><summary>Initialization Output</summary>
 
