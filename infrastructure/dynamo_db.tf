@@ -432,17 +432,13 @@ module "alarm_state_history_table" {
     {
       name = "TimeCreated"
       type = "N"
-    },
-    {
-      name = "LastUpdated"
-      type = "N"
     }
   ]
 
   global_secondary_indexes = [
     {
-      name            = "LastUpdatedIndex"
-      hash_key        = "LastUpdated"
+      name            = "AlarmNameIndex"
+      hash_key        = "AlarmName"
       projection_type = "ALL"
   }]
 
