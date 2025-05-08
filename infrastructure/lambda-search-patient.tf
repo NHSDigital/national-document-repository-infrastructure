@@ -40,6 +40,10 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
   evaluation_periods  = 1
   alarm_actions       = [module.search_patient_alarm_topic.arn]
   ok_actions          = [module.search_patient_alarm_topic.arn]
+  tags = {
+    alerting_type = "KPI"
+    alarm_group   = module.search-patient-details-lambda.function_name
+  }
   metric_query {
     id          = "error"
     label       = "error count for search patient, high if about 4, low if between 1 and 3"
@@ -68,6 +72,7 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_high" {
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   alarm_actions       = [module.search_patient_alarm_topic.arn]
+  ok_actions          = [module.search_patient_alarm_topic.arn]
   threshold           = 3
   period              = 120
   dimensions = {
@@ -76,6 +81,10 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_high" {
   metric_name = "Errors"
   statistic   = "Sum"
   namespace   = "AWS/Lambda"
+  tags = {
+    alerting_type = "KPI"
+    alarm_group   = module.search-patient-details-lambda.function_name
+  }
 }
 
 
