@@ -84,6 +84,7 @@ jobs:
       run: |
         PLAN_FULL=$(grep -v 'Refreshing state...' <<'EOF'
         ${{ steps.plan.outputs.stdout }}
+        ${{ steps.plan.outputs.stderr }}
         EOF
         )
         echo "PLAN<<EOF" >> $GITHUB_ENV
