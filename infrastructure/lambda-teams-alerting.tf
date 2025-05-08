@@ -16,7 +16,7 @@ module "teams-alerting-lambda" {
   handler = "handlers.teams_alerting_handler.lambda_handler"
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
-    aws_iam_policy.alerting_describe_alarms.policy,
+    aws_iam_policy.alerting_alarms_policy.policy,
     module.ndr-app-config.app_config_policy,
     module.alarm_state_history_table.dynamodb_read_policy_document,
     module.alarm_state_history_table.dynamodb_write_policy_document
@@ -53,19 +53,19 @@ resource "aws_lambda_permission" "invoke_with_sns" {
   source_arn    = aws_sns_topic.alarm_notifications_topic[0].arn
 }
 
-resource "aws_iam_policy" "alerting_describe_alarms" {
-  name = "${terraform.workspace}_alarm_policy"
-
+resource "aws_iam_policy" "alerting_alarms_policy" {
+  name        = "${terraform.workspace}_alerting_lambda_alarms_policy"
+  description = "Alarms policy to allow lambda to describe all alarms"
   policy = jsonencode({
-    Version = "2012-10-17",
-    Statment = [
+    Version = "2012-10-17"
+    Statement = [
       {
         Action = [
           "cloudwatch:DescribeAlarms"
-        ],
-        Effect   = "Allow",
-        Resource = ["arn:aws:cloudwatch:${var.region}:${data.aws_caller_identity.current.account_id}:alarm:*"]
-      }
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:cloudwatch:${var.region}:${data.aws_caller_identity.current.account_id}:alarm:*"
+      },
     ]
   })
 }
