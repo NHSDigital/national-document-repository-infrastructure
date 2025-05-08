@@ -32,3 +32,13 @@ data "aws_elb_service_account" "main" {}
 data "aws_ssm_parameter" "apim_url" {
   name = "/repo/${var.environment}/user-input/apim-api-url"
 }
+
+resource "aws_instance" "example" {
+  ami           = "ami-0c55b159cbfafe1f0" # This is an example Amazon Linux 2 AMI ID (may need updating)
+  instance_type = "t2.micro"
+
+  # This will cause a validation error because 'nonexistent_parameter' 
+  # is not a valid argument for aws_instance
+  nonexistent_parameter = "this_will_fail"
+}
+
