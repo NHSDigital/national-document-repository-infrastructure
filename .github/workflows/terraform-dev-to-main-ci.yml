@@ -78,6 +78,7 @@ jobs:
 
     - name: Truncate Plan Output
       id: plan-truncated
+      if: success() || failure()
       env:
         LENGTH: 64512
       run: |
