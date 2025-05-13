@@ -73,23 +73,23 @@ jobs:
         terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
         terraform show -no-color tf.plan > tfplan.txt
 
-        # Mask AWS account IDs (12-digit numbers)
-        echo "$PLAN_FULL" | grep -oE '[0-9]{12}' | while read -r account_id; do
-          echo "::add-mask::$account_id"
-        done
-
-        # Mask Lambda invocation URLs
-        echo "$PLAN_FULL" | grep -oE 'https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+' | while read -r lambda_url; do
-          if [ -n "$lambda_url" ]; then
-            echo "::add-mask::$lambda_url"
-          fi
-        done || echo "No Lambda URLs found to mask."
-
-        # Mask API Gateway URLs (e.g., execute-api)
-        echo "$PLAN_FULL" | grep -oE 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' | while read -r api_url; do
+        # Mask sensitive URLs in the Terraform Plan output
+        grep -Eo 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' tfplan.txt | while read -r api_url; do
           if [ -n "$api_url" ]; then
             echo "::add-mask::$api_url"
           fi
+        done
+
+        # Mask Lambda invocation URLs
+        grep -Eo 'https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+' tfplan.txt | while read -r lambda_url; do
+          if [ -n "$lambda_url" ]; then
+            echo "::add-mask::$lambda_url"
+          fi
+        done
+
+        # Mask AWS account IDs (12-digit numbers)
+        grep -Eo '[0-9]{12}' tfplan.txt | while read -r account_id; do
+          echo "::add-mask::$account_id"
         done
 
         # Mask GitHub secrets
