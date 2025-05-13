@@ -89,7 +89,9 @@ jobs:
 
         # Mask AWS account IDs (12-digit numbers)
         grep -Eo '[0-9]{12}' tfplan.txt | while read -r account_id; do
-          echo "::add-mask::$account_id"
+          if [ -n "$account_id" ]; then
+            echo "::add-mask::$account_id"
+          fi
         done
 
         # Mask GitHub secrets
