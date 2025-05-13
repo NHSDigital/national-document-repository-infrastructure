@@ -88,14 +88,10 @@ jobs:
         EOF
         )
 
-        echo "1"
-
         # Mask AWS account IDs (12-digit numbers)
         echo "$PLAN_FULL" | grep -oE '[0-9]{12}' | while read -r account_id; do
           echo "::add-mask::$account_id"
         done
-
-        echo "2"
 
         # Mask Lambda invocation URLs
         echo "$PLAN_FULL" | grep -oE 'https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+' | while read -r lambda_url; do
@@ -104,8 +100,6 @@ jobs:
           fi
         done || echo "No Lambda URLs found to mask."
 
-        echo "3"
-
         # Mask API Gateway URLs (e.g., execute-api)
         echo "$PLAN_FULL" | grep -oE 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' | while read -r api_url; do
           if [ -n "$api_url" ]; then
@@ -113,18 +107,13 @@ jobs:
           fi
         done
 
-        echo "4"
-
         # Mask GitHub secrets
         echo "::add-mask::${{ secrets.AWS_ASSUME_ROLE }}"
         echo "::add-mask::${{ secrets.GITHUB_TOKEN }}"
 
-        echo "5"
 
         # Mask Terraform variables
         echo "::add-mask::${{ vars.TF_VARS_FILE }}"
-
-        echo "6"
 
         # Optionally redact sensitive strings in the PLAN_FULL variable
         PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's/[0-9]{12}/[REDACTED_AWS_ACCOUNT_ID]/g')
