@@ -71,7 +71,7 @@ jobs:
       id: plan
       run: |
         terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan > plan_output.txt 2>&1
-        terraform show -no-color tf.plan > tfplan.txt > 2>&1
+        terraform show -no-color tf.plan > tfplan.txt 2>&1
         
         # Mask sensitive URLs in the Terraform Plan output
         grep -Eo 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' tfplan.txt | while read -r api_url; do
