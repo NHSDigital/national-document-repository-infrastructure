@@ -32,8 +32,8 @@ module "search-patient-details-gateway" {
 # }
 
 
-resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
-  alarm_name          = "search_patient_error_count_medium"
+resource "aws_cloudwatch_metric_alarm" "error_alarm_count_low" {
+  alarm_name          = "search_patient_error_count_low"
   alarm_description   = "Triggers when search patient lambda error count is between 1 and 3 within 2mins"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 0
@@ -66,6 +66,40 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
   }
 }
 
+
+resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
+  alarm_name          = "search_patient_error_count_medium"
+  alarm_description   = "Triggers when search patient lambda error count is between 1 and 3 within 2mins"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 4
+  evaluation_periods  = 1
+  alarm_actions       = [module.search_patient_alarm_topic.arn]
+  ok_actions          = [module.search_patient_alarm_topic.arn]
+  tags = {
+    alerting_type = "KPI"
+    alarm_group   = module.search-patient-details-lambda.function_name
+  }
+  metric_query {
+    id          = "error"
+    label       = "error count for search patient, high if about 4, low if between 1 and 3"
+    return_data = true
+    expression  = "IF(m1 >= 4 AND m1 <= 6, 1, 0)"
+  }
+
+  metric_query {
+    id = "m1"
+
+    metric {
+      metric_name = "Errors"
+      namespace   = "AWS/Lambda"
+      period      = 120
+      stat        = "Sum"
+      dimensions = {
+        FunctionName = module.search-patient-details-lambda.function_name
+      }
+    }
+  }
+}
 resource "aws_cloudwatch_metric_alarm" "error_alarm_count_high" {
   alarm_name          = "search_patient_error_count_high"
   alarm_description   = "Triggers when search patient lambda error count is above 3 within 2mins"
@@ -73,7 +107,7 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_high" {
   evaluation_periods  = 1
   alarm_actions       = [module.search_patient_alarm_topic.arn]
   ok_actions          = [module.search_patient_alarm_topic.arn]
-  threshold           = 3
+  threshold           = 7
   period              = 120
   dimensions = {
     FunctionName = module.search-patient-details-lambda.function_name
