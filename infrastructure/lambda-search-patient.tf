@@ -125,30 +125,6 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_high" {
   }
 }
 
-
-# resource "aws_cloudwatch_metric_alarm" "error_alarm_count_high" {
-#   alarm_name          = "search_patient_error_count_high"
-#   alarm_description   = "Triggers when search patient lambda error count is above 7 within 2mins"
-#   comparison_operator = "GreaterThanThreshold"
-#   evaluation_periods  = 1
-#   alarm_actions       = [module.search_patient_alarm_topic.arn]
-#   ok_actions          = [module.search_patient_alarm_topic.arn]
-#   threshold           = 7
-#   period              = 120
-#   dimensions = {
-#     FunctionName = module.search-patient-details-lambda.function_name
-#   }
-#   metric_name = "Errors"
-#   statistic   = "Sum"
-#   namespace   = "AWS/Lambda"
-#   tags = {
-#     alerting_type = "KPI"
-#     alarm_group   = module.search-patient-details-lambda.function_name
-#   }
-# }
-
-
-
 module "search_patient_alarm_topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
