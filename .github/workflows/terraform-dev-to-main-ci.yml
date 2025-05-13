@@ -99,14 +99,18 @@ jobs:
 
         # Mask Lambda invocation URLs
         echo "$PLAN_FULL" | grep -oE 'https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+' | while read -r lambda_url; do
-          echo "::add-mask::$lambda_url"
-        done
+          if [ -n "$lambda_url" ]; then
+            echo "::add-mask::$lambda_url"
+          fi
+        done || echo "No Lambda URLs found to mask."
 
         echo "3"
 
         # Mask API Gateway URLs (e.g., execute-api)
         echo "$PLAN_FULL" | grep -oE 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' | while read -r api_url; do
-          echo "::add-mask::$api_url"
+          if [ -n "$api_url" ]; then
+            echo "::add-mask::$api_url"
+          fi
         done
 
         echo "4"
