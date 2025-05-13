@@ -90,7 +90,7 @@ jobs:
           if [ -n "$lambda_url" ]; then
             echo "::add-mask::$lambda_url"
           fi
-        done
+        done || echo "No Lambda URLs found to mask."
 
         echo "2"
 
