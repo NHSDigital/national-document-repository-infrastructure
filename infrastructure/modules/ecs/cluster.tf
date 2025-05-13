@@ -11,6 +11,11 @@ resource "aws_ecs_cluster" "ndr_ecs_cluster" {
     }
   }
 
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
+
   tags = {
     Name        = "${terraform.workspace}-ecs"
     Environment = var.environment

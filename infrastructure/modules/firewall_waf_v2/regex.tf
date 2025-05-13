@@ -1,7 +1,7 @@
 resource "aws_wafv2_regex_pattern_set" "large_body_uri" {
   name        = "${terraform.workspace}-fw-waf-body-size"
   description = "A set of regex to allow specific pages to bypass the large body check"
-  scope       = "REGIONAL"
+  scope       = var.cloudfront_acl ? "CLOUDFRONT" : "REGIONAL"
 
   # Allow pages involving images
   regular_expression {
@@ -24,7 +24,7 @@ resource "aws_wafv2_regex_pattern_set" "large_body_uri" {
 resource "aws_wafv2_regex_pattern_set" "xss_body_uri" {
   name        = "${terraform.workspace}-fw-waf-body-xss"
   description = "A regex to allow specific pages to bypass XSS checks on body"
-  scope       = "REGIONAL"
+  scope       = var.cloudfront_acl ? "CLOUDFRONT" : "REGIONAL"
 
   # Allow pages involving images
   regular_expression {
@@ -42,7 +42,7 @@ resource "aws_wafv2_regex_pattern_set" "xss_body_uri" {
 resource "aws_wafv2_regex_pattern_set" "exclude_cms_uri" {
   name        = "${terraform.workspace}-fw-waf-cms-exclude"
   description = "A regex to allow CMS calls to bypass firewalls"
-  scope       = "REGIONAL"
+  scope       = var.cloudfront_acl ? "CLOUDFRONT" : "REGIONAL"
 
   # Allow pages involving images
   regular_expression {

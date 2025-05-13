@@ -6,10 +6,10 @@ module "ndr-docker-ecr-ui" {
   environment = var.environment
   owner       = var.owner
 }
-module "ndr-docker-ecr-weekly-ods-update" {
+module "ndr-docker-ecr-data-collection" {
   count              = local.is_sandbox ? 0 : 1
   source             = "./modules/ecr/"
-  app_name           = "${terraform.workspace}-weekly-ods-update"
+  app_name           = "${terraform.workspace}-data-collection"
   current_account_id = data.aws_caller_identity.current.account_id
   environment        = var.environment
   owner              = var.owner
