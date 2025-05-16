@@ -30,7 +30,7 @@ resource "aws_ecs_service" "ndr_ecs_service" {
   depends_on = [aws_lb_target_group.ecs_lb_tg[0]]
 
   lifecycle {
-    ignore_changes = [
+    ignore_changes = [ # The task definition is being modified outside of terraform, so we need to ignore it
       task_definition
     ]
   }
