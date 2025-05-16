@@ -6,6 +6,7 @@ resource "aws_ecs_task_definition" "ndr_ecs_task" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.ecs_task_definition_cpu
   memory                   = var.ecs_task_definition_memory
+  track_latest             = true
 
   container_definitions = jsonencode([
     {
@@ -38,3 +39,6 @@ resource "aws_cloudwatch_log_group" "awslogs-ndr-ecs" {
   name              = "${terraform.workspace}-ecs-task-${var.ecs_cluster_name}"
   retention_in_days = 0
 }
+
+
+
