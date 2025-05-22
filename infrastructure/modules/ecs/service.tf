@@ -44,7 +44,7 @@ resource "aws_ecs_cluster_capacity_providers" "fargate" {
   capacity_providers = ["FARGATE"]
 
   default_capacity_provider_strategy {
-    base              = 1
+    base              = var.autoscaling_min_capacity
     weight            = 100
     capacity_provider = "FARGATE"
   }
