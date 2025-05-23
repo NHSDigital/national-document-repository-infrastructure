@@ -21,7 +21,7 @@ module "search-patient-details-gateway" {
 #   depends_on           = [module.search-patient-details-lambda, module.search_patient_alarm_topic]
 # }
 
-resource "aws_cloudwatch_metric_alarm" "error_alarm_count_low" {
+resource "aws_cloudwatch_metric_alarm" "error_count_low" {
   alarm_name          = "search_patient_error_count_low"
   alarm_description   = "Triggers when search patient lambda error count is between 1 and 3 within 2mins"
   comparison_operator = "GreaterThanThreshold"
@@ -57,7 +57,7 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_low" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
+resource "aws_cloudwatch_metric_alarm" "error_count_medium" {
   alarm_name          = "search_patient_error_count_medium"
   alarm_description   = "Triggers when search patient lambda error count is between 4 and 6 within 2mins"
   comparison_operator = "GreaterThanThreshold"
@@ -93,7 +93,7 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "error_alarm_count_high" {
+resource "aws_cloudwatch_metric_alarm" "error_count_high" {
   alarm_name          = "search_patient_error_count_high"
   alarm_description   = "Triggers when search patient lambda error count is about 7"
   comparison_operator = "GreaterThanThreshold"
