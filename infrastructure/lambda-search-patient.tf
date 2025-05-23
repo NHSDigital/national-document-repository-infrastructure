@@ -21,7 +21,6 @@ module "search-patient-details-gateway" {
 #   depends_on           = [module.search-patient-details-lambda, module.search_patient_alarm_topic]
 # }
 
-
 resource "aws_cloudwatch_metric_alarm" "error_alarm_count_low" {
   alarm_name          = "search_patient_error_count_low"
   alarm_description   = "Triggers when search patient lambda error count is between 1 and 3 within 2mins"
@@ -33,10 +32,12 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_low" {
   tags = {
     alerting_type = "KPI"
     alarm_group   = module.search-patient-details-lambda.function_name
+    alarm_metric  = "Errors"
+    severity      = "low"
   }
   metric_query {
     id          = "error"
-    label       = "error count for search patient, high if above 7, low if between 1 and 3, med between 4 - 6, high 7+"
+    label       = "error count for search patient, low if between 1 and 3"
     return_data = true
     expression  = "IF(m1 >= 1 AND m1 <= 3, 1, 0)"
   }
@@ -56,7 +57,6 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_low" {
   }
 }
 
-
 resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
   alarm_name          = "search_patient_error_count_medium"
   alarm_description   = "Triggers when search patient lambda error count is between 4 and 6 within 2mins"
@@ -68,10 +68,12 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_medium" {
   tags = {
     alerting_type = "KPI"
     alarm_group   = module.search-patient-details-lambda.function_name
+    alarm_metric  = "Errors"
+    severity      = "medium"
   }
   metric_query {
     id          = "error"
-    label       = "error count for search patient, high if about 4, low if between 1 and 3"
+    label       = "error count for search patient, medium if between 4 and 6"
     return_data = true
     expression  = "IF(m1 >= 4 AND m1 <= 6, 1, 0)"
   }
@@ -102,10 +104,12 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm_count_high" {
   tags = {
     alerting_type = "KPI"
     alarm_group   = module.search-patient-details-lambda.function_name
+    alarm_metric  = "Errors"
+    severity      = "high"
   }
   metric_query {
     id          = "error"
-    label       = "error count for search patient, high if about 4, low if between 1 and 3"
+    label       = "error count for search patient, high if above 7"
     return_data = true
     expression  = "IF(m1 >= 7, 1, 0)"
   }
@@ -156,23 +160,19 @@ module "search_patient_alarm_topic" {
 }
 
 
-resource "aws_sns_topic_subscription" "search-patient-teams-alert" {
-  endpoint   = module.teams-alerting-lambda.lambda_arn
-  protocol   = "lambda"
-  topic_arn  = module.search_patient_alarm_topic.arn
-  depends_on = [module.teams-alerting-lambda]
+resource "aws_sns_topic_subscription" "im_alerting_search_patient" {
+  endpoint  = module.im-alerting-lambda.lambda_arn
+  protocol  = "lambda"
+  topic_arn = module.search_patient_alarm_topic.arn
 }
 
-
-resource "aws_lambda_permission" "teams_invoke_with_search_patient_sns" {
+resource "aws_lambda_permission" "im_alerting_invoke_with_search_patient_sns" {
   statement_id  = "AllowExecutionFromSeachPatientAlarmSNS"
   action        = "lambda:InvokeFunction"
-  function_name = module.teams-alerting-lambda.lambda_arn
+  function_name = module.im-alerting-lambda.lambda_arn
   principal     = "sns.amazonaws.com"
   source_arn    = module.search_patient_alarm_topic.arn
 }
-
-
 
 module "search-patient-details-lambda" {
   source  = "./modules/lambda"

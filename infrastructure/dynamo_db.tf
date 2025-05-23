@@ -416,7 +416,7 @@ module "access_audit_dynamodb_table" {
 module "alarm_state_history_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.alarm_state_history_table_name
-  hash_key                       = "AlarmName"
+  hash_key                       = "AlarmNameMetric"
   sort_key                       = "TimeCreated"
   deletion_protection_enabled    = local.is_production
   point_in_time_recovery_enabled = !local.is_sandbox
@@ -426,7 +426,7 @@ module "alarm_state_history_table" {
 
   attributes = [
     {
-      name = "AlarmName",
+      name = "AlarmNameMetric",
       type = "S"
     },
     {
@@ -435,14 +435,13 @@ module "alarm_state_history_table" {
     }
   ]
 
-  global_secondary_indexes = [
-    {
-      name            = "AlarmNameIndex"
-      hash_key        = "AlarmName"
-      projection_type = "ALL"
-  }]
+  # global_secondary_indexes = [
+  #   {
+  #     name            = "AlarmNameIndex"
+  #     hash_key        = "AlarmName"
+  #     projection_type = "ALL"
+  # }]
 
   environment = var.environment
   owner       = var.owner
-
 }

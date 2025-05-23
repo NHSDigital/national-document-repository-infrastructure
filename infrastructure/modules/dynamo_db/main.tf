@@ -106,7 +106,6 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
     }
   }
 
-
 }
 
 data "aws_iam_policy_document" "dynamodb_write_policy" {
