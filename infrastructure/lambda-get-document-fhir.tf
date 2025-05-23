@@ -19,7 +19,7 @@ resource "aws_api_gateway_method" "get_document_reference" {
 
 moved {
   from = module.get-doc-nrl-lambda
-  to   = module.get-doc-fhir-lambda
+  to   = module.get-doc-fhir-lambda[0]
 }
 
 module "get-doc-fhir-lambda" {

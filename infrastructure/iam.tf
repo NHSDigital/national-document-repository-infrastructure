@@ -144,7 +144,7 @@ data "aws_iam_policy_document" "assume_role_policy_for_get_doc_ref_lambda" {
 }
 moved {
   from = aws_iam_role.nrl_get_doc_presign_url_role
-  to   = aws_iam_role.get_fhir_doc_presign_url_role
+  to   = aws_iam_role.get_fhir_doc_presign_url_role[0]
 }
 
 resource "aws_iam_role" "get_fhir_doc_presign_url_role" {
@@ -155,7 +155,7 @@ resource "aws_iam_role" "get_fhir_doc_presign_url_role" {
 
 moved {
   from = aws_iam_role_policy_attachment.nrl_get_doc_presign_url
-  to   = aws_iam_role_policy_attachment.get_doc_presign_url
+  to   = aws_iam_role_policy_attachment.get_doc_presign_url[0]
 }
 
 resource "aws_iam_role_policy_attachment" "get_doc_presign_url" {
