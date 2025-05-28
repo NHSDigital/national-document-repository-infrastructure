@@ -82,7 +82,7 @@ jobs:
       
   react_testing_job:
     name: Run UI Unit Tests
-    uses: nhsconnect/national-document-repository/.github/workflows/base-jest-test.yml@main
+    uses: nhsconnect/national-document-repository/.github/workflows/base-vitest-test.yml@main
     with:
       build_branch: main
 
