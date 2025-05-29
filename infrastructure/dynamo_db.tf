@@ -435,12 +435,12 @@ module "alarm_state_history_table" {
     }
   ]
 
-  # global_secondary_indexes = [
-  #   {
-  #     name            = "AlarmNameMetricIndex"
-  #     hash_key        = "AlarmNameMetric"
-  #     projection_type = "ALL"
-  # }]
+  global_secondary_indexes = [
+    {
+      name            = "AlarmNameMetricIndex"
+      hash_key        = "AlarmNameMetric"
+      projection_type = "ALL"
+  }]
 
   environment = var.environment
   owner       = var.owner

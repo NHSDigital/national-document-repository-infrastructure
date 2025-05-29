@@ -21,7 +21,6 @@ module "im-alerting-lambda" {
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
     aws_iam_policy.alerting_lambda_alarms.policy,
-    aws_iam_policy.alerting_lambda_dynamo_index.policy,
     module.ndr-app-config.app_config_policy,
     module.alarm_state_history_table.dynamodb_read_policy_document,
     module.alarm_state_history_table.dynamodb_write_policy_document
@@ -62,20 +61,3 @@ resource "aws_iam_policy" "alerting_lambda_alarms" {
     ]
   })
 }
-
-resource "aws_iam_policy" "alerting_lambda_dynamo_index" {
-  name        = "${terraform.workspace}_alerting_lambda_dynamo_index_policy"
-  description = "Policy to allow query by index with creating secondary global index"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "dynamodb:Query"
-        ]
-        Effect   = "Allow"
-        Resource = "${module.alarm_state_history_table.dynamodb_table_arn}/index/*"
-    }]
-  })
-}
-
