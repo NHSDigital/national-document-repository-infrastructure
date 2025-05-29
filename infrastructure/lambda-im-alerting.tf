@@ -52,7 +52,8 @@ resource "aws_iam_policy" "alerting_lambda_alarms" {
     Statement = [
       {
         Action = [
-          "cloudwatch:DescribeAlarms"
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:ListTagsForResource"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:cloudwatch:${var.region}:${data.aws_caller_identity.current.account_id}:alarm:*"
