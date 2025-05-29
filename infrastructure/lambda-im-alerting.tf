@@ -43,19 +43,6 @@ module "im-alerting-lambda" {
   lambda_timeout                = 900
 }
 
-resource "aws_sns_topic_subscription" "im_alerting" {
-  endpoint  = module.im-alerting-lambda.lambda_arn
-  protocol  = "lambda"
-  topic_arn = aws_sns_topic.alarm_notifications_topic[0].arn
-}
-
-resource "aws_lambda_permission" "im_alerting_lambda_invoke_with_sns" {
-  statement_id  = "AllowExecutionFromSNS"
-  action        = "lambda:InvokeFunction"
-  function_name = module.im-alerting-lambda.lambda_arn
-  principal     = "sns.amazonaws.com"
-  source_arn    = aws_sns_topic.alarm_notifications_topic[0].arn
-}
 
 resource "aws_iam_policy" "alerting_lambda_alarms" {
   name        = "${terraform.workspace}_alerting_lambda_alarms_policy"
