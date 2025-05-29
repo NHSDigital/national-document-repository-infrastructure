@@ -437,8 +437,8 @@ module "alarm_state_history_table" {
 
   # global_secondary_indexes = [
   #   {
-  #     name            = "AlarmNameIndex"
-  #     hash_key        = "AlarmName"
+  #     name            = "AlarmNameMetricIndex"
+  #     hash_key        = "AlarmNameMetric"
   #     projection_type = "ALL"
   # }]
 
