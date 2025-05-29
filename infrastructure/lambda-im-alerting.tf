@@ -21,6 +21,7 @@ module "im-alerting-lambda" {
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
     aws_iam_policy.alerting_lambda_alarms.policy,
+    aws_iam_policy.alerting_lambda_dynamo_index.policy,
     module.ndr-app-config.app_config_policy,
     module.alarm_state_history_table.dynamodb_read_policy_document,
     module.alarm_state_history_table.dynamodb_write_policy_document
@@ -77,3 +78,4 @@ resource "aws_iam_policy" "alerting_lambda_dynamo_index" {
     }]
   })
 }
+
