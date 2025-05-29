@@ -35,8 +35,8 @@ module "im-alerting-lambda" {
     TEAMS_WEBHOOK_URL           = data.aws_ssm_parameter.teams_alerting_webhook_url.value
     CONFLUENCE_BASE_URL         = data.aws_ssm_parameter.im_alerting_confluence_url.value
     ALARM_HISTORY_DYNAMODB_NAME = "${terraform.workspace}_${var.alarm_state_history_table_name}"
-    SLACK_CHANNEL_ID            = data.aws_ssm_parameter.slack_alerting_channel_id.value
-    SLACK_BOT_TOKEN             = data.aws_ssm_parameter.slack_alerting_bot_token.value
+    SLACK_ALERTING_CHANNEL_ID   = data.aws_ssm_parameter.slack_alerting_channel_id.value
+    SLACK_ALERTING_BOT_TOKEN    = data.aws_ssm_parameter.slack_alerting_bot_token.value
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
