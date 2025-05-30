@@ -21,6 +21,7 @@ module "im-alerting-lambda" {
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
     aws_iam_policy.alerting_lambda_alarms.policy,
+    aws_iam_policy.alerting_lambda_tags.policy,
     module.ndr-app-config.app_config_policy,
     module.alarm_state_history_table.dynamodb_read_policy_document,
     module.alarm_state_history_table.dynamodb_write_policy_document
@@ -60,5 +61,21 @@ resource "aws_iam_policy" "alerting_lambda_alarms" {
         Resource = "arn:aws:cloudwatch:${var.region}:${data.aws_caller_identity.current.account_id}:alarm:*"
       },
     ]
+  })
+}
+
+resource "aws_iam_policy" "alerting_lambda_tags" {
+  name        = "${terraform.workspace}_alerting_lambda_tags_policy"
+  description = "Tags policy to allow alerting lambda to get resources by tags"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "tags:GetResources"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+    }]
   })
 }
