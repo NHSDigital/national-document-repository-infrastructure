@@ -35,9 +35,9 @@ module "im-alerting-lambda" {
     WORKSPACE                   = terraform.workspace
     TEAMS_WEBHOOK_URL           = data.aws_ssm_parameter.teams_alerting_webhook_url.value
     CONFLUENCE_BASE_URL         = data.aws_ssm_parameter.im_alerting_confluence_url.value
-    ALARM_HISTORY_DYNAMODB_NAME = "${terraform.workspace}_${var.alarm_state_history_table_name}"
-    SLACK_ALERTING_CHANNEL_ID   = data.aws_ssm_parameter.slack_alerting_channel_id.value
-    SLACK_ALERTING_BOT_TOKEN    = data.aws_ssm_parameter.slack_alerting_bot_token.value
+    ALARM_HISTORY_DYNAMODB_NAME = module.alarm_state_history_table.table_name
+    SLACK_CHANNEL_ID            = data.aws_ssm_parameter.slack_alerting_channel_id.value
+    SLACK_BOT_TOKEN             = data.aws_ssm_parameter.slack_alerting_bot_token.value
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
@@ -55,7 +55,6 @@ resource "aws_iam_policy" "alerting_lambda_alarms" {
         Action = [
           "cloudwatch:DescribeAlarms",
           "cloudwatch:ListTagsForResource",
-          "tag:GetResources"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:cloudwatch:${var.region}:${data.aws_caller_identity.current.account_id}:alarm:*"
@@ -72,7 +71,7 @@ resource "aws_iam_policy" "alerting_lambda_tags" {
     Statement = [
       {
         Action = [
-          "tags:GetResources"
+          "tag:GetResources"
         ]
         Effect   = "Allow"
         Resource = "*"

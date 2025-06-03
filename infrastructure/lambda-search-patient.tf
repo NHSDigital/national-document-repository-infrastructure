@@ -21,7 +21,7 @@ module "search-patient-details-gateway" {
 #   depends_on           = [module.search-patient-details-lambda, module.search_patient_alarm_topic]
 # }
 
-resource "aws_cloudwatch_metric_alarm" "error_count_low" {
+resource "aws_cloudwatch_metric_alarm" "search_patient_error_count_low" {
   alarm_name          = "search_patient_error_count_low"
   alarm_description   = "Triggers when search patient lambda error count is between 1 and 3 within 2mins"
   comparison_operator = "GreaterThanThreshold"
@@ -30,10 +30,10 @@ resource "aws_cloudwatch_metric_alarm" "error_count_low" {
   alarm_actions       = [module.search_patient_alarm_topic.arn]
   ok_actions          = [module.search_patient_alarm_topic.arn]
   tags = {
-    alerting_type = "KPI"
-    alarm_group   = module.search-patient-details-lambda.function_name
-    alarm_metric  = "Errors"
-    severity      = "low"
+    is_kpi       = "true"
+    alarm_group  = module.search-patient-details-lambda.function_name
+    alarm_metric = "Errors"
+    severity     = "low"
   }
   metric_query {
     id          = "error"
@@ -57,7 +57,7 @@ resource "aws_cloudwatch_metric_alarm" "error_count_low" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "error_count_medium" {
+resource "aws_cloudwatch_metric_alarm" "search_patient_error_count_medium" {
   alarm_name          = "search_patient_error_count_medium"
   alarm_description   = "Triggers when search patient lambda error count is between 4 and 6 within 2mins"
   comparison_operator = "GreaterThanThreshold"
@@ -66,10 +66,10 @@ resource "aws_cloudwatch_metric_alarm" "error_count_medium" {
   alarm_actions       = [module.search_patient_alarm_topic.arn]
   ok_actions          = [module.search_patient_alarm_topic.arn]
   tags = {
-    alerting_type = "KPI"
-    alarm_group   = module.search-patient-details-lambda.function_name
-    alarm_metric  = "Errors"
-    severity      = "medium"
+    is_kpi = "true"
+    alarm_group  = module.search-patient-details-lambda.function_name
+    alarm_metric = "Errors"
+    severity     = "medium"
   }
   metric_query {
     id          = "error"
@@ -93,23 +93,23 @@ resource "aws_cloudwatch_metric_alarm" "error_count_medium" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "error_count_high" {
+resource "aws_cloudwatch_metric_alarm" "search_patient_error_count_high" {
   alarm_name          = "search_patient_error_count_high"
-  alarm_description   = "Triggers when search patient lambda error count is about 7"
+  alarm_description   = "Triggers when search patient lambda error count is 7 or above"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 0
   evaluation_periods  = 1
   alarm_actions       = [module.search_patient_alarm_topic.arn]
   ok_actions          = [module.search_patient_alarm_topic.arn]
   tags = {
-    alerting_type = "KPI"
-    alarm_group   = module.search-patient-details-lambda.function_name
-    alarm_metric  = "Errors"
-    severity      = "high"
+    is_kpi = "true"
+    alarm_group  = module.search-patient-details-lambda.function_name
+    alarm_metric = "Errors"
+    severity     = "high"
   }
   metric_query {
     id          = "error"
-    label       = "error count for search patient, high if above 7"
+    label       = "error count for search patient, high if 7 or above"
     return_data = true
     expression  = "IF(m1 >= 7, 1, 0)"
   }
