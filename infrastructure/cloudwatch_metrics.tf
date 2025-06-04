@@ -1,7 +1,17 @@
-resource "aws_cloudwatch_log_metric_filter" "pds_tracker_search_patient_details_lambda" {
-  name           = "PDSUsageMetricFilter"
+locals {
+  pds_tracking_lambdas = [
+    "SearchPatientDetailsLambda",
+    "BulkUploadLambda",
+    "MNSNotificationLambda"
+  ]
+}
+
+resource "aws_cloudwatch_log_metric_filter" "pds_tracker" {
+  for_each = toset(local.pds_tracking_lambdas)
+
+  name           = "PDSUsageMetricFilter-${each.key}"
   pattern        = "%NDR-TR1%"
-  log_group_name = "/aws/lambda/${terraform.workspace}_SearchPatientDetailsLambda"
+  log_group_name = "/aws/lambda/${terraform.workspace}_${each.key}"
 
   metric_transformation {
     name      = "PDSEventCount"
@@ -9,28 +19,3 @@ resource "aws_cloudwatch_log_metric_filter" "pds_tracker_search_patient_details_
     value     = "1"
   }
 }
-
-resource "aws_cloudwatch_log_metric_filter" "pds_tracker_bulk_upload_lambda" {
-  name           = "PDSUsageMetricFilter"
-  pattern        = "%NDR-TR1%"
-  log_group_name = "/aws/lambda/${terraform.workspace}_BulkUploadLambda"
-
-  metric_transformation {
-    name      = "PDSEventCount"
-    namespace = "NDRInsights"
-    value     = "1"
-  }
-}
-
-resource "aws_cloudwatch_log_metric_filter" "pds_tracker_MNS_notification_lambda" {
-  name           = "PDSUsageMetricFilter"
-  pattern        = "%NDR-TR1%"
-  log_group_name = "/aws/lambda/${terraform.workspace}_MNSNotificationLambda"
-
-  metric_transformation {
-    name      = "PDSEventCount"
-    namespace = "NDRInsights"
-    value     = "1"
-  }
-}
-
