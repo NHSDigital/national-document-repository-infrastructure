@@ -7,7 +7,7 @@ locals {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "pds_tracker" {
-  for_each = toset(local.pds_tracking_lambdas)
+  for_each = local.is_sandbox ? [] : toset(local.pds_tracking_lambdas)
 
   name           = "PDSUsageMetricFilter-${each.key}"
   pattern        = "%NDR-TR1%"
