@@ -137,7 +137,7 @@ module "api_endpoint_url_ssm_parameter" {
   environment         = var.environment
 }
 
-module "cloudfront_firewall_waf_v2" {
+module "gateway_firewall_waf_v2" {
   source         = "./modules/firewall_waf_v2"
   cloudfront_acl = false
 
