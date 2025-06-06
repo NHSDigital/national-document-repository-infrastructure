@@ -6,12 +6,22 @@ module "firewall_waf_v2" {
   count          = local.is_sandbox ? 0 : 1
 }
 
-resource "aws_wafv2_web_acl_association" "web_acl_association" {
+resource "aws_wafv2_web_acl_association" "web_acl_association_fargate" {
   resource_arn = module.ndr-ecs-fargate-app.load_balancer_arn
   web_acl_arn  = module.firewall_waf_v2[0].arn
   count        = local.is_sandbox ? 0 : 1
   depends_on = [
     module.ndr-ecs-fargate-app,
+    module.firewall_waf_v2[0]
+  ]
+}
+
+resource "aws_wafv2_web_acl_association" "web_acl_association_api" {
+  resource_arn = aws_api_gateway_stage.ndr_api.arn
+  web_acl_arn  = module.firewall_waf_v2[0].arn
+  count        = local.is_sandbox ? 0 : 1
+  depends_on = [
+    aws_api_gateway_stage.ndr_api,
     module.firewall_waf_v2[0]
   ]
 }
