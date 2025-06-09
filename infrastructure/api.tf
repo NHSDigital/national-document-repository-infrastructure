@@ -93,21 +93,12 @@ resource "aws_api_gateway_stage" "ndr_api" {
   stage_name           = var.environment
   xray_tracing_enabled = var.enable_xray_tracing
 
-  access_log_settings {
-    destination_arn = module.cloudwatch.cloudwatch_log_group_arn
-    format = jsonencode({
-      requestId      = "$context.requestId"
-      ip             = "$context.identity.sourceIp"
-      caller         = "$context.identity.caller"
-      user           = "$context.identity.user"
-      requestTime    = "$context.requestTime"
-      httpMethod     = "$context.httpMethod"
-      resourcePath   = "$context.resourcePath"
-      status         = "$context.status"
-      protocol       = "$context.protocol"
-      responseLength = "$context.responseLength"
-    })
-  }
+  depends_on = [aws_cloudwatch_log_group.this]
+}
+
+resource "aws_cloudwatch_log_group" "this" {
+  name              = "API-Gateway-Execution-Logs_${aws_api_gateway_rest_api.ndr_doc_store_api.id}/${var.environment}"
+  retention_in_days = 7
 }
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response" {
