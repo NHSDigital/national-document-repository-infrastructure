@@ -96,9 +96,23 @@ resource "aws_api_gateway_stage" "ndr_api" {
   depends_on = [aws_cloudwatch_log_group.this]
 }
 
-resource "aws_cloudwatch_log_group" "this" {
+resource "aws_cloudwatch_log_group" "ndr_api_log_group" {
   name              = "API-Gateway-Execution-Logs_${aws_api_gateway_rest_api.ndr_doc_store_api.id}/${var.environment}"
   retention_in_days = 7
+}
+
+resource "aws_api_gateway_method_settings" "ndr_api_log_settings" {
+  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  stage_name  = aws_api_gateway_stage.ndr_api.stage_name
+  method_path = "/*/*"
+
+  settings {
+    logging_level      = "INFO"
+    metrics_enabled    = true
+    data_trace_enabled = true
+  }
+
+  depends_on = [aws_api_gateway_stage.ndr_api]
 }
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response" {
