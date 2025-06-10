@@ -16,7 +16,7 @@ resource "aws_wafv2_web_acl_association" "web_acl_association" {
   ]
 }
 
-resource "aws_wafv2_web_acl_association" "web_acl_association_api" {
+resource "aws_wafv2_web_acl_association" "api_gateway" {
   resource_arn = aws_api_gateway_stage.ndr_api.arn
   web_acl_arn  = module.firewall_waf_v2[0].arn
   count        = local.is_sandbox ? 0 : 1
