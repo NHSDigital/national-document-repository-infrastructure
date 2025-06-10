@@ -96,14 +96,14 @@ resource "aws_api_gateway_stage" "ndr_api" {
   depends_on = [aws_cloudwatch_log_group.ndr_api_log_group]
 }
 
-resource "aws_cloudwatch_log_group" "ndr_api_log_group" {
+resource "aws_cloudwatch_log_group" "api_gateway_stage" {
   # Name must follow this format to allow execution logging 
   # https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
   name              = "API-Gateway-Execution-Logs_${aws_api_gateway_rest_api.ndr_doc_store_api.id}/${var.environment}"
   retention_in_days = 0
 }
 
-resource "aws_api_gateway_method_settings" "ndr_api_log_settings" {
+resource "aws_api_gateway_method_settings" "api_gateway_stage" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   stage_name  = aws_api_gateway_stage.ndr_api.stage_name
   method_path = "*/*"
@@ -113,8 +113,6 @@ resource "aws_api_gateway_method_settings" "ndr_api_log_settings" {
     metrics_enabled    = true
     data_trace_enabled = true
   }
-
-  depends_on = [aws_api_gateway_stage.ndr_api]
 }
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response" {
