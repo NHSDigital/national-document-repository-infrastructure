@@ -104,7 +104,7 @@ resource "aws_cloudwatch_log_group" "ndr_api_log_group" {
 resource "aws_api_gateway_method_settings" "ndr_api_log_settings" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   stage_name  = aws_api_gateway_stage.ndr_api.stage_name
-  method_path = "/*/*"
+  method_path = "*/*"
 
   settings {
     logging_level      = "INFO"
