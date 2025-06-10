@@ -97,8 +97,10 @@ resource "aws_api_gateway_stage" "ndr_api" {
 }
 
 resource "aws_cloudwatch_log_group" "ndr_api_log_group" {
+  # Name must follow this format to allow execution logging 
+  # https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
   name              = "API-Gateway-Execution-Logs_${aws_api_gateway_rest_api.ndr_doc_store_api.id}/${var.environment}"
-  retention_in_days = 7
+  retention_in_days = 0
 }
 
 resource "aws_api_gateway_method_settings" "ndr_api_log_settings" {
