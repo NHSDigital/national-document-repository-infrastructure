@@ -110,7 +110,7 @@ resource "aws_api_gateway_gateway_response" "unauthorised_response" {
   }
 }
 
-resource "aws_api_gateway_client_certificate" "ndr_api_client_certificate" {
+resource "aws_api_gateway_client_certificate" "ndr_api" {
   description = "Client certificate used for backend authentication in HTTP integrations with the NDR API Gateway (${var.environment})"
 }
 
