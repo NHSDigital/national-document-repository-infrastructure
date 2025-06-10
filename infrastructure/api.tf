@@ -93,7 +93,7 @@ resource "aws_api_gateway_stage" "ndr_api" {
   stage_name           = var.environment
   xray_tracing_enabled = var.enable_xray_tracing
 
-  depends_on = [aws_cloudwatch_log_group.this]
+  depends_on = [aws_cloudwatch_log_group.ndr_api_log_group]
 }
 
 resource "aws_cloudwatch_log_group" "ndr_api_log_group" {
