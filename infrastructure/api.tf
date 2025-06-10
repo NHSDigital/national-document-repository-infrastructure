@@ -136,22 +136,3 @@ module "api_endpoint_url_ssm_parameter" {
   owner               = var.owner
   environment         = var.environment
 }
-
-module "gateway_firewall_waf_v2" {
-  source         = "./modules/firewall_waf_v2"
-  cloudfront_acl = false
-
-  environment = var.environment
-  owner       = var.owner
-  count       = local.is_sandbox ? 0 : 1
-}
-
-resource "aws_wafv2_web_acl_association" "web_acl_association_api" {
-  resource_arn = aws_api_gateway_stage.ndr_api.arn
-  web_acl_arn  = module.gateway_firewall_waf_v2[0].arn
-  count        = local.is_sandbox ? 0 : 1
-  depends_on = [
-    aws_api_gateway_stage.ndr_api,
-    module.gateway_firewall_waf_v2[0]
-  ]
-}
