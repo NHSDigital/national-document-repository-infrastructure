@@ -94,13 +94,6 @@ jobs:
           fi
         done || echo "No Account IDs found to mask."
 
-        # Mask PEM-encoded certificate blocks
-        grep -Poz '(?s)-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----' tfplan.txt | while read -r cert_block; do
-          if [ -n "$cert_block" ]; then
-            echo "::add-mask::$cert_block"
-          fi
-        done || echo "No PEM certificates found to mask."
-
         # Mask GitHub secrets
         echo "::add-mask::${{ secrets.AWS_ASSUME_ROLE }}"
         echo "::add-mask::${{ secrets.GITHUB_TOKEN }}"
@@ -132,7 +125,6 @@ jobs:
         PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's/[0-9]{12}/[REDACTED_AWS_ACCOUNT_ID]/g')
         PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+#[REDACTED_LAMBDA_URL]#g')
         PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*#[REDACTED_API_GATEWAY_URL]#g')
-        PLAN_FULL=$(echo "$PLAN_FULL" | sed -E '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/s/.*/[REDACTED_PEM_CERT]/')
 
         echo "PLAN<<EOF" >> $GITHUB_ENV
         echo "${PLAN_FULL::$LENGTH}" >> $GITHUB_ENV

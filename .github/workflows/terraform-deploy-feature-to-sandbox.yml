@@ -70,40 +70,10 @@ jobs:
         run: terraform fmt -check
         working-directory: ./infrastructure
 
-        name: Terraform Plan
+      - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan > plan_output.txt 2>&1
-          terraform show -no-color tf.plan > tfplan.txt
-        
-          # Sanitize PEM blocks in output
-          sed -E '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/s/.*/[REDACTED_PEM_CERT]/' tfplan.txt > plan_output.txt
-        
-          # Mask URLs
-          grep -Eo 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' tfplan.txt | while read -r api_url; do
-            echo "::add-mask::$api_url"
-          done || echo "No API URLs found to mask."
-        
-          grep -Eo 'https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+' tfplan.txt | while read -r lambda_url; do
-            echo "::add-mask::$lambda_url"
-          done || echo "No Lambda URLs found to mask."
-        
-          grep -Eo '[0-9]{12}' tfplan.txt | while read -r account_id; do
-            echo "::add-mask::$account_id"
-          done || echo "No Account IDs found to mask."
-        
-          grep -Poz '(?s)-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----' tfplan.txt | while read -r cert_block; do
-            echo "::add-mask::$cert_block"
-          done || echo "No PEM certificates found to mask."
-        
-          echo "::add-mask::${{ secrets.AWS_ASSUME_ROLE }}"
-          echo "::add-mask::${{ secrets.GITHUB_TOKEN }}"
-          echo "::add-mask::${{ vars.TF_VARS_FILE }}"
-        
-          # Output sanitized plan
-          cat plan_output.txt
-        
-          echo "summary=$(grep -E 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy\.|No changes\. Your infrastructure matches the configuration\.' tfplan.txt | sed 's/.*No changes\. Your infrastructure matches the configuration/Plan: no changes/g' | sed 's/.*Plan: //g' | sed 's/\..*//g')" >> $GITHUB_OUTPUT
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
         working-directory: ./infrastructure
         shell: bash
 
