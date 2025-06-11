@@ -1,21 +1,20 @@
 # .github/workflows/terraform-dev
-name: 'Development CI Feature to Main'
+name: "Development CI Feature to Main"
 
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
     branches:
-    - main
-
+      - main
 
 permissions:
   pull-requests: write
   actions: read # This is required for Plan comment
   id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
-    
+  contents: read # This is required for actions/checkout
+
 jobs:
   terraform_process:
     name: Terraform Process - ndr-dev
@@ -23,209 +22,212 @@ jobs:
     environment: development
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v4
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-        role-skip-session-tagging: true
-        aws-region: ${{ vars.AWS_REGION }}
-        mask-aws-account-id: true
-      
-    - name: View AWS Role
-      run: aws sts get-caller-identity
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: 1.11.4
-        terraform_wrapper: true
-      
-    - name: Terraform Init
-      id: init
-      run: terraform init -backend-config=backend.conf -no-color
-      working-directory: ./infrastructure 
-      shell: bash
+      - name: View AWS Role
+        run: aws sts get-caller-identity
 
-    - name: Terraform Set Workspace
-      id: workspace
-      run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
-      working-directory: ./infrastructure 
-      shell: bash
-      
-      # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      id: fmt
-      run: terraform fmt -check
-      working-directory: ./infrastructure
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11.4
+          terraform_wrapper: true
 
-    - name: terraform validate
-      id: validate
-      run: terraform validate -no-color
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config=backend.conf -no-color
+        working-directory: ./infrastructure
+        shell: bash
 
-    - name: Terraform Plan
-      id: plan
-      run: |
-        terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan > plan_output.txt 2>&1
-        terraform show -no-color tf.plan > tfplan.txt 2>&1
-        
-        # Mask sensitive URLs in the Terraform Plan output
-        grep -Eo 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' tfplan.txt | while read -r api_url; do
-          if [ -n "$api_url" ]; then
-            echo "::add-mask::$api_url"
-          fi
-        done || echo "No api URLs found to mask."
+      - name: Terraform Set Workspace
+        id: workspace
+        run: terraform workspace select ${{ secrets.AWS_WORKSPACE }}
+        working-directory: ./infrastructure
+        shell: bash
 
-        # Mask Lambda invocation URLs
-        grep -Eo 'https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+' tfplan.txt | while read -r lambda_url; do
-          if [ -n "$lambda_url" ]; then
-            echo "::add-mask::$lambda_url"
-          fi
-        done || echo "No Lambda URLs found to mask."
+        # Checks that all Terraform configuration files adhere to a canonical format
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+        working-directory: ./infrastructure
 
-        # Mask AWS account IDs (12-digit numbers)
-        grep -Eo '[0-9]{12}' tfplan.txt | while read -r account_id; do
-          if [ -n "$account_id" ]; then
-            echo "::add-mask::$account_id"
-          fi
-        done || echo "No Account IDs found to mask."
+      - name: terraform validate
+        id: validate
+        run: terraform validate -no-color
 
-        # Mask GitHub secrets
-        echo "::add-mask::${{ secrets.AWS_ASSUME_ROLE }}"
-        echo "::add-mask::${{ secrets.GITHUB_TOKEN }}"
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan > plan_output.txt 2>&1
+          terraform show -no-color tf.plan > tfplan.txt 2>&1
 
-        # Mask Terraform variables
-        echo "::add-mask::${{ vars.TF_VARS_FILE }}"
+          # Mask sensitive URLs in the Terraform Plan output
+          grep -Eo 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' tfplan.txt | while read -r api_url; do
+            if [ -n "$api_url" ]; then
+              echo "::add-mask::$api_url"
+            fi
+          done || echo "No api URLs found to mask."
 
-        # Mask any PEM-encoded certificate blocks (public certs)
-grep -Poz '(?s)-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----' tfplan.txt | while read -r cert_block; do
-  if [ -n "$cert_block" ]; then
-    echo "::add-mask::$cert_block"
-  fi
-done || echo "No PEM certificates found to mask."
+          # Mask Lambda invocation URLs
+          grep -Eo 'https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+' tfplan.txt | while read -r lambda_url; do
+            if [ -n "$lambda_url" ]; then
+              echo "::add-mask::$lambda_url"
+            fi
+          done || echo "No Lambda URLs found to mask."
 
-        # Output the sanitized plan to logs
-        cat plan_output.txt
+          # Mask AWS account IDs (12-digit numbers)
+          grep -Eo '[0-9]{12}' tfplan.txt | while read -r account_id; do
+            if [ -n "$account_id" ]; then
+              echo "::add-mask::$account_id"
+            fi
+          done || echo "No Account IDs found to mask."
 
-        echo "summary=$(grep -E 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy\.|No changes\. Your infrastructure matches the configuration\.' tfplan.txt | sed 's/.*No changes\. Your infrastructure matches the configuration/Plan: no changes/g' | sed 's/.*Plan: //g' | sed 's/\..*//g')" >> $GITHUB_OUTPUT
-      working-directory: ./infrastructure
-      shell: bash
+          # Mask GitHub secrets
+          echo "::add-mask::${{ secrets.AWS_ASSUME_ROLE }}"
+          echo "::add-mask::${{ secrets.GITHUB_TOKEN }}"
 
-    - name: Truncate Plan Output
-      id: plan-truncated
-      if: success() || failure()
-      env:
-        LENGTH: 64512
-      run: |
-        PLAN_FULL=$(grep -v 'Refreshing state...' <<'EOF'
-        ${{ steps.plan.outputs.stdout }}
-        ${{ steps.plan.outputs.stderr }}
-        EOF
-        )
+          # Mask Terraform variables
+          echo "::add-mask::${{ vars.TF_VARS_FILE }}"
 
-        # Optionally redact sensitive strings in the PLAN_FULL variable
-        PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#arn:aws:iam::[0-9]{12}:role/[a-zA-Z0-9_-]+#[REDACTED_IAM_ROLE_ARN]#g')
-        PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's/[0-9]{12}/[REDACTED_AWS_ACCOUNT_ID]/g')
-        PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+#[REDACTED_LAMBDA_URL]#g')
-        PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*#[REDACTED_API_GATEWAY_URL]#g')
-        PLAN_FULL=$(echo "$PLAN_FULL" | sed -E '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/s/.*/[REDACTED_PEM_CERT]/')
+          # Mask any PEM-encoded certificate blocks (public certs)
+          awk '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/' tfplan.txt | \
+          awk 'BEGIN {cert=""; inside=0} 
+               /-----BEGIN CERTIFICATE-----/ {inside=1} 
+               {if (inside) cert = cert $0 "\\n"} 
+               /-----END CERTIFICATE-----/ {
+                 if (inside) {
+                   printf "::add-mask::%s\n", cert;
+                   inside=0;
+                   cert="";
+                 }
+               }'
 
-        echo "PLAN<<EOF" >> $GITHUB_ENV
-        echo "${PLAN_FULL::$LENGTH}" >> $GITHUB_ENV
-        [ ${#PLAN_FULL} -gt $LENGTH ] && echo "(truncated - see workflow logs for full output)" >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
-      working-directory: ./infrastructure
-      shell: bash
+          # Output the sanitized plan to logs
+          cat plan_output.txt
 
-    - name: Add PR comment
-      uses: actions/github-script@v7
-      if: github.event_name == 'pull_request' && (success() || failure())
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          // 1. Retrieve existing bot comments for the PR
-          const { data: comments } = await github.rest.issues.listComments({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.issue.number,
-          })
-          const botComment = comments.find(comment => {
-            return comment.user.type === 'Bot' && comment.body.includes('Report for environment: ndr-dev')
-          })
+          echo "summary=$(grep -E 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy\.|No changes\. Your infrastructure matches the configuration\.' tfplan.txt | sed 's/.*No changes\. Your infrastructure matches the configuration/Plan: no changes/g' | sed 's/.*Plan: //g' | sed 's/\..*//g')" >> $GITHUB_OUTPUT
+        working-directory: ./infrastructure
+        shell: bash
 
-          // 2. Prepare format of the comment
-          const output = `### Report for environment: ndr-dev
-          
-          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-          <details><summary>Initialization Output</summary>
+      - name: Truncate Plan Output
+        id: plan-truncated
+        if: success() || failure()
+        env:
+          LENGTH: 64512
+        run: |
+          PLAN_FULL=$(grep -v 'Refreshing state...' <<'EOF'
+          ${{ steps.plan.outputs.stdout }}
+          ${{ steps.plan.outputs.stderr }}
+          EOF
+          )
 
-          \`\`\`\n
-          ${{ steps.init.outputs.stdout }}
-          \`\`\`
+          # Optionally redact sensitive strings in the PLAN_FULL variable
+          PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#arn:aws:iam::[0-9]{12}:role/[a-zA-Z0-9_-]+#[REDACTED_IAM_ROLE_ARN]#g')
+          PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's/[0-9]{12}/[REDACTED_AWS_ACCOUNT_ID]/g')
+          PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+#[REDACTED_LAMBDA_URL]#g')
+          PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*#[REDACTED_API_GATEWAY_URL]#g')
+          PLAN_FULL=$(echo "$PLAN_FULL" | sed -E '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/s/.*/[REDACTED_PEM_CERT]/')
 
-          </details>
+          echo "PLAN<<EOF" >> $GITHUB_ENV
+          echo "${PLAN_FULL::$LENGTH}" >> $GITHUB_ENV
+          [ ${#PLAN_FULL} -gt $LENGTH ] && echo "(truncated - see workflow logs for full output)" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+        working-directory: ./infrastructure
+        shell: bash
 
-          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-          <details><summary>Validation Output</summary>
-
-          \`\`\`\n
-          ${{ steps.validate.outputs.stdout }}
-          \`\`\`
-
-          </details>
-
-          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-
-          <details><summary>Show Plan (${{ steps.plan.outputs.summary }})</summary>
-
-          \`\`\`\n
-          ${{ env.PLAN }}
-          \`\`\`
-
-          </details>`;
-
-          // 3. If we have a comment, update it, otherwise create a new one
-          if (botComment) {
-            github.rest.issues.deleteComment({
+      - name: Add PR comment
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request' && (success() || failure())
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // 1. Retrieve existing bot comments for the PR
+            const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              comment_id: botComment.id,
+              issue_number: context.issue.number,
+            })
+            const botComment = comments.find(comment => {
+              return comment.user.type === 'Bot' && comment.body.includes('Report for environment: ndr-dev')
+            })
+
+            // 2. Prepare format of the comment
+            const output = `### Report for environment: ndr-dev
+
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            <details><summary>Initialization Output</summary>
+
+            \`\`\`\n
+            ${{ steps.init.outputs.stdout }}
+            \`\`\`
+
+            </details>
+
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            <details><summary>Validation Output</summary>
+
+            \`\`\`\n
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+
+            </details>
+
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan (${{ steps.plan.outputs.summary }})</summary>
+
+            \`\`\`\n
+            ${{ env.PLAN }}
+            \`\`\`
+
+            </details>`;
+
+            // 3. If we have a comment, update it, otherwise create a new one
+            if (botComment) {
+              github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: output
+              })
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               body: output
             })
-          }
-          
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: output
-          })
-    
-    # Terraform apply will only occur on a push (merge request completion)
-    - name: Terraform Apply 
-      if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve -input=false tf.plan
-      working-directory: ./infrastructure
-  
+
+      # Terraform apply will only occur on a push (merge request completion)
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve -input=false tf.plan
+        working-directory: ./infrastructure
+
   run_main_repo_deploy_lambdas:
     name: Deploy Lambdas on NDR Functional Repo
-    needs: ['terraform_process']
+    needs: ["terraform_process"]
     if: github.ref == 'refs/heads/main'
     uses: nhsconnect/national-document-repository/.github/workflows/lambdas-dev-to-main-ci.yml@main
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-  
+
   run_main_repo_deploy_ui:
     name: Deploy UI on NDR Functional Repo
-    needs: ['terraform_process']
+    needs: ["terraform_process"]
     if: github.ref == 'refs/heads/main'
     uses: nhsconnect/national-document-repository/.github/workflows/ui-dev-to-main-ci.yml@main
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-
-        
-        
