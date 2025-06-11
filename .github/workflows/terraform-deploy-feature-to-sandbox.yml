@@ -74,46 +74,48 @@ jobs:
         id: plan
         run: |
           terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan > plan_output.txt 2>&1
-          terraform show -no-color tf.plan > tfplan.txt 2>&1
-  
+              terraform show -no-color tf.plan \
+                | sed -E '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/s/.*/[REDACTED_PEM_CERT]/' \
+                | tee plan_output.txt
+
           # Mask sensitive URLs in the Terraform Plan output
           grep -Eo 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' tfplan.txt | while read -r api_url; do
             if [ -n "$api_url" ]; then
               echo "::add-mask::$api_url"
             fi
           done || echo "No api URLs found to mask."
-  
+
           # Mask Lambda invocation URLs
           grep -Eo 'https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+' tfplan.txt | while read -r lambda_url; do
             if [ -n "$lambda_url" ]; then
               echo "::add-mask::$lambda_url"
             fi
           done || echo "No Lambda URLs found to mask."
-  
+
           # Mask AWS account IDs (12-digit numbers)
           grep -Eo '[0-9]{12}' tfplan.txt | while read -r account_id; do
             if [ -n "$account_id" ]; then
               echo "::add-mask::$account_id"
             fi
           done || echo "No Account IDs found to mask."
-  
+
           # Mask PEM-encoded certificate blocks
           grep -Poz '(?s)-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----' tfplan.txt | while read -r cert_block; do
             if [ -n "$cert_block" ]; then
               echo "::add-mask::$cert_block"
             fi
           done || echo "No PEM certificates found to mask."
-  
+
           # Mask GitHub secrets
           echo "::add-mask::${{ secrets.AWS_ASSUME_ROLE }}"
           echo "::add-mask::${{ secrets.GITHUB_TOKEN }}"
-  
+
           # Mask Terraform variables
           echo "::add-mask::${{ vars.TF_VARS_FILE }}"
-  
+
           # Output the sanitized plan to logs
           cat plan_output.txt
-  
+
           echo "summary=$(grep -E 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy\.|No changes\. Your infrastructure matches the configuration\.' tfplan.txt | sed 's/.*No changes\. Your infrastructure matches the configuration/Plan: no changes/g' | sed 's/.*Plan: //g' | sed 's/\..*//g')" >> $GITHUB_OUTPUT
         working-directory: ./infrastructure
         shell: bash
