@@ -73,26 +73,27 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          # Run Terraform plan and save binary output
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
-      
-          # Convert binary plan to readable format
+          # Run Terraform plan, suppressing direct output
+          terraform plan -input=false -no-color -var-file="${{ vars.TF_VARS_FILE }}" -out=tf.plan 2> plan_exec_log.txt
+
+          # Convert binary plan to human-readable output
           terraform show -no-color tf.plan > tfplan.txt
-      
-          # Mask PEM certificates (BEGIN...END CERTIFICATE blocks)
-          awk 'BEGIN{cert=""} 
-            /-----BEGIN CERTIFICATE-----/{cert=$0; in_cert=1; next} 
-            /-----END CERTIFICATE-----/{cert=cert"\n"$0; print cert; cert=""; in_cert=0; next} 
+
+          # Mask PEM certificates (if present in tfplan.txt)
+          awk 'BEGIN{cert=""}
+            /-----BEGIN CERTIFICATE-----/{cert=$0; in_cert=1; next}
+            /-----END CERTIFICATE-----/{cert=cert"\n"$0; print cert; cert=""; in_cert=0; next}
             in_cert{cert=cert"\n"$0}' tfplan.txt | while IFS= read -r cert_block; do
               if [ -n "$cert_block" ]; then
                 echo "::add-mask::$cert_block"
               fi
           done || echo "No certificate blocks found to mask."
-      
-          # Output sanitized plan to console logs
+
+          # Log the sanitized tfplan.txt for GitHub Actions output
+          echo '--- Terraform Plan Summary ---'
           cat tfplan.txt
-      
-          # Summary line for GitHub job output
+
+          # Extract plan summary (add/change/destroy)
           echo "summary=$(grep -E 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy\.|No changes\. Your infrastructure matches the configuration\.' tfplan.txt | sed 's/.*No changes\. Your infrastructure matches the configuration/Plan: no changes/g' | sed 's/.*Plan: //g' | sed 's/\..*//g')" >> $GITHUB_OUTPUT
         working-directory: ./infrastructure
         shell: bash
