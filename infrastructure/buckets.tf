@@ -53,22 +53,22 @@ module "ndr-lloyd-george-store" {
   cloudfront_enabled        = true
   cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
   bucket_name               = var.lloyd_george_bucket_name
-  enable_cors_configuration = contains(["prod"], terraform.workspace) ? false : true
   enable_bucket_versioning  = true
   environment               = var.environment
   owner                     = var.owner
   force_destroy             = local.is_force_destroy
+  enable_cors_configuration = true
   cors_rules = [
     {
       allowed_headers = ["*"]
       allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
       expose_headers  = ["ETag"]
       max_age_seconds = 3000
     },
     {
       allowed_methods = ["GET"]
-      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
     }
   ]
 }

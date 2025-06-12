@@ -1,3 +1,8 @@
+locals {
+  # required by USA-based CI pipeline runners to run smoke tests
+  allow_us_comms = contains(["ndr-dev"], terraform.workspace)
+}
+
 resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
   name                              = "${terraform.workspace}_cloudfront_s3_oac_policy"
   description                       = "Cloud Front S3 OAC"
@@ -33,7 +38,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
-      locations        = ["GB"]
+      locations        = local.allow_us_comms ? ["GB", "US"] : ["GB"]
     }
   }
   web_acl_id = var.web_acl_id
@@ -92,4 +97,3 @@ resource "aws_cloudfront_cache_policy" "nocache" {
     }
   }
 }
-

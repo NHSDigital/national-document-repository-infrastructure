@@ -1,5 +1,10 @@
 variable "name" {
   type = string
+
+  validation {
+    condition     = length(var.name) < 34
+    error_message = "The lambda name cannot be longer than 33 characters as this breaks the IAM role name limit"
+  }
 }
 
 variable "handler" {

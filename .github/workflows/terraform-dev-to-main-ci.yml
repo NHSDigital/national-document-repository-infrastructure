@@ -121,10 +121,10 @@ jobs:
         )
 
         # Optionally redact sensitive strings in the PLAN_FULL variable
+        PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#arn:aws:iam::[0-9]{12}:role/[a-zA-Z0-9_-]+#[REDACTED_IAM_ROLE_ARN]#g')
         PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's/[0-9]{12}/[REDACTED_AWS_ACCOUNT_ID]/g')
         PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#https://[a-zA-Z0-9.-]+\.lambda\.amazonaws\.com/[a-zA-Z0-9/._-]+#[REDACTED_LAMBDA_URL]#g')
         PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*#[REDACTED_API_GATEWAY_URL]#g')
-        PLAN_FULL=$(echo "$PLAN_FULL" | sed -E 's#arn:aws:iam::[0-9]{12}:role/[a-zA-Z0-9_-]+#[REDACTED_IAM_ROLE_ARN]#g')
 
         echo "PLAN<<EOF" >> $GITHUB_ENV
         echo "${PLAN_FULL::$LENGTH}" >> $GITHUB_ENV
