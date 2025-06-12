@@ -73,25 +73,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          # Run Terraform plan, suppressing direct terminal output
-          terraform plan -input=false -no-color -var-file="${{ vars.TF_VARS_FILE }}" -out=tf.plan     
-
-          # Convert the binary plan to a readable format
-          terraform show -no-color tf.plan > tfplan.txt     
-
-          # Mask any PEM certificate blocks in tfplan.txt
-          awk 'BEGIN{cert=""}
-            /-----BEGIN CERTIFICATE-----/{cert=$0; in_cert=1; next}
-            /-----END CERTIFICATE-----/{cert=cert"\n"$0; print cert; cert=""; in_cert=0; next}
-            in_cert{cert=cert"\n"$0}' tfplan.txt | while IFS= read -r cert_block; do
-              if [ -n "$cert_block" ]; then
-                echo "::add-mask::$cert_block"
-              fi
-          done || echo "No certificate blocks found to mask."     
-
-          # Print sanitized tfplan.txt to GitHub Actions log
-          cat tfplan.txt
-
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
         working-directory: ./infrastructure
         shell: bash
 
