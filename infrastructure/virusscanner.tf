@@ -11,7 +11,7 @@ data "aws_ssm_parameter" "virus_scanning_subnet_cidr_range" {
   name = "/prs/virus-scanner/subnet-cidr-range"
 }
 
-resource "aws_subnet" "virus_scanning_subnet1" {
+resource "aws_subnet" "virus_scanning_a" {
   count = local.is_production ? 1 : 0
 
   availability_zone = "eu-west-2a"
@@ -25,7 +25,7 @@ resource "aws_subnet" "virus_scanning_subnet1" {
   }
 }
 
-resource "aws_subnet" "virus_scanning_subnet2" {
+resource "aws_subnet" "virus_scanning_b" {
   count = local.is_production ? 1 : 0
 
   availability_zone = "eu-west-2b"
@@ -39,7 +39,7 @@ resource "aws_subnet" "virus_scanning_subnet2" {
   }
 }
 
-resource "aws_route_table" "virus_scanning_route_table" {
+resource "aws_route_table" "virus_scanning" {
   count = local.is_production ? 1 : 0
 
   vpc_id = module.ndr-vpc-ui.vpc_id
@@ -56,18 +56,18 @@ resource "aws_route_table" "virus_scanning_route_table" {
   }
 }
 
-resource "aws_route_table_association" "virus_scanning_subnet1_route_table_association" {
+resource "aws_route_table_association" "virus_scanning_a" {
   count = local.is_production ? 1 : 0
 
-  subnet_id      = aws_subnet.virus_scanning_subnet1[0].id
-  route_table_id = aws_route_table.virus_scanning_route_table[0].id
+  subnet_id      = aws_subnet.virus_scanning_a[0].id
+  route_table_id = aws_route_table.virus_scanning[0].id
 }
 
-resource "aws_route_table_association" "virus_scanning_subnet2_route_table_association" {
+resource "aws_route_table_association" "virus_scanning_b" {
   count = local.is_production ? 1 : 0
 
-  subnet_id      = aws_subnet.virus_scanning_subnet2[0].id
-  route_table_id = aws_route_table.virus_scanning_route_table[0].id
+  subnet_id      = aws_subnet.virus_scanning_b[0].id
+  route_table_id = aws_route_table.virus_scanning[0].id
 }
 
 module "cloud_storage_security" {
@@ -77,8 +77,8 @@ module "cloud_storage_security" {
   version                      = "1.7.1+css8.07.002"
   cidr                         = [var.cloud_security_console_black_hole_address] # This is a reserved address that does not lead anywhere to make sure CloudStorageSecurity console is not available
   email                        = data.aws_ssm_parameter.cloud_security_admin_email.value
-  subnet_a_id                  = aws_subnet.virus_scanning_subnet1[0].id
-  subnet_b_id                  = aws_subnet.virus_scanning_subnet2[0].id
+  subnet_a_id                  = aws_subnet.virus_scanning_a[0].id
+  subnet_b_id                  = aws_subnet.virus_scanning_b[0].id
   vpc                          = module.ndr-vpc-ui.vpc_id
   min_running_agents           = 0
   allow_access_to_all_kms_keys = false
@@ -91,7 +91,7 @@ module "cloud_storage_security" {
   }
 }
 
-resource "aws_ssm_parameter" "virus_scan_notifications_sns_topic_arn" {
+resource "aws_ssm_parameter" "virus_scanning_notifications_sns_topic_arn" {
   count = local.is_production ? 1 : 0
 
   name  = "/prs/${var.environment}/virus-scan-notifications-sns-topic-arn"
@@ -99,7 +99,7 @@ resource "aws_ssm_parameter" "virus_scan_notifications_sns_topic_arn" {
   value = module.cloud_storage_security[0].proactive_notifications_topic_arn
 }
 
-resource "aws_sns_topic_subscription" "proactive_notifications_sns_topic_subscription" {
+resource "aws_sns_topic_subscription" "proactive_virus_scanning_notifications" {
   for_each  = local.is_production ? toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))) : []
   endpoint  = each.value
   protocol  = "email"
