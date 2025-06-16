@@ -4,7 +4,7 @@ module "document_reference_gateway" {
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
   http_methods        = ["POST"]
   authorization       = "CUSTOM"
-  gateway_path        = "DocumentReference"
+  gateway_path        = "UploadDocumentReference"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"

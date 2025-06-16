@@ -1,10 +1,14 @@
-resource "aws_api_gateway_method" "post_document_references_fhir" {
-  count            = local.is_production ? 0 : 1
-  rest_api_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id      = module.document_reference_gateway.gateway_resource_id
-  http_method      = "POST"
-  authorization    = "NONE"
-  api_key_required = true
+module "document_reference_gateway" {
+  source              = "./modules/gateway"
+  api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
+  http_methods        = ["POST", "GET"]
+  authorization       = "NONE"
+  api_key_required    = true
+  gateway_path        = "DocumentReference"
+  authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
+  require_credentials = true
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
 
