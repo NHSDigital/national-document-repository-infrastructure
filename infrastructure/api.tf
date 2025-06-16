@@ -49,6 +49,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.back_channel_logout_lambda,
     module.document_reference_gateway,
     module.create-doc-ref-lambda,
+    module.create_document_reference_gateway,
     module.create-token-gateway,
     module.create-token-lambda,
     module.delete-doc-ref-gateway,
