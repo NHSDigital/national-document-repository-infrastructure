@@ -6,9 +6,7 @@ module "document_reference_gateway" {
   authorization       = "NONE"
   api_key_required    = true
   gateway_path        = "DocumentReference"
-  authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
-  require_credentials = true
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  require_credentials = false
 }
 
 
@@ -41,7 +39,5 @@ module "upload-document-references-fhir-lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.search-document-references-gateway,
-    module.ndr-app-config
   ]
 }
