@@ -6,7 +6,7 @@ module "document_reference_gateway" {
   authorization       = "NONE"
   api_key_required    = true
   gateway_path        = "DocumentReference"
-  require_credentials = false
+  require_credentials = true
 }
 
 
