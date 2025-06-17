@@ -369,3 +369,14 @@ module "pdm-document-store" {
     }
   ]
 }
+
+resource "aws_s3_bucket_lifecycle_configuration" "pdm-document-store" {
+  bucket = module.pdm-document-store.bucket_id
+  rule {
+    id     = "default-to-intelligent-tiering"
+    status = "Enabled"
+    transition {
+      storage_class = "INTELLIGENT_TIERING"
+    }
+  }
+}
