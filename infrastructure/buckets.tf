@@ -342,3 +342,30 @@ resource "aws_s3_bucket_logging" "logs_bucket_logging" {
   target_bucket = local.access_logs_bucket_id
   target_prefix = "${aws_s3_bucket.logs_bucket.id}/"
 }
+
+module "pdm-document-store" {
+  source                    = "./modules/s3/"
+  access_logs_enabled       = local.is_production
+  access_logs_bucket_id     = local.access_logs_bucket_id
+  cloudfront_enabled        = true
+  cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
+  bucket_name               = var.pdm_document_bucket_name
+  enable_bucket_versioning  = true
+  environment               = var.environment
+  owner                     = var.owner
+  force_destroy             = local.is_force_destroy
+  enable_cors_configuration = true
+  cors_rules = [
+    {
+      allowed_headers = ["*"]
+      allowed_methods = ["POST", "PUT", "DELETE"]
+      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      expose_headers  = ["ETag"]
+      max_age_seconds = 3000
+    },
+    {
+      allowed_methods = ["GET"]
+      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+    }
+  ]
+}

@@ -41,6 +41,11 @@ variable "lloyd_george_bucket_name" {
   default     = "lloyd-george-store"
 }
 
+variable "pdm_document_bucket_name"{
+  type = string
+  description = "The name of the S3 bucket to store PDM documents"
+}
+
 variable "statistical_reports_bucket_name" {
   type        = string
   description = "The name of the S3 bucket to store weekly generated statistical reports"
