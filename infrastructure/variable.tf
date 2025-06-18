@@ -58,7 +58,7 @@ variable "statistical_reports_bucket_name" {
 variable "pdm_dynamodb_table_name"{
   type = string 
   description = "The name of the dynamodb table to be use for PDM"
-  default = "pdm_dynamodb_table_name"
+  default = "pdm_document_metadata"
 }
 
 variable "docstore_dynamodb_table_name" {
