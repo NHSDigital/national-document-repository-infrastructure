@@ -79,3 +79,7 @@ variable "default_policies" {
   ]
 }
 
+variable "extra_layers" {
+  type = list(string)
+  default = []
+}

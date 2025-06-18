@@ -21,6 +21,7 @@ module "create-token-lambda" {
     module.auth_state_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-app-config.app_config_policy
   ]
+  extra_layers      = ["arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:17"]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.create-token-gateway.gateway_resource_id
   http_methods      = ["GET"]
