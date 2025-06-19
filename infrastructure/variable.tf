@@ -41,10 +41,10 @@ variable "lloyd_george_bucket_name" {
   default     = "lloyd-george-store"
 }
 
-variable "pdm_document_bucket_name"{
-  type = string
+variable "pdm_document_bucket_name" {
+  type        = string
   description = "The name of the S3 bucket to store PDM documents"
-  default = "pdm-document-store"
+  default     = "pdm-document-store"
 }
 
 variable "statistical_reports_bucket_name" {
@@ -55,10 +55,10 @@ variable "statistical_reports_bucket_name" {
 
 # DynamoDB Table Variables
 
-variable "pdm_dynamodb_table_name"{
-  type = string 
+variable "pdm_dynamodb_table_name" {
+  type        = string
   description = "The name of the dynamodb table to be use for pdm metadata"
-  default = "pdm_document_metadata"
+  default     = "pdm_document_metadata"
 }
 
 variable "docstore_dynamodb_table_name" {
