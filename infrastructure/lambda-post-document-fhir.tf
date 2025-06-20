@@ -36,6 +36,7 @@ module "post-document-references-fhir-lambda" {
     DOCUMENT_RETRIEVE_ENDPOINT_APIM = "${local.apim_api_url}/DocumentReference"
     PDS_FHIR_IS_STUBBED             = local.is_sandbox
     WORKSPACE                       = terraform.workspace
+    PRESIGNED_ASSUME_ROLE           = aws_iam_role.create_post_presign_url_role.arn
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
