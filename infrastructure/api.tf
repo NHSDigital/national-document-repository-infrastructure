@@ -161,5 +161,3 @@ module "api_endpoint_url_ssm_parameter" {
   owner               = var.owner
   environment         = var.environment
 }
-
-
