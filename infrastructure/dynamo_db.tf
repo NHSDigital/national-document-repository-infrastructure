@@ -428,10 +428,57 @@ module "pdm_dynamodb_table" {
     {
       name = "ID"
       type = "S"
+    },
+    {
+      name = "NhsNumber"
+      type = "S"
+    },
+    {
+      name = "DocumentSnomedCodeType"
+      type = "S"
+    },
+    {
+      name = "DocStatus"
+      type = "S"
+    },
+    {
+      name = "Author"
+      type = "S"
+    },
+    {
+      name = "Custodian"
+      type = "S"
     }
   ]
 
-  global_secondary_indexes = []
+  global_secondary_indexes = [
+
+    {
+      name            = "NhsNumberIndex"
+      hash_key        = "NhsNumber"
+      projection_type = "ALL"
+    },
+    {
+      name            = "DocumentSnomedCodeTypeIndex"
+      hash_key        = "DocumentSnomedCodeType"
+      projection_type = "ALL"
+    },
+    {
+      name            = "DocStatusIndex"
+      hash_key        = "DocStatus"
+      projection_type = "ALL"
+    },
+    {
+      name            = "AuthorIndex"
+      hash_key        = "Author"
+      projection_type = "ALL"
+    },
+    {
+      name            = "CustodianIndex"
+      hash_key        = "Custodian"
+      projection_type = "ALL"
+    }
+  ]
 
   environment = var.environment
   owner       = var.owner
