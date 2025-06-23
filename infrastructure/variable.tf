@@ -218,3 +218,9 @@ variable "cloud_security_console_public_address" {
   default     = "0.0.0.0/0"
   description = "Using public address to make sure CloudStorageSecurity console is available"
 }
+
+variable "enable_xray_tracing" {
+  description = "Enable AWS X-Ray tracing for the API Gateway stage"
+  type        = bool
+  default     = false
+}
