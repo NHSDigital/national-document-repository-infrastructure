@@ -354,7 +354,7 @@ module "pdm-document-store" {
   force_destroy            = local.is_force_destroy
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "pdm-document-store" {
+resource "aws_s3_bucket_lifecycle_configuration" "pdm_document_store" {
   bucket = module.pdm-document-store.bucket_id
   rule {
     id     = "default-to-intelligent-tiering"
