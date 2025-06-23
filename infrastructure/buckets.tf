@@ -347,8 +347,6 @@ module "pdm-document-store" {
   source                    = "./modules/s3/"
   access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
-  cloudfront_enabled        = true
-  cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
   bucket_name               = var.pdm_document_bucket_name
   enable_bucket_versioning  = true
   environment               = var.environment
