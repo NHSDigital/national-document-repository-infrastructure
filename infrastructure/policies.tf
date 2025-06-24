@@ -31,7 +31,7 @@ resource "aws_iam_policy" "param_store_access_policy" {
           "ssm:PutParameter"
         ],
         Resource = [
-          "arn:aws:ssm:${var.region}:${data.aws_caller_identity.current}:parameter/*",
+          "arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/*",
         ]
       },
       {
@@ -40,7 +40,7 @@ resource "aws_iam_policy" "param_store_access_policy" {
           "kms:Decrypt"
         ],
         Resource = [
-          "arn:aws:kms:${var.region}:${data.aws_caller_identity.current}:key/69f6093c-d0b9-4fee-b84d-96f8799ec71c",
+          "arn:aws:kms:${var.region}:${data.aws_caller_identity.current.account_id}:key/69f6093c-d0b9-4fee-b84d-96f8799ec71c",
         ]
       }
     ]
