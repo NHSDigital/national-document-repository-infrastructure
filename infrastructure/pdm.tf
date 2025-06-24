@@ -1,4 +1,4 @@
-resource "aws_api_gateway_usage_plan" "pdm" {
+resource "aws_api_gateway_usage_plan" "api-key-pdm" {
   name = "${terraform.workspace}_pdm-usage-plan"
   api_stages {
     api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -6,12 +6,12 @@ resource "aws_api_gateway_usage_plan" "pdm" {
   }
 }
 
-resource "aws_api_gateway_api_key" "pdm" {
+resource "aws_api_gateway_api_key" "api-key-pdm" {
   name = "${terraform.workspace}_pdm-api-key"
 }
 
-resource "aws_api_gateway_usage_plan_key" "pdm" {
-  key_id        = aws_api_gateway_api_key.pdm.id
+resource "aws_api_gateway_usage_plan_key" "api-key-pdm" {
+  key_id        = aws_api_gateway_api_key.api-key-pdm.id
   key_type      = "API_KEY"
-  usage_plan_id = aws_api_gateway_usage_plan.pdm.id
+  usage_plan_id = aws_api_gateway_usage_plan.api-key-pdm.id
 }

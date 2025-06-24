@@ -58,7 +58,9 @@ resource "aws_backup_selection" "cross_account_backup_selection" {
     module.document_reference_dynamodb_table.dynamodb_table_arn,
     module.lloyd_george_reference_dynamodb_table.dynamodb_table_arn,
     module.bulk_upload_report_dynamodb_table.dynamodb_table_arn,
-    module.statistical-reports-store.bucket_arn
+    module.statistical-reports-store.bucket_arn,
+    module.pdm_dynamodb_table.dynamodb_table_arn,
+    module.pdm-document-store.bucket_arn
   ]
 }
 
