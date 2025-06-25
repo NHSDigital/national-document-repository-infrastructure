@@ -11,7 +11,7 @@ resource "aws_api_gateway_api_key" "api_key_pdm" {
 }
 
 resource "aws_api_gateway_usage_plan_key" "api_key_pdm" {
-  key_id        = aws_api_gateway_api_key.api-key-pdm.id
+  key_id        = aws_api_gateway_api_key.api_key_pdm.id
   key_type      = "API_KEY"
-  usage_plan_id = aws_api_gateway_usage_plan.api-key-pdm.id
+  usage_plan_id = aws_api_gateway_usage_plan.api_key_pdm.id
 }
