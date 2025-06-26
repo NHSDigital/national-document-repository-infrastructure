@@ -125,20 +125,9 @@ No modules.
 
 ## Outputs
 
-<<<<<<< HEAD
-| Name | Description |
-|------|-------------|
-| <a name="output_internet_gateway_id"></a> [internet_gateway_id](#output_internet_gateway_id) | n/a |
-| <a name="output_private_subnets"></a> [private_subnets](#output_private_subnets) | n/a |
-| <a name="output_public_subnets"></a> [public_subnets](#output_public_subnets) | n/a |
-| <a name="output_vpc_id"></a> [vpc_id](#output_vpc_id) | n/a |
-=======
-| Name | Description |
-| -------------------------------------------------------------------------------- | ----------- |
-| <a name="output_private_subnets"></a> [private_subnets](#output_private_subnets) | n/a |
-| <a name="output_public_subnets"></a> [public_subnets](#output_public_subnets) | n/a |
-| <a name="output_vpc_id"></a> [vpc_id](#output_vpc_id) | n/a |
-
-<!-- END_TF_DOCS -->
-
-> > > > > > > 2b15286 (inject + cloudfront doc'+ begin/end)
+| Name                                                                                         | Description |
+| -------------------------------------------------------------------------------------------- | ----------- |
+| <a name="output_internet_gateway_id"></a> [internet_gateway_id](#output_internet_gateway_id) | n/a         |
+| <a name="output_private_subnets"></a> [private_subnets](#output_private_subnets)             | n/a         |
+| <a name="output_public_subnets"></a> [public_subnets](#output_public_subnets)                | n/a         |
+| <a name="output_vpc_id"></a> [vpc_id](#output_vpc_id)                                        | n/a         |
