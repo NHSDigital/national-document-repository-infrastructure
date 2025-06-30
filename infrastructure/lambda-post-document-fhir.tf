@@ -26,7 +26,4 @@ module "post-document-references-fhir-lambda" {
     WORKSPACE                       = terraform.workspace
     PRESIGNED_ASSUME_ROLE           = aws_iam_role.create_post_presign_url_role.arn
   }
-  depends_on = [
-    aws_api_gateway_rest_api.ndr_doc_store_api,
-  ]
 }
