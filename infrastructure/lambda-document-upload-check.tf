@@ -18,6 +18,8 @@ module "document_upload_check_lambda" {
     STAGING_STORE_BUCKET_NAME  = "${terraform.workspace}-${var.staging_store_bucket_name}"
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     WORKSPACE                  = terraform.workspace
+    VIRUS_SCAN_STUB            = !local.is_production
+
   }
   lambda_timeout                = 900
   is_gateway_integration_needed = false
