@@ -3,7 +3,8 @@ module "sqs-stitching-queue" {
   name              = "stitching-queue"
   environment       = var.environment
   owner             = var.owner
-  message_retention = 1800
+  message_retention = 1209600
+  dlq_message_retention = 1209600
   enable_sse        = true
   max_visibility    = 1200
   enable_dlq        = true
