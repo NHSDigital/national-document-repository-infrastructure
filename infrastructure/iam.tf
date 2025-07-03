@@ -214,11 +214,11 @@ resource "aws_iam_role" "api_gateway_cloudwatch" {
 
 resource "aws_iam_role_policy_attachment" "api_gateway_logs" {
   count      = local.is_sandbox ? 0 : 1
-  role       = aws_iam_role.api_gateway_cloudwatch.name
+  role       = aws_iam_role.api_gateway_cloudwatch[0].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
 }
 
 resource "aws_api_gateway_account" "logging" {
   count               = local.is_sandbox ? 0 : 1
-  cloudwatch_role_arn = aws_iam_role.api_gateway_cloudwatch.arn
+  cloudwatch_role_arn = aws_iam_role.api_gateway_cloudwatch[0].arn
 }
