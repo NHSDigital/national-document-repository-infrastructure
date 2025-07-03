@@ -195,7 +195,7 @@ resource "aws_iam_role_policy_attachment" "ods_report_presign_url" {
 }
 
 resource "aws_iam_role" "api_gateway_cloudwatch" {
-  name = "${terraform.workspace}_DocStoreAPIGatewayLogs"
+  name = "${terraform.workspace}_NdrAPIGatewayLogs"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
