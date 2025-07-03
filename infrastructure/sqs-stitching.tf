@@ -44,7 +44,7 @@ module "stitching-dlq-alarm-topic" {
           "Service" : "cloudwatch.amazonaws.com"
         },
         "Action" : [
-          "SNS:Publish",
+          "SNS:Publish"
         ],
         "Condition" : {
           "ArnLike" : {
