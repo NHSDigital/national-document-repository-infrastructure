@@ -69,28 +69,4 @@ resource "aws_api_gateway_integration_response" "preflight_integration_response"
   depends_on = [aws_api_gateway_method_response.preflight_method_response, aws_api_gateway_resource.gateway_resource]
 }
 
-resource "aws_iam_role" "api_gateway_cloudwatch" {
-  name = "${terraform.workspace}_DocStoreAPIGatewayLogs"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "apigateway.amazonaws.com"
-        }
-      },
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "api_gateway_logs" {
-  role       = aws_iam_role.api_gateway_cloudwatch.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
-}
-
-resource "aws_api_gateway_account" "logging" {
-  cloudwatch_role_arn = aws_iam_role.api_gateway_cloudwatch.arn
-}
