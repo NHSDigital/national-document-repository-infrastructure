@@ -1,13 +1,13 @@
 module "sqs-stitching-queue" {
-  source            = "./modules/sqs"
-  name              = "stitching-queue"
-  environment       = var.environment
-  owner             = var.owner
-  message_retention = 1209600
+  source                = "./modules/sqs"
+  name                  = "stitching-queue"
+  environment           = var.environment
+  owner                 = var.owner
+  message_retention     = 1209600
   dlq_message_retention = 1209600
-  enable_sse        = true
-  max_visibility    = 1200
-  enable_dlq        = true
+  enable_sse            = true
+  max_visibility        = 1200
+  enable_dlq            = true
 }
 
 resource "aws_cloudwatch_metric_alarm" "stitching_dlq_new_messages" {
