@@ -8,12 +8,12 @@ locals {
     "lg_inv_main"    = "lg-bulk-upload-invalid-queue-name"
 
     # dead-letter queues
-    "nrl_dlq"       = "nrl-dlq-name"
-    "splunk_dlq"    = "splunk-dlq-name"
+    "nrl_dlq"    = "nrl-dlq-name"
+    "splunk_dlq" = "splunk-dlq-name"
   }
 }
 locals {
-  is_test_sandbox = contains([], terraform.workspace)  # empty list disables sandbox detection, for testing only
+  is_test_sandbox = contains([], terraform.workspace) # empty list disables sandbox detection, for testing only
 }
 
 module "global_sqs_age_alarm_topic" {
@@ -27,20 +27,20 @@ module "global_sqs_age_alarm_topic" {
   topic_endpoint_list    = nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
 
   delivery_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Principal": {
-          "Service": "cloudwatch.amazonaws.com"
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
         },
-        "Action": "SNS:Publish",
-        "Condition": {
-          "ArnLike": {
-            "aws:SourceArn": "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+        "Action" : "SNS:Publish",
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
           }
         },
-        "Resource": "*"
+        "Resource" : "*"
       }
     ]
   })
