@@ -47,7 +47,7 @@ module "global_sqs_age_alarm_topic" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message_alarm" {
-  for_each = local.is_test_sandbox ? {} : local.monitored_queues
+  for_each = local.is_test_sandbox ? toset([]) : local.monitored_queues
 
   alarm_name          = "${terraform.workspace}_${each.key}_oldest_message_alarm"
   comparison_operator = "GreaterThanThreshold"
