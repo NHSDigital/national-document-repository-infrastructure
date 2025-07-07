@@ -13,11 +13,11 @@ locals {
   }
 }
 locals {
-  is_sandbox = contains([], terraform.workspace)  # empty list disables sandbox detection, for testing only
+  is_test_sandbox = contains([], terraform.workspace)  # empty list disables sandbox detection, for testing only
 }
 
 module "global_sqs_age_alarm_topic" {
-  count                  = local.is_sandbox ? 0 : 1
+  count                  = local.is_test_sandbox ? 0 : 1
   source                 = "./modules/sns"
   sns_encryption_key_id  = module.sns_encryption_key.id
   current_account_id     = data.aws_caller_identity.current.account_id
@@ -47,7 +47,7 @@ module "global_sqs_age_alarm_topic" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message_alarm" {
-  for_each = local.is_sandbox ? {} : local.monitored_queues
+  for_each = local.is_test_sandbox ? {} : local.monitored_queues
 
   alarm_name          = "${terraform.workspace}_${each.key}_oldest_message_alarm"
   comparison_operator = "GreaterThanThreshold"
@@ -74,7 +74,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message_alarm" {
   }
 }
 resource "aws_sns_topic_subscription" "global_sqs_alarm_subscriptions" {
-  for_each  = local.is_sandbox ? {} : toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
+  for_each  = local.is_test_sandbox ? {} : toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
   endpoint  = each.value
   protocol  = "email"
   topic_arn = module.global_sqs_age_alarm_topic[0].arn
