@@ -47,7 +47,7 @@ module "global_sqs_age_alarm_topic" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message_alarm" {
-  for_each = local.is_test_sandbox ? toset([]) : local.monitored_queues
+  for_each = local.is_test_sandbox ? {} : local.monitored_queues
 
   alarm_name          = "${terraform.workspace}_${each.key}_oldest_message_alarm"
   comparison_operator = "GreaterThanThreshold"
@@ -74,7 +74,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message_alarm" {
   }
 }
 resource "aws_sns_topic_subscription" "global_sqs_alarm_subscriptions" {
-  for_each  = local.is_test_sandbox ? {} : toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
+  for_each  = local.is_test_sandbox ? toset([]) : toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value)))
   endpoint  = each.value
   protocol  = "email"
   topic_arn = module.global_sqs_age_alarm_topic[0].arn
