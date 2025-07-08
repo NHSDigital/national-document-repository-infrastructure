@@ -1,15 +1,15 @@
 locals {
   monitored_queues = {
     # main queues
-    "nrl_main"       = "nrl-queue-name"
-    "splunk_main"    = "splunk-queue-name"
-    "stitching_main" = "stitching-queue-name"
-    "lg_bulk_main"   = "lg-bulk-upload-metadata-queue-name"
-    "lg_inv_main"    = "lg-bulk-upload-invalid-queue-name"
+    "nrl_main"       = "${terraform.workspace}-nrl-queue.fifo"
+    "splunk_main"    = "${terraform.workspace}-splunk-queue"
+    "stitching_main" = "${terraform.workspace}-stitching-queue"
+    "lg_bulk_main"   = "${terraform.workspace}-lg-bulk-upload-metadata-queue.fifo"
+    "lg_inv_main"    = "${terraform.workspace}-lg-bulk-upload-invalid-queue"
 
     # dead-letter queues
-    "nrl_dlq"    = "nrl-dlq-name"
-    "splunk_dlq" = "splunk-dlq-name"
+    "nrl_dlq"       = "${terraform.workspace}-deadletter-nrl-queue.fifo"
+    "stitching_dlq" = "${terraform.workspace}-deadletter-stitching-queue"
   }
 }
 locals {
