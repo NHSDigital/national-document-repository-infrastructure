@@ -1,5 +1,5 @@
 locals {
-   monitored_queues = {
+  monitored_queues = {
     # main queues
     "nrl_main"       = "${terraform.workspace}-nrl-queue.fifo"
     "splunk_main"    = "${terraform.workspace}-splunk-queue"
@@ -9,9 +9,9 @@ locals {
     "mns_main"       = "${terraform.workspace}-mns-notification-queue"
 
     # dead-letter queues
-    "nrl_dlq"        = "${terraform.workspace}-deadletter-nrl-queue.fifo"
-    "stitching_dlq"  = "${terraform.workspace}-deadletter-stitching-queue"
-    "mns_dlq"        = "${terraform.workspace}-deadletter-mns-notification-queue"
+    "nrl_dlq"       = "${terraform.workspace}-deadletter-nrl-queue.fifo"
+    "stitching_dlq" = "${terraform.workspace}-deadletter-stitching-queue"
+    "mns_dlq"       = "${terraform.workspace}-deadletter-mns-notification-queue"
   }
 }
 locals {
