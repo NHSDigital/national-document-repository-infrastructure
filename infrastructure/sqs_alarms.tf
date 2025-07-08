@@ -46,6 +46,7 @@ module "global_sqs_age_alarm_topic" {
       }
     ]
   })
+  depends_on = [aws_cloudwatch_metric_alarm.sqs_oldest_message_alarm]
 }
 
 resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message_alarm" {
