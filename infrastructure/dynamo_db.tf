@@ -419,7 +419,7 @@ module "alarm_state_history_table" {
   hash_key                       = "AlarmNameMetric"
   sort_key                       = "TimeCreated"
   deletion_protection_enabled    = local.is_production
-  point_in_time_recovery_enabled = !local.is_sandbox
+  point_in_time_recovery_enabled = false
   stream_enabled                 = false
   ttl_enabled                    = true
   ttl_attribute_name             = "TimeToExist"

@@ -159,12 +159,12 @@ module "search_patient_alarm_topic" {
   })
 }
 
-
 resource "aws_sns_topic_subscription" "im_alerting_search_patient" {
   endpoint  = module.im-alerting-lambda.lambda_arn
   protocol  = "lambda"
   topic_arn = module.search_patient_alarm_topic.arn
 }
+
 resource "aws_lambda_permission" "im_alerting_invoke_with_search_patient_sns" {
   statement_id  = "AllowExecutionFromSeachPatientAlarmSNS"
   action        = "lambda:InvokeFunction"
