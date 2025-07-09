@@ -94,7 +94,6 @@ resource "aws_api_gateway_stage" "ndr_api" {
   xray_tracing_enabled = var.enable_xray_tracing
 
   depends_on = [
-    aws_api_gateway_account.logging,
     aws_cloudwatch_log_group.api_gateway_stage
   ]
 }
