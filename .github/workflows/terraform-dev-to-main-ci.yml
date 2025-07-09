@@ -70,7 +70,11 @@ jobs:
     - name: Terraform Plan
       id: plan
       run: |
-        terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan > plan_output.txt 2>&1
+        terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan > plan_output.txt 2>&1 || {
+          echo "Terraform plan failed. Here's the output:"
+          cat plan_output.txt
+          exit 1
+        }
         terraform show -no-color tf.plan > tfplan.txt 2>&1
 
         # Mask PEM certificates (BEGIN...END CERTIFICATE)
