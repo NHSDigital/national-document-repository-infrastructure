@@ -53,22 +53,22 @@ module "ndr-lloyd-george-store" {
   cloudfront_enabled        = true
   cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
   bucket_name               = var.lloyd_george_bucket_name
-  enable_cors_configuration = contains(["prod"], terraform.workspace) ? false : true
   enable_bucket_versioning  = true
   environment               = var.environment
   owner                     = var.owner
   force_destroy             = local.is_force_destroy
+  enable_cors_configuration = true
   cors_rules = [
     {
       allowed_headers = ["*"]
       allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
       expose_headers  = ["ETag"]
       max_age_seconds = 3000
     },
     {
       allowed_methods = ["GET"]
-      allowed_origins = ["https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
     }
   ]
 }
@@ -341,4 +341,26 @@ resource "aws_s3_bucket_logging" "logs_bucket_logging" {
   bucket        = aws_s3_bucket.logs_bucket.id
   target_bucket = local.access_logs_bucket_id
   target_prefix = "${aws_s3_bucket.logs_bucket.id}/"
+}
+
+module "pdm-document-store" {
+  source                   = "./modules/s3/"
+  access_logs_enabled      = local.is_production
+  access_logs_bucket_id    = local.access_logs_bucket_id
+  bucket_name              = var.pdm_document_bucket_name
+  enable_bucket_versioning = true
+  environment              = var.environment
+  owner                    = var.owner
+  force_destroy            = local.is_force_destroy
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "pdm_document_store" {
+  bucket = module.pdm-document-store.bucket_id
+  rule {
+    id     = "default-to-intelligent-tiering"
+    status = "Enabled"
+    transition {
+      storage_class = "INTELLIGENT_TIERING"
+    }
+  }
 }
