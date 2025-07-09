@@ -63,6 +63,8 @@ module "vpc" {
 
 ## Requirements
 
+## Requirements
+
 | Name                                                   | Version |
 | ------------------------------------------------------ | ------- |
 | <a name="requirement_aws"></a> [aws](#requirement_aws) | ~> 5.0  |
