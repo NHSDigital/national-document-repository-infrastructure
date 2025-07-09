@@ -9,7 +9,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.84.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
 
 ## Modules
 
@@ -41,7 +41,7 @@
 | <a name="module_bulk-upload-report-lambda"></a> [bulk-upload-report-lambda](#module\_bulk-upload-report-lambda) | ./modules/lambda | n/a |
 | <a name="module_bulk_upload_metadata_preprocessor_lambda"></a> [bulk\_upload\_metadata\_preprocessor\_lambda](#module\_bulk\_upload\_metadata\_preprocessor\_lambda) | ./modules/lambda | n/a |
 | <a name="module_bulk_upload_report_dynamodb_table"></a> [bulk\_upload\_report\_dynamodb\_table](#module\_bulk\_upload\_report\_dynamodb\_table) | ./modules/dynamo_db | n/a |
-| <a name="module_cloud_storage_security"></a> [cloud\_storage\_security](#module\_cloud\_storage\_security) | cloudstoragesec/cloud-storage-security/aws | 1.7.1+css8.07.002 |
+| <a name="module_cloud_storage_security"></a> [cloud\_storage\_security](#module\_cloud\_storage\_security) | cloudstoragesec/cloud-storage-security/aws | 1.7.4+css8.08.002 |
 | <a name="module_cloudfront-distribution-lg"></a> [cloudfront-distribution-lg](#module\_cloudfront-distribution-lg) | ./modules/cloudfront | n/a |
 | <a name="module_cloudfront_edge_dynamodb_table"></a> [cloudfront\_edge\_dynamodb\_table](#module\_cloudfront\_edge\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_cloudfront_firewall_waf_v2"></a> [cloudfront\_firewall\_waf\_v2](#module\_cloudfront\_firewall\_waf\_v2) | ./modules/firewall_waf_v2 | n/a |
@@ -130,6 +130,8 @@
 | <a name="module_pdf-stitching-lambda"></a> [pdf-stitching-lambda](#module\_pdf-stitching-lambda) | ./modules/lambda | n/a |
 | <a name="module_pdf-stitching-lambda-alarms"></a> [pdf-stitching-lambda-alarms](#module\_pdf-stitching-lambda-alarms) | ./modules/lambda_alarms | n/a |
 | <a name="module_post-document-references-fhir-lambda"></a> [post-document-references-fhir-lambda](#module\_post-document-references-fhir-lambda) | ./modules/lambda | n/a |
+| <a name="module_pdm-document-store"></a> [pdm-document-store](#module\_pdm-document-store) | ./modules/s3/ | n/a |
+| <a name="module_pdm_dynamodb_table"></a> [pdm\_dynamodb\_table](#module\_pdm\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_route53_fargate_ui"></a> [route53\_fargate\_ui](#module\_route53\_fargate\_ui) | ./modules/route53 | n/a |
 | <a name="module_search-document-references-fhir-lambda"></a> [search-document-references-fhir-lambda](#module\_search-document-references-fhir-lambda) | ./modules/lambda | n/a |
 | <a name="module_search-document-references-gateway"></a> [search-document-references-gateway](#module\_search-document-references-gateway) | ./modules/gateway | n/a |
@@ -177,6 +179,7 @@
 
 | Name | Type |
 |------|------|
+| [aws_api_gateway_api_key.api_key_pdm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_api_key) | resource |
 | [aws_api_gateway_api_key.apim](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_api_key) | resource |
 | [aws_api_gateway_authorizer.repo_authoriser](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer) | resource |
 | [aws_api_gateway_base_path_mapping.api_mapping](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
@@ -206,7 +209,9 @@
 | [aws_api_gateway_resource.sandbox_get_document_reference_path_parameter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource) | resource |
 | [aws_api_gateway_rest_api.ndr_doc_store_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_rest_api) | resource |
 | [aws_api_gateway_stage.ndr_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_stage) | resource |
+| [aws_api_gateway_usage_plan.api_key_pdm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_usage_plan) | resource |
 | [aws_api_gateway_usage_plan.apim](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_usage_plan) | resource |
+| [aws_api_gateway_usage_plan_key.api_key_pdm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_usage_plan_key) | resource |
 | [aws_api_gateway_usage_plan_key.apim](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_usage_plan_key) | resource |
 | [aws_backup_plan.cross_account_backup_schedule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/backup_plan) | resource |
 | [aws_backup_plan.s3_continuous_backup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/backup_plan) | resource |
@@ -321,6 +326,7 @@
 | [aws_s3_bucket_lifecycle_configuration.doc-store-lifecycle-rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
 | [aws_s3_bucket_lifecycle_configuration.lg-lifecycle-rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
 | [aws_s3_bucket_lifecycle_configuration.ndr-zip-request-store-lifecycle-rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
+| [aws_s3_bucket_lifecycle_configuration.pdm_document_store](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
 | [aws_s3_bucket_lifecycle_configuration.staging-store-lifecycle-rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
 | [aws_s3_bucket_logging.logs_bucket_logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_logging) | resource |
 | [aws_s3_bucket_policy.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
@@ -392,6 +398,8 @@
 | <a name="input_num_private_subnets"></a> [num\_private\_subnets](#input\_num\_private\_subnets) | Sets the number of private subnets, one per availability zone | `number` | `3` | no |
 | <a name="input_num_public_subnets"></a> [num\_public\_subnets](#input\_num\_public\_subnets) | Sets the number of public subnets, one per availability zone | `number` | `3` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
+| <a name="input_pdm_document_bucket_name"></a> [pdm\_document\_bucket\_name](#input\_pdm\_document\_bucket\_name) | The name of the S3 bucket to store PDM documents | `string` | `"pdm-document-store"` | no |
+| <a name="input_pdm_dynamodb_table_name"></a> [pdm\_dynamodb\_table\_name](#input\_pdm\_dynamodb\_table\_name) | The name of the dynamodb table to be use for pdm metadata | `string` | `"PDMDocumentMetadata"` | no |
 | <a name="input_poll_frequency"></a> [poll\_frequency](#input\_poll\_frequency) | n/a | `any` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"eu-west-2"` | no |
 | <a name="input_staging_store_bucket_name"></a> [staging\_store\_bucket\_name](#input\_staging\_store\_bucket\_name) | n/a | `string` | `"staging-bulk-store"` | no |

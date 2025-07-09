@@ -342,3 +342,25 @@ resource "aws_s3_bucket_logging" "logs_bucket_logging" {
   target_bucket = local.access_logs_bucket_id
   target_prefix = "${aws_s3_bucket.logs_bucket.id}/"
 }
+
+module "pdm-document-store" {
+  source                   = "./modules/s3/"
+  access_logs_enabled      = local.is_production
+  access_logs_bucket_id    = local.access_logs_bucket_id
+  bucket_name              = var.pdm_document_bucket_name
+  enable_bucket_versioning = true
+  environment              = var.environment
+  owner                    = var.owner
+  force_destroy            = local.is_force_destroy
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "pdm_document_store" {
+  bucket = module.pdm-document-store.bucket_id
+  rule {
+    id     = "default-to-intelligent-tiering"
+    status = "Enabled"
+    transition {
+      storage_class = "INTELLIGENT_TIERING"
+    }
+  }
+}
