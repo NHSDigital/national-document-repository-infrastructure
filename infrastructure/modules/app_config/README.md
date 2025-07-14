@@ -42,24 +42,6 @@ module "app_config" {
 ## Usage
 Basic usage of this module is as follows:
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
-| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
-=======
-=======
->>>>>>> 8386d6c (all docs needs pass over)
-| Name                                             | Version |
-| ------------------------------------------------ | ------- |
-| <a name="provider_aws"></a> [aws](#provider_aws) | n/a     |
-
-## Modules
-
-No modules.
-=======
 ```hcl
 module "example" {
   	source = "<module-path>"
@@ -71,7 +53,6 @@ module "example" {
   	owner = 
 }
 ```
->>>>>>> 68471b8 (updated docs)
 
 ## Resources
 
