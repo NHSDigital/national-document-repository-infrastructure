@@ -3,7 +3,7 @@ module "firewall_waf_v2" {
   cloudfront_acl = false
   environment    = var.environment
   owner          = var.owner
-  count          = local.is_sandbox ? 0 : 1
+  # count          = local.is_sandbox ? 0 : 1
 }
 
 module "firewall_waf_v2_api" {
@@ -11,8 +11,8 @@ module "firewall_waf_v2_api" {
   cloudfront_acl = false
   environment    = var.environment
   owner          = var.owner
-  count          = local.is_sandbox ? 0 : 1
-  api            = true
+  # count          = local.is_sandbox ? 0 : 1
+  api = true
 }
 
 resource "aws_wafv2_web_acl_association" "web_acl_association" {
