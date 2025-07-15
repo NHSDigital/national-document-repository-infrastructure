@@ -10,3 +10,9 @@ variable "cloudfront_acl" {
   type = bool
 }
 
+variable "api" {
+  type        = bool
+  description = ""
+  default     = false
+}
+
