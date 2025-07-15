@@ -18,6 +18,7 @@ variable "lambda_environment_variables" {
 
 variable "rest_api_id" {
   type = string
+  default = ""
 }
 
 variable "resource_id" {
@@ -44,6 +45,7 @@ variable "http_methods" {
 
 variable "api_execution_arn" {
   type = string
+  default = ""
 }
 
 variable "iam_role_policy_documents" {
