@@ -48,17 +48,24 @@ locals {
 
   #   using a list instead of map
 
-  monitored_queue_day_list = [
+  monitored_queue_day_list = flatten([
     for queue_key in keys(local.monitored_queues) : [
       for day in local.days_until_alarm : [
         queue_key,
         local.monitored_queues[queue_key],
-        day,
+        day
       ]
     ]
-  ]
-}
+  ])
 
+}
+# [
+#   ["nrl_main", "dev-nrl-queue.fifo", 6],
+#   ["nrl_main", "dev-nrl-queue.fifo", 10],
+#   ["splunk_main", "dev-splunk-queue", 6],
+#   ["splunk_main", "dev-splunk-queue", 10],
+#   ...
+# ]
 
 locals {
   is_test_sandbox = contains([], terraform.workspace) # empty list disables sandbox detection, for testing only
