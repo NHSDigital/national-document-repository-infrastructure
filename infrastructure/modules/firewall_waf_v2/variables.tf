@@ -12,7 +12,7 @@ variable "cloudfront_acl" {
 
 variable "api" {
   type        = bool
-  description = ""
+  description = "True if using the firewall for an api - removes AWSBotControl"
   default     = false
 }
 
