@@ -13,24 +13,24 @@ locals {
     "stitching_dlq" = "${terraform.workspace}-deadletter-stitching-queue"
     "mns_dlq"       = "${terraform.workspace}-deadletter-mns-notification-queue"
   }
-  days_until_alarm = [6,10]
-#
-#  monitored_queue_day_pairs = {
-#     for pair in flatten([
-#       for queue_key in keys(local.monitored_queues) : [
-#         for day in local.days_until_alarm : {
-#           key = "${queue_key}_${day}"
-#           value = {
-#             queue_key  = queue_key
-#             queue_name = local.monitored_queues[queue_key]
-#             days       = day
-#           }
-#         }
-#       ]
-#     ]) : pair.key => pair.value
-#   }
-# }
-# using map
+  days_until_alarm = [6, 10]
+  #
+  #  monitored_queue_day_pairs = {
+  #     for pair in flatten([
+  #       for queue_key in keys(local.monitored_queues) : [
+  #         for day in local.days_until_alarm : {
+  #           key = "${queue_key}_${day}"
+  #           value = {
+  #             queue_key  = queue_key
+  #             queue_name = local.monitored_queues[queue_key]
+  #             days       = day
+  #           }
+  #         }
+  #       ]
+  #     ]) : pair.key => pair.value
+  #   }
+  # }
+  # using map
   # monitored_queue_day_set = toset(flatten([
   #   for queue_key in keys(local.monitored_queues) : [
   #     for day in local.days_until_alarm :
@@ -46,9 +46,9 @@ locals {
   #     }
   #   }
 
-#   using a list instead of map
+  #   using a list instead of map
 
-monitored_queue_day_list = flatten([
+  monitored_queue_day_list = flatten([
     for queue_key in keys(local.monitored_queues) : [
       for day in local.days_until_alarm : [
         queue_key,
@@ -101,7 +101,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
   # for_each = local.is_test_sandbox ? toset([]) : local.monitored_queue_day_set # TODO:change is_test_sandbox to is_sandbox
   # for_each = local.is_test_sandbox ? {} : local.monitored_queue_day_map # TODO:change is_test_sandbox to is_sandbox
 
-  count = local.is_test_sandbox ? 0 : length(local.monitored_queue_day_list)# TODO:change is_test_sandbox to is_sandbox
+  count = local.is_test_sandbox ? 0 : length(local.monitored_queue_day_list) # TODO:change is_test_sandbox to is_sandbox
 
   # alarm_name = "${terraform.workspace}_${each.value.queue_key}_oldest_message_alarm_${each.value.days}d"
   alarm_name = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
@@ -113,8 +113,8 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
   period              = 60 # TODO: change to 86400 (24h))
   statistic           = "Maximum"
   # threshold           = each.value.days # TODO: change to each.value.days*24*60*60
-  threshold           = local.monitored_queue_day_list[count.index][2] # TODO: change to each.value.days*24*60*60
-  treat_missing_data  = "notBreaching"
+  threshold          = local.monitored_queue_day_list[count.index][2] # TODO: change to each.value.days*24*60*60
+  treat_missing_data = "notBreaching"
 
   dimensions = {
     # QueueName = each.value.queue_name
