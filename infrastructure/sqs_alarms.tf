@@ -13,8 +13,53 @@ locals {
     "stitching_dlq" = "${terraform.workspace}-deadletter-stitching-queue"
     "mns_dlq"       = "${terraform.workspace}-deadletter-mns-notification-queue"
   }
-  days_until_alarm = 6
+  days_until_alarm = [6,10]
+#
+#  monitored_queue_day_pairs = {
+#     for pair in flatten([
+#       for queue_key in keys(local.monitored_queues) : [
+#         for day in local.days_until_alarm : {
+#           key = "${queue_key}_${day}"
+#           value = {
+#             queue_key  = queue_key
+#             queue_name = local.monitored_queues[queue_key]
+#             days       = day
+#           }
+#         }
+#       ]
+#     ]) : pair.key => pair.value
+#   }
+# }
+# using map
+  # monitored_queue_day_set = toset(flatten([
+  #   for queue_key in keys(local.monitored_queues) : [
+  #     for day in local.days_until_alarm :
+  #       "${queue_key}:::${local.monitored_queues[queue_key]}:::${day}"
+  #   ]
+  # ]))
+  # monitored_queue_day_map = {
+  #     for s in local.monitored_queue_day_set :
+  #     s => {
+  #       queue_key  = split(":::", s)[0]
+  #       queue_name = split(":::", s)[1]
+  #       days       = tonumber(split(":::", s)[2])
+  #     }
+  #   }
+
+#   using a list instead of map
+
+monitored_queue_day_list = flatten([
+    for queue_key in keys(local.monitored_queues) : [
+      for day in local.days_until_alarm : [
+        queue_key,
+        local.monitored_queues[queue_key],
+        day
+      ]
+    ]
+  ])
 }
+
+
 locals {
   is_test_sandbox = contains([], terraform.workspace) # empty list disables sandbox detection, for testing only
 }
@@ -50,28 +95,39 @@ module "global_sqs_age_alarm_topic" {
   })
 }
 
-resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
-  for_each = local.is_test_sandbox ? {} : local.monitored_queues # TODO:change is_test_sandbox to is_sandbox
 
-  alarm_name          = "${terraform.workspace}_${each.key}_oldest_message_alarm"
+resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
+  # for_each = local.is_test_sandbox ? {} : local.monitored_queue_day_pairs # TODO:change is_test_sandbox to is_sandbox
+  # for_each = local.is_test_sandbox ? toset([]) : local.monitored_queue_day_set # TODO:change is_test_sandbox to is_sandbox
+  # for_each = local.is_test_sandbox ? {} : local.monitored_queue_day_map # TODO:change is_test_sandbox to is_sandbox
+
+  count = local.is_test_sandbox ? 0 : length(local.monitored_queue_day_list)# TODO:change is_test_sandbox to is_sandbox
+
+  # alarm_name = "${terraform.workspace}_${each.value.queue_key}_oldest_message_alarm_${each.value.days}d"
+  alarm_name = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
+
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "ApproximateAgeOfOldestMessage"
   namespace           = "AWS/SQS"
   period              = 60 # TODO: change to 86400 (24h))
   statistic           = "Maximum"
-  threshold           = 60 # TODO: change to local.days_until_alarm*24*60*60
+  # threshold           = each.value.days # TODO: change to each.value.days*24*60*60
+  threshold           = local.monitored_queue_day_list[count.index][2] # TODO: change to each.value.days*24*60*60
   treat_missing_data  = "notBreaching"
 
   dimensions = {
-    QueueName = each.value
+    # QueueName = each.value.queue_name
+    QueueName = local.monitored_queue_day_list[count.index][1]
   }
 
-  alarm_description = "Alarm when a message in queue '${each.value}' is older than '${local.days_until_alarm}' days."
+  # alarm_description = "Alarm when a message in queue '${each.value.queue_name}' is older than '${each.value.days}' days."
+  alarm_description = "Alarm when a message in queue '${local.monitored_queue_day_list[count.index][1]}' is older than '${local.monitored_queue_day_list[count.index][2]}' days."
   alarm_actions     = [module.global_sqs_age_alarm_topic[0].arn]
 
   tags = {
-    Name        = "${terraform.workspace}_${each.key}_oldest_message_alarm"
+    # Name        = "${terraform.workspace}_${each.value.queue_key}_oldest_message_alarm_${each.value.days}d"
+    Name        = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
     Owner       = var.owner
     Environment = var.environment
     Workspace   = terraform.workspace
