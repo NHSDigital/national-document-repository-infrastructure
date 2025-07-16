@@ -48,7 +48,7 @@ locals {
 
   #   using a list instead of map
 
-  monitored_queue_day_list = flatten([
+  flat_list = flatten([
     for queue_key in keys(local.monitored_queues) : [
       for day in local.days_until_alarm : [
         queue_key,
@@ -57,6 +57,24 @@ locals {
       ]
     ]
   ])
+  monitored_queue_day_list = [
+    for i in range(0, length(local.flat_list), 3) : [
+      local.flat_list[i],
+      local.flat_list[i + 1],
+      local.flat_list[i + 2]
+    ]
+  ]
+
+
+  #  monitored_queue_day_list = flatten([
+  #   for queue_key, queue_name in local.monitored_queues : [
+  #     for day in local.days_until_alarm : {
+  #       queue_key  = queue_key
+  #       queue_name = queue_name
+  #       days       = day
+  #     }
+  #   ]
+  # ])
 
 }
 # [
@@ -112,6 +130,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
 
   # alarm_name = "${terraform.workspace}_${each.value.queue_key}_oldest_message_alarm_${each.value.days}d"
   alarm_name = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
+  # alarm_name = "${terraform.workspace}_${local.monitored_queue_day_list[count.index].queue_key}_oldest_message_alarm_${local.monitored_queue_day_list[count.index].days}d"
 
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
