@@ -197,3 +197,32 @@ resource "aws_iam_role_policy_attachment" "ods_report_presign_url" {
   role       = aws_iam_role.ods_report_presign_url_role.name
   policy_arn = aws_iam_policy.s3_document_data_policy_for_ods_report_lambda.arn
 }
+
+resource "aws_iam_role" "api_gateway_cloudwatch" {
+  count = local.is_sandbox ? 0 : 1
+  name  = "${terraform.workspace}_NdrAPIGatewayLogs"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "apigateway.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "api_gateway_logs" {
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.api_gateway_cloudwatch[0].name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+}
+
+resource "aws_api_gateway_account" "logging" {
+  count               = local.is_sandbox ? 0 : 1
+  cloudwatch_role_arn = aws_iam_role.api_gateway_cloudwatch[0].arn
+}
