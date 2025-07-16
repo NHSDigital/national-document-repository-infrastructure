@@ -47,13 +47,11 @@ locals {
   #   }
 
   #   using a list instead of map
+
   monitored_queue_day_list = flatten([
     for queue_key in keys(local.monitored_queues) : [
-      for day in local.days_until_alarm : [
-        queue_key,
-        local.monitored_queues[queue_key],
-        day
-      ]
+      for day in local.days_until_alarm :
+      [queue_key, local.monitored_queues[queue_key], day]
     ]
   ])
 }
