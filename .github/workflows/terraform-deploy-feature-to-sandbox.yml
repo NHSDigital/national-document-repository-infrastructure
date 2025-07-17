@@ -54,7 +54,7 @@ jobs:
           terraform_wrapper: false
 
       - name: Terraform Init Base
-        id: init
+        id: base_init
         run: terraform init -backend-config=backend.conf
         working-directory: ./infrastructure
         shell: bash
@@ -76,7 +76,7 @@ jobs:
         run: terraform apply -auto-approve -input=false tf.plan
         working-directory: ./infrastructure
 
-      - name: Checkout
+      - name: Checkout Branch
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.buildBranch}}
@@ -85,6 +85,12 @@ jobs:
       - name: Terraform Format
         run: terraform fmt -check
         working-directory: ./infrastructure
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config=backend.conf
+        working-directory: ./infrastructure
+        shell: bash
 
       - name: Terraform Plan
         id: plan
