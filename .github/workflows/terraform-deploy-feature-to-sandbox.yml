@@ -81,7 +81,7 @@ jobs:
         with:
           ref: ${{ github.event.inputs.buildBranch}}
 
-        # Checks that all Terraform configuration files adhere to a canonical format
+        # Checks that all Terraform configuration files adhere to a canonical format.
       - name: Terraform Format
         run: terraform fmt -check
         working-directory: ./infrastructure
