@@ -14,6 +14,6 @@ module "toggle-bulk-upload-lambda" {
   }
 
   is_gateway_integration_needed = false
-  is_invoked_from_gateway        = false
+  is_invoked_from_gateway       = false
 }
 

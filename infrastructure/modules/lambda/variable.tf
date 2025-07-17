@@ -17,7 +17,7 @@ variable "lambda_environment_variables" {
 }
 
 variable "rest_api_id" {
-  type = string
+  type    = string
   default = ""
 }
 
@@ -44,7 +44,7 @@ variable "http_methods" {
 }
 
 variable "api_execution_arn" {
-  type = string
+  type    = string
   default = ""
 }
 

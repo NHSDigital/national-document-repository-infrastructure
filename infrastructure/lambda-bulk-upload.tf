@@ -58,7 +58,7 @@ module "bulk-upload-lambda" {
 resource "aws_lambda_event_source_mapping" "bulk_upload_esm" {
   event_source_arn = module.sqs-lg-bulk-upload-metadata-queue.sqs_arn
   function_name    = module.bulk-upload-lambda.lambda_arn
-  enabled          = false  # Disabled by default; scheduler lambda will control
+  enabled          = false # Disabled by default; scheduler lambda will control
   batch_size       = 10
 }
 
