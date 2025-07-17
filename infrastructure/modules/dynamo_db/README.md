@@ -84,34 +84,6 @@ module "document_reference_dynamodb_table" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	environment = 
-  	owner = 
-  
-	# Optional variables
-  	attributes = []
-  	billing_mode = "PAY_PER_REQUEST"
-  	deletion_protection_enabled = null
-  	global_secondary_indexes = []
-  	hash_key = null
-  	point_in_time_recovery_enabled = false
-  	sort_key = null
-  	stream_enabled = false
-  	stream_view_type = "NEW_AND_OLD_IMAGES"
-  	table_name = null
-  	ttl_attribute_name = ""
-  	ttl_enabled = false
-}
-```
-
 ## Resources
 
 | Name | Type |

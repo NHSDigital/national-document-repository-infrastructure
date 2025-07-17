@@ -56,30 +56,6 @@ module "kms_key" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	current_account_id = 
-  	environment = 
-  	kms_key_description = 
-  	kms_key_name = 
-  	owner = 
-  	service_identifiers = 
-  
-	# Optional variables
-  	allow_decrypt_for_arn = false
-  	allowed_arn = []
-  	aws_identifiers = []
-  	kms_key_rotation_enabled = true
-}
-```
-
 ## Resources
 
 | Name | Type |

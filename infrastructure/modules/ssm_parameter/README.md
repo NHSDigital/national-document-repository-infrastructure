@@ -44,27 +44,6 @@ module "ssm_param" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	environment = 
-  	owner = 
-  
-	# Optional variables
-  	description = null
-  	name = null
-  	resource_depends_on = ""
-  	type = "SecureString"
-  	value = null
-}
-```
-
 ## Resources
 
 | Name | Type |

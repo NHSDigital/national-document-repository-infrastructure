@@ -48,26 +48,6 @@ module "lambda_alarms" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	alarm_actions = 
-  	lambda_function_name = 
-  	lambda_name = 
-  	lambda_timeout = 
-  	ok_actions = 
-  
-	# Optional variables
-  	namespace = "AWS/Lambda"
-}
-```
-
 ## Resources
 
 | Name | Type |

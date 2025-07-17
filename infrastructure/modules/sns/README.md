@@ -76,32 +76,6 @@ module "sns_topic" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	current_account_id = 
-  	delivery_policy = 
-  	sns_encryption_key_id = 
-  	topic_name = 
-  	topic_protocol = 
-  
-	# Optional variables
-  	enable_deduplication = false
-  	enable_fifo = false
-  	is_topic_endpoint_list = false
-  	raw_message_delivery = false
-  	sqs_feedback = {}
-  	topic_endpoint = null
-  	topic_endpoint_list = []
-}
-```
-
 ## Resources
 
 | Name | Type |

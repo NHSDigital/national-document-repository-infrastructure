@@ -38,22 +38,6 @@ module "app_config" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	config_environment_name = 
-  	config_profile_name = 
-  	environment = 
-  	owner = 
-}
-```
-
 ## Resources
 
 | Name | Type |

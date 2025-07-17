@@ -55,36 +55,6 @@ module "sqs_queue" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	environment = 
-  	name = 
-  	owner = 
-  
-	# Optional variables
-  	delay = 0
-  	dlq_message_retention = 1209600
-  	dlq_visibility_timeout = 0
-  	enable_deduplication = false
-  	enable_dlq = false
-  	enable_fifo = false
-  	enable_sse = true
-  	kms_master_key_id = null
-  	max_receive_count = 1
-  	max_size_message = 2048
-  	max_visibility = 30
-  	message_retention = 86400
-  	receive_wait = 2
-}
-```
-
 ## Resources
 
 | Name | Type |

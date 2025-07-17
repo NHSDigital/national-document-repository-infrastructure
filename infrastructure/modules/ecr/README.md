@@ -38,22 +38,6 @@ module "ecr_repository" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	app_name = 
-  	current_account_id = 
-  	environment = 
-  	owner = 
-}
-```
-
 ## Resources
 
 | Name | Type |

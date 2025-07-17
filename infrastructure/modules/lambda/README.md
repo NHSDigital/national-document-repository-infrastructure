@@ -73,38 +73,6 @@ module "lambda" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	api_execution_arn = 
-  	handler = 
-  	name = 
-  	rest_api_id = 
-  
-	# Optional variables
-  	default_policies = [
-  "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-  "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
-]
-  	http_methods = []
-  	iam_role_policy_documents = []
-  	is_gateway_integration_needed = true
-  	is_invoked_from_gateway = true
-  	lambda_environment_variables = {}
-  	lambda_ephemeral_storage = 512
-  	lambda_timeout = 30
-  	memory_size = 512
-  	reserved_concurrent_executions = -1
-  	resource_id = ""
-}
-```
-
 ## Resources
 
 | Name | Type |

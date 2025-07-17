@@ -65,36 +65,6 @@ module "vpc" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	availability_zones = 
-  	endpoint_gateway_services = 
-  	endpoint_interface_services = 
-  	environment = 
-  	num_private_subnets = 
-  	num_public_subnets = 
-  	owner = 
-  	security_group_id = 
-  	standalone_vpc_ig_tag = 
-  	standalone_vpc_tag = 
-  
-	# Optional variables
-  	enable_dns_hostnames = true
-  	enable_dns_support = true
-  	enable_private_routes = false
-  	ig_cidr = "0.0.0.0/0"
-  	ig_ipv6_cidr = "::/0"
-  	vpc_cidr = "10.0.0.0/16"
-}
-```
-
 ## Resources
 
 | Name | Type |

@@ -51,29 +51,6 @@ module "dns" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	api_gateway_full_domain_name = 
-  	api_gateway_subdomain_name = 
-  	api_gateway_zone_id = 
-  	certificate_domain = 
-  	dns_name = 
-  	domain = 
-  	environment = 
-  	owner = 
-  
-	# Optional variables
-  	using_arf_hosted_zone = true
-}
-```
-
 ## Resources
 
 | Name | Type |

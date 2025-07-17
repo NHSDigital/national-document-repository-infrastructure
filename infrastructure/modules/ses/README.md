@@ -37,22 +37,6 @@ module "ses_identity" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	domain = 
-  	domain_prefix = 
-  	enable = 
-  	zone_id = 
-}
-```
-
 ## Resources
 
 | Name | Type |

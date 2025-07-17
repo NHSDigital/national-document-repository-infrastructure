@@ -37,21 +37,6 @@ module "waf_acl" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	cloudfront_acl = 
-  	environment = 
-  	owner = 
-}
-```
-
 ## Resources
 
 | Name | Type |
@@ -64,6 +49,7 @@ module "example" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_api"></a> [api](#input\_api) | True if using the firewall for an api - removes AWSBotControl | `bool` | `false` | no |
 | <a name="input_cloudfront_acl"></a> [cloudfront\_acl](#input\_cloudfront\_acl) | n/a | `bool` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |

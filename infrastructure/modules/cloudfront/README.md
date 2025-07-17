@@ -36,24 +36,6 @@ module "cloudfront" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	bucket_domain_name = 
-  	bucket_id = 
-  	qualifed_arn = 
-  
-	# Optional variables
-  	web_acl_id = ""
-}
-```
-
 ## Resources
 
 | Name | Type |

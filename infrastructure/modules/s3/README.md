@@ -60,31 +60,6 @@ module "s3_bucket" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	access_logs_bucket_id = 
-  	bucket_name = 
-  	environment = 
-  	owner = 
-  
-	# Optional variables
-  	access_logs_enabled = false
-  	cloudfront_arn = "null"
-  	cloudfront_enabled = false
-  	cors_rules = []
-  	enable_bucket_versioning = false
-  	enable_cors_configuration = false
-  	force_destroy = false
-}
-```
-
 ## Resources
 
 | Name | Type |

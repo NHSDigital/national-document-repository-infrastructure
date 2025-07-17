@@ -33,23 +33,6 @@ module "lambda_layer" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	account_id = 
-  	layer_name = 
-  
-	# Optional variables
-  	layer_zip_file_name = "placeholder_lambda_payload.zip"
-}
-```
-
 ## Resources
 
 | Name | Type |

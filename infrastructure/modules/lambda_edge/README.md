@@ -58,30 +58,6 @@ module "s3_proxy_lambda" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	bucket_name = 
-  	current_account_id = 
-  	handler = 
-  	iam_role_policies = 
-  	name = 
-  	table_name = 
-  
-	# Optional variables
-  	lambda_ephemeral_storage = 512
-  	lambda_timeout = 30
-  	memory_size = 128
-  	reserved_concurrent_executions = -1
-}
-```
-
 ## Resources
 
 | Name | Type |

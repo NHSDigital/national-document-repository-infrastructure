@@ -57,50 +57,6 @@ module "ecs_service" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Usage
-Basic usage of this module is as follows:
-
-```hcl
-module "example" {
-  	source = "<module-path>"
-  
-	# Required variables
-  	alarm_actions_arn_list = 
-  	ecr_repository_url = 
-  	ecs_cluster_name = 
-  	ecs_cluster_service_name = 
-  	environment = 
-  	logs_bucket = 
-  	owner = 
-  	private_subnets = 
-  	public_subnets = 
-  	sg_name = 
-  	vpc_id = 
-  
-	# Optional variables
-  	autoscaling_max_capacity = 6
-  	autoscaling_min_capacity = 3
-  	aws_region = "eu-west-2"
-  	certificate_domain = ""
-  	container_port = 8080
-  	desired_count = 3
-  	domain = ""
-  	ecs_container_definition_cpu = 512
-  	ecs_container_definition_memory = 1024
-  	ecs_launch_type = "FARGATE"
-  	ecs_task_definition_cpu = 1024
-  	ecs_task_definition_memory = 2048
-  	environment_vars = [
-  null
-]
-  	is_autoscaling_needed = true
-  	is_lb_needed = false
-  	is_service_needed = true
-  	task_role = null
-}
-```
-
 ## Resources
 
 | Name | Type |
