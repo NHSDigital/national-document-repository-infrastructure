@@ -68,12 +68,12 @@ jobs:
       - name: Terraform Plan Base
         id: base_plan
         run: |
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf-base.plan
         working-directory: ./infrastructure
         shell: bash
 
       - name: Terraform Apply Base
-        run: terraform apply -auto-approve -input=false tf.plan
+        run: terraform apply -auto-approve -input=false tf-base.plan
         working-directory: ./infrastructure
 
       - name: Checkout Branch
