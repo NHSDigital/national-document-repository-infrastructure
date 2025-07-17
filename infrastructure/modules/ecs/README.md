@@ -2,15 +2,13 @@
 
 ## Features
 
-This module supports the following optional components:
-
 - ECS Cluster and Service (with Fargate launch type)
-- Load Balancer (ALB) with HTTP/HTTPS listeners
-- ACM Certificate lookup for HTTPS via domain name
-- Log Group creation for ECS service logs
-- IAM roles and policy attachments for execution
-- CloudWatch Alarms for CPU and ALB status codes
-- Custom security groups and subnet configuration
+- Optional Load Balancer (ALB) with HTTP/HTTPS listeners
+- Optional ACM Certificate lookup for HTTPS via domain name
+- Optional Log Group creation for ECS service logs
+- Optional IAM roles and policy attachments for execution
+- Optional CloudWatch Alarms for CPU and ALB status codes
+- Optional Custom security groups and subnet configuration
 
 ---
 
