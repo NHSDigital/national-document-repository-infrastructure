@@ -59,8 +59,8 @@ jobs:
         working-directory: ./infrastructure
         shell: bash
 
-      - name: Terraform Set Workspace
-        id: workspace
+      - name: Terraform Set Workspace Base
+        id: base_workspace
         run: terraform workspace select -or-create ${{ github.event.inputs.sandboxWorkspace}}
         working-directory: ./infrastructure
         shell: bash
@@ -89,6 +89,12 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init -backend-config=backend.conf
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Terraform Set Workspace
+        id: workspace
+        run: terraform workspace select -or-create ${{ github.event.inputs.sandboxWorkspace}}
         working-directory: ./infrastructure
         shell: bash
 
