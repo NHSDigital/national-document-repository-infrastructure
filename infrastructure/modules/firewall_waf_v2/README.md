@@ -8,6 +8,7 @@
   - Large request bodies
   - CMS-related URIs
 - CloudFront-compatible WAF scope toggle
+- BotControl disabled when used for API
 - Named and tagged by environment and owner
 
 ---
@@ -26,6 +27,9 @@ module "waf_acl" {
 
   # Required: resource owner for tagging
   owner = "security-team"
+
+  # True if using the firewall for an api - removes AWSBotControl
+  api = true
 }
 
 
