@@ -14,37 +14,6 @@ locals {
     "mns_dlq"       = "${terraform.workspace}-deadletter-mns-notification-queue"
   }
   days_until_alarm = [6, 10]
-  #
-  #  monitored_queue_day_pairs = {
-  #     for pair in flatten([
-  #       for queue_key in keys(local.monitored_queues) : [
-  #         for day in local.days_until_alarm : {
-  #           key = "${queue_key}_${day}"
-  #           value = {
-  #             queue_key  = queue_key
-  #             queue_name = local.monitored_queues[queue_key]
-  #             days       = day
-  #           }
-  #         }
-  #       ]
-  #     ]) : pair.key => pair.value
-  #   }
-  # }
-  # using map
-  # monitored_queue_day_set = toset(flatten([
-  #   for queue_key in keys(local.monitored_queues) : [
-  #     for day in local.days_until_alarm :
-  #       "${queue_key}:::${local.monitored_queues[queue_key]}:::${day}"
-  #   ]
-  # ]))
-  # monitored_queue_day_map = {
-  #     for s in local.monitored_queue_day_set :
-  #     s => {
-  #       queue_key  = split(":::", s)[0]
-  #       queue_name = split(":::", s)[1]
-  #       days       = tonumber(split(":::", s)[2])
-  #     }
-  #   }
 
   #   using a list instead of map
 
@@ -64,26 +33,7 @@ locals {
       local.flat_list[i + 2]
     ]
   ]
-
-
-  #  monitored_queue_day_list = flatten([
-  #   for queue_key, queue_name in local.monitored_queues : [
-  #     for day in local.days_until_alarm : {
-  #       queue_key  = queue_key
-  #       queue_name = queue_name
-  #       days       = day
-  #     }
-  #   ]
-  # ])
-
 }
-# [
-#   ["nrl_main", "dev-nrl-queue.fifo", 6],
-#   ["nrl_main", "dev-nrl-queue.fifo", 10],
-#   ["splunk_main", "dev-splunk-queue", 6],
-#   ["splunk_main", "dev-splunk-queue", 10],
-#   ...
-# ]
 
 locals {
   is_test_sandbox = contains([], terraform.workspace) # empty list disables sandbox detection, for testing only
@@ -122,16 +72,9 @@ module "global_sqs_age_alarm_topic" {
 
 
 resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
-  # for_each = local.is_test_sandbox ? {} : local.monitored_queue_day_pairs # TODO:change is_test_sandbox to is_sandbox
-  # for_each = local.is_test_sandbox ? toset([]) : local.monitored_queue_day_set # TODO:change is_test_sandbox to is_sandbox
-  # for_each = local.is_test_sandbox ? {} : local.monitored_queue_day_map # TODO:change is_test_sandbox to is_sandbox
-
   count = local.is_test_sandbox ? 0 : length(local.monitored_queue_day_list) # TODO:change is_test_sandbox to is_sandbox
 
-  # alarm_name = "${terraform.workspace}_${each.value.queue_key}_oldest_message_alarm_${each.value.days}d"
   alarm_name = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
-  # alarm_name = "${terraform.workspace}_${local.monitored_queue_day_list[count.index].queue_key}_oldest_message_alarm_${local.monitored_queue_day_list[count.index].days}d"
-
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "ApproximateAgeOfOldestMessage"
