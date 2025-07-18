@@ -29,7 +29,6 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
       - name: Checkout Base
         uses: actions/checkout@v4
         with:
@@ -94,7 +93,7 @@ jobs:
 
       - name: Terraform Set Workspace
         id: workspace
-        run: terraform workspace select -or-create ${{ github.event.inputs.sandboxWorkspace}}
+        run: terraform workspace select ${{ github.event.inputs.sandboxWorkspace}}
         working-directory: ./infrastructure
         shell: bash
 
