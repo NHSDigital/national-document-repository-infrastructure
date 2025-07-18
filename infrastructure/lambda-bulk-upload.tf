@@ -60,15 +60,18 @@ resource "aws_lambda_event_source_mapping" "bulk_upload_esm" {
   function_name    = module.bulk-upload-lambda.lambda_arn
   enabled          = false # Disabled by default; scheduler lambda will control
   batch_size       = 10
-}
-
-resource "aws_lambda_event_source_mapping" "bulk_upload_lambda" {
-  event_source_arn = module.sqs-lg-bulk-upload-metadata-queue.endpoint
-  function_name    = module.bulk-upload-lambda.lambda_arn
-
-  scaling_config {
+   scaling_config {
     maximum_concurrency = local.bulk_upload_lambda_concurrent_limit
   }
+}
+
+# resource "aws_lambda_event_source_mapping" "bulk_upload_lambda" {
+#   event_source_arn = module.sqs-lg-bulk-upload-metadata-queue.endpoint
+#   function_name    = module.bulk-upload-lambda.lambda_arn
+#
+#   scaling_config {
+#     maximum_concurrency = local.bulk_upload_lambda_concurrent_limit
+#   }
 
   depends_on = [
     module.bulk-upload-lambda,
