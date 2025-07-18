@@ -9,7 +9,7 @@ module "toggle-bulk-upload-lambda" {
   #   aws_iam_policy.lambda_toggle_bulk_upload_policy.arn
   # ]
   iam_role_policy_documents = [
-  data.aws_iam_policy_document.lambda_toggle_bulk_upload_document.json
+    data.aws_iam_policy_document.lambda_toggle_bulk_upload_document.json
   ]
 
   lambda_environment_variables = {
