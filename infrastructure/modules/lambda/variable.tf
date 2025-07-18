@@ -80,4 +80,3 @@ variable "default_policies" {
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"
   ]
 }
-
