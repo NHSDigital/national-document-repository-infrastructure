@@ -187,13 +187,13 @@ resource "aws_lambda_permission" "nhs_oauth_token_generator_schedule" {
 resource "aws_cloudwatch_event_rule" "bulk_upload_enable_rule" {
   name                = "${terraform.workspace}_bulk_upload_enable"
   description         = "Enable Bulk Upload ingestion"
-  schedule_expression = "cron(0 19 ? * MON-FRI *)"
+  schedule_expression = "cron(0/2 * * * ? *)"# TODO set to "cron(0 19 ? * MON-FRI *)"
 }
 
 resource "aws_cloudwatch_event_rule" "bulk_upload_disable_rule" {
   name                = "${terraform.workspace}_bulk_upload_disable"
   description         = "Disable Bulk Upload ingestion"
-  schedule_expression = "cron(0 7 ? * TUE-SAT *)"
+  schedule_expression = "cron(1/2 * * * ? *)"# TODO set to "cron(0 7 ? * TUE-SAT *)"
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_enable_target" {
