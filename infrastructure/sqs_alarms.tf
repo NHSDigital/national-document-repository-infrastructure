@@ -102,12 +102,12 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
 
   tags = {
     # Name        = "${terraform.workspace}_${each.value.queue_key}_oldest_message_alarm_${each.value.days}d"
-    Name        = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
-    severity    = local.monitored_queue_day_list[count.index][3]
-    alarm_group = local.monitored_queue_day_list[count.index][1]
+    Name         = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
+    Owner        = var.owner
+    Environment  = var.environment
+    Workspace    = terraform.workspace
+    severity     = local.monitored_queue_day_list[count.index][3]
+    alarm_group  = local.monitored_queue_day_list[count.index][1]
     alarm_metric = "Errors"
     is_kpi       = "true"
   }
