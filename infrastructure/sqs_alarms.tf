@@ -25,8 +25,8 @@ locals {
       for day in local.days_until_alarm : [
         queue_key,
         local.monitored_queues[queue_key],
-        day[0],  #day
-        day[1]   #severity
+        day[0], #day
+        day[1]  #severity
       ]
     ]
   ])
@@ -34,8 +34,8 @@ locals {
     for i in range(0, length(local.flat_list), 4) : [
       local.flat_list[i],     # key
       local.flat_list[i + 1], # queue name
-      local.flat_list[i + 2] ,# day
-      local.flat_list[i + 3] ,# severity
+      local.flat_list[i + 2], # day
+      local.flat_list[i + 3], # severity
     ]
   ]
 }
