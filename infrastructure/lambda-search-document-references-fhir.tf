@@ -27,7 +27,6 @@ module "search-document-references-fhir-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.search-document-references-gateway,
-    module.ndr-app-config,
-    aws_api_gateway_method.get_document_references_fhir
+    module.ndr-app-config
   ]
 }
