@@ -108,7 +108,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
     Workspace    = terraform.workspace
     severity     = local.monitored_queue_day_list[count.index][3]
     alarm_group  = local.monitored_queue_day_list[count.index][1]
-    alarm_metric = "Errors"
+    alarm_metric = "Has messages older than ${local.monitored_queue_day_list[count.index][2]} days"
     is_kpi       = "true"
   }
 }
