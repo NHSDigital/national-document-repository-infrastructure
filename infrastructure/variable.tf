@@ -180,23 +180,25 @@ variable "enable_dns_hostnames" {
 }
 
 variable "domain" {
-  type = string
+  type        = string
+  description = "Used to set base level domain"
 }
 
 variable "certificate_domain" {
-  type = string
+  type        = string
+  description = "The full domain name used to request the SSL/TLS certificate (e.g. 'example.com' or 'dev.example.com')."
+
 }
 
 variable "cloud_only_service_instances" {
-  type    = number
-  default = 1
+  type        = number
+  description = "Number of cloud-only service instances; used to conditionally include trusted principals for IAM roles."
+  default     = 1
 }
 
-variable "poll_frequency" {}
-
-variable "cloudwatch_alarm_evaluation_periods" {}
-
-variable "apim_environment" {}
+variable "apim_environment" {
+  type = string
+}
 
 locals {
   is_sandbox         = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
@@ -216,7 +218,9 @@ locals {
 }
 
 variable "nrl_api_endpoint_suffix" {
-  default = "api.service.nhs.uk/record-locator/producer/FHIR/R4/DocumentReference"
+  type        = string
+  description = "Constructs NRL API URL, using int. prefix if not in production"
+  default     = "api.service.nhs.uk/record-locator/producer/FHIR/R4/DocumentReference"
 }
 
 # Virus scanner variables

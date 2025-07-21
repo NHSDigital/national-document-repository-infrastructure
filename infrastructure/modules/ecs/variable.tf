@@ -1,28 +1,37 @@
 variable "vpc_id" {
-  type = string
+  type        = string
+  description = "ID of the VPC to deploy into"
 }
 
 variable "sg_name" {
-  type = string
+  type        = string
+  description = "Name for the security group"
 }
 
 variable "ecs_cluster_name" {
-  type = string
+  type        = string
+  description = "Name of the ECS cluster to deploy into"
 }
 
 variable "ecs_cluster_service_name" {
-  type = string
+  type        = string
+  description = "Name of the ECS service inside the cluster"
 }
 
 variable "ecs_launch_type" {
-  type    = string
-  default = "FARGATE"
+  type        = string
+  description = "ECS launch type (e.g., FARGATE or EC2)"
+  default     = "FARGATE"
 }
 
 variable "public_subnets" {
+  type        = list(string)
+  description = "List of public subnet IDs"
 }
 
 variable "private_subnets" {
+  type        = list(string)
+  description = "List of private subnet IDs"
 }
 
 variable "aws_region" {
@@ -31,29 +40,36 @@ variable "aws_region" {
 }
 
 variable "environment" {
-  type = string
+  type        = string
+  description = "Deployment environment tag used for naming and labeling (e.g., dev, prod)"
 }
 
 variable "owner" {
-  type = string
+  type        = string
+  description = "Identifies the team or person responsible for the resource (used for tagging)"
 }
 
 variable "ecr_repository_url" {
+  type        = string
+  description = "URL of the ECR repository to pull images from"
 }
 
 variable "domain" {
-  type    = string
-  default = ""
+  type        = string
+  description = "Used to set base level domain"
+  default     = ""
 }
 
 variable "certificate_domain" {
-  type    = string
-  default = ""
+  type        = string
+  description = "The full domain name used to request the SSL/TLS certificate (e.g. 'example.com' or 'dev.example.com')."
+  default     = ""
 }
 
 variable "container_port" {
-  type    = number
-  default = 8080
+  type        = number
+  description = "Port number that the container listens on"
+  default     = 8080
 }
 
 variable "alarm_actions_arn_list" {

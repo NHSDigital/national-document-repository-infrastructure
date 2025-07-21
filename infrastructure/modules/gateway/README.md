@@ -74,7 +74,7 @@ module "api_gateway_resource" {
 | <a name="input_authorizer_id"></a> [authorizer\_id](#input\_authorizer\_id) | Required resource id when setting authorization to 'CUSTOM' | `string` | `""` | no |
 | <a name="input_gateway_path"></a> [gateway\_path](#input\_gateway\_path) | n/a | `string` | n/a | yes |
 | <a name="input_http_methods"></a> [http\_methods](#input\_http\_methods) | n/a | `list(string)` | n/a | yes |
-| <a name="input_origin"></a> [origin](#input\_origin) | n/a | `string` | `"'*'"` | no |
+| <a name="input_origin"></a> [origin](#input\_origin) | n/a | `string` | n/a | yes |
 | <a name="input_parent_id"></a> [parent\_id](#input\_parent\_id) | n/a | `string` | n/a | yes |
 | <a name="input_require_credentials"></a> [require\_credentials](#input\_require\_credentials) | Sets the value of 'Access-Control-Allow-Credentials' which controls whether auth cookies are needed | `bool` | n/a | yes |
 ## Outputs
