@@ -13,8 +13,11 @@ locals {
     "stitching_dlq" = "${terraform.workspace}-deadletter-stitching-queue"
     "mns_dlq"       = "${terraform.workspace}-deadletter-mns-notification-queue"
   }
-  days_until_alarm = [6, 10]
-
+  # days_until_alarm = [6, 10]
+  days_until_alarm = [
+    [6, "medium"],
+    [10, "high"]
+  ]
   #   using a list instead of map
 
   flat_list = flatten([
@@ -22,15 +25,17 @@ locals {
       for day in local.days_until_alarm : [
         queue_key,
         local.monitored_queues[queue_key],
-        day
+        day[0],  #day
+        day[1]   #severity
       ]
     ]
   ])
   monitored_queue_day_list = [
-    for i in range(0, length(local.flat_list), 3) : [
-      local.flat_list[i],
-      local.flat_list[i + 1],
-      local.flat_list[i + 2]
+    for i in range(0, length(local.flat_list), 4) : [
+      local.flat_list[i],     # key
+      local.flat_list[i + 1], # queue name
+      local.flat_list[i + 2] ,# day
+      local.flat_list[i + 3] ,# severity
     ]
   ]
 }
@@ -92,7 +97,8 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
 
   # alarm_description = "Alarm when a message in queue '${each.value.queue_name}' is older than '${each.value.days}' days."
   alarm_description = "Alarm when a message in queue '${local.monitored_queue_day_list[count.index][1]}' is older than '${local.monitored_queue_day_list[count.index][2]}' days."
-  alarm_actions     = [module.global_sqs_age_alarm_topic[0].arn]
+  # alarm_actions     = [module.global_sqs_age_alarm_topic[0].arn]
+  alarm_actions = [module.sqs_alarm_lambda_topic.arn]
 
   tags = {
     # Name        = "${terraform.workspace}_${each.value.queue_key}_oldest_message_alarm_${each.value.days}d"
@@ -100,13 +106,53 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
     Owner       = var.owner
     Environment = var.environment
     Workspace   = terraform.workspace
+    severity    = local.monitored_queue_day_list[count.index][3]
   }
 }
-resource "aws_sns_topic_subscription" "sqs_oldest_message_alarm" {
-  for_each  = local.is_test_sandbox ? toset([]) : toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))) # TODO:change is_test_sandbox to is_sandbox
-  endpoint  = each.value
-  protocol  = "email"
-  topic_arn = module.global_sqs_age_alarm_topic[0].arn
+# resource "aws_sns_topic_subscription" "sqs_oldest_message_alarm" {
+#   for_each  = local.is_test_sandbox ? toset([]) : toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))) # TODO:change is_test_sandbox to is_sandbox
+#   endpoint  = each.value
+#   protocol  = "email"
+#   topic_arn = module.global_sqs_age_alarm_topic[0].arn
+# }
+
+
+module "sqs_alarm_lambda_topic" {
+  source                = "../infrastructure/modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  current_account_id    = data.aws_caller_identity.current.account_id
+  topic_name            = "sqs-alarms-to-lambda-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.im-alerting-lambda.lambda_arn
+
+  delivery_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudwatch.amazonaws.com"
+        },
+        "Action" : ["SNS:Publish"],
+        "Condition" : {
+          "ArnLike" : {
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
+          }
+        },
+        "Resource" : "*"
+      }
+    ]
+  })
 }
+
+resource "aws_lambda_permission" "sqs_alerting_lambda_permission" {
+  statement_id  = "AllowExecutionFromSQSAlarmSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = module.im-alerting-lambda.lambda_arn
+  principal     = "sns.amazonaws.com"
+  source_arn    = module.sqs_alarm_lambda_topic.arn
+}
+
+
 
 
