@@ -13,14 +13,10 @@ locals {
     "stitching_dlq" = "${terraform.workspace}-deadletter-stitching-queue"
     "mns_dlq"       = "${terraform.workspace}-deadletter-mns-notification-queue"
   }
-  # days_until_alarm = [6, 10]
   days_until_alarm = [
     [6, "medium"],
     [10, "high"]
   ]
-
-  # default_alarm_threshold_seconds =  6 #6 * 24 * 60 * 60 # 6 days
-  #   using a list instead of map
 
   flat_list = flatten([
     for queue_key in keys(local.monitored_queues) : [
@@ -80,7 +76,6 @@ module "global_sqs_age_alarm_topic" {
 
 resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
   count = local.is_test_sandbox ? 0 : length(local.monitored_queue_day_list) # TODO:change is_test_sandbox to is_sandbox
-  # alarm_name = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm"
 
   alarm_name          = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
   comparison_operator = "GreaterThanThreshold"
@@ -89,46 +84,30 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
   namespace           = "AWS/SQS"
   period              = 60 # TODO: change to 86400 (24h))
   statistic           = "Maximum"
-  # threshold           = each.value.days # TODO: change to each.value.days*24*60*60
-  threshold = local.monitored_queue_day_list[count.index][2] # TODO: change to each.value.days*24*60*60
-  #  threshold           = local.default_alarm_threshold_seconds
-  treat_missing_data = "notBreaching"
+  threshold           = local.monitored_queue_day_list[count.index][2] # TODO: change to local.monitored_queue_day_list[count.index][2]*24*60*60
+  treat_missing_data  = "notBreaching"
 
   dimensions = {
-    # QueueName = each.value.queue_name
     QueueName = local.monitored_queue_day_list[count.index][1]
-    # QueueName = each.value
   }
 
-  # alarm_description = "Alarm when a message in queue '${each.value.queue_name}' is older than '${each.value.days}' days."
   alarm_description = "Alarm when a message in queue '${local.monitored_queue_day_list[count.index][1]}' is older than '${local.monitored_queue_day_list[count.index][2]}' days."
 
-  # alarm_actions     = [module.global_sqs_age_alarm_topic[0].arn]
   alarm_actions = [module.sqs_alarm_lambda_topic.arn]
+  ok_actions    = [module.sqs_alarm_lambda_topic.arn]
 
   tags = {
-    # Name        = "${terraform.workspace}_${each.value.queue_key}_oldest_message_alarm_${each.value.days}d"
-    Name = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
-    # Name         = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm"
+    Name        = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
     Owner       = var.owner
     Environment = var.environment
     Workspace   = terraform.workspace
     severity    = local.monitored_queue_day_list[count.index][3]
     alarm_group = local.monitored_queue_day_list[count.index][1]
-    # alarm_group  =each.value
     # alarm_metric = "Has messages older than ${local.monitored_queue_day_list[count.index][2]} days"
-    # alarm_metric = "${local.monitored_queue_day_list[count.index][2]}d"
     alarm_metric = "ApproximateAgeOfOldestMessage"
     is_kpi       = "true"
   }
 }
-# resource "aws_sns_topic_subscription" "sqs_oldest_message_alarm" {
-#   for_each  = local.is_test_sandbox ? toset([]) : toset(nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))) # TODO:change is_test_sandbox to is_sandbox
-#   endpoint  = each.value
-#   protocol  = "email"
-#   topic_arn = module.global_sqs_age_alarm_topic[0].arn
-# }
-
 
 module "sqs_alarm_lambda_topic" {
   source                = "../infrastructure/modules/sns"
@@ -165,7 +144,3 @@ resource "aws_lambda_permission" "sqs_alerting_lambda_permission" {
   principal     = "sns.amazonaws.com"
   source_arn    = module.sqs_alarm_lambda_topic.arn
 }
-
-
-
-
