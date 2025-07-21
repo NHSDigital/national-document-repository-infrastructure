@@ -1,6 +1,4 @@
-# PRM-28
-
 moved {
-  from = module.create-doc-ref-gateway
-  to   = module.document_reference_gateway
+  from = module.document_reference_gateway
+  to   = module.create_document_reference_gateway
 }
