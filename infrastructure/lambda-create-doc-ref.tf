@@ -92,11 +92,11 @@ module "create-doc-ref-lambda" {
     PRESIGNED_ASSUME_ROLE         = aws_iam_role.create_post_presign_url_role.arn
   }
   depends_on = [
+    module.create_document_reference_gateway,
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.document_reference_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
     module.ndr-bulk-staging-store,
-    module.create_document_reference_gateway,
     module.ndr-app-config,
     module.lloyd_george_reference_dynamodb_table,
     module.document_reference_dynamodb_table,
