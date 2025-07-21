@@ -118,8 +118,8 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
     # alarm_group  =each.value
     # alarm_metric = "Has messages older than ${local.monitored_queue_day_list[count.index][2]} days"
     # alarm_metric = "${local.monitored_queue_day_list[count.index][2]}d"
-    alarm_metric           = "ApproximateAgeOfOldestMessage"
-    is_kpi = "true"
+    alarm_metric = "ApproximateAgeOfOldestMessage"
+    is_kpi       = "true"
   }
 }
 # resource "aws_sns_topic_subscription" "sqs_oldest_message_alarm" {
