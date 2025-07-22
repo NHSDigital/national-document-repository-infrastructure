@@ -1,5 +1,5 @@
 module "post-document-references-fhir-lambda" {
-  count   = local.is_production ? 0 : 0
+  count   = local.is_production ? 0 : 1
   source  = "./modules/lambda"
   name    = "PostDocumentReferencesFHIR"
   handler = "handlers.post_fhir_document_reference_handler.lambda_handler"
