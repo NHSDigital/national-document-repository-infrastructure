@@ -6,15 +6,6 @@ module "fhir_document_reference_gateway" {
   http_methods        = ["POST", "GET"]
   authorization       = "NONE"
   api_key_required    = true
-  gateway_path        = "DocumentReference"
+  gateway_path        = "FhirDocumentReference"
   require_credentials = true
 }
-
-# resource "aws_api_gateway_method" "get_document_references_fhir" {
-#   count            = local.is_production ? 0 : 1
-#   rest_api_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
-#   resource_id      = module.fhir_document_reference_gateway[0].gateway_resource_id
-#   http_method      = "GET"
-#   authorization    = "NONE"
-#   api_key_required = true
-# }
