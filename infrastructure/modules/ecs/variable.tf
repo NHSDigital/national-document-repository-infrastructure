@@ -73,68 +73,84 @@ variable "container_port" {
 }
 
 variable "alarm_actions_arn_list" {
-  type = list(string)
+  type        = list(string)
+  description = "List of ARNs for actions to trigger when CloudWatch alarms enter ALARM state"
 }
 
 variable "logs_bucket" {
+  type        = string
+  description = "Name of the S3 bucket to send logs to"
 }
 
 variable "desired_count" {
-  type    = number
-  default = 3
+  type        = number
+  description = "Number of ECS tasks to run by default"
+  default     = 3
 }
 
 variable "autoscaling_min_capacity" {
-  type    = number
-  default = 3
+  type        = number
+  description = "Minimum number of ECS tasks to maintain when autoscaling is enabled"
+  default     = 3
 }
 
 variable "autoscaling_max_capacity" {
-  type    = number
-  default = 6
+  type        = number
+  description = "Maximum number of ECS tasks allowed when autoscaling is enabled"
+  default     = 6
 }
 
 variable "is_lb_needed" {
-  type    = bool
-  default = false
+  type        = bool
+  description = "Whether a Load Balancer is required for this service"
+  default     = false
 }
 
 variable "is_service_needed" {
-  type    = bool
-  default = true
+  type        = bool
+  description = "Whether to create the ECS service resource"
+  default     = true
 }
 
 variable "is_autoscaling_needed" {
-  type    = bool
-  default = true
+  type        = bool
+  description = "Whether to enable autoscaling for the ECS service"
+  default     = true
 }
 
 variable "environment_vars" {
-  default = [null]
+  description = "Environment variables to set for the ECS container definition"
+  type        = list(any)
+  default     = [null]
 }
 
 variable "ecs_task_definition_memory" {
-  default = 2048
-  type    = number
+  default     = 2048
+  description = "Amount of memory (in MiB) to allocate to the ECS task definition"
+  type        = number
 }
 
 variable "ecs_task_definition_cpu" {
-  default = 1024
-  type    = number
+  default     = 1024
+  description = "Amount of CPU units to allocate to the ECS task definition"
+  type        = number
 }
 
 variable "ecs_container_definition_memory" {
-  default = 1024
-  type    = number
+  default     = 1024
+  description = "Amount of memory (in MiB) to allocate to the ECS container"
+  type        = number
 }
 
 variable "ecs_container_definition_cpu" {
-  default = 512
-  type    = number
+  default     = 512
+  description = "Amount of CPU units to allocate to the ECS container"
+  type        = number
 }
 
 variable "task_role" {
-  default = null
+  default     = null
+  description = "IAM role ARN to associate with the ECS task"
 }
 
 locals {
