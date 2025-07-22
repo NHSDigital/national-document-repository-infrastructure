@@ -1,5 +1,6 @@
 variable "name" {
-  type = string
+  description = "Name of the SQS queue."
+  type        = string
 }
 
 variable "delay" {
@@ -39,15 +40,15 @@ variable "enable_sse" {
 }
 
 variable "enable_deduplication" {
+  description = "Prevent content based duplication in queue"
   type        = bool
   default     = false
-  description = "Prevent content based duplication in queue"
 }
 
 variable "enable_fifo" {
+  description = "Attach first in first out policy to sqs"
   type        = bool
   default     = false
-  description = "Attach first in first out policy to sqs"
 }
 
 variable "kms_master_key_id" {
@@ -57,18 +58,21 @@ variable "kms_master_key_id" {
 }
 
 variable "max_receive_count" {
-  type    = number
-  default = 1
+  description = "Maximum number of receives before messages are moved to the DLQ."
+  type        = number
+  default     = 1
 }
 
 variable "enable_dlq" {
-  type    = bool
-  default = false
+  description = "Whether to enable a dead-letter queue (DLQ) for the main queue."
+  type        = bool
+  default     = false
 }
 
 variable "dlq_visibility_timeout" {
-  type    = number
-  default = 0
+  description = "Visibility timeout for messages in the dead-letter queue."
+  type        = number
+  default     = 0
 }
 
 variable "dlq_message_retention" {
@@ -79,16 +83,18 @@ variable "dlq_message_retention" {
 
 # Tags
 variable "environment" {
-  type = string
+  description = "Environment tag for the resource (e.g., 'dev', 'prod')."
+  type        = string
 }
 
 variable "owner" {
-  type = string
+  description = "Owner tag used for identifying resource ownership."
+  type        = string
 }
 
 output "endpoint" {
-  value       = aws_sqs_queue.sqs_queue.arn
   description = "Same as sqs queue arn. For use when setting the queue as endpoint of sns topic"
+  value       = aws_sqs_queue.sqs_queue.arn
 }
 
 output "sqs_arn" {

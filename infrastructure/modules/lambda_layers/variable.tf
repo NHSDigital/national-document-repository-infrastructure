@@ -1,14 +1,17 @@
 variable "account_id" {
-  type = string
+  description = "The AWS account ID used to generate IAM policy for layer access."
+  type        = string
 }
 
 variable "layer_zip_file_name" {
-  type    = string
-  default = "placeholder_lambda_payload.zip"
+  description = "Path to the ZIP archive containing layer content. Defaults to a placeholder."
+  type        = string
+  default     = "placeholder_lambda_payload.zip"
 }
 
 variable "layer_name" {
-  type = string
+  description = "Logical name assigned to the Lambda layer."
+  type        = string
 }
 
 # Outputs
