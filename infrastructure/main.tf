@@ -20,6 +20,14 @@ terraform {
 }
 provider "aws" {
   region = "eu-west-2"
+
+  default_tags {
+    tags = {
+      Owner       = var.owner
+      Environment = var.environment
+      Workspace   = terraform.workspace
+    }
+  }
 }
 
 provider "awscc" {
@@ -29,7 +37,38 @@ provider "awscc" {
 provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
+
+  default_tags {
+    tags = {
+      Owner       = var.owner
+      Environment = var.environment
+      Workspace   = terraform.workspace
+    }
+  }
 }
+
+resource "aws_resourcegroups_group" "resource_group" {
+  name        = "${terraform.workspace}-resource_group"
+  description = "${terraform.workspace} workspace resource group."
+  tags = {
+    Name = "${terraform.workspace}-resource_group"
+  }
+
+  resource_query {
+    query = <<JSON
+{
+  "ResourceTypeFilters": ["AWS::AllSupported"],
+  "TagFilters": [
+    {
+      "Key": "Workspace",
+      "Values": ["${terraform.workspace}"]
+    }
+  ]
+}
+JSON
+  }
+}
+
 data "aws_caller_identity" "current" {
 }
 
@@ -40,3 +79,4 @@ data "aws_elb_service_account" "main" {}
 data "aws_ssm_parameter" "apim_url" {
   name = "/repo/${var.environment}/user-input/apim-api-url"
 }
+

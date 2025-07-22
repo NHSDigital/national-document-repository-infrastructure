@@ -11,10 +11,7 @@ resource "aws_ecr_repository" "ndr-ecr" {
   }
   force_delete = var.allow_force_destroy
   tags = {
-    Name        = "${terraform.workspace}-${var.app_name}"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
+    Name = "${terraform.workspace}-${var.app_name}"
   }
 }
 
