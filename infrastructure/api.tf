@@ -47,8 +47,8 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.access-audit-lambda,
     module.back-channel-logout-gateway,
     module.back_channel_logout_lambda,
-    module.document_reference_gateway,
     module.create-doc-ref-lambda,
+    module.create_document_reference_gateway,
     module.create-token-gateway,
     module.create-token-lambda,
     module.delete-doc-ref-gateway,
@@ -57,6 +57,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.document-manifest-job-lambda,
     module.feature-flags-gateway,
     module.feature-flags-lambda,
+    module.fhir_document_reference_gateway,
     module.get-doc-fhir-lambda,
     module.get-report-by-ods-gateway,
     module.get-report-by-ods-lambda,
@@ -74,6 +75,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.update-upload-state-lambda,
     module.upload_confirm_result_gateway,
     module.upload_confirm_result_lambda,
+    module.post-document-references-fhir-lambda,
     module.virus_scan_result_gateway,
     module.virus_scan_result_lambda
   ]
@@ -93,7 +95,9 @@ resource "aws_api_gateway_stage" "ndr_api" {
   stage_name           = var.environment
   xray_tracing_enabled = var.enable_xray_tracing
 
-  depends_on = [aws_cloudwatch_log_group.api_gateway_stage]
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_stage
+  ]
 }
 
 resource "aws_cloudwatch_log_group" "api_gateway_stage" {
@@ -101,6 +105,9 @@ resource "aws_cloudwatch_log_group" "api_gateway_stage" {
   # https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
   name              = "API-Gateway-Execution-Logs_${aws_api_gateway_rest_api.ndr_doc_store_api.id}/${var.environment}"
   retention_in_days = 0
+  depends_on = [
+    aws_api_gateway_account.logging
+  ]
 }
 
 resource "aws_api_gateway_method_settings" "api_gateway_stage" {
