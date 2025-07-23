@@ -1,41 +1,41 @@
 module "teams_alerting_webhook_url" {
-  source = "./modules/ssm_parameter"
-  name = "alerting/teams/webhook_url"
-  type = "String"
+  source      = "./modules/ssm_parameter"
+  name        = "alerting/teams/webhook_url"
+  type        = "String"
   description = "Teams webhook URL used for instant message alerting"
-  value = var.teams_alerting_webhook_url
-  owner = var.owner
+  value       = var.teams_alerting_webhook_url
+  owner       = var.owner
   environment = var.environment
 }
 
 module "im_alerting_confluence_url" {
-  source = "./modules/ssm_parameter"
+  source      = "./modules/ssm_parameter"
   environment = var.environment
-  owner = var.owner
-  name = "alerting/confluence/url"
-  type = "String"
+  owner       = var.owner
+  name        = "alerting/confluence/url"
+  type        = "String"
   description = "Confluence base URL for finding out what to do when an alarm goes off"
-  value = var.im_alerting_confluence_url
+  value       = var.im_alerting_confluence_url
 }
 
 module "slack_alerting_channel_id" {
-  source = "./modules/ssm_parameter"
-  name = "alerting/slack/channel_id"
-  type = "String"
+  source      = "./modules/ssm_parameter"
+  name        = "alerting/slack/channel_id"
+  type        = "String"
   description = "Destination channel ID for slack alerts"
-  value = var.slack_alerting_channel_id
-  owner = var.owner
+  value       = var.slack_alerting_channel_id
+  owner       = var.owner
   environment = var.environment
 }
 
 module "slack_alerting_bot_token" {
-  source = "./modules/ssm_parameter"
+  source      = "./modules/ssm_parameter"
   environment = var.environment
-  owner = var.owner
-  value = var.slack_alerting_bot_token
+  owner       = var.owner
+  value       = var.slack_alerting_bot_token
   description = "Slack bot token used for the IM Alerting lambda"
-  name = "alerting/slack/bot_token"
-  type = "String"
+  name        = "alerting/slack/bot_token"
+  type        = "String"
 }
 
 module "im-alerting-lambda" {

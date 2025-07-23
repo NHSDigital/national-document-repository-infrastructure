@@ -246,20 +246,20 @@ variable "enable_xray_tracing" {
 
 variable "teams_alerting_webhook_url" {
   description = "Teams webhook URL used by instant messaging alerting lambda"
-  type = string
+  type        = string
 }
 
 variable "im_alerting_confluence_url" {
   description = "Confluence base URL for finding out what to do when an alarm goes off"
-  type = string
+  type        = string
 }
 
 variable "slack_alerting_channel_id" {
   description = "Slack channel ID to send alerts to when an alarm goes off"
-  type = string
+  type        = string
 }
 
 variable "slack_alerting_bot_token" {
   description = "Slack bot token used for the IM alerting lambda"
-  type = string
+  type        = string
 }
