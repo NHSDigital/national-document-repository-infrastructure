@@ -36,7 +36,7 @@ resource "aws_ssm_parameter" "slack_alerting_channel_id" {
 
 resource "aws_ssm_parameter" "slack_alerting_bot_token" {
   name        = "alerting/slack/bot_token"
-  type        = "SecureString"  # Consider using SecureString for sensitive tokens
+  type        = "String"
   description = "Slack bot token used for the IM Alerting lambda"
   value       = var.slack_alerting_bot_token
 
