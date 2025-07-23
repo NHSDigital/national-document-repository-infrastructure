@@ -1,18 +1,19 @@
 locals {
   monitored_queues = {
     # main queues
-    "nrl_main"       = "${terraform.workspace}-nrl-queue.fifo"
-    "splunk_main"    = "${terraform.workspace}-splunk-queue"
-    "stitching_main" = "${terraform.workspace}-stitching-queue"
-    "lg_bulk_main"   = "${terraform.workspace}-lg-bulk-upload-metadata-queue.fifo"
-    "lg_inv_main"    = "${terraform.workspace}-lg-bulk-upload-invalid-queue"
-    "mns_main"       = "${terraform.workspace}-mns-notification-queue"
+    nrl_main       = module.sqs-nrl-queue.queue_name
+    splunk_main    = module.sqs-splunk-queue.queue_name
+    stitching_main = module.sqs-stitching-queue.queue_name
+    lg_bulk_main   = module.sqs-lg-bulk-upload-metadata-queue.queue_name
+    lg_inv_main    = module.sqs-lg-bulk-upload-invalid-queue.queue_name
+    mns_main       = module.sqs-mns-notification-queue.queue_name
 
     # dead-letter queues
-    "nrl_dlq"       = "${terraform.workspace}-deadletter-nrl-queue.fifo"
-    "stitching_dlq" = "${terraform.workspace}-deadletter-stitching-queue"
-    "mns_dlq"       = "${terraform.workspace}-deadletter-mns-notification-queue"
+    nrl_dlq       = module.sqs-nrl-queue.dlq_name
+    stitching_dlq = module.sqs-stitching-queue.dlq_name
+    mns_dlq       = module.sqs-mns-notification-queue.dlq_name
   }
+
   days_until_alarm = [
     [6, "medium"],
     [10, "high"]
@@ -97,14 +98,13 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
   ok_actions    = [module.sqs_alarm_lambda_topic.arn]
 
   tags = {
-    Name        = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
-    severity    = local.monitored_queue_day_list[count.index][3]
-    alarm_group = local.monitored_queue_day_list[count.index][1]
-    # alarm_metric = "Has messages older than ${local.monitored_queue_day_list[count.index][2]} days"
-    alarm_metric = "ApproximateAgeOfOldestMessage"
+    Name         = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
+    Owner        = var.owner
+    Environment  = var.environment
+    Workspace    = terraform.workspace
+    severity     = local.monitored_queue_day_list[count.index][3]
+    alarm_group  = local.monitored_queue_day_list[count.index][1]
+    alarm_metric = "Has messages older than ${local.monitored_queue_day_list[count.index][2]} days"
     is_kpi       = "true"
   }
 }
