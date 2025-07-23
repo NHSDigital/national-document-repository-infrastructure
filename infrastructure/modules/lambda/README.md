@@ -92,7 +92,7 @@ module "lambda" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_api_execution_arn"></a> [api\_execution\_arn](#input\_api\_execution\_arn) | Execution ARN of the API Gateway used for granting invoke permissions. | `string` | n/a | yes |
-| <a name="input_default_policies"></a> [default\_policies](#input\_default\_policies) | n/a | `list` | <pre>[<br/>  "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",<br/>  "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"<br/>]</pre> | no |
+| <a name="input_default_policies"></a> [default\_policies](#input\_default\_policies) | List of default IAM policy ARNs to attach to the Lambda execution role. | `list(string)` | <pre>[<br/>  "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",<br/>  "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"<br/>]</pre> | no |
 | <a name="input_handler"></a> [handler](#input\_handler) | Function entry point in the codebase (e.g., 'index.handler'). | `string` | n/a | yes |
 | <a name="input_http_methods"></a> [http\_methods](#input\_http\_methods) | List of HTTP methods to integrate with the Lambda function. | `list(string)` | `[]` | no |
 | <a name="input_iam_role_policy_documents"></a> [iam\_role\_policy\_documents](#input\_iam\_role\_policy\_documents) | List of IAM policy document ARNs to attach to the Lambda execution role. | `list(string)` | `[]` | no |

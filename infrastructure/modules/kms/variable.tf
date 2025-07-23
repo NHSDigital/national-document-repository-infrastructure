@@ -1,5 +1,6 @@
 variable "current_account_id" {
-  type = string
+  description = "AWS account ID where the KMS key policy is applied."
+  type        = string
 }
 
 variable "kms_key_name" {

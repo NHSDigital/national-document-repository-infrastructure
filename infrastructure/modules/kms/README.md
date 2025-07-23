@@ -72,7 +72,7 @@ module "kms_key" {
 | <a name="input_allow_decrypt_for_arn"></a> [allow\_decrypt\_for\_arn](#input\_allow\_decrypt\_for\_arn) | Flag to allow generating a decrypt-only policy for specified ARNs. | `bool` | `false` | no |
 | <a name="input_allowed_arn"></a> [allowed\_arn](#input\_allowed\_arn) | List of ARNs that are allowed full encrypt/decrypt access to the KMS key. | `list(string)` | `[]` | no |
 | <a name="input_aws_identifiers"></a> [aws\_identifiers](#input\_aws\_identifiers) | List of ARNs that will be granted decrypt-only access. | `list(string)` | `[]` | no |
-| <a name="input_current_account_id"></a> [current\_account\_id](#input\_current\_account\_id) | n/a | `string` | n/a | yes |
+| <a name="input_current_account_id"></a> [current\_account\_id](#input\_current\_account\_id) | AWS account ID where the KMS key policy is applied. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment (e.g., dev, staging, prod). | `string` | n/a | yes |
 | <a name="input_kms_key_description"></a> [kms\_key\_description](#input\_kms\_key\_description) | Description of the KMS key. | `string` | n/a | yes |
 | <a name="input_kms_key_name"></a> [kms\_key\_name](#input\_kms\_key\_name) | Name of the KMS key to be created. | `string` | n/a | yes |

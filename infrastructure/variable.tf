@@ -90,13 +90,15 @@ variable "cloudfront_edge_table_name" {
 }
 
 variable "zip_store_dynamodb_table_name" {
-  type    = string
-  default = "ZipStoreReferenceMetadata"
+  description = "The name of the dynamodb table to store metadata related to zip file storage."
+  type        = string
+  default     = "ZipStoreReferenceMetadata"
 }
 
 variable "stitch_metadata_dynamodb_table_name" {
-  type    = string
-  default = "LloydGeorgeStitchJobMetadata"
+  description = "The name of the dynamodb table to store metadata related to LG stitching jobs ."
+  type        = string
+  default     = "LloydGeorgeStitchJobMetadata"
 }
 
 variable "auth_state_dynamodb_table_name" {

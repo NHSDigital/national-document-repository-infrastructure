@@ -78,12 +78,14 @@ variable "memory_size" {
 }
 
 variable "reserved_concurrent_executions" {
-  type        = number
   description = "The number of concurrent execution allowed for lambda. A value of 0 will stop lambda from running, and -1 removes any concurrency limitations. Default to -1."
+  type        = number
   default     = -1
 }
 
 variable "default_policies" {
+  description = "List of default IAM policy ARNs to attach to the Lambda execution role."
+  type        = list(string)
   default = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     "arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy"

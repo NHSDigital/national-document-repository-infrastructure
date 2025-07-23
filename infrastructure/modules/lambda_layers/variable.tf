@@ -3,12 +3,6 @@ variable "account_id" {
   type        = string
 }
 
-variable "layer_zip_file_name" {
-  description = "Path to the ZIP archive containing layer content. Defaults to a placeholder."
-  type        = string
-  default     = "placeholder_lambda_payload.zip"
-}
-
 variable "layer_name" {
   description = "Logical name assigned to the Lambda layer."
   type        = string
