@@ -1,41 +1,49 @@
-module "teams_alerting_webhook_url" {
-  source      = "./modules/ssm_parameter"
+resource "aws_ssm_parameter" "teams_alerting_webhook_url" {
   name        = "alerting/teams/webhook_url"
   type        = "String"
   description = "Teams webhook URL used for instant message alerting"
   value       = var.teams_alerting_webhook_url
-  owner       = var.owner
-  environment = var.environment
+
+  tags = {
+    Owner       = var.owner
+    Environment = var.environment
+  }
 }
 
-module "im_alerting_confluence_url" {
-  source      = "./modules/ssm_parameter"
-  environment = var.environment
-  owner       = var.owner
+resource "aws_ssm_parameter" "im_alerting_confluence_url" {
   name        = "alerting/confluence/url"
   type        = "String"
   description = "Confluence base URL for finding out what to do when an alarm goes off"
   value       = var.im_alerting_confluence_url
+
+  tags = {
+    Owner       = var.owner
+    Environment = var.environment
+  }
 }
 
-module "slack_alerting_channel_id" {
-  source      = "./modules/ssm_parameter"
+resource "aws_ssm_parameter" "slack_alerting_channel_id" {
   name        = "alerting/slack/channel_id"
   type        = "String"
   description = "Destination channel ID for slack alerts"
   value       = var.slack_alerting_channel_id
-  owner       = var.owner
-  environment = var.environment
+
+  tags = {
+    Owner       = var.owner
+    Environment = var.environment
+  }
 }
 
-module "slack_alerting_bot_token" {
-  source      = "./modules/ssm_parameter"
-  environment = var.environment
-  owner       = var.owner
-  value       = var.slack_alerting_bot_token
-  description = "Slack bot token used for the IM Alerting lambda"
+resource "aws_ssm_parameter" "slack_alerting_bot_token" {
   name        = "alerting/slack/bot_token"
-  type        = "String"
+  type        = "SecureString"  # Consider using SecureString for sensitive tokens
+  description = "Slack bot token used for the IM Alerting lambda"
+  value       = var.slack_alerting_bot_token
+
+  tags = {
+    Owner       = var.owner
+    Environment = var.environment
+  }
 }
 
 module "im-alerting-lambda" {
@@ -57,11 +65,11 @@ module "im-alerting-lambda" {
     APPCONFIG_ENVIRONMENT       = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION     = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                   = terraform.workspace
-    TEAMS_WEBHOOK_URL           = module.teams_alerting_webhook_url.value
-    CONFLUENCE_BASE_URL         = module.im_alerting_confluence_url.value
+    TEAMS_WEBHOOK_URL           = aws_ssm_parameter.teams_alerting_webhook_url.value
+    CONFLUENCE_BASE_URL         = aws_ssm_parameter.im_alerting_confluence_url.value
     ALARM_HISTORY_DYNAMODB_NAME = module.alarm_state_history_table.table_name
-    SLACK_CHANNEL_ID            = module.slack_alerting_channel_id.value
-    SLACK_BOT_TOKEN             = module.slack_alerting_bot_token.value
+    SLACK_CHANNEL_ID            = aws_ssm_parameter.slack_alerting_channel_id.value
+    SLACK_BOT_TOKEN             = aws_ssm_parameter.slack_alerting_bot_token.value
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
