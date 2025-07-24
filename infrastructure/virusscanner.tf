@@ -74,7 +74,7 @@ module "cloud_storage_security" {
   count = local.is_production ? 1 : 0
 
   source                       = "cloudstoragesec/cloud-storage-security/aws"
-  version                      = "1.8.5+css9.01.001"
+  version                      = "1.8.6+css9.01.002"
   cidr                         = [var.cloud_security_console_black_hole_address] # This is a reserved address that does not lead anywhere to make sure CloudStorageSecurity console is not available
   email                        = data.aws_ssm_parameter.cloud_security_admin_email.value
   subnet_a_id                  = aws_subnet.virus_scanning_a[0].id
