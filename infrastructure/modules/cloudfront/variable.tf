@@ -14,7 +14,7 @@ variable "qualifed_arn" {
 }
 
 variable "web_acl_id" {
-  description = "Web ACL to associate this Cloudfront distribution with."
+  description = "Web ACL to associate this CloudFront distribution with."
   type        = string
   default     = ""
 }

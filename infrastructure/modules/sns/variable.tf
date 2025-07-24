@@ -1,20 +1,20 @@
 variable "topic_name" {
-  description = "Name of the SNS topic"
+  description = "Name of the SNS topic."
   type        = string
 }
 
 variable "delivery_policy" {
-  description = "Attach delivery or IAM policy"
+  description = "Attach delivery or IAM policy."
   type        = string
 }
 variable "enable_fifo" {
-  description = "Attach first in first out policy to notification queue"
+  description = "Attach first in first out policy to notification queue."
   type        = bool
   default     = false
 }
 
 variable "enable_deduplication" {
-  description = "Prevent content based duplication in notification queue"
+  description = "Prevent content based duplication in notification queue."
   type        = bool
   default     = false
 }
@@ -48,7 +48,7 @@ variable "sns_encryption_key_id" {
 }
 
 variable "sqs_feedback" {
-  description = "Map of IAM role ARNs and sample rate for success and failure feedback"
+  description = "Map of IAM role ARNs and sample rate for success and failure feedback."
   type        = map(string)
   default     = {}
 }

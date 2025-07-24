@@ -22,7 +22,7 @@ variable "certificate_subdomain_name_prefix" {
 
 # Bucket Variables
 variable "docstore_bucket_name" {
-  description = "The name of the S3 bucket to store ARF documents"
+  description = "The name of the S3 bucket to store ARF documents."
   type        = string
   default     = "ndr-document-store"
 }
@@ -60,79 +60,79 @@ variable "statistical_reports_bucket_name" {
 # DynamoDB Table Variables
 
 variable "pdm_dynamodb_table_name" {
-  description = "The name of the dynamodb table to be use for pdm metadata."
+  description = "The name of the DynamoDB table to be use for PDM metadata."
   type        = string
   default     = "PDMDocumentMetadata"
 }
 
 variable "docstore_dynamodb_table_name" {
-  description = "The name of the dynamodb table to store the metadata of ARF documents."
+  description = "The name of the DynamoDB table to store the metadata of ARF documents."
   type        = string
   default     = "DocumentReferenceMetadata"
 }
 
 variable "lloyd_george_dynamodb_table_name" {
-  description = "The name of the dynamodb table to store the metadata of Lloyd George documents."
+  description = "The name of the DynamoDB table to store the metadata of Lloyd George documents."
   type        = string
   default     = "LloydGeorgeReferenceMetadata"
 }
 
 variable "unstitched_lloyd_george_dynamodb_table_name" {
-  description = "The name of the dynamodb table to store the metadata of un-stitched Lloyd George documents."
+  description = "The name of the DynamoDB table to store the metadata of un-stitched Lloyd George documents."
   type        = string
   default     = "UnstitchedLloydGeorgeReferenceMetadata"
 }
 
 variable "cloudfront_edge_table_name" {
-  description = "The name of the dynamodb table to store the presigned url reference of CloudFront requests."
+  description = "The name of the DynamoDB table to store the presigned url reference of CloudFront requests."
   type        = string
   default     = "CloudFrontEdgeReference"
 }
 
 variable "zip_store_dynamodb_table_name" {
-  description = "The name of the dynamodb table to store metadata related to zip file storage."
+  description = "The name of the DynamoDB table to store metadata related to zip file storage."
   type        = string
   default     = "ZipStoreReferenceMetadata"
 }
 
 variable "stitch_metadata_dynamodb_table_name" {
-  description = "The name of the dynamodb table to store metadata related to LG stitching jobs ."
+  description = "The name of the DynamoDB table to store metadata related to LG stitching jobs ."
   type        = string
   default     = "LloydGeorgeStitchJobMetadata"
 }
 
 variable "auth_state_dynamodb_table_name" {
-  description = "The name of the dynamodb table to store the state values (for CIS2 authorisation)."
+  description = "The name of the DynamoDB table to store the state values (for CIS2 authorisation)."
   type        = string
   default     = "AuthStateReferenceMetadata"
 }
 
 variable "auth_session_dynamodb_table_name" {
-  description = "The name of the dynamodb table to store user login sessions."
+  description = "The name of the DynamoDB table to store user login sessions."
   type        = string
   default     = "AuthSessionReferenceMetadata"
 }
 
 variable "bulk_upload_report_dynamodb_table_name" {
-  description = "The name of the dynamodb table to store bulk upload status."
+  description = "The name of the DynamoDB table to store bulk upload status."
   type        = string
   default     = "BulkUploadReport"
 }
 
 variable "statistics_dynamodb_table_name" {
-  description = "The name of the dynamodb table to store application statistics."
+  description = "The name of the DynamoDB table to store application statistics."
   type        = string
   default     = "ApplicationStatistics"
 }
 
 variable "access_audit_dynamodb_table_name" {
-  description = "The name of the dynamodb table to store the audit of access to deceased patient records."
+  description = "The name of the DynamoDB table to store the audit of access to deceased patient records."
   type        = string
   default     = "AccessAudit"
 }
 
 variable "alarm_state_history_table_name" {
-  description = "The name of the dynamodb table to store the history of recent alarms that have been triggered."
+  description = "The name of the DynamoDB table to store the history of recent alarms that have been triggered."
   type        = string
   default     = "AlarmStateHistory"
 }
@@ -140,12 +140,12 @@ variable "alarm_state_history_table_name" {
 # VPC Variables
 
 variable "standalone_vpc_tag" {
-  description = "This is the tag assigned to the standalone vpc that should be created manaully before the first run of the infrastructure."
+  description = "This is the tag assigned to the standalone VPC that should be created manaully before the first run of the infrastructure."
   type        = string
 }
 
 variable "standalone_vpc_ig_tag" {
-  description = "This is the tag assigned to the standalone vpc internet gateway that should be created manaully before the first run of the infrastructure."
+  description = "This is the tag assigned to the standalone VPC internet gateway that should be created manaully before the first run of the infrastructure."
   type        = string
 }
 
@@ -174,7 +174,7 @@ variable "enable_private_routes" {
 }
 
 variable "enable_dns_support" {
-  description = "Enable DNS  support for VPC."
+  description = "Enable DNS support for VPC."
   type        = bool
   default     = true
 }

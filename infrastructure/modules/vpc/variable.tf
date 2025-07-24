@@ -1,16 +1,16 @@
 # Availability zones for Amazon region
 variable "standalone_vpc_tag" {
-  description = "This is the tag assigned to the standalone vpc that should be created manaully before the first run of the infrastructure"
+  description = "This is the tag assigned to the standalone VPC that should be created manaully before the first run of the infrastructure."
   type        = string
 }
 
 variable "standalone_vpc_ig_tag" {
-  description = "This is the tag assigned to the standalone vpc internet gateway that should be created manaully before the first run of the infrastructure"
+  description = "This is the tag assigned to the standalone VPC internet gateway that should be created manually before the first run of the infrastructure."
   type        = string
 }
 
 variable "availability_zones" {
-  description = "This is a list that specifies all the Availability Zones that will have a pair of public and private subnets"
+  description = "This list specifies all the Availability Zones that will have a pair of public and private subnets."
   type        = list(string)
 }
 
