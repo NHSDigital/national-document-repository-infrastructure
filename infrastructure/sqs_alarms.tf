@@ -1,19 +1,32 @@
 locals {
-monitored_queues = {
-  # main queues
-  nrl_main       = module.sqs-nrl-queue[0].queue_name
-  splunk_main    = module.sqs-splunk-queue[0].queue_name
-  stitching_main = module.sqs-stitching-queue[0].queue_name
-  lg_bulk_main   = module.sqs-lg-bulk-upload-metadata-queue[0].queue_name
-  lg_inv_main    = module.sqs-lg-bulk-upload-invalid-queue[0].queue_name
-  mns_main       = module.sqs-mns-notification-queue[0].queue_name
+  # monitored_queues = {
+  #   # main queues
+  #   nrl_main       = module.sqs-nrl-queue.queue_name
+  #   splunk_main    = module.sqs-splunk-queue.queue_name
+  #   stitching_main = module.sqs-stitching-queue.queue_name
+  #   lg_bulk_main   = module.sqs-lg-bulk-upload-metadata-queue.queue_name
+  #   lg_inv_main    = module.sqs-lg-bulk-upload-invalid-queue.queue_name
+  #   mns_main       = module.sqs-mns-notification-queue.queue_name
+  #
+  #   # dead-letter queues
+  #   nrl_dlq       = module.sqs-nrl-queue.dlq_name
+  #   stitching_dlq = module.sqs-stitching-queue.dlq_name
+  #   mns_dlq       = module.sqs-mns-notification-queue.dlq_name
+  # }
+  monitored_queues = {
+    # main queues
+    "nrl_main"       = "${terraform.workspace}-nrl-queue.fifo"
+    "splunk_main"    = "${terraform.workspace}-splunk-queue"
+    "stitching_main" = "${terraform.workspace}-stitching-queue"
+    "lg_bulk_main"   = "${terraform.workspace}-lg-bulk-upload-metadata-queue.fifo"
+    "lg_inv_main"    = "${terraform.workspace}-lg-bulk-upload-invalid-queue"
+    "mns_main"       = "${terraform.workspace}-mns-notification-queue"
 
-  # dead-letter queues
-  nrl_dlq       = module.sqs-nrl-queue[0].dlq_name
-  stitching_dlq = module.sqs-stitching-queue[0].dlq_name
-  mns_dlq       = module.sqs-mns-notification-queue[0].dlq_name
-}
-
+    # dead-letter queues
+    "nrl_dlq"       = "${terraform.workspace}-deadletter-nrl-queue.fifo"
+    "stitching_dlq" = "${terraform.workspace}-deadletter-stitching-queue"
+    "mns_dlq"       = "${terraform.workspace}-deadletter-mns-notification-queue"
+  }
   days_until_alarm = [
     [6, "medium"],
     [10, "high"]
