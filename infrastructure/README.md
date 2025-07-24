@@ -20,6 +20,7 @@
 | <a name="module_access-audit-gateway"></a> [access-audit-gateway](#module\_access-audit-gateway) | ./modules/gateway | n/a |
 | <a name="module_access-audit-lambda"></a> [access-audit-lambda](#module\_access-audit-lambda) | ./modules/lambda | n/a |
 | <a name="module_access_audit_dynamodb_table"></a> [access\_audit\_dynamodb\_table](#module\_access\_audit\_dynamodb\_table) | ./modules/dynamo_db | n/a |
+| <a name="module_alarm_state_history_table"></a> [alarm\_state\_history\_table](#module\_alarm\_state\_history\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_api_endpoint_url_ssm_parameter"></a> [api\_endpoint\_url\_ssm\_parameter](#module\_api\_endpoint\_url\_ssm\_parameter) | ./modules/ssm_parameter | n/a |
 | <a name="module_auth_session_dynamodb_table"></a> [auth\_session\_dynamodb\_table](#module\_auth\_session\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_auth_state_dynamodb_table"></a> [auth\_state\_dynamodb\_table](#module\_auth\_state\_dynamodb\_table) | ./modules/dynamo_db | n/a |
@@ -50,6 +51,7 @@
 | <a name="module_create-token-lambda"></a> [create-token-lambda](#module\_create-token-lambda) | ./modules/lambda | n/a |
 | <a name="module_create_doc_alarm"></a> [create\_doc\_alarm](#module\_create\_doc\_alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_create_doc_alarm_topic"></a> [create\_doc\_alarm\_topic](#module\_create\_doc\_alarm\_topic) | ./modules/sns | n/a |
+| <a name="module_create_document_reference_gateway"></a> [create\_document\_reference\_gateway](#module\_create\_document\_reference\_gateway) | ./modules/gateway | n/a |
 | <a name="module_create_token-alarm"></a> [create\_token-alarm](#module\_create\_token-alarm) | ./modules/lambda_alarms | n/a |
 | <a name="module_create_token-alarm_topic"></a> [create\_token-alarm\_topic](#module\_create\_token-alarm\_topic) | ./modules/sns | n/a |
 | <a name="module_data-collection-alarm"></a> [data-collection-alarm](#module\_data-collection-alarm) | ./modules/lambda_alarms | n/a |
@@ -87,6 +89,7 @@
 | <a name="module_get-report-by-ods-alarm-topic"></a> [get-report-by-ods-alarm-topic](#module\_get-report-by-ods-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_get-report-by-ods-gateway"></a> [get-report-by-ods-gateway](#module\_get-report-by-ods-gateway) | ./modules/gateway | n/a |
 | <a name="module_get-report-by-ods-lambda"></a> [get-report-by-ods-lambda](#module\_get-report-by-ods-lambda) | ./modules/lambda | n/a |
+| <a name="module_im-alerting-lambda"></a> [im-alerting-lambda](#module\_im-alerting-lambda) | ./modules/lambda | n/a |
 | <a name="module_lambda-layer-core"></a> [lambda-layer-core](#module\_lambda-layer-core) | ./modules/lambda_layers | n/a |
 | <a name="module_lambda-layer-data"></a> [lambda-layer-data](#module\_lambda-layer-data) | ./modules/lambda_layers | n/a |
 | <a name="module_lloyd-george-stitch-gateway"></a> [lloyd-george-stitch-gateway](#module\_lloyd-george-stitch-gateway) | ./modules/gateway | n/a |
@@ -128,6 +131,7 @@
 | <a name="module_pdf-stitching-alarm-topic"></a> [pdf-stitching-alarm-topic](#module\_pdf-stitching-alarm-topic) | ./modules/sns | n/a |
 | <a name="module_pdf-stitching-lambda"></a> [pdf-stitching-lambda](#module\_pdf-stitching-lambda) | ./modules/lambda | n/a |
 | <a name="module_pdf-stitching-lambda-alarms"></a> [pdf-stitching-lambda-alarms](#module\_pdf-stitching-lambda-alarms) | ./modules/lambda_alarms | n/a |
+| <a name="module_post-document-references-fhir-lambda"></a> [post-document-references-fhir-lambda](#module\_post-document-references-fhir-lambda) | ./modules/lambda | n/a |
 | <a name="module_pdm-document-store"></a> [pdm-document-store](#module\_pdm-document-store) | ./modules/s3/ | n/a |
 | <a name="module_pdm_dynamodb_table"></a> [pdm\_dynamodb\_table](#module\_pdm\_dynamodb\_table) | ./modules/dynamo_db | n/a |
 | <a name="module_route53_fargate_ui"></a> [route53\_fargate\_ui](#module\_route53\_fargate\_ui) | ./modules/route53 | n/a |
@@ -194,7 +198,6 @@
 | [aws_api_gateway_integration_response.get_document_reference_mock_403_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
 | [aws_api_gateway_integration_response.get_document_reference_mock_404_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
 | [aws_api_gateway_method.get_document_reference](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method) | resource |
-| [aws_api_gateway_method.get_document_references_fhir](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method) | resource |
 | [aws_api_gateway_method.login_proxy_method](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method) | resource |
 | [aws_api_gateway_method.sandbox_get_document_reference](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method) | resource |
 | [aws_api_gateway_method_response.response_200](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method_response) | resource |
@@ -247,6 +250,8 @@
 | [aws_cognito_identity_pool_roles_attachment.cloudwatch_rum](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_identity_pool_roles_attachment) | resource |
 | [aws_default_security_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | resource |
 | [aws_default_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_vpc) | resource |
+| [aws_iam_policy.alerting_lambda_alarms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.alerting_lambda_tags](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.cloudwatch_log_query_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.cloudwatch_rum_cognito_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.copy_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -372,9 +377,13 @@
 | [aws_ssm_parameter.cloud_security_admin_email](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.cloud_security_notification_email_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.end_user_ods_code](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.im_alerting_confluence_url](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.mns_lambda_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.slack_alerting_bot_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.slack_alerting_channel_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.splunk_trusted_principal](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.target_backup_vault_arn](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.teams_alerting_webhook_url](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameter.virus_scanning_subnet_cidr_range](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 
 ## Inputs
@@ -382,6 +391,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_audit_dynamodb_table_name"></a> [access\_audit\_dynamodb\_table\_name](#input\_access\_audit\_dynamodb\_table\_name) | The name of the dynamodb table to store the audit of access to deceased patient records | `string` | `"AccessAudit"` | no |
+| <a name="input_alarm_state_history_table_name"></a> [alarm\_state\_history\_table\_name](#input\_alarm\_state\_history\_table\_name) | The name of the dynamodb table to store the history of recent alarms that have been triggered. | `string` | `"AlarmStateHistory"` | no |
 | <a name="input_apim_environment"></a> [apim\_environment](#input\_apim\_environment) | n/a | `any` | n/a | yes |
 | <a name="input_auth_session_dynamodb_table_name"></a> [auth\_session\_dynamodb\_table\_name](#input\_auth\_session\_dynamodb\_table\_name) | The name of the dynamodb table to store user login sessions | `string` | `"AuthSessionReferenceMetadata"` | no |
 | <a name="input_auth_state_dynamodb_table_name"></a> [auth\_state\_dynamodb\_table\_name](#input\_auth\_state\_dynamodb\_table\_name) | The name of the dynamodb table to store the state values (for CIS2 authorisation) | `string` | `"AuthStateReferenceMetadata"` | no |
