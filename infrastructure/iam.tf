@@ -183,7 +183,7 @@ data "aws_iam_policy_document" "lambda_toggle_bulk_upload_document" {
     ]
 
     resources = [
-      aws_lambda_event_source_mapping.bulk_upload_esm.arn
+      aws_lambda_event_source_mapping.bulk_upload_lambda.arn
     ]
   }
 }

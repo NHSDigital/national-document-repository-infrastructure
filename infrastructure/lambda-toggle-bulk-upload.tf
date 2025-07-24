@@ -10,7 +10,7 @@ module "toggle-bulk-upload-lambda" {
   ]
 
   lambda_environment_variables = {
-    ESM_UUID = aws_lambda_event_source_mapping.bulk_upload_esm.uuid
+    ESM_UUID = aws_lambda_event_source_mapping.bulk_upload_lambda.uuid
   }
 
   is_gateway_integration_needed = false
