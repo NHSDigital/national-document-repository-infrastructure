@@ -202,7 +202,8 @@ variable "cloud_only_service_instances" {
 }
 
 variable "apim_environment" {
-  type = string
+  description = "Identifier for the API Management environment (e.g., 'dev', 'test', 'prod')."
+  type        = string
 }
 
 locals {
