@@ -227,7 +227,7 @@ resource "aws_api_gateway_account" "logging" {
 }
 
 resource "aws_iam_policy" "cloudwatch_custom_metric_data" {
-  name   = "${terraform.workspace}_cloudwatch_custom_metric_data"
+  name = "${terraform.workspace}_cloudwatch_custom_metric_data"
 
   policy = data.aws_iam_policy_document.cloudwatch_custom_metric_data_policy.json
 }
@@ -235,7 +235,7 @@ resource "aws_iam_policy" "cloudwatch_custom_metric_data" {
 data "aws_iam_policy_document" "cloudwatch_custom_metric_data_policy" {
   statement {
     effect = "Allow"
-     actions = [
+    actions = [
       "cloudwatch:PutMetricData",
       "cloudwatch:GetMetricData",
       "cloudwatch:GetMetricStatistics",
