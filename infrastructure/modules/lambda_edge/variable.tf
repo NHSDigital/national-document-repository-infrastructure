@@ -46,8 +46,3 @@ variable "table_name" {
   description = "The name of the DynamoDB table used by the Lambda function."
   type        = string
 }
-
-variable "current_account_id" {
-  description = "AWS account ID where the Lambda function is deployed."
-  type        = string
-}
