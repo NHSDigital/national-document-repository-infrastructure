@@ -18,11 +18,6 @@ variable "domain" {
   type        = string
 }
 
-variable "certificate_domain" {
-  description = "The domain name used for locating the TLS certificate (e.g., '*.example.com')."
-  type        = string
-}
-
 variable "using_arf_hosted_zone" {
   description = "Whether to use a shared hosted zone for ARF or multi-module deployments."
   type        = bool
