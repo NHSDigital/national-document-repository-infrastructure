@@ -86,7 +86,7 @@ module "s3_bucket" {
 | <a name="input_access_logs_bucket_id"></a> [access\_logs\_bucket\_id](#input\_access\_logs\_bucket\_id) | Enables access logs on the module's bucket | `string` | n/a | yes |
 | <a name="input_access_logs_enabled"></a> [access\_logs\_enabled](#input\_access\_logs\_enabled) | Whether to enable S3 access logging for this bucket. | `bool` | `false` | no |
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | The name of the S3 bucket to create. | `string` | n/a | yes |
-| <a name="input_cloudfront_arn"></a> [cloudfront\_arn](#input\_cloudfront\_arn) | CloudFront Distribution ARN association and policy toggles | `string` | `"null"` | no |
+| <a name="input_cloudfront_arn"></a> [cloudfront\_arn](#input\_cloudfront\_arn) | CloudFront distribution ARN association and policy toggles | `string` | `"null"` | no |
 | <a name="input_cloudfront_enabled"></a> [cloudfront\_enabled](#input\_cloudfront\_enabled) | Enables the correct policy config for CloudFront associated S3 bucket | `bool` | `false` | no |
 | <a name="input_cors_rules"></a> [cors\_rules](#input\_cors\_rules) | List of CORS rules to apply to the S3 bucket. | `list` | `[]` | no |
 | <a name="input_enable_bucket_versioning"></a> [enable\_bucket\_versioning](#input\_enable\_bucket\_versioning) | Whether to enable versioning on the bucket. | `bool` | `false` | no |

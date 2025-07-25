@@ -37,7 +37,7 @@ variable "owner" {
 }
 
 variable "cloudfront_arn" {
-  description = "CloudFront Distribution ARN association and policy toggles"
+  description = "CloudFront distribution ARN association and policy toggles"
   type        = string
   default     = "null"
 }
