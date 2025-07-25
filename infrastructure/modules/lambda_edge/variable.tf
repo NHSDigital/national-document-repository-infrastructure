@@ -8,12 +8,6 @@ variable "handler" {
   type        = string
 }
 
-variable "lambda_timeout" {
-  description = "Timeout value (in seconds) for the Lambda function."
-  type        = number
-  default     = 30
-}
-
 variable "memory_size" {
   description = "Amount of memory (in MB) to allocate to the Lambda function."
   type        = number

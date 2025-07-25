@@ -36,9 +36,6 @@ module "s3_proxy_lambda" {
   # Optional: Memory allocation in MB
   memory_size = 128
 
-  # Optional: Function timeout in seconds
-  lambda_timeout = 30
-
   # Optional: Ephemeral storage in MB
   lambda_ephemeral_storage = 512
 
@@ -78,11 +75,10 @@ module "s3_proxy_lambda" {
 | <a name="input_handler"></a> [handler](#input_handler)                                                                      | n/a                                                                                                                                                           | `string`       | n/a     |   yes    |
 | <a name="input_iam_role_policies"></a> [iam_role_policies](#input_iam_role_policies)                                        | n/a                                                                                                                                                           | `list(string)` | n/a     |   yes    |
 | <a name="input_lambda_ephemeral_storage"></a> [lambda_ephemeral_storage](#input_lambda_ephemeral_storage)                   | n/a                                                                                                                                                           | `number`       | `512`   |    no    |
-| <a name="input_lambda_timeout"></a> [lambda_timeout](#input_lambda_timeout)                                                 | n/a                                                                                                                                                           | `number`       | `30`    |    no    |
 | <a name="input_memory_size"></a> [memory_size](#input_memory_size)                                                          | n/a                                                                                                                                                           | `number`       | `128`   |    no    |
 | <a name="input_name"></a> [name](#input_name)                                                                               | n/a                                                                                                                                                           | `string`       | n/a     |   yes    |
 | <a name="input_reserved_concurrent_executions"></a> [reserved_concurrent_executions](#input_reserved_concurrent_executions) | The number of concurrent execution allowed for lambda. A value of 0 will stop lambda from running, and -1 removes any concurrency limitations. Default to -1. | `number`       | `-1`    |    no    |
-| <a name="input_table_name"></a> [table_name](#input_table_name)                                                             | The name of the DynamoDB table used by the Lambda function.                                                                                                   | `string`       | n/a     |   yes    |
+| <a name="input_table_name"></a> [table_name](#input_table_name)                                                             | The name of the bucket                                                                                                                                        | `string`       | n/a     |   yes    |
 
 ## Outputs
 
