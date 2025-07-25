@@ -225,3 +225,29 @@ resource "aws_api_gateway_account" "logging" {
   count               = local.is_sandbox ? 0 : 1
   cloudwatch_role_arn = aws_iam_role.api_gateway_cloudwatch[0].arn
 }
+
+resource "aws_iam_policy" "cloudwatch_custom_metric_data" {
+  name   = "${terraform.workspace}_cloudwatch_custom_metric_data"
+
+  policy = data.aws_iam_policy_document.cloudwatch_custom_metric_data_policy.json
+}
+
+data "aws_iam_policy_document" "cloudwatch_custom_metric_data_policy" {
+  statement {
+    effect = "Allow"
+     actions = [
+      "cloudwatch:PutMetricData",
+      "cloudwatch:GetMetricData",
+      "cloudwatch:GetMetricStatistics",
+      "cloudwatch:ListMetrics"
+    ]
+    resources = ["*"]
+
+    # restrict to custom namespace
+    condition {
+      test     = "StringEquals"
+      variable = "cloudwatch:namespace"
+      values   = ["Custom_metrics/BulkUpload"]
+    }
+  }
+}
