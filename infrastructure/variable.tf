@@ -201,12 +201,7 @@ variable "cloud_only_service_instances" {
   default     = 1
 }
 
-variable "cloudwatch_alarm_evaluation_periods" {}
-
-variable "apim_environment" {
-  description = "Identifier for the API Management environment (e.g., 'dev', 'test', 'prod')."
-  type        = string
-}
+variable "apim_environment" {}
 
 locals {
   is_sandbox         = contains(["ndra", "ndrb", "ndrc", "ndrd"], terraform.workspace)
