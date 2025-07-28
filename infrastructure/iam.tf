@@ -243,8 +243,6 @@ data "aws_iam_policy_document" "cloudwatch_custom_metric_data_policy" {
     effect = "Allow"
     actions = [
       "cloudwatch:PutMetricData",
-      "cloudwatch:GetMetricData",
-      "cloudwatch:GetMetricStatistics"
     ]
     resources = ["*"]
 
@@ -254,6 +252,16 @@ data "aws_iam_policy_document" "cloudwatch_custom_metric_data_policy" {
       values   = ["Custom_metrics/BulkUpload"]
     }
   }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "cloudwatch:GetMetricData",
+      "cloudwatch:GetMetricStatistics"
+    ]
+    resources = ["*"]
+  }
 }
+
 
 
