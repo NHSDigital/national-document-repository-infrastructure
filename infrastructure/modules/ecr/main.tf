@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_ecr_repository" "ndr-ecr" {
   name                 = var.app_name
   image_tag_mutability = "MUTABLE"
@@ -38,8 +40,6 @@ resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
   }
   EOF
 }
-
-data "aws_caller_identity" "current" {}
 
 resource "aws_ecr_repository_policy" "ndr_ecr_repository_policy" {
   repository = aws_ecr_repository.ndr-ecr.name

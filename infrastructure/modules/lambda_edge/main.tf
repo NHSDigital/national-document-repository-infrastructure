@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_lambda_function" "lambda" {
   provider = aws
   publish  = true
@@ -15,7 +17,6 @@ resource "aws_lambda_function" "lambda" {
     size = var.lambda_ephemeral_storage
   }
 }
-
 
 data "archive_file" "lambda" {
   type        = "zip"
@@ -40,8 +41,6 @@ data "aws_iam_policy_document" "assume_role" {
     actions = ["sts:AssumeRole"]
   }
 }
-
-data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "lambda_policy" {
   statement {

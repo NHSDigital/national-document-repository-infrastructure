@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_kms_key" "encryption_key" {
   description         = var.kms_key_description
   policy              = data.aws_iam_policy_document.combined_policy_documents.json
@@ -15,8 +17,6 @@ resource "aws_kms_alias" "encryption_key_alias" {
   name          = var.kms_key_name
   target_key_id = aws_kms_key.encryption_key.id
 }
-
-data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "kms_key_base" {
   statement {
