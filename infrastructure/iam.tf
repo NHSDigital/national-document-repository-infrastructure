@@ -240,8 +240,8 @@ data "aws_iam_policy_document" "cloudwatch_custom_metric_data_policy" {
   }
 
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "cloudwatch:PutMetricData",
       "cloudwatch:GetMetricData",
       "cloudwatch:GetMetricStatistics"
