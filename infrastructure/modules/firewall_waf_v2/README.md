@@ -28,7 +28,7 @@ module "waf_acl" {
   # Required: resource owner for tagging
   owner = "security-team"
 
-  # True if using the firewall for an api - removes AWSBotControl
+  # True if using the firewall for an api - removes AWSBotControl and SizeRestrictions_BODY
   api = true
 }
 
@@ -36,30 +36,35 @@ module "waf_acl" {
 ```
 
 <!-- BEGIN_TF_DOCS -->
+
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+| Name                                                   | Version |
+| ------------------------------------------------------ | ------- |
+| <a name="requirement_aws"></a> [aws](#requirement_aws) | ~> 5.0  |
+
 ## Resources
 
-| Name | Type |
-|------|------|
+| Name                                                                                                                                               | Type     |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | [aws_wafv2_regex_pattern_set.exclude_cms_uri](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_regex_pattern_set) | resource |
-| [aws_wafv2_regex_pattern_set.large_body_uri](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_regex_pattern_set) | resource |
-| [aws_wafv2_regex_pattern_set.xss_body_uri](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_regex_pattern_set) | resource |
-| [aws_wafv2_web_acl.waf_v2_acl](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl) | resource |
+| [aws_wafv2_regex_pattern_set.large_body_uri](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_regex_pattern_set)  | resource |
+| [aws_wafv2_regex_pattern_set.xss_body_uri](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_regex_pattern_set)    | resource |
+| [aws_wafv2_web_acl.waf_v2_acl](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl)                          | resource |
+
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_api"></a> [api](#input\_api) | True if using the firewall for an api - removes AWSBotControl. | `bool` | `false` | no |
-| <a name="input_cloudfront_acl"></a> [cloudfront\_acl](#input\_cloudfront\_acl) | Set to true if this WAF ACL is for a CloudFront distribution. | `bool` | n/a | yes |
-| <a name="input_environment"></a> [environment](#input\_environment) | Environment name used for tagging and resource naming. | `string` | n/a | yes |
-| <a name="input_owner"></a> [owner](#input\_owner) | Name of the owner used for tagging. | `string` | n/a | yes |
+| Name                                                                        | Description                                                                             | Type     | Default | Required |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | -------- | ------- | :------: |
+| <a name="input_api"></a> [api](#input_api)                                  | True if using the firewall for an api - removes AWSBotControl and SizeRestrictions_BODY | `bool`   | `false` |    no    |
+| <a name="input_cloudfront_acl"></a> [cloudfront_acl](#input_cloudfront_acl) | n/a                                                                                     | `bool`   | n/a     |   yes    |
+| <a name="input_environment"></a> [environment](#input_environment)          | n/a                                                                                     | `string` | n/a     |   yes    |
+| <a name="input_owner"></a> [owner](#input_owner)                            | n/a                                                                                     | `string` | n/a     |   yes    |
+
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_arn"></a> [arn](#output\_arn) | The arn of the web acl. |
+| Name                                         | Description             |
+| -------------------------------------------- | ----------------------- |
+| <a name="output_arn"></a> [arn](#output_arn) | The arn of the web acl. |
+
 <!-- END_TF_DOCS -->
