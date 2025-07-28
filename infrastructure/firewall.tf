@@ -11,8 +11,8 @@ module "firewall_waf_v2_api" {
   cloudfront_acl = false
   environment    = var.environment
   owner          = var.owner
-  count          = local.is_sandbox ? 0 : 1
-  api            = true
+  # count          = local.is_sandbox ? 0 : 1
+  api = true
 }
 
 resource "aws_wafv2_web_acl_association" "web_acl_association" {
@@ -27,10 +27,12 @@ resource "aws_wafv2_web_acl_association" "web_acl_association" {
 
 resource "aws_wafv2_web_acl_association" "api_gateway" {
   resource_arn = aws_api_gateway_stage.ndr_api.arn
-  web_acl_arn  = module.firewall_waf_v2_api[0].arn
-  count        = local.is_sandbox ? 0 : 1
+  # web_acl_arn  = module.firewall_waf_v2_api[0].arn
+  web_acl_arn = module.firewall_waf_v2_api.arn
+  # count        = local.is_sandbox ? 0 : 1
   depends_on = [
     aws_api_gateway_stage.ndr_api,
-    module.firewall_waf_v2_api[0]
+    # module.firewall_waf_v2_api[0]
+    module.firewall_waf_v2_api
   ]
 }
