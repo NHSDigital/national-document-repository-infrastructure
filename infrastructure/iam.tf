@@ -234,16 +234,20 @@ resource "aws_iam_policy" "cloudwatch_custom_metric_data" {
 
 data "aws_iam_policy_document" "cloudwatch_custom_metric_data_policy" {
   statement {
-    effect = "Allow"
-    actions = [
+    effect    = "Allow"
+    actions   = ["cloudwatch:ListMetrics"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = [
       "cloudwatch:PutMetricData",
       "cloudwatch:GetMetricData",
-      "cloudwatch:GetMetricStatistics",
-      "cloudwatch:ListMetrics"
+      "cloudwatch:GetMetricStatistics"
     ]
     resources = ["*"]
 
-    # restrict to custom namespace
     condition {
       test     = "StringEquals"
       variable = "cloudwatch:namespace"
@@ -251,3 +255,5 @@ data "aws_iam_policy_document" "cloudwatch_custom_metric_data_policy" {
     }
   }
 }
+
+
