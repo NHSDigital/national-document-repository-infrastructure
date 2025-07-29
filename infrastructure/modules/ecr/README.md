@@ -30,34 +30,30 @@ module "ecr_repository" {
 ```
 
 <!-- BEGIN_TF_DOCS -->
-
 ## Requirements
 
-| Name                                                   | Version |
-| ------------------------------------------------------ | ------- |
-| <a name="requirement_aws"></a> [aws](#requirement_aws) | ~> 5.0  |
-
+| Name | Version |
+|------|---------|
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
 ## Resources
 
-| Name                                                                                                                                                     | Type        |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [aws_ecr_lifecycle_policy.ndr_ecr_lifecycle_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_lifecycle_policy)    | resource    |
-| [aws_ecr_repository.ndr-ecr](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository)                                 | resource    |
-| [aws_ecr_repository_policy.ndr_ecr_repository_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository_policy) | resource    |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)                            | data source |
-
+| Name | Type |
+|------|------|
+| [aws_ecr_lifecycle_policy.ndr_ecr_lifecycle_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_lifecycle_policy) | resource |
+| [aws_ecr_repository.ndr-ecr](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
+| [aws_ecr_repository_policy.ndr_ecr_repository_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository_policy) | resource |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 ## Inputs
 
-| Name                                                               | Description         | Type     | Default | Required |
-| ------------------------------------------------------------------ | ------------------- | -------- | ------- | :------: |
-| <a name="input_app_name"></a> [app_name](#input_app_name)          | the name of the app | `string` | n/a     |   yes    |
-| <a name="input_environment"></a> [environment](#input_environment) | n/a                 | `string` | n/a     |   yes    |
-| <a name="input_owner"></a> [owner](#input_owner)                   | n/a                 | `string` | n/a     |   yes    |
-
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Name of the application (used in repository naming). | `string` | n/a | yes |
+| <a name="input_current_account_id"></a> [current\_account\_id](#input\_current\_account\_id) | AWS account ID where the repository is created. | `string` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment tag used for naming and labeling (e.g., dev, prod). | `string` | n/a | yes |
+| <a name="input_owner"></a> [owner](#input\_owner) | Identifies the team or person responsible for the resource (used for tagging). | `string` | n/a | yes |
 ## Outputs
 
-| Name                                                                                      | Description |
-| ----------------------------------------------------------------------------------------- | ----------- |
-| <a name="output_ecr_repository_url"></a> [ecr_repository_url](#output_ecr_repository_url) | n/a         |
-
+| Name | Description |
+|------|-------------|
+| <a name="output_ecr_repository_url"></a> [ecr\_repository\_url](#output\_ecr\_repository\_url) | n/a |
 <!-- END_TF_DOCS -->

@@ -43,39 +43,34 @@ module "dns" {
 ```
 
 <!-- BEGIN_TF_DOCS -->
-
 ## Requirements
 
-| Name                                                   | Version |
-| ------------------------------------------------------ | ------- |
-| <a name="requirement_aws"></a> [aws](#requirement_aws) | ~> 5.0  |
-
+| Name | Version |
+|------|---------|
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
 ## Resources
 
-| Name                                                                                                                                    | Type        |
-| --------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [aws_route53_record.ndr_fargate_record](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record)     | resource    |
-| [aws_route53_record.ndr_gateway_api_record](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource    |
-| [aws_route53_zone.ndr_zone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone)                   | resource    |
-| [aws_route53_zone.ndr_zone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone)                | data source |
-
+| Name | Type |
+|------|------|
+| [aws_route53_record.ndr_fargate_record](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.ndr_gateway_api_record](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_zone.ndr_zone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone) | resource |
+| [aws_route53_zone.ndr_zone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
 ## Inputs
 
-| Name                                                                                                                  | Description                                                                                                          | Type     | Default | Required |
-| --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------- | ------- | :------: |
-| <a name="input_api_gateway_full_domain_name"></a> [api_gateway_full_domain_name](#input_api_gateway_full_domain_name) | Full domain name for api gateway custom domain. Example: api-dev.access-request-fulfilment.patient-deductions.nhs.uk | `string` | n/a     |   yes    |
-| <a name="input_api_gateway_subdomain_name"></a> [api_gateway_subdomain_name](#input_api_gateway_subdomain_name)       | Subdomain name for api gateway custom domain. Example: api-dev                                                       | `string` | n/a     |   yes    |
-| <a name="input_api_gateway_zone_id"></a> [api_gateway_zone_id](#input_api_gateway_zone_id)                            | Zone Id for api gateway custom domain                                                                                | `string` | n/a     |   yes    |
-| <a name="input_dns_name"></a> [dns_name](#input_dns_name)                                                             | n/a                                                                                                                  | `string` | n/a     |   yes    |
-| <a name="input_domain"></a> [domain](#input_domain)                                                                   | n/a                                                                                                                  | `string` | n/a     |   yes    |
-| <a name="input_environment"></a> [environment](#input_environment)                                                    | n/a                                                                                                                  | `string` | n/a     |   yes    |
-| <a name="input_owner"></a> [owner](#input_owner)                                                                      | n/a                                                                                                                  | `string` | n/a     |   yes    |
-| <a name="input_using_arf_hosted_zone"></a> [using_arf_hosted_zone](#input_using_arf_hosted_zone)                      | n/a                                                                                                                  | `bool`   | `true`  |    no    |
-
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_api_gateway_full_domain_name"></a> [api\_gateway\_full\_domain\_name](#input\_api\_gateway\_full\_domain\_name) | Full domain name for api gateway custom domain. Example: api-dev.access-request-fulfilment.patient-deductions.nhs.uk | `string` | n/a | yes |
+| <a name="input_api_gateway_subdomain_name"></a> [api\_gateway\_subdomain\_name](#input\_api\_gateway\_subdomain\_name) | Subdomain name for api gateway custom domain. Example: api-dev | `string` | n/a | yes |
+| <a name="input_api_gateway_zone_id"></a> [api\_gateway\_zone\_id](#input\_api\_gateway\_zone\_id) | The Route53 zone ID associated with the API Gateway custom domain. | `string` | n/a | yes |
+| <a name="input_dns_name"></a> [dns\_name](#input\_dns\_name) | The target DNS name for the record, typically the Fargate or Load Balancer endpoint. | `string` | n/a | yes |
+| <a name="input_domain"></a> [domain](#input\_domain) | The root domain name used to find or create the Route53 hosted zone. | `string` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment tag used for context and identification (e.g., 'dev', 'prod'). | `string` | n/a | yes |
+| <a name="input_owner"></a> [owner](#input\_owner) | Owner tag used for resource tagging and identification. | `string` | n/a | yes |
+| <a name="input_using_arf_hosted_zone"></a> [using\_arf\_hosted\_zone](#input\_using\_arf\_hosted\_zone) | Whether to use a shared hosted zone for ARF or multi-module deployments. | `bool` | `true` | no |
 ## Outputs
 
-| Name                                                     | Description |
-| -------------------------------------------------------- | ----------- |
-| <a name="output_zone_id"></a> [zone_id](#output_zone_id) | n/a         |
-
+| Name | Description |
+|------|-------------|
+| <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | n/a |
 <!-- END_TF_DOCS -->
