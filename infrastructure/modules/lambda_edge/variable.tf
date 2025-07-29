@@ -8,12 +8,6 @@ variable "handler" {
   type        = string
 }
 
-variable "lambda_timeout" {
-  description = "Timeout value (in seconds) for the Lambda function."
-  type        = number
-  default     = 30
-}
-
 variable "memory_size" {
   description = "Amount of memory (in MB) to allocate to the Lambda function."
   type        = number
@@ -44,10 +38,5 @@ variable "bucket_name" {
 
 variable "table_name" {
   description = "The name of the DynamoDB table used by the Lambda function."
-  type        = string
-}
-
-variable "current_account_id" {
-  description = "AWS account ID where the Lambda function is deployed."
   type        = string
 }

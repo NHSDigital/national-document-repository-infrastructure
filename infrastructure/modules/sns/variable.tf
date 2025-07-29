@@ -30,16 +30,10 @@ variable "topic_endpoint" {
   default     = null
 }
 
-
 variable "topic_endpoint_list" {
   description = "A list of endpoints (e.g., SQS ARNs) to subscribe to the topic."
   type        = any
   default     = []
-}
-
-variable "current_account_id" {
-  description = "The AWS account ID where the topic will be created."
-  type        = string
 }
 
 variable "sns_encryption_key_id" {

@@ -1,8 +1,3 @@
-variable "current_account_id" {
-  description = "AWS account ID where the KMS key policy is applied."
-  type        = string
-}
-
 variable "kms_key_name" {
   description = "Name of the KMS key to be created."
   type        = string
