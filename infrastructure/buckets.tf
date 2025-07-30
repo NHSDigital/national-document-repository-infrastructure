@@ -140,6 +140,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
     transition {
       storage_class = "INTELLIGENT_TIERING"
     }
+    filter {}
   }
 }
 
@@ -151,6 +152,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
     transition {
       storage_class = "INTELLIGENT_TIERING"
     }
+    filter {}
   }
 }
 
@@ -174,6 +176,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     transition {
       storage_class = "INTELLIGENT_TIERING"
     }
+    filter {}
   }
 }
 
@@ -186,6 +189,19 @@ resource "aws_s3_bucket_lifecycle_configuration" "ndr-zip-request-store-lifecycl
     expiration {
       days = 1
     }
+    filter {}
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "pdm_document_store" {
+  bucket = module.pdm-document-store.bucket_id
+  rule {
+    id     = "default-to-intelligent-tiering"
+    status = "Enabled"
+    transition {
+      storage_class = "INTELLIGENT_TIERING"
+    }
+    filter {}
   }
 }
 
@@ -352,15 +368,4 @@ module "pdm-document-store" {
   environment              = var.environment
   owner                    = var.owner
   force_destroy            = local.is_force_destroy
-}
-
-resource "aws_s3_bucket_lifecycle_configuration" "pdm_document_store" {
-  bucket = module.pdm-document-store.bucket_id
-  rule {
-    id     = "default-to-intelligent-tiering"
-    status = "Enabled"
-    transition {
-      storage_class = "INTELLIGENT_TIERING"
-    }
-  }
 }
