@@ -16,7 +16,7 @@ def trigger_delete_workflow(token: str, sandbox: str):
     }
 
     inputs = {
-        "build_branch": "PRMT-439",  # TODO: change to main when ready to merge
+        "build_branch": "main",
         "sandbox_workspace": sandbox,
         "terraform_vars": "dev.tfvars",
         "environment": "development",
@@ -58,8 +58,7 @@ if __name__ == "__main__":
     #Add persisting environments here
     excluded = ["ndr-dev"]
 
-    # workspaces = get_workspaces()
-    workspaces = ["delete1", "delete2"] # TODO: To switch to above when ready to merge
+    workspaces = get_workspaces()
     for workspace in workspaces:
         if workspace not in excluded:
             trigger_delete_workflow(token=gh_pat, sandbox=workspace)
