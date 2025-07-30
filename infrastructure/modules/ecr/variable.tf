@@ -1,5 +1,5 @@
 variable "app_name" {
-  description = "the name of the app"
+  description = " Name of the application (used in repository naming)."
   type        = string
 }
 
@@ -10,13 +10,11 @@ variable "allow_force_destroy" {
 }
 
 variable "environment" {
-  type = string
+  description = "Deployment environment tag used for naming and labeling (e.g., dev, prod)."
+  type        = string
 }
 
 variable "owner" {
-  type = string
-}
-
-variable "current_account_id" {
-  type = string
+  description = "Identifies the team or person responsible for the resource (used for tagging)."
+  type        = string
 }
