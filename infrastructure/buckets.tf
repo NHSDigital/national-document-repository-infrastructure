@@ -139,6 +139,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
     status = "Enabled"
     transition {
       storage_class = "INTELLIGENT_TIERING"
+      days          = 0
     }
     filter {}
   }
@@ -151,6 +152,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
     status = "Enabled"
     transition {
       storage_class = "INTELLIGENT_TIERING"
+      days          = 0
     }
     filter {}
   }
@@ -175,6 +177,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     status = "Enabled"
     transition {
       storage_class = "INTELLIGENT_TIERING"
+      days          = 0
     }
     filter {}
   }
@@ -200,6 +203,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "pdm_document_store" {
     status = "Enabled"
     transition {
       storage_class = "INTELLIGENT_TIERING"
+      days          = 0
     }
     filter {}
   }
