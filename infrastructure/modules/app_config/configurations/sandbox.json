@@ -18,16 +18,16 @@
     },
     "values": {
         "uploadLloydGeorgeWorkflowEnabled": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "uploadLambdaEnabled": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "uploadArfWorkflowEnabled": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "useSmartcardAuth": {
-            "enabled": "true"
+            "enabled": "false"
         },
         "lloydGeorgeValidationStrictModeEnabled": {
             "enabled": "true"

@@ -18,4 +18,8 @@ variable "config_profile_name" {
   type        = string
 }
 
+variable "dev_config_enabled" {
+  type = bool
+}
+
 

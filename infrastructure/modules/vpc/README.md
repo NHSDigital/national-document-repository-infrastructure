@@ -102,6 +102,7 @@ module "vpc" {
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment tag used to classify resources (e.g., dev, staging, prod). | `string` | n/a | yes |
 | <a name="input_ig_cidr"></a> [ig\_cidr](#input\_ig\_cidr) | This specifies the CIDR block for the internet gateway. | `string` | `"0.0.0.0/0"` | no |
 | <a name="input_ig_ipv6_cidr"></a> [ig\_ipv6\_cidr](#input\_ig\_ipv6\_cidr) | This specifies the IPV6 CIDR block for the internet gateway. | `string` | `"::/0"` | no |
+| <a name="input_is_sandbox"></a> [is\_sandbox](#input\_is\_sandbox) | Disables VPC configuration on sandbox environments | `bool` | `true` | no |
 | <a name="input_num_private_subnets"></a> [num\_private\_subnets](#input\_num\_private\_subnets) | The number of private subnets to create across availability zones. | `number` | n/a | yes |
 | <a name="input_num_public_subnets"></a> [num\_public\_subnets](#input\_num\_public\_subnets) | The number of public subnets to create across availability zones. | `number` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | The owner tag used to identify responsible team or individual. | `string` | n/a | yes |

@@ -57,6 +57,7 @@ module "app_config" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_config_environment_name"></a> [config\_environment\_name](#input\_config\_environment\_name) | Name of the AppConfig environment (e.g., dev, prod). | `string` | n/a | yes |
 | <a name="input_config_profile_name"></a> [config\_profile\_name](#input\_config\_profile\_name) | Name of the AppConfig configuration profile. | `string` | n/a | yes |
+| <a name="input_dev_config_enabled"></a> [dev\_config\_enabled](#input\_dev\_config\_enabled) | n/a | `bool` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment tag used for naming and labeling (e.g., dev, prod) | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | Identifies the team or person responsible for the resource (used for tagging). | `string` | n/a | yes |
 ## Outputs

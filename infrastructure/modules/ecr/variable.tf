@@ -3,6 +3,12 @@ variable "app_name" {
   type        = string
 }
 
+variable "allow_force_destroy" {
+  description = "Enable force destroy of the ECR module"
+  type        = bool
+  default     = false
+}
+
 variable "environment" {
   description = "Deployment environment tag used for naming and labeling (e.g., dev, prod)."
   type        = string
