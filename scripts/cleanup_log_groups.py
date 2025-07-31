@@ -17,7 +17,7 @@ class CleanupLogGroups:
             for page in paginator.paginate():
                 for log_group in page.get("logGroups", []):
                     log_group_name = log_group["logGroupName"]
-                    if sandbox in log_group_name:
+                    if f"/aws/lambda/{sandbox}_" in log_group_name:
                         log_groups_to_delete.append(log_group_name)
 
             if not log_groups_to_delete:
@@ -25,12 +25,11 @@ class CleanupLogGroups:
                 return
 
             for log_group_name in log_groups_to_delete:
-                print(f"Found log group: {log_group_name}")
-                # try:
-                #     self.logs_client.delete_log_group(logGroupName=log_group_name)
-                #     print(f"Deleted log group: {log_group_name}")
-                # except ClientError as e:
-                #     print(f"Failed to delete log group {log_group_name}: {e}")
+                try:
+                    self.logs_client.delete_log_group(logGroupName=log_group_name)
+                    print(f"Deleted log group: {log_group_name}")
+                except ClientError as e:
+                    print(f"Failed to delete log group {log_group_name}: {e}")
 
         except ClientError as e:
             print(f"Error during log group cleanup: {e}")
