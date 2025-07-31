@@ -10,14 +10,6 @@ terraform {
 
 provider "aws" {
   region = var.region
-
-  default_tags {
-    tags = {
-      Owner       = var.owner
-      Environment = var.environment
-      Workspace   = terraform.workspace
-    }
-  }
 }
 
 data "aws_vpc" "vpc" {
@@ -37,7 +29,9 @@ resource "aws_subnet" "virus_scanning_subnet1" {
   cidr_block        = local.subnet_1_cidr_block
 
   tags = {
-    Name = "Virus scanning subnet for eu-west-2a"
+    Name        = "Virus scanning subnet for eu-west-2a"
+    Environment = var.environment
+    Owner       = var.owner
   }
 }
 
@@ -47,7 +41,9 @@ resource "aws_subnet" "virus_scanning_subnet2" {
   cidr_block        = local.subnet_2_cidr_block
 
   tags = {
-    Name = "Virus scanning subnet for eu-west-2b"
+    Name        = "Virus scanning subnet for eu-west-2b"
+    Environment = var.environment
+    Owner       = var.owner
   }
 }
 
@@ -66,7 +62,9 @@ resource "aws_route_table" "virus_scanning_route_table" {
   }
 
   tags = {
-    Name = "Virus scanning route table"
+    Name        = "Virus scanning route table"
+    Environment = var.environment
+    Owner       = var.owner
   }
 }
 
@@ -106,7 +104,9 @@ resource "aws_cloudformation_stack" "s3_virus_scanning_stack" {
     delete = "2h"
   }
   tags = {
-    Name = "Virus scanner for Repository"
+    Name        = "Virus scanner for Repository"
+    Environment = var.environment
+    Owner       = var.owner
   }
   template_url = "https://css-cft.s3.amazonaws.com/ConsoleCloudFormationTemplate.yaml"
   capabilities = ["CAPABILITY_NAMED_IAM"]
