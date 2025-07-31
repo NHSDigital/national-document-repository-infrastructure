@@ -15,7 +15,7 @@ provider "aws" {
     tags = {
       Owner       = var.owner
       Environment = var.environment
-      Workspace   = replace(terraform.workspace, "_", "-")
+      Workspace   = terraform.workspace
     }
   }
 }
