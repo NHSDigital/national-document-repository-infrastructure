@@ -22,7 +22,7 @@ variable "lambda_environment_variables" {
 variable "rest_api_id" {
   description = "ID of the associated API Gateway REST API."
   type        = string
-  default = ""
+  default     = ""
 }
 
 variable "resource_id" {
@@ -52,7 +52,7 @@ variable "http_methods" {
 variable "api_execution_arn" {
   description = "Execution ARN of the API Gateway used for granting invoke permissions."
   type        = string
-  default = ""
+  default     = ""
 }
 
 variable "iam_role_policy_documents" {
