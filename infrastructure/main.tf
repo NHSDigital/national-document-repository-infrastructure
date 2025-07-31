@@ -47,7 +47,7 @@ provider "aws" {
   }
 }
 
-resource "aws_resourcegroups_group" "resource_group" {
+resource "aws_resourcegroups_group" "workspace_resource_group" {
   name        = "${terraform.workspace}-resource_group"
   description = "${terraform.workspace} workspace resource group."
   tags = {
