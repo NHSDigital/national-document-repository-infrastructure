@@ -43,10 +43,10 @@
 # #   id = "/aws/lambda/ndra_GetReportByODS"
 # # }
 
-import {
-  to = module.nhs-oauth-token-generator-lambda.aws_cloudwatch_log_group.lambda_logs[0]
-  id = local.is_sandbox ? "/aws/lambda/${terraform.workspace}_NhsOauthTokenGeneratorLambda" : ""
-}
+# import {
+#   to = module.nhs-oauth-token-generator-lambda.aws_cloudwatch_log_group.lambda_logs[0]
+#   id = "/aws/lambda/${terraform.workspace}_NhsOauthTokenGeneratorLambda"
+# }
 
 # # import {
 # #   to = module.login_redirect_lambda.aws_cloudwatch_log_group.lambda_logs[0]
