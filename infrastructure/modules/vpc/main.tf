@@ -11,7 +11,8 @@ resource "aws_vpc" "vpc" {
   enable_dns_support   = var.enable_dns_support
   enable_dns_hostnames = var.enable_dns_hostnames
   tags = {
-    Name = "${terraform.workspace}-vpc"
+    Name      = "${terraform.workspace}-vpc"
+    Workspace = "core"
   }
 }
 
