@@ -1,7 +1,8 @@
 data "aws_vpc" "vpc" {
   count = local.is_production ? 0 : 1
   tags = {
-    Name = "${var.standalone_vpc_tag}-vpc"
+    Name      = "${var.standalone_vpc_tag}-vpc"
+    Workspace = "core"
   }
 }
 
@@ -11,7 +12,8 @@ resource "aws_vpc" "vpc" {
   enable_dns_support   = var.enable_dns_support
   enable_dns_hostnames = var.enable_dns_hostnames
   tags = {
-    Name = "${terraform.workspace}-vpc"
+    Name      = "${terraform.workspace}-vpc"
+    Workspace = "core"
   }
 }
 
