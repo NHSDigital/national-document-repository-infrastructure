@@ -1,8 +1,7 @@
 data "aws_vpc" "vpc" {
   count = local.is_production ? 0 : 1
   tags = {
-    Name      = "${var.standalone_vpc_tag}-vpc"
-    Workspace = "core"
+    Name = "${var.standalone_vpc_tag}-vpc"
   }
 }
 
