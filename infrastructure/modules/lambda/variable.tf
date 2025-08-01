@@ -96,7 +96,7 @@ variable "default_policies" {
 
 variable "persistent_workspaces" {
   type        = list(string)
-  description = "A list of workspaces that do not require persistent logs"
+  description = "A list of workspaces that require persistent logs"
   default     = ["ndr-dev", "ndr-test", "pre-prod", "prod"]
 }
 
