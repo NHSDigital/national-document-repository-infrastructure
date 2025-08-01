@@ -47,7 +47,7 @@ provider "aws" {
   }
 }
 
-resource "aws_resourcegroups_group" "workspace_resource_group" {
+resource "aws_resourcegroups_group" "workspace" {
   name        = "${terraform.workspace}-resource_group"
   description = "${terraform.workspace} workspace resource group."
   tags = {
@@ -69,8 +69,7 @@ JSON
   }
 }
 
-data "aws_caller_identity" "current" {
-}
+data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}
 
