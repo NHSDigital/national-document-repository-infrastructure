@@ -17,7 +17,7 @@ class CleanupLogGroups:
             for page in paginator.paginate():
                 for log_group in page.get("logGroups", []):
                     log_group_name = log_group["logGroupName"]
-                    if f"/aws/lambda/{sandbox}_" in log_group_name:
+                    if sandbox in log_group_name:
                         log_groups_to_delete.append(log_group_name)
 
             if not log_groups_to_delete:
