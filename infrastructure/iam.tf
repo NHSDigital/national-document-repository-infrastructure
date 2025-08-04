@@ -135,7 +135,7 @@ resource "aws_iam_policy" "s3_document_data_policy_for_get_doc_ref_lambda" {
 }
 
 data "aws_iam_policy_document" "assume_role_policy_for_get_doc_ref_lambda" {
-  count = 1
+  count = local.is_production ? 0 : 1
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -147,14 +147,14 @@ data "aws_iam_policy_document" "assume_role_policy_for_get_doc_ref_lambda" {
 }
 
 resource "aws_iam_role" "get_fhir_doc_presign_url_role" {
-  count              = 1
+  count              = local.is_production ? 0 : 1
   name               = "${terraform.workspace}_get_fhir_doc_presign_url_role"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy_for_get_doc_ref_lambda[0].json
 }
 
 
 resource "aws_iam_role_policy_attachment" "get_doc_presign_url" {
-  count      = 1
+  count      = local.is_production ? 0 : 1
   role       = aws_iam_role.get_fhir_doc_presign_url_role[0].name
   policy_arn = aws_iam_policy.s3_document_data_policy_for_get_doc_ref_lambda.arn
 }
@@ -175,6 +175,27 @@ resource "aws_iam_policy" "s3_document_data_policy_for_ods_report_lambda" {
     ]
   })
 }
+
+data "aws_iam_policy_document" "lambda_toggle_bulk_upload_document" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "lambda:UpdateEventSourceMapping",
+      "lambda:GetEventSourceMapping"
+    ]
+
+    resources = [
+      aws_lambda_event_source_mapping.bulk_upload_lambda.arn
+    ]
+  }
+}
+
+resource "aws_iam_policy" "lambda_toggle_bulk_upload_policy" {
+  name   = "${terraform.workspace}_lambda_toggle_bulk_upload_policy"
+  policy = data.aws_iam_policy_document.lambda_toggle_bulk_upload_document.json
+}
+
 
 data "aws_iam_policy_document" "assume_role_policy_for_ods_report_lambda" {
   statement {
