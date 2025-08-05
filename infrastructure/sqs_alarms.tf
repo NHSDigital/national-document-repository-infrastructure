@@ -26,7 +26,7 @@ locals {
     # dead-letter queues
     "nrl_dlq"       = module.sqs-nrl-queue.dlq_name
     "stitching_dlq" = module.sqs-stitching-queue.dlq_name
-    "mns_dlq"       = module.sqs-mns-notification-queue.dlq_name
+    "mns_dlq"       = length(module.sqs-mns-notification-queue) > 0 ? module.sqs-mns-notification-queue[0].dlq_name : null
   }
 
 
