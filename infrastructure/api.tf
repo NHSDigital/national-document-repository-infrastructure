@@ -70,8 +70,8 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.send-feedback-lambda,
     module.update-upload-state-gateway,
     module.update-upload-state-lambda,
-    module.upload_confirm_result_gateway,
-    module.upload_confirm_result_lambda,
+    module.document-status-check-gateway,
+    module.document-status-check-lambda,
     module.post-document-references-fhir-lambda,
     module.virus_scan_result_gateway,
     module.virus_scan_result_lambda
