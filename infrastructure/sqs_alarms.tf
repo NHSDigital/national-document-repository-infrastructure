@@ -18,15 +18,15 @@ locals {
   monitored_queues = {
     # main queues
     "nrl_main"       = module.sqs-nrl-queue.queue_name
-    "splunk_main" =    length(module.sqs-splunk-queue) > 0 ? module.sqs-splunk-queue[0].queue_name : null
+    "splunk_main"    = length(module.sqs-splunk-queue) > 0 ? module.sqs-splunk-queue[0].queue_name : null
     "stitching_main" = module.sqs-stitching-queue.queue_name
     "lg_bulk_main"   = module.sqs-lg-bulk-upload-metadata-queue.queue_name
     "lg_inv_main"    = module.sqs-lg-bulk-upload-invalid-queue.queue_name
     "mns_main"       = length(module.sqs-mns-notification-queue) > 0 ? module.sqs-mns-notification-queue[0].queue_name : null
     # dead-letter queues
-    "nrl_dlq"        =module.sqs-nrl-queue.dlq_name
-    "stitching_dlq"  =module.sqs-stitching-queue.dlq_name
-    "mns_dlq"        =module.sqs-mns-notification-queue.dlq_name
+    "nrl_dlq"       = module.sqs-nrl-queue.dlq_name
+    "stitching_dlq" = module.sqs-stitching-queue.dlq_name
+    "mns_dlq"       = module.sqs-mns-notification-queue.dlq_name
   }
 
 
@@ -61,9 +61,9 @@ locals {
 # TODO: Delete is_test_sandbox, and change all call of is_test_sandbox to is_sandbox
 
 module "global_sqs_age_alarm_topic" {
-  count                  = local.is_test_sandbox ? 0 : 1 # TODO:change is_test_sandbox to is_sandbox
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
+  count                 = local.is_test_sandbox ? 0 : 1 # TODO:change is_test_sandbox to is_sandbox
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
   # current_account_id     = data.aws_caller_identity.current.account_id
   topic_name             = "global-sqs-age-alarm-topic"
   topic_protocol         = "email"
@@ -113,22 +113,22 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
   alarm_actions = [module.sqs_alarm_lambda_topic.arn]
   ok_actions    = [module.sqs_alarm_lambda_topic.arn]
 
- tags = {
-	    Name         = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
-	    severity     = local.monitored_queue_day_list[count.index][3]
-	    alarm_group  = local.monitored_queue_day_list[count.index][1]
-	    alarm_metric = "ApproximateAgeOfOldestMessage"
-	    is_kpi       = "true"
-	  }
+  tags = {
+    Name         = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
+    severity     = local.monitored_queue_day_list[count.index][3]
+    alarm_group  = local.monitored_queue_day_list[count.index][1]
+    alarm_metric = "ApproximateAgeOfOldestMessage"
+    is_kpi       = "true"
+  }
 }
 
 module "sqs_alarm_lambda_topic" {
-  source = "./modules/sns"
+  source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   # current_account_id    = data.aws_caller_identity.current.account_id
-  topic_name            = "sqs-alarms-to-lambda-topic"
-  topic_protocol        = "lambda"
-  topic_endpoint        = module.im-alerting-lambda.lambda_arn
+  topic_name     = "sqs-alarms-to-lambda-topic"
+  topic_protocol = "lambda"
+  topic_endpoint = module.im-alerting-lambda.lambda_arn
 
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
