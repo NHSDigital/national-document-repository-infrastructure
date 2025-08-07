@@ -193,7 +193,7 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_enable_rule" {
 resource "aws_cloudwatch_event_rule" "bulk_upload_disable_rule" {
   name                = "${terraform.workspace}_bulk_upload_disable"
   description         = "Disable Bulk Upload ingestion"
-  schedule_expression = "cron(0 7 ? * TUE-SAT *)"
+  schedule_expression = "cron(0 7 ? * MON-FRI *)"
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_enable_target" {
