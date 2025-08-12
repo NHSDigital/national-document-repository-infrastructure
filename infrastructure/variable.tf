@@ -63,6 +63,12 @@ variable "trustore_bucket_name" {
   default     = "truststore"
 }
 
+variable "ca_pem_filename" {
+  type        = string
+  description = "Filename of the CA Truststore pem file stored in the core Truststore s3 bucket"
+  default     = "nhs-main-ndr-truststore.pem"
+}
+
 # DynamoDB Table Variables
 
 variable "pdm_dynamodb_table_name" {
@@ -218,6 +224,7 @@ locals {
 
   api_gateway_subdomain_name        = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
   api_gateway_full_domain_name      = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
+  mtls_api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "mtls.${var.certificate_subdomain_name_prefix}" : "mtls.${var.certificate_subdomain_name_prefix}${terraform.workspace}"
   mtls_api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "mtls.${var.domain}" : "mtls.${terraform.workspace}.${var.domain}"
 
 

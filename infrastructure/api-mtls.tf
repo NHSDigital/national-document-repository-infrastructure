@@ -13,7 +13,7 @@ resource "aws_api_gateway_rest_api" "mtls_doc_store_api" {
 
 resource "aws_api_gateway_domain_name" "mtls_custom_api_domain" {
   domain_name              = local.mtls_api_gateway_full_domain_name
-  regional_certificate_arn = module.ndr-ecs-fargate-app.certificate_arn
+  regional_certificate_arn = aws_acm_certificate_validation.main.certificate_arn
   security_policy          = "TLS_1_2"
 
   endpoint_configuration {
@@ -21,7 +21,7 @@ resource "aws_api_gateway_domain_name" "mtls_custom_api_domain" {
   }
 
   mutual_tls_authentication {
-    truststore_uri = "s3://${module.s3bucket_truststore.bucket_id}"
+    truststore_uri = "s3://${module.s3bucket_truststore.bucket_id}/${var.ca_pem_filename}"
   }
 }
 

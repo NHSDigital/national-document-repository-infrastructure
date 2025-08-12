@@ -126,6 +126,12 @@ module "s3bucket_truststore" {
   owner                 = var.owner
 }
 
+# Certificate for MTLS
+data "aws_s3_object" "truststore_ext_cert" {
+  bucket = module.s3bucket_truststore.bucket_id
+  key    = var.ca_pem_filename
+}
+
 # Lifecycle Rules
 resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   bucket = module.ndr-lloyd-george-store.bucket_id
