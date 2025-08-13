@@ -30,6 +30,7 @@ jobs:
 
     steps:
 <<<<<<< HEAD
+<<<<<<< HEAD
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout Base
         uses: actions/checkout@v5
@@ -41,6 +42,12 @@ jobs:
       #   with:
       #     ref: main
 >>>>>>> fbff22f ([NDR-108] readding dynamo-db)
+=======
+      - name: Checkout Base
+        uses: actions/checkout@v4
+        with:
+          ref: main
+>>>>>>> 0716aef ([NDR-108] reverting the workflow)
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -60,25 +67,29 @@ jobs:
           terraform_version: 1.11.4
           terraform_wrapper: false
 
-      # - name: Terraform Init Base
-      #   id: base_init
-      #   run: terraform init -backend-config=backend.conf
-      #   working-directory: ./infrastructure
-      #   shell: bash
-      # - name: Terraform Set Workspace Base
-      #   id: base_workspace
-      #   run: terraform workspace select -or-create ${{ github.event.inputs.sandboxWorkspace}}
-      #   working-directory: ./infrastructure
-      #   shell: bash
-      # - name: Terraform Plan Base
-      #   id: base_plan
-      #   run: |
-      #     terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf-base.plan
-      #   working-directory: ./infrastructure
-      #   shell: bash
-      # - name: Terraform Apply Base
-      #   run: terraform apply -auto-approve -input=false tf-base.plan
-      #   working-directory: ./infrastructure
+      - name: Terraform Init Base
+        id: base_init
+        run: terraform init -backend-config=backend.conf
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Terraform Set Workspace Base
+        id: base_workspace
+        run: terraform workspace select -or-create ${{ github.event.inputs.sandboxWorkspace}}
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Terraform Plan Base
+        id: base_plan
+        run: |
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf-base.plan
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Terraform Apply Base
+        run: terraform apply -auto-approve -input=false tf-base.plan
+        working-directory: ./infrastructure
+
       - name: Checkout Branch
         uses: actions/checkout@v5
         with:
@@ -91,7 +102,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config=backend.conf -reconfigure
+        run: terraform init -backend-config=backend.conf
         working-directory: ./infrastructure
         shell: bash
 
