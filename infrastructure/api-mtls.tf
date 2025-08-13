@@ -21,7 +21,7 @@ resource "aws_api_gateway_domain_name" "mtls_custom_api_domain" {
   }
 
   mutual_tls_authentication {
-    truststore_uri = "s3://${module.s3bucket_truststore.bucket_id}/${var.ca_pem_filename}"
+    truststore_uri = "s3://${terraform.workspace}-${var.trustore_bucket_name}/${var.ca_pem_filename}"
   }
 }
 
