@@ -62,9 +62,9 @@ locals {
 # TODO: Delete is_test_sandbox, and change all call of is_test_sandbox to is_sandbox
 
 module "global_sqs_age_alarm_topic" {
-  count                 = local.is_test_sandbox ? 0 : 1 # TODO:change is_test_sandbox to is_sandbox
-  source                = "./modules/sns"
-  sns_encryption_key_id = module.sns_encryption_key.id
+  count                  = local.is_test_sandbox ? 0 : 1 # TODO:change is_test_sandbox to is_sandbox
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
   topic_name             = "global-sqs-age-alarm-topic"
   topic_protocol         = "email"
   is_topic_endpoint_list = true
@@ -92,7 +92,7 @@ module "global_sqs_age_alarm_topic" {
 
 
 resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
-  count = local.is_test_sandbox ? 0 : length(local.monitored_queue_day_list)  # TODO:change is_test_sandbox to is_sandbox
+  count = local.is_test_sandbox ? 0 : length(local.monitored_queue_day_list) # TODO:change is_test_sandbox to is_sandbox
 
   alarm_name          = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
   comparison_operator = "GreaterThanThreshold"
@@ -125,9 +125,9 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
 module "sqs_alarm_lambda_topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name     = "sqs-alarms-to-lambda-topic"
-  topic_protocol = "lambda"
-  topic_endpoint = module.im-alerting-lambda.lambda_arn
+  topic_name            = "sqs-alarms-to-lambda-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.im-alerting-lambda.lambda_arn
 
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
