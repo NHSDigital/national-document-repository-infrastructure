@@ -1,24 +1,8 @@
 locals {
-  # monitored_queues = {
-  #   # main queues
-  #   "nrl_main"       = "${terraform.workspace}-nrl-queue.fifo"
-  #   "splunk_main"    = "${terraform.workspace}-splunk-queue"
-  #   "stitching_main" = "${terraform.workspace}-stitching-queue"
-  #   "lg_bulk_main"   = "${terraform.workspace}-lg-bulk-upload-metadata-queue.fifo"
-  #   "lg_inv_main"    = "${terraform.workspace}-lg-bulk-upload-invalid-queue"
-  #   "mns_main"       = "${terraform.workspace}-mns-notification-queue"
-  #
-  #   # dead-letter queues
-  #   "nrl_dlq"       = "${terraform.workspace}-deadletter-nrl-queue.fifo"
-  #   "stitching_dlq" = "${terraform.workspace}-deadletter-stitching-queue"
-  #   "mns_dlq"       = "${terraform.workspace}-deadletter-mns-notification-queue"
-  # }
-
-
   monitored_queues = {
     # main queues
     "nrl_main"       = module.sqs-nrl-queue.queue_name
-    "splunk_main"    = length(module.sqs-splunk-queue) > 0 ? module.sqs-splunk-queue[0].queue_name : ""
+    "splunk_main"    = length(module.sqs-splunk-queue) > 0 ? module.sqs-splunk-queue[0].queue_name : "x"
     "stitching_main" = module.sqs-stitching-queue.queue_name
     "lg_bulk_main"   = module.sqs-lg-bulk-upload-metadata-queue.queue_name
     "lg_inv_main"    = module.sqs-lg-bulk-upload-invalid-queue.queue_name
