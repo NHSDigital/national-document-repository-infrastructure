@@ -1,33 +1,33 @@
-module "upload_confirm_result_gateway" {
+module "document-status-check-gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
-  http_methods        = ["POST"]
+  http_methods        = ["GET"]
   authorization       = "CUSTOM"
-  gateway_path        = "UploadConfirm"
+  gateway_path        = "DocumentStatus"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
-module "upload_confirm_result_alarm" {
+module "document-status-check-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.upload_confirm_result_lambda.function_name
-  lambda_timeout       = module.upload_confirm_result_lambda.timeout
-  lambda_name          = "upload_confirm_result_handler"
+  lambda_function_name = module.document-status-check-lambda.function_name
+  lambda_timeout       = module.document-status-check-lambda.timeout
+  lambda_name          = "document_status_check_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.upload_confirm_result_alarm_topic.arn]
-  ok_actions           = [module.upload_confirm_result_alarm_topic.arn]
-  depends_on           = [module.upload_confirm_result_lambda, module.upload_confirm_result_alarm_topic]
+  alarm_actions        = [module.document-status-check-alarm-topic.arn]
+  ok_actions           = [module.document-status-check-alarm-topic.arn]
+  depends_on           = [module.document-status-check-lambda, module.document-status-check-alarm-topic]
 }
 
 
-module "upload_confirm_result_alarm_topic" {
+module "document-status-check-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "upload_confirm_result_alarm-topic"
+  topic_name            = "document-status-check-alarm-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.upload_confirm_result_lambda.lambda_arn
+  topic_endpoint        = module.document-status-check-lambda.lambda_arn
   depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -51,48 +51,35 @@ module "upload_confirm_result_alarm_topic" {
   })
 }
 
-module "upload_confirm_result_lambda" {
+module "document-status-check-lambda" {
   source  = "./modules/lambda"
-  name    = "UploadConfirmResultLambda"
-  handler = "handlers.upload_confirm_result_handler.lambda_handler"
+  name    = "DocumentStatusCheckLambda"
+  handler = "handlers.document_status_check_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
-    module.ndr-bulk-staging-store.s3_read_policy_document,
-    module.ndr-bulk-staging-store.s3_write_policy_document,
-    module.ndr-document-store.s3_read_policy_document,
-    module.ndr-document-store.s3_write_policy_document,
-    module.ndr-lloyd-george-store.s3_read_policy_document,
-    module.ndr-lloyd-george-store.s3_write_policy_document,
+    aws_iam_policy.ssm_access_policy.policy,
     module.document_reference_dynamodb_table.dynamodb_read_policy_document,
     module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
-    module.sqs-nrl-queue.sqs_write_policy_document,
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = module.upload_confirm_result_gateway.gateway_resource_id
-  http_methods      = ["POST"]
+  resource_id       = module.document-status-check-gateway.gateway_resource_id
+  http_methods      = ["GET"]
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
-    STAGING_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    LLOYD_GEORGE_BUCKET_NAME     = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
-    DOCUMENT_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.docstore_bucket_name}"
     DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     WORKSPACE                    = terraform.workspace
-    APIM_API_URL                 = data.aws_ssm_parameter.apim_url.value
-    NRL_SQS_URL                  = module.sqs-nrl-queue.sqs_url
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-bulk-staging-store,
-    module.upload_confirm_result_gateway,
+    module.document-status-check-gateway,
     module.ndr-app-config,
-    module.ndr-lloyd-george-store,
-    module.ndr-document-store,
     module.lloyd_george_reference_dynamodb_table,
     module.document_reference_dynamodb_table,
   ]

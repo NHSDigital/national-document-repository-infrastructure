@@ -1,5 +1,5 @@
 module "document_upload_check_lambda" {
-  count   = local.is_production ? 0 : 1
+  count   = 1
   source  = "./modules/lambda"
   name    = "DocumentReferenceVirusScanCheck"
   handler = "handlers.document_reference_virus_scan_handler.lambda_handler"
@@ -35,7 +35,7 @@ module "document_upload_check_lambda" {
 
 
 resource "aws_s3_bucket_notification" "document_upload_check_lambda_trigger" {
-  count  = local.is_production ? 0 : 1
+  count  = 1
   bucket = module.ndr-bulk-staging-store.bucket_id
   lambda_function {
     lambda_function_arn = module.document_upload_check_lambda[0].lambda_arn
@@ -45,7 +45,7 @@ resource "aws_s3_bucket_notification" "document_upload_check_lambda_trigger" {
 }
 
 resource "aws_lambda_permission" "document_upload_check_lambda" {
-  count         = local.is_production ? 0 : 1
+  count         = 1
   statement_id  = "AllowS3Invoke"
   action        = "lambda:InvokeFunction"
   function_name = module.document_upload_check_lambda[0].function_name
