@@ -10,7 +10,7 @@ resource "aws_lambda_function" "lambda" {
   timeout                        = var.lambda_timeout
   memory_size                    = var.memory_size
   reserved_concurrent_executions = var.reserved_concurrent_executions
-  kms_key_arn                    = aws_kms_key.lambda_kms_key.arn
+  kms_key_arn                    = aws_kms_key.lambda.arn
   ephemeral_storage {
     size = var.lambda_ephemeral_storage
   }
@@ -35,7 +35,7 @@ resource "aws_cloudwatch_log_group" "lambda_logs" {
 
 data "aws_caller_identity" "current" {}
 
-data "aws_iam_policy_document" "lambda_kms_policy" {
+data "aws_iam_policy_document" "admin" {
   statement {
     sid    = "AllowRootAccountAccess"
     effect = "Allow"
@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "lambda_kms_policy" {
   }
 }
 
-data "aws_iam_policy_document" "lambda_kms_usage" {
+data "aws_iam_policy_document" "lambda" {
   statement {
     effect = "Allow"
     actions = [
@@ -84,27 +84,27 @@ data "aws_iam_policy_document" "lambda_kms_usage" {
       "kms:GenerateDataKey"
     ]
     resources = [
-      aws_kms_key.lambda_kms_key.arn
+      aws_kms_key.lambda.arn
     ]
   }
 }
 
-resource "aws_iam_role_policy" "lambda_kms_usage" {
+resource "aws_iam_role_policy" "lambda" {
   name   = "lambda_kms_usage"
   role   = aws_iam_role.lambda_execution_role.id
-  policy = data.aws_iam_policy_document.lambda_kms_usage.json
+  policy = data.aws_iam_policy_document.lambda.json
 }
 
-resource "aws_kms_key" "lambda_kms_key" {
+resource "aws_kms_key" "lambda" {
   deletion_window_in_days = var.kms_deletion_window
   description             = "Custom KMS Key for ${terraform.workspace}_${var.name}"
   enable_key_rotation     = true
-  policy                  = data.aws_iam_policy_document.lambda_kms_policy.json
+  policy                  = data.aws_iam_policy_document.admin.json
 }
 
-resource "aws_kms_alias" "lambda_kms_key_alias" {
+resource "aws_kms_alias" "lambda" {
   name          = "alias/${terraform.workspace}_${var.name}"
-  target_key_id = aws_kms_key.lambda_kms_key.key_id
+  target_key_id = aws_kms_key.lambda.key_id
 }
 
 resource "aws_api_gateway_integration" "lambda_integration" {
@@ -146,7 +146,7 @@ resource "aws_iam_role" "lambda_execution_role" {
 }
 
 data "aws_iam_policy_document" "merged_policy" {
-  source_policy_documents = concat(var.iam_role_policy_documents, [data.aws_iam_policy_document.lambda_kms_usage.json])
+  source_policy_documents = concat(var.iam_role_policy_documents, [data.aws_iam_policy_document.lambda.json])
 }
 
 resource "aws_iam_policy" "combined_policies" {
