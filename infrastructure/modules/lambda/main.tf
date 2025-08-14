@@ -16,11 +16,7 @@ resource "aws_lambda_function" "lambda" {
   environment {
     variables = var.lambda_environment_variables
   }
-  layers = [
-    "arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:53",
-    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:120"
-  ]
-
+  layers = local.lambda_layers
   lifecycle {
     ignore_changes = [
       # These are required as Lambdas are deployed via the CI/CD pipelines
@@ -28,6 +24,12 @@ resource "aws_lambda_function" "lambda" {
       layers
     ]
   }
+}
+
+resource "aws_cloudwatch_log_group" "lambda_logs" {
+  count             = contains(var.persistent_workspaces, terraform.workspace) ? 0 : 1
+  name              = "/aws/lambda/${terraform.workspace}_${var.name}"
+  retention_in_days = 1
 }
 
 resource "aws_api_gateway_integration" "lambda_integration" {

@@ -20,8 +20,11 @@ data "aws_iam_policy_document" "assume_role_policy_for_create_lambda" {
     actions = ["sts:AssumeRole"]
 
     principals {
-      type        = "AWS"
-      identifiers = [module.create-doc-ref-lambda.lambda_execution_role_arn]
+      type = "AWS"
+      identifiers = compact([
+        module.create-doc-ref-lambda.lambda_execution_role_arn,
+        local.is_production ? null : module.post-document-references-fhir-lambda[0].lambda_execution_role_arn
+      ])
     }
   }
 }
@@ -48,7 +51,7 @@ resource "aws_iam_policy" "s3_document_data_policy_for_stitch_lambda" {
           "s3:GetObject",
           "S3:ListBucket",
         ],
-        "Resource" : ["${module.ndr-lloyd-george-store.bucket_arn}/combined_files/*"]
+        "Resource" : ["${module.ndr-lloyd-george-store.bucket_arn}/*"]
       }
     ]
   })
@@ -115,7 +118,7 @@ resource "aws_iam_role_policy_attachment" "manifest_presign_url" {
 
 
 resource "aws_iam_policy" "s3_document_data_policy_for_get_doc_ref_lambda" {
-  name = "${terraform.workspace}_get_document_only_policy_for_nrl_get_doc_lambda"
+  name = "${terraform.workspace}_get_document_only_policy_for_get_doc_lambda"
 
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -132,23 +135,27 @@ resource "aws_iam_policy" "s3_document_data_policy_for_get_doc_ref_lambda" {
 }
 
 data "aws_iam_policy_document" "assume_role_policy_for_get_doc_ref_lambda" {
+  count = local.is_production ? 0 : 1
   statement {
     actions = ["sts:AssumeRole"]
 
     principals {
       type        = "AWS"
-      identifiers = [module.get-doc-nrl-lambda.lambda_execution_role_arn]
+      identifiers = [module.get-doc-fhir-lambda[0].lambda_execution_role_arn]
     }
   }
 }
 
-resource "aws_iam_role" "nrl_get_doc_presign_url_role" {
-  name               = "${terraform.workspace}_nrl_get_doc_presign_url_role"
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy_for_get_doc_ref_lambda.json
+resource "aws_iam_role" "get_fhir_doc_presign_url_role" {
+  count              = local.is_production ? 0 : 1
+  name               = "${terraform.workspace}_get_fhir_doc_presign_url_role"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy_for_get_doc_ref_lambda[0].json
 }
 
-resource "aws_iam_role_policy_attachment" "nrl_get_doc_presign_url" {
-  role       = aws_iam_role.nrl_get_doc_presign_url_role.name
+
+resource "aws_iam_role_policy_attachment" "get_doc_presign_url" {
+  count      = local.is_production ? 0 : 1
+  role       = aws_iam_role.get_fhir_doc_presign_url_role[0].name
   policy_arn = aws_iam_policy.s3_document_data_policy_for_get_doc_ref_lambda.arn
 }
 
@@ -169,6 +176,27 @@ resource "aws_iam_policy" "s3_document_data_policy_for_ods_report_lambda" {
   })
 }
 
+data "aws_iam_policy_document" "lambda_toggle_bulk_upload_document" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "lambda:UpdateEventSourceMapping",
+      "lambda:GetEventSourceMapping"
+    ]
+
+    resources = [
+      aws_lambda_event_source_mapping.bulk_upload_lambda.arn
+    ]
+  }
+}
+
+resource "aws_iam_policy" "lambda_toggle_bulk_upload_policy" {
+  name   = "${terraform.workspace}_lambda_toggle_bulk_upload_policy"
+  policy = data.aws_iam_policy_document.lambda_toggle_bulk_upload_document.json
+}
+
+
 data "aws_iam_policy_document" "assume_role_policy_for_ods_report_lambda" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -188,4 +216,33 @@ resource "aws_iam_role" "ods_report_presign_url_role" {
 resource "aws_iam_role_policy_attachment" "ods_report_presign_url" {
   role       = aws_iam_role.ods_report_presign_url_role.name
   policy_arn = aws_iam_policy.s3_document_data_policy_for_ods_report_lambda.arn
+}
+
+resource "aws_iam_role" "api_gateway_cloudwatch" {
+  count = local.is_sandbox ? 0 : 1
+  name  = "${terraform.workspace}_NdrAPIGatewayLogs"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "apigateway.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "api_gateway_logs" {
+  count      = local.is_sandbox ? 0 : 1
+  role       = aws_iam_role.api_gateway_cloudwatch[0].name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+}
+
+resource "aws_api_gateway_account" "logging" {
+  count               = local.is_sandbox ? 0 : 1
+  cloudwatch_role_arn = aws_iam_role.api_gateway_cloudwatch[0].arn
 }

@@ -1,5 +1,5 @@
 resource "aws_wafv2_regex_pattern_set" "large_body_uri" {
-  name        = "${terraform.workspace}-fw-waf-body-size"
+  name        = "${terraform.workspace}-fw-waf-body-size${var.api ? "-api" : ""}"
   description = "A set of regex to allow specific pages to bypass the large body check"
   scope       = var.cloudfront_acl ? "CLOUDFRONT" : "REGIONAL"
 
@@ -14,15 +14,12 @@ resource "aws_wafv2_regex_pattern_set" "large_body_uri" {
   }
 
   tags = {
-    Name        = "${terraform.workspace}-fw-waf-body-size"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
+    Name = "${terraform.workspace}-fw-waf-body-size"
   }
 }
 
 resource "aws_wafv2_regex_pattern_set" "xss_body_uri" {
-  name        = "${terraform.workspace}-fw-waf-body-xss"
+  name        = "${terraform.workspace}-fw-waf-body-xss${var.api ? "-api" : ""}"
   description = "A regex to allow specific pages to bypass XSS checks on body"
   scope       = var.cloudfront_acl ? "CLOUDFRONT" : "REGIONAL"
 
@@ -32,15 +29,12 @@ resource "aws_wafv2_regex_pattern_set" "xss_body_uri" {
   }
 
   tags = {
-    Name        = "${terraform.workspace}-fw-waf-body-xss"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
+    Name = "${terraform.workspace}-fw-waf-body-xss"
   }
 }
 
 resource "aws_wafv2_regex_pattern_set" "exclude_cms_uri" {
-  name        = "${terraform.workspace}-fw-waf-cms-exclude"
+  name        = "${terraform.workspace}-fw-waf-cms-exclude${var.api ? "-api" : ""}"
   description = "A regex to allow CMS calls to bypass firewalls"
   scope       = var.cloudfront_acl ? "CLOUDFRONT" : "REGIONAL"
 
@@ -50,9 +44,6 @@ resource "aws_wafv2_regex_pattern_set" "exclude_cms_uri" {
   }
 
   tags = {
-    Name        = "${terraform.workspace}-fw-waf-cms-exclude"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
+    Name = "${terraform.workspace}-fw-waf-cms-exclude"
   }
 }

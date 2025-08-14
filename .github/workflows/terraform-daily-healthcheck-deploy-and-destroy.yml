@@ -82,7 +82,7 @@ jobs:
       
   react_testing_job:
     name: Run UI Unit Tests
-    uses: nhsconnect/national-document-repository/.github/workflows/base-jest-test.yml@main
+    uses: nhsconnect/national-document-repository/.github/workflows/base-vitest-test.yml@main
     with:
       build_branch: main
 
@@ -126,7 +126,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           install: false
-          start: serve -s build
+          start: serve -s dist
           browser: chrome
           working-directory: ./app
         env:
@@ -136,13 +136,14 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots-chrome
           path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/screenshots
           if-no-files-found: ignore
+          
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-videos
+          name: cypress-videos-chrome
           path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/videos
           if-no-files-found: ignore
 

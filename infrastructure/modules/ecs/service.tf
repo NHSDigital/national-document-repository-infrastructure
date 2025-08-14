@@ -21,12 +21,32 @@ resource "aws_ecs_service" "ndr_ecs_service" {
     }
   }
 
-  depends_on = [aws_lb_target_group.ecs_lb_tg[0]]
-
   tags = {
     Name        = "${terraform.workspace}-ecs"
     Environment = var.environment
     Workspace   = terraform.workspace
+  }
+
+  depends_on = [aws_lb_target_group.ecs_lb_tg[0]]
+
+  lifecycle {
+    ignore_changes = [ # The task definition is being modified outside of terraform, so we need to ignore it
+      task_definition
+    ]
+  }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "fargate" {
+  count = var.ecs_launch_type == "FARGATE" ? 1 : 0
+
+  cluster_name = aws_ecs_cluster.ndr_ecs_cluster.name
+
+  capacity_providers = ["FARGATE"]
+
+  default_capacity_provider_strategy {
+    base              = var.autoscaling_min_capacity
+    weight            = 100
+    capacity_provider = "FARGATE"
   }
 }
 

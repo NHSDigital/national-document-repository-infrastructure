@@ -55,11 +55,11 @@ module "bulk-upload-lambda" {
   ]
 }
 
-
 resource "aws_lambda_event_source_mapping" "bulk_upload_lambda" {
-  event_source_arn = module.sqs-lg-bulk-upload-metadata-queue.endpoint
+  event_source_arn = module.sqs-lg-bulk-upload-metadata-queue.sqs_arn
   function_name    = module.bulk-upload-lambda.lambda_arn
-
+  enabled          = local.is_sandbox ? true : false # Disabled by default; scheduler lambda will control
+  batch_size       = 10
   scaling_config {
     maximum_concurrency = local.bulk_upload_lambda_concurrent_limit
   }
@@ -84,7 +84,6 @@ module "bulk-upload-alarm" {
 module "bulk-upload-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "bulk-upload-topic"
   topic_protocol        = "lambda"
   topic_endpoint        = module.bulk-upload-lambda.lambda_arn

@@ -1,0 +1,37 @@
+{
+    "flags": {
+        "uploadLloydGeorgeWorkflowEnabled": {
+            "name": "uploadLloydGeorgeWorkflowEnabled"
+        },
+        "uploadLambdaEnabled": {
+            "name": "uploadLambdaEnabled"
+        },
+        "uploadArfWorkflowEnabled": {
+            "name": "uploadArfWorkflowEnabled"
+        },
+        "useSmartcardAuth": {
+            "name": "useSmartcardAuth"
+        },
+        "lloydGeorgeValidationStrictModeEnabled": {
+            "name": "lloydGeorgeValidationStrictModeEnabled"
+        }
+    },
+    "values": {
+        "uploadLloydGeorgeWorkflowEnabled": {
+            "enabled": "true"
+        },
+        "uploadLambdaEnabled": {
+            "enabled": "true"
+        },
+        "uploadArfWorkflowEnabled": {
+            "enabled": "true"
+        },
+        "useSmartcardAuth": {
+            "enabled": "false"
+        },
+        "lloydGeorgeValidationStrictModeEnabled": {
+            "enabled": "true"
+        }
+    },
+    "version": "1"
+}

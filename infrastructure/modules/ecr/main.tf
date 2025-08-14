@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_ecr_repository" "ndr-ecr" {
   name                 = var.app_name
   image_tag_mutability = "MUTABLE"
@@ -7,12 +9,9 @@ resource "aws_ecr_repository" "ndr-ecr" {
   encryption_configuration {
     encryption_type = "KMS"
   }
-  force_delete = contains(["ndra", "ndrb", "ndrc", "ndrd", "ndr-test"], terraform.workspace)
+  force_delete = var.allow_force_destroy
   tags = {
-    Name        = "${terraform.workspace}-${var.app_name}"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
+    Name = "${terraform.workspace}-${var.app_name}"
   }
 }
 
@@ -49,7 +48,7 @@ resource "aws_ecr_repository_policy" "ndr_ecr_repository_policy" {
             "Sid": "1",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::${var.current_account_id}:root"
+                "AWS": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
             },
             "Action": [
                 "ecr:GetDownloadUrlForLayer",

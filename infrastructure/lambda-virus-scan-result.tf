@@ -25,7 +25,6 @@ module "virus_scan_result_alarm" {
 module "virus_scan_result_alarm_topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "virus_scan_result_alarm-topic"
   topic_protocol        = "lambda"
   topic_endpoint        = module.virus_scan_result_lambda.lambda_arn
@@ -78,6 +77,7 @@ module "virus_scan_result_lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     STAGING_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.staging_store_bucket_name}"
     WORKSPACE                    = terraform.workspace
+    VIRUS_SCAN_STUB              = !local.is_production
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
