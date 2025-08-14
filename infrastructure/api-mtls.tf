@@ -33,11 +33,60 @@ resource "aws_api_gateway_base_path_mapping" "mtls_api_mapping" {
   depends_on = [aws_api_gateway_deployment.mtls_api_deploy]
 }
 
-# Dummy Lambda integration for POC
-resource "aws_api_gateway_resource" "mtls_test_lambda" {
+# Mock integration for testing POC
+resource "aws_api_gateway_resource" "mtls_test_mock" {
   rest_api_id = aws_api_gateway_rest_api.mtls_doc_store_api.id
   parent_id   = aws_api_gateway_rest_api.mtls_doc_store_api.root_resource_id
-  path_part   = "test_lambda"
+  path_part   = "test_mock"
+}
+
+resource "aws_api_gateway_method" "mtls_test_mock_method" {
+  rest_api_id   = aws_api_gateway_rest_api.mtls_doc_store_api.id
+  resource_id   = aws_api_gateway_resource.mtls_test_mock.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "mtls_test_mock_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.mtls_doc_store_api.id
+  resource_id             = aws_api_gateway_resource.mtls_test_mock.id
+  http_method             = aws_api_gateway_method.mtls_test_mock_method.http_method
+  type                    = "MOCK"
+  integration_http_method = "GET"
+
+  request_templates = {
+    "application/json" = <<EOF
+{
+  "statusCode": 200
+}
+EOF
+  }
+}
+
+resource "aws_api_gateway_method_response" "mtls_test_mock_response" {
+  rest_api_id = aws_api_gateway_rest_api.mtls_doc_store_api.id
+  resource_id = aws_api_gateway_resource.mtls_test_mock.id
+  http_method = aws_api_gateway_method.mtls_test_mock_method.http_method
+  status_code = "200"
+
+  response_models = {
+    "application/json" = "Empty"
+  }
+}
+
+resource "aws_api_gateway_integration_response" "mtls_test_mock_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.mtls_doc_store_api.id
+  resource_id = aws_api_gateway_resource.mtls_test_mock.id
+  http_method = aws_api_gateway_method.mtls_test_mock_method.http_method
+  status_code = aws_api_gateway_method_response.mtls_test_mock_response.status_code
+
+  response_templates = {
+    "application/json" = <<EOF
+{
+  "message": "Hello from mTLS MOCK endpoint!"
+}
+EOF
+  }
 }
 
 resource "aws_api_gateway_deployment" "mtls_api_deploy" {
