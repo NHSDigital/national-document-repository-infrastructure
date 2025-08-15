@@ -92,10 +92,6 @@ EOF
 resource "aws_api_gateway_deployment" "mtls_api_deploy" {
   rest_api_id = aws_api_gateway_rest_api.mtls_doc_store_api.id
 
-  depends_on = [
-    module.fhir_document_reference_gateway_mtls
-  ]
-
   lifecycle {
     create_before_destroy = true
   }
