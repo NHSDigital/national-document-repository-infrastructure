@@ -92,6 +92,14 @@ EOF
 resource "aws_api_gateway_deployment" "mtls_api_deploy" {
   rest_api_id = aws_api_gateway_rest_api.mtls_doc_store_api.id
 
+
+  depends_on = [
+    aws_api_gateway_method.mtls_test_mock_method,
+    aws_api_gateway_integration.mtls_test_mock_integration,
+    aws_api_gateway_method_response.mtls_test_mock_response,
+    aws_api_gateway_integration_response.mtls_test_mock_integration_response
+  ]
+
   lifecycle {
     create_before_destroy = true
   }
