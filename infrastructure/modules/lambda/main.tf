@@ -35,7 +35,7 @@ resource "aws_cloudwatch_log_group" "lambda_logs" {
 
 data "aws_caller_identity" "current" {}
 
-data "aws_iam_policy_document" "admin" {
+data "aws_iam_policy_document" "root_kms_access" {
   statement {
     sid    = "AllowRootAccountAccess"
     effect = "Allow"
@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "admin" {
   }
 }
 
-data "aws_iam_policy_document" "lambda" {
+data "aws_iam_policy_document" "lambda_kms_access" {
   statement {
     effect = "Allow"
     actions = [
@@ -89,17 +89,17 @@ data "aws_iam_policy_document" "lambda" {
   }
 }
 
-resource "aws_iam_role_policy" "lambda" {
+resource "aws_iam_role_policy" "lambda_kms_access" {
   name   = "lambda_kms_usage"
   role   = aws_iam_role.lambda_execution_role.id
-  policy = data.aws_iam_policy_document.lambda.json
+  policy = data.aws_iam_policy_document.lambda_kms_access.json
 }
 
 resource "aws_kms_key" "lambda" {
   deletion_window_in_days = var.kms_deletion_window
   description             = "Custom KMS Key for ${terraform.workspace}_${var.name}"
   enable_key_rotation     = true
-  policy                  = data.aws_iam_policy_document.admin.json
+  policy                  = data.aws_iam_policy_document.admin_kms_access.json
 }
 
 resource "aws_kms_alias" "lambda" {
@@ -146,7 +146,7 @@ resource "aws_iam_role" "lambda_execution_role" {
 }
 
 data "aws_iam_policy_document" "merged_policy" {
-  source_policy_documents = concat(var.iam_role_policy_documents, [data.aws_iam_policy_document.lambda.json])
+  source_policy_documents = concat(var.iam_role_policy_documents, [data.aws_iam_policy_document.lambda_kms_access.json])
 }
 
 resource "aws_iam_policy" "combined_policies" {
