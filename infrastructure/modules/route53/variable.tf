@@ -39,22 +39,6 @@ variable "api_gateway_zone_id" {
   type        = string
 }
 
-variable "create_fargate_record" {
-  type    = bool
-  default = false
-}
-
-variable "create_mtls_gateway_api_record" {
-  type    = bool
-  default = false
-}
-
-
-variable "create_gateway_api_record" {
-  type    = bool
-  default = false
-}
-
 locals {
   zone_id = var.using_arf_hosted_zone ? data.aws_route53_zone.ndr_zone[0].zone_id : aws_route53_zone.ndr_zone[0].zone_id
 }

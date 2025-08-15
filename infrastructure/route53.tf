@@ -9,20 +9,17 @@ module "route53_fargate_ui" {
   api_gateway_subdomain_name   = local.api_gateway_subdomain_name
   api_gateway_full_domain_name = aws_api_gateway_domain_name.custom_api_domain.regional_domain_name
   api_gateway_zone_id          = aws_api_gateway_domain_name.custom_api_domain.regional_zone_id
-  create_fargate_record        = true
-  create_gateway_api_record    = true
 }
 
-module "route53_mtls_api" {
-  source                = "./modules/route53"
-  environment           = var.environment
-  owner                 = var.owner
-  domain                = var.domain
-  using_arf_hosted_zone = true
-  dns_name              = local.mtls_api_gateway_subdomain_name
 
-  api_gateway_subdomain_name     = local.mtls_api_gateway_subdomain_name
-  api_gateway_full_domain_name   = aws_api_gateway_domain_name.mtls_custom_api_domain.regional_domain_name
-  api_gateway_zone_id            = aws_api_gateway_domain_name.mtls_custom_api_domain.regional_zone_id
-  create_mtls_gateway_api_record = true
+resource "aws_route53_record" "ndr_mtls_gateway_api_record" {
+  name    = aws_api_gateway_domain_name.mtls_custom_api_domain.domain_name
+  type    = "A"
+  zone_id = "Z03876441EL64PCVENJO8"
+
+  alias {
+    name                   = aws_api_gateway_domain_name.mtls_custom_api_domain.regional_domain_name
+    zone_id                = aws_api_gateway_domain_name.mtls_custom_api_domain.regional_zone_id
+    evaluate_target_health = true
+  }
 }
