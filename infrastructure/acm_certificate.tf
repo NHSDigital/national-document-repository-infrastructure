@@ -22,7 +22,7 @@ resource "aws_route53_record" "validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = module.route53_mtls_api.zone_id
+  zone_id         = module.route53_fargate_ui.zone_id
 }
 
 
