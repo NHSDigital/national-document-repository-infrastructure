@@ -99,7 +99,7 @@ resource "aws_kms_key" "lambda" {
   deletion_window_in_days = var.kms_deletion_window
   description             = "Custom KMS Key for ${terraform.workspace}_${var.name}"
   enable_key_rotation     = true
-  policy                  = data.aws_iam_policy_document.admin_kms_access.json
+  policy                  = data.aws_iam_policy_document.root_kms_access.json
 }
 
 resource "aws_kms_alias" "lambda" {
