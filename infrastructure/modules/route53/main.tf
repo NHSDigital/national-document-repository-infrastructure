@@ -40,7 +40,7 @@ resource "aws_route53_record" "ndr_mtls_gateway_api_record" {
   zone_id = var.api_gateway_zone_id
 
   alias {
-    name                   = var.api_gateway_subdomain_name
+    name                   = var.api_gateway_full_domain_name
     zone_id                = var.api_gateway_zone_id
     evaluate_target_health = true
   }
