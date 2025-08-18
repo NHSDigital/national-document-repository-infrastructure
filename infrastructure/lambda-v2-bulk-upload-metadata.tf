@@ -7,8 +7,8 @@ module "v2-bulk-upload-metadata-lambda" {
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
-    module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
-    module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
+    module.v2-sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
+    module.v2-sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
     module.ndr-app-config.app_config_policy
   ]
 
@@ -21,7 +21,7 @@ module "v2-bulk-upload-metadata-lambda" {
     APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                 = terraform.workspace
     STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    METADATA_SQS_QUEUE_URL    = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
+    METADATA_SQS_QUEUE_URL    = module.v2-sqs-lg-bulk-upload-metadata-queue.sqs_url
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
@@ -29,8 +29,8 @@ module "v2-bulk-upload-metadata-lambda" {
 
 module "v2-bulk-upload-metadata-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.bulk-upload-metadata-lambda.function_name
-  lambda_timeout       = module.bulk-upload-metadata-lambda.timeout
+  lambda_function_name = module.v2-bulk-upload-metadata-lambda.function_name
+  lambda_timeout       = module.v2-bulk-upload-metadata-lambda.timeout
   lambda_name          = "bulk_upload_metadata_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.v2-bulk-upload-metadata-alarm-topic.arn]
@@ -41,9 +41,9 @@ module "v2-bulk-upload-metadata-alarm" {
 module "v2-bulk-upload-metadata-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "bulk-upload-metadata-topic"
+  topic_name            = "v2-bulk-upload-metadata-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.bulk-upload-metadata-lambda.lambda_arn
+  topic_endpoint        = module.v2-bulk-upload-metadata-lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
