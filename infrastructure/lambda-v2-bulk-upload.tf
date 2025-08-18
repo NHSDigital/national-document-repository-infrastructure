@@ -55,7 +55,7 @@ module "v2-bulk-upload-lambda" {
   ]
 }
 
-resource "aws_lambda_event_source_mapping" "bulk_upload_lambda" {
+resource "aws_lambda_event_source_mapping" "v2_bulk_upload_lambda" {
   event_source_arn = module.sqs-lg-bulk-upload-metadata-queue.sqs_arn
   function_name    = module.bulk-upload-lambda.lambda_arn
   enabled          = local.is_sandbox ? true : false # Disabled by default; scheduler lambda will control
@@ -70,7 +70,7 @@ resource "aws_lambda_event_source_mapping" "bulk_upload_lambda" {
   ]
 }
 
-module "bulk-upload-alarm" {
+module "v2-bulk-upload-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.bulk-upload-lambda.function_name
   lambda_timeout       = module.bulk-upload-lambda.timeout
@@ -81,7 +81,7 @@ module "bulk-upload-alarm" {
   depends_on           = [module.bulk-upload-lambda, module.bulk-upload-alarm-topic]
 }
 
-module "bulk-upload-alarm-topic" {
+module "v2-bulk-upload-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_name            = "bulk-upload-topic"
