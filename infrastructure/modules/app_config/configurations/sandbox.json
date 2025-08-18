@@ -15,7 +15,7 @@
         "lloydGeorgeValidationStrictModeEnabled": {
             "name": "lloydGeorgeValidationStrictModeEnabled"
         },
-        "v2BulkUploadLambdaEnabled": {
+        "v2BulkUploadProcessEnabled": {
             "name": "v2BulkUploadProcessEnabled"
         }
     },
