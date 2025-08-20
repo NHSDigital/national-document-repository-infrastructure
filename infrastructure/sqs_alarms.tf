@@ -80,7 +80,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
   namespace           = "AWS/SQS"
   period              = 86400
   statistic           = "Maximum"
-  threshold           = local.monitored_queue_day_list[count.index][2]*24*60*60
+  threshold           = local.monitored_queue_day_list[count.index][2] * 24 * 60 * 60
   treat_missing_data  = "notBreaching"
 
   dimensions = {
