@@ -14,9 +14,6 @@
         },
         "lloydGeorgeValidationStrictModeEnabled": {
             "name": "lloydGeorgeValidationStrictModeEnabled"
-        },
-        "v2BulkUploadProcessEnabled": {
-            "name": "v2BulkUploadProcessEnabled"
         }
     },
     "values": {
@@ -33,9 +30,6 @@
             "enabled": "false"
         },
         "lloydGeorgeValidationStrictModeEnabled": {
-            "enabled": "true"
-        },
-        "v2BulkUploadLambdaEnabled": {
             "enabled": "true"
         }
     },
