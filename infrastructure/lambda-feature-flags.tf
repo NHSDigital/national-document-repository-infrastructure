@@ -56,7 +56,8 @@ module "feature-flags-lambda" {
   name    = "FeatureFlagsLambda"
   handler = "handlers.feature_flags_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.ndr-app-config.app_config_policy
+    module.ndr-app-config.app_config_policy,
+    aws_iam_policy.ssm_access_policy.policy,
   ]
   rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id       = module.feature-flags-gateway.gateway_resource_id
@@ -75,7 +76,6 @@ module "feature-flags-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.feature-flags-gateway,
-    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
     module.ndr-app-config
   ]
 }
