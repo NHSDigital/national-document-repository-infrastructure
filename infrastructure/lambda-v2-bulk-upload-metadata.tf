@@ -1,5 +1,5 @@
 module "v2-bulk-upload-metadata-lambda" {
-  count          = is_sandbox || "ndr-dev" ? 1 : 0
+  count          = is_sandbox || (terraform.workspace == "ndr-dev") ? 1 : 0
   source         = "./modules/lambda"
   name           = "V2BulkUploadMetadataLambda"
   handler        = "handlers.bulk_upload_metadata_handler.lambda_handler"
