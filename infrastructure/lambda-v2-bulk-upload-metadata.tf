@@ -8,8 +8,8 @@ module "v2-bulk-upload-metadata-lambda" {
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
-    module.v2-sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
-    module.v2-sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
+    module.v2-sqs-lg-bulk-upload-metadata-queue[0].sqs_read_policy_document,
+    module.v2-sqs-lg-bulk-upload-metadata-queue[0].sqs_write_policy_document,
     module.ndr-app-config.app_config_policy
   ]
 
@@ -22,7 +22,7 @@ module "v2-bulk-upload-metadata-lambda" {
     APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                 = terraform.workspace
     STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    METADATA_SQS_QUEUE_URL    = module.v2-sqs-lg-bulk-upload-metadata-queue.sqs_url
+    METADATA_SQS_QUEUE_URL    = module.v2-sqs-lg-bulk-upload-metadata-queue[0].sqs_url
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
