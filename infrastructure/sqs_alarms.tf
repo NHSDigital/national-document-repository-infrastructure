@@ -40,13 +40,9 @@ locals {
   ]
 }
 
-locals {
-  is_test_sandbox = contains([], terraform.workspace) # empty list disables sandbox detection, for testing only
-}
-# TODO: Delete is_test_sandbox, and change all call of is_test_sandbox to is_sandbox
 
 module "global_sqs_age_alarm_topic" {
-  count                  = local.is_test_sandbox ? 0 : 1 # TODO:change is_test_sandbox to is_sandbox
+  count                  = local.is_sandbox ? 0 : 1
   source                 = "./modules/sns"
   sns_encryption_key_id  = module.sns_encryption_key.id
   topic_name             = "global-sqs-age-alarm-topic"
@@ -76,16 +72,16 @@ module "global_sqs_age_alarm_topic" {
 
 
 resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message" {
-  count = local.is_test_sandbox ? 0 : length(local.monitored_queue_day_list) # TODO:change is_test_sandbox to is_sandbox
+  count = local.is_sandbox ? 0 : length(local.monitored_queue_day_list)
 
   alarm_name          = "${terraform.workspace}_${local.monitored_queue_day_list[count.index][0]}_oldest_message_alarm_${local.monitored_queue_day_list[count.index][2]}d"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "ApproximateAgeOfOldestMessage"
   namespace           = "AWS/SQS"
-  period              = 60 # TODO: change to 86400 (24h))
+  period              = 86400
   statistic           = "Maximum"
-  threshold           = local.monitored_queue_day_list[count.index][2] # TODO: change to local.monitored_queue_day_list[count.index][2]*24*60*60
+  threshold           = local.monitored_queue_day_list[count.index][2]*24*60*60
   treat_missing_data  = "notBreaching"
 
   dimensions = {
