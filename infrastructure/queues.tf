@@ -31,7 +31,7 @@ module "sqs-lg-bulk-upload-invalid-queue" {
 }
 
 module "v2-sqs-lg-bulk-upload-metadata-queue" {
-  count                = is_sandbox || (terraform.workspace == "ndr-dev") ? 1 : 0
+  count                = local.is_sandbox || (terraform.workspace == "ndr-dev") ? 1 : 0
   source               = "./modules/sqs"
   name                 = "v2-lg-bulk-upload-metadata-queue.fifo"
   max_size_message     = 256 * 1024
@@ -45,7 +45,7 @@ module "v2-sqs-lg-bulk-upload-metadata-queue" {
 }
 
 module "v2-sqs-lg-bulk-upload-invalid-queue" {
-  count             = is_sandbox || (terraform.workspace == "ndr-dev") ? 1 : 0
+  count             = local.is_sandbox || (terraform.workspace == "ndr-dev") ? 1 : 0
   source            = "./modules/sqs"
   name              = "v2-lg-bulk-upload-invalid-queue"
   max_size_message  = 256 * 1024        # 256 KB
