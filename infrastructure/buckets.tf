@@ -116,6 +116,15 @@ module "ndr-bulk-staging-store" {
   ]
 }
 
+module "ndr-truststore" {
+  source                = "./modules/s3"
+  access_logs_enabled   = local.is_production
+  access_logs_bucket_id = local.access_logs_bucket_id
+  bucket_name           = var.trustore_bucket_name
+  environment           = var.environment
+  owner                 = var.owner
+}
+
 # Lifecycle Rules
 resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   bucket = module.ndr-lloyd-george-store.bucket_id
