@@ -2,7 +2,6 @@ locals {
   monitored_queues = {
     # main queues
     "nrl_main"       = module.sqs-nrl-queue.queue_name
-    "splunk_main"    = length(module.sqs-splunk-queue) > 0 ? module.sqs-splunk-queue[0].queue_name : "splunk_queue_name"
     "stitching_main" = module.sqs-stitching-queue.queue_name
     "lg_bulk_main"   = module.sqs-lg-bulk-upload-metadata-queue.queue_name
     "lg_inv_main"    = module.sqs-lg-bulk-upload-invalid-queue.queue_name
