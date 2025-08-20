@@ -47,8 +47,8 @@ module "v2-bulk-upload-lambda" {
 
   depends_on = [
     module.ndr-bulk-staging-store,
-    module.v2-sqs-lg-bulk-upload-metadata-queue,
-    module.v2-sqs-lg-bulk-upload-invalid-queue,
+    module.v2-sqs-lg-bulk-upload-metadata-queue[0],
+    module.v2-sqs-lg-bulk-upload-invalid-queue[0],
     module.ndr-lloyd-george-store,
     module.lloyd_george_reference_dynamodb_table,
     module.bulk_upload_report_dynamodb_table,
@@ -57,8 +57,8 @@ module "v2-bulk-upload-lambda" {
 }
 
 resource "aws_lambda_event_source_mapping" "v2_bulk_upload_lambda" {
-  event_source_arn = module.v2-sqs-lg-bulk-upload-metadata-queue.sqs_arn
-  function_name    = module.v2-bulk-upload-lambda.lambda_arn
+  event_source_arn = module.v2-sqs-lg-bulk-upload-metadata-queue[0].sqs_arn
+  function_name    = module.v2-bulk-upload-lambda[0].lambda_arn
   enabled          = local.is_sandbox ? true : false # Disabled by default; scheduler lambda will control
   batch_size       = 10
   scaling_config {
@@ -66,20 +66,20 @@ resource "aws_lambda_event_source_mapping" "v2_bulk_upload_lambda" {
   }
 
   depends_on = [
-    module.v2-bulk-upload-lambda,
-    module.v2-sqs-lg-bulk-upload-metadata-queue
+    module.v2-bulk-upload-lambda[0],
+    module.v2-sqs-lg-bulk-upload-metadata-queue[0]
   ]
 }
 
 module "v2-bulk-upload-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.v2-bulk-upload-lambda.function_name
-  lambda_timeout       = module.v2-bulk-upload-lambda.timeout
+  lambda_function_name = module.v2-bulk-upload-lambda[0].function_name
+  lambda_timeout       = module.v2-bulk-upload-lambda[0].timeout
   lambda_name          = "bulk_upload_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.v2-bulk-upload-alarm-topic.arn]
   ok_actions           = [module.v2-bulk-upload-alarm-topic.arn]
-  depends_on           = [module.v2-bulk-upload-lambda, module.v2-bulk-upload-alarm-topic]
+  depends_on           = [module.v2-bulk-upload-lambda[0], module.v2-bulk-upload-alarm-topic]
 }
 
 module "v2-bulk-upload-alarm-topic" {
@@ -87,7 +87,7 @@ module "v2-bulk-upload-alarm-topic" {
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_name            = "v2-bulk-upload-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.v2-bulk-upload-lambda.lambda_arn
+  topic_endpoint        = module.v2-bulk-upload-lambda[0].lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -109,5 +109,5 @@ module "v2-bulk-upload-alarm-topic" {
     ]
   })
 
-  depends_on = [module.v2-bulk-upload-lambda, module.sns_encryption_key]
+  depends_on = [module.v2-bulk-upload-lambda[0], module.sns_encryption_key]
 }
