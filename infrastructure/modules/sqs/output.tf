@@ -33,7 +33,7 @@ output "dlq_name" {
   value       = var.enable_dlq ? aws_sqs_queue.queue_deadletter[0].name : null
 }
 
-output "queue_name" {
+output "sqs_name" {
   description = "Name of the queue"
   value       = aws_sqs_queue.sqs_queue.name
 }
