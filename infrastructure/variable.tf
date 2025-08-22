@@ -60,7 +60,7 @@ variable "statistical_reports_bucket_name" {
 variable "truststore_bucket_name" {
   type        = string
   description = "The name of the S3 bucket to store trusted CA's for MTLS"
-  default     = "truststore"
+  default     = "ndr-truststore"
 }
 
 # DynamoDB Table Variables
