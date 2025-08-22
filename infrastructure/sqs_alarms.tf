@@ -1,11 +1,11 @@
 locals {
   monitored_queues = {
     # main queues
-    "nrl_main"       = module.sqs-nrl-queue.queue_name
-    "stitching_main" = module.sqs-stitching-queue.queue_name
-    "lg_bulk_main"   = module.sqs-lg-bulk-upload-metadata-queue.queue_name
-    "lg_inv_main"    = module.sqs-lg-bulk-upload-invalid-queue.queue_name
-    "mns_main"       = module.sqs-mns-notification-queue[0].queue_name
+    "nrl_main"       = module.sqs-nrl-queue.sqs_name
+    "stitching_main" = module.sqs-stitching-queue.sqs_name
+    "lg_bulk_main"   = module.sqs-lg-bulk-upload-metadata-queue.sqs_name
+    "lg_inv_main"    = module.sqs-lg-bulk-upload-invalid-queue.sqs_name
+    "mns_main"       = module.sqs-mns-notification-queue[0].sqs_name
     # dead-letter queues
     "nrl_dlq"       = module.sqs-nrl-queue.dlq_name
     "stitching_dlq" = module.sqs-stitching-queue.dlq_name
