@@ -140,7 +140,7 @@ data "aws_iam_policy_document" "assume_role_policy_for_get_doc_ref_lambda" {
 
     principals {
       type        = "AWS"
-      identifiers = [module.get-doc-fhir-lambda[0].lambda_execution_role_arn]
+      identifiers = [module.get-doc-fhir-lambda.lambda_execution_role_arn]
     }
   }
 }

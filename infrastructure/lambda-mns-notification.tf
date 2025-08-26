@@ -84,7 +84,7 @@ resource "aws_iam_policy" "kms_mns_lambda_access" {
           "kms:GenerateDataKey"
         ]
         Effect   = "Allow"
-        Resource = module.mns_encryption_key[0].kms_arn
+        Resource = module.mns_encryption_key.kms_arn
       },
     ]
   })
