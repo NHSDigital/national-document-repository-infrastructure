@@ -2,7 +2,7 @@ module "v2-bulk-upload-lambda" {
   count   = local.is_sandbox || (terraform.workspace == "ndr-dev") ? 1 : 0
   source  = "./modules/lambda"
   name    = "V2BulkUploadLambda"
-  handler = "handlers.bulk_upload_handler.lambda_handler"
+  handler = "handlers.V2_bulk_upload_handler.lambda_handler"
 
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,

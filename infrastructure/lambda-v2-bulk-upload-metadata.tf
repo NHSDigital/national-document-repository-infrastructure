@@ -2,7 +2,7 @@ module "v2-bulk-upload-metadata-lambda" {
   count          = local.is_sandbox || (terraform.workspace == "ndr-dev") ? 1 : 0
   source         = "./modules/lambda"
   name           = "V2BulkUploadMetadataLambda"
-  handler        = "handlers.bulk_upload_metadata_handler.lambda_handler"
+  handler        = "handlers.V2_bulk_upload_metadata_handler.lambda_handler"
   lambda_timeout = 900
   memory_size    = 1769
   iam_role_policy_documents = [
