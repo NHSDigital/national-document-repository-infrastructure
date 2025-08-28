@@ -1,7 +1,7 @@
 module "v2-toggle-bulk-upload-lambda" {
   source         = "./modules/lambda"
   name           = "V2ToggleBulkUploadLambda"
-  handler        = "handlers.v2_toggle_bulk_upload_handler.lambda_handler"
+  handler        = "handlers.toggle_bulk_upload_handler.lambda_handler"
   lambda_timeout = 60
   memory_size    = 128
 
