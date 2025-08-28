@@ -992,6 +992,10 @@ function _list_workspace_resources() {
 }
 
 function _delete_workspace_resources() {
+  if [[ -z "${TERRAFORM_WORKSPACE:-}" ]]; then
+    echo "❌ ERROR: TERRAFORM_WORKSPACE is not set."
+    exit 1
+  fi
   _delete_log_groups "$TERRAFORM_WORKSPACE"
   _delete_lambda_layers "$TERRAFORM_WORKSPACE"
   _delete_cloudwatch_alarms "$TERRAFORM_WORKSPACE"
