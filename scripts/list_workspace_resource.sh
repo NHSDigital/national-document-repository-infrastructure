@@ -996,6 +996,14 @@ function _delete_workspace_resources() {
     echo "❌ ERROR: TERRAFORM_WORKSPACE is not set."
     exit 1
   fi
+
+  case "$TERRAFORM_WORKSPACE" in
+  ndr-dev | ndr-test | pre-prod | prod)
+    echo "❌ ERROR: Deletion is not allowed for workspace: $TERRAFORM_WORKSPACE"
+    exit 1
+    ;;
+  esac
+
   _delete_log_groups "$TERRAFORM_WORKSPACE"
   _delete_lambda_layers "$TERRAFORM_WORKSPACE"
   _delete_cloudwatch_alarms "$TERRAFORM_WORKSPACE"
