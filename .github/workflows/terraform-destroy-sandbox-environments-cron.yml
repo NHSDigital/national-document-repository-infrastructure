@@ -1,0 +1,44 @@
+name: 'Destroy Sandbox Environments (CRON)'
+
+on:
+  schedule:
+    - cron: 59 17 * * 1-5 # utc time
+
+permissions:
+  pull-requests: write
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  destroy_process:
+    name: Destroy Sandbox Environments
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install Python Dependencies
+        run: |
+          python3 -m venv ./venv
+          ./venv/bin/pip3 install --upgrade pip boto3 requests
+
+      - name: Run Sandbox Cleanup Script
+        run: ./venv/bin/python3 -u scripts/cleanup_sandboxes.py
+        env:
+          GIT_WORKFLOW_PAT: ${{ secrets.GIT_WORKFLOW_PAT }}  # Has "repo" and "workflow" privileges

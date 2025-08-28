@@ -25,7 +25,6 @@ module "feature_flags_alarm" {
 module "feature_flags_alarm_topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "feature_flags_alarms-topic"
   topic_protocol        = "lambda"
   topic_endpoint        = module.feature-flags-lambda.lambda_arn
@@ -57,12 +56,14 @@ module "feature-flags-lambda" {
   name    = "FeatureFlagsLambda"
   handler = "handlers.feature_flags_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.ndr-app-config.app_config_policy
+    module.ndr-app-config.app_config_policy,
+    aws_iam_policy.ssm_access_policy.policy,
   ]
-  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = module.feature-flags-gateway.gateway_resource_id
-  http_methods      = ["GET"]
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  kms_deletion_window = var.kms_deletion_window
+  rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id         = module.feature-flags-gateway.gateway_resource_id
+  http_methods        = ["GET"]
+  api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
 
   lambda_timeout = 450
 
@@ -76,7 +77,6 @@ module "feature-flags-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.feature-flags-gateway,
-    aws_iam_policy.lambda_audit_splunk_sqs_queue_send_policy[0],
     module.ndr-app-config
   ]
 }

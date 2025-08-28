@@ -11,10 +11,7 @@ resource "aws_sqs_queue" "sqs_queue" {
   kms_master_key_id           = var.kms_master_key_id
 
   tags = {
-    Name        = "${terraform.workspace}-${var.name}"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
+    Name = "${terraform.workspace}-${var.name}"
   }
 }
 
@@ -24,7 +21,7 @@ resource "aws_sqs_queue" "queue_deadletter" {
   delay_seconds               = var.delay
   visibility_timeout_seconds  = var.dlq_visibility_timeout
   max_message_size            = var.max_size_message
-  message_retention_seconds   = var.message_retention
+  message_retention_seconds   = var.dlq_message_retention
   receive_wait_time_seconds   = var.receive_wait
   sqs_managed_sse_enabled     = var.enable_sse
   fifo_queue                  = var.enable_fifo
@@ -32,10 +29,7 @@ resource "aws_sqs_queue" "queue_deadletter" {
   kms_master_key_id           = var.kms_master_key_id
 
   tags = {
-    Name        = "${terraform.workspace}-${var.name}"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
+    Name = "${terraform.workspace}-${var.name}"
   }
 }
 

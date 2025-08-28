@@ -1,23 +1,25 @@
-# NDR-50
-
 moved {
-  from = module.get-doc-nrl-lambda
-  to   = module.get-doc-fhir-lambda[0]
+  from = module.document_reference_gateway
+  to   = module.create_document_reference_gateway
+}
+
+#PRME-125
+moved {
+  from = module.upload_confirm_result_gateway
+  to   = module.document-status-check-gateway
 }
 
 moved {
-  from = aws_iam_role.nrl_get_doc_presign_url_role
-  to   = aws_iam_role.get_fhir_doc_presign_url_role[0]
+  from = module.upload_confirm_result_lambda
+  to   = module.document-status-check-lambda
 }
 
 moved {
-  from = aws_iam_role_policy_attachment.nrl_get_doc_presign_url
-  to   = aws_iam_role_policy_attachment.get_doc_presign_url[0]
+  from = module.upload_confirm_result_alarm
+  to   = module.document-status-check-alarm
 }
 
-# PRM-28
-
 moved {
-  from = module.create-doc-ref-gateway
-  to   = module.document_reference_gateway
+  from = module.upload_confirm_result_alarm_topic
+  to   = module.document-status-check-alarm-topic
 }

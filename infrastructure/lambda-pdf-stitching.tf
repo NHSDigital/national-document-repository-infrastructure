@@ -16,6 +16,7 @@ module "pdf-stitching-lambda" {
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-lloyd-george-store.s3_write_policy_document,
   ]
+  kms_deletion_window     = var.kms_deletion_window
   rest_api_id             = null
   api_execution_arn       = null
   is_invoked_from_gateway = false
@@ -48,7 +49,6 @@ module "pdf-stitching-lambda-alarms" {
 module "pdf-stitching-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "pdf-stitching-alarm-topic"
   topic_protocol        = "lambda"
   topic_endpoint        = module.pdf-stitching-lambda.lambda_arn

@@ -1,10 +1,10 @@
-module "document_reference_gateway" {
+module "create_document_reference_gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
   http_methods        = ["POST"]
   authorization       = "CUSTOM"
-  gateway_path        = "DocumentReference"
+  gateway_path        = "CreateDocumentReference"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
@@ -25,7 +25,6 @@ module "create_doc_alarm" {
 module "create_doc_alarm_topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "create_doc-alarms-topic"
   topic_protocol        = "lambda"
   topic_endpoint        = module.create-doc-ref-lambda.lambda_arn
@@ -72,10 +71,11 @@ module "create-doc-ref-lambda" {
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy,
   ]
-  rest_api_id  = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id  = module.document_reference_gateway.gateway_resource_id
-  http_methods = ["POST"]
-  memory_size  = 512
+  kms_deletion_window = var.kms_deletion_window
+  rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id         = module.create_document_reference_gateway.gateway_resource_id
+  http_methods        = ["POST"]
+  memory_size         = 512
 
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
@@ -92,11 +92,11 @@ module "create-doc-ref-lambda" {
     PRESIGNED_ASSUME_ROLE         = aws_iam_role.create_post_presign_url_role.arn
   }
   depends_on = [
+    module.create_document_reference_gateway,
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.document_reference_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
     module.ndr-bulk-staging-store,
-    module.document_reference_gateway,
     module.ndr-app-config,
     module.lloyd_george_reference_dynamodb_table,
     module.document_reference_dynamodb_table,

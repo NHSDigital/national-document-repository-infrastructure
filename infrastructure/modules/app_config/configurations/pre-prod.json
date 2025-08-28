@@ -27,7 +27,7 @@
             "enabled": "false"
         },
         "useSmartcardAuth": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "lloydGeorgeValidationStrictModeEnabled": {
             "enabled": "true"

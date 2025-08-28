@@ -1,13 +1,13 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_kms_key" "encryption_key" {
-  description         = var.kms_key_description
-  policy              = data.aws_iam_policy_document.combined_policy_documents.json
-  enable_key_rotation = var.kms_key_rotation_enabled
+  description             = var.kms_key_description
+  policy                  = data.aws_iam_policy_document.combined_policy_documents.json
+  enable_key_rotation     = var.kms_key_rotation_enabled
+  deletion_window_in_days = var.kms_deletion_window
 
   tags = {
-    Name        = var.kms_key_name
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
+    Name = var.kms_key_name
   }
 }
 
@@ -16,12 +16,11 @@ resource "aws_kms_alias" "encryption_key_alias" {
   target_key_id = aws_kms_key.encryption_key.id
 }
 
-
 data "aws_iam_policy_document" "kms_key_base" {
   statement {
     effect = "Allow"
     principals {
-      identifiers = ["arn:aws:iam::${var.current_account_id}:root"]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
       type        = "AWS"
     }
     actions   = ["kms:*"]

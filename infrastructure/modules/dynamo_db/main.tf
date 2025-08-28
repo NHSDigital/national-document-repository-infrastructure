@@ -33,10 +33,7 @@ resource "aws_dynamodb_table" "ndr_dynamodb_table" {
   }
 
   tags = {
-    Name        = "${terraform.workspace}_${var.table_name}"
-    Owner       = var.owner
-    Environment = var.environment
-    Workspace   = terraform.workspace
+    Name = "${terraform.workspace}_${var.table_name}"
   }
 
   point_in_time_recovery {
@@ -91,6 +88,7 @@ data "aws_iam_policy_document" "dynamodb_read_policy" {
       "dynamodb:Query",
       "dynamodb:Scan",
       "dynamodb:GetItem",
+      "dynamodb:BatchGetItem"
     ]
     resources = [
       aws_dynamodb_table.ndr_dynamodb_table.arn,

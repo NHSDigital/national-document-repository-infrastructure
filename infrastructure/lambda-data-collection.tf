@@ -12,7 +12,6 @@ module "data-collection-alarm" {
 module "data-collection-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "data-collection-topic"
   topic_protocol        = "lambda"
   topic_endpoint        = module.data-collection-lambda.lambda_arn
@@ -61,8 +60,9 @@ module "data-collection-lambda" {
     module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     aws_iam_policy.cloudwatch_log_query_policy.policy
   ]
-  rest_api_id       = null
-  api_execution_arn = null
+  kms_deletion_window = var.kms_deletion_window
+  rest_api_id         = null
+  api_execution_arn   = null
 
   lambda_environment_variables = {
     APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id

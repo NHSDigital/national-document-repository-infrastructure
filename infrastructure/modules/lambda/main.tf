@@ -10,17 +10,14 @@ resource "aws_lambda_function" "lambda" {
   timeout                        = var.lambda_timeout
   memory_size                    = var.memory_size
   reserved_concurrent_executions = var.reserved_concurrent_executions
+  kms_key_arn                    = aws_kms_key.lambda.arn
   ephemeral_storage {
     size = var.lambda_ephemeral_storage
   }
   environment {
     variables = var.lambda_environment_variables
   }
-  layers = [
-    "arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:56",
-    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:133"
-  ]
-
+  layers = local.lambda_layers
   lifecycle {
     ignore_changes = [
       # These are required as Lambdas are deployed via the CI/CD pipelines
@@ -28,6 +25,86 @@ resource "aws_lambda_function" "lambda" {
       layers
     ]
   }
+}
+
+resource "aws_cloudwatch_log_group" "lambda_logs" {
+  count             = contains(var.persistent_workspaces, terraform.workspace) ? 0 : 1
+  name              = "/aws/lambda/${terraform.workspace}_${var.name}"
+  retention_in_days = 1
+}
+
+data "aws_caller_identity" "current" {}
+
+data "aws_iam_policy_document" "root_kms_access" {
+  statement {
+    sid    = "AllowRootAccountAccess"
+    effect = "Allow"
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+      ]
+    }
+
+    actions = [
+      "kms:*"
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "AllowLambdaExecutionRole"
+    effect = "Allow"
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        aws_iam_role.lambda_execution_role.arn
+      ]
+    }
+
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:GenerateDataKey"
+    ]
+
+    resources = ["*"]
+  }
+}
+
+data "aws_iam_policy_document" "lambda_kms_access" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:GenerateDataKey"
+    ]
+    resources = [
+      aws_kms_key.lambda.arn
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "lambda_kms_access" {
+  name   = "lambda_kms_usage"
+  role   = aws_iam_role.lambda_execution_role.id
+  policy = data.aws_iam_policy_document.lambda_kms_access.json
+}
+
+resource "aws_kms_key" "lambda" {
+  deletion_window_in_days = var.kms_deletion_window
+  description             = "Custom KMS Key for ${terraform.workspace}_${var.name}"
+  enable_key_rotation     = true
+  policy                  = data.aws_iam_policy_document.root_kms_access.json
+}
+
+resource "aws_kms_alias" "lambda" {
+  name          = "alias/${terraform.workspace}_${var.name}"
+  target_key_id = aws_kms_key.lambda.key_id
 }
 
 resource "aws_api_gateway_integration" "lambda_integration" {
@@ -69,7 +146,7 @@ resource "aws_iam_role" "lambda_execution_role" {
 }
 
 data "aws_iam_policy_document" "merged_policy" {
-  source_policy_documents = var.iam_role_policy_documents
+  source_policy_documents = concat(var.iam_role_policy_documents, [data.aws_iam_policy_document.lambda_kms_access.json])
 }
 
 resource "aws_iam_policy" "combined_policies" {

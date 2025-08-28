@@ -8,8 +8,9 @@ module "authoriser-lambda" {
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-app-config.app_config_policy
   ]
-  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  kms_deletion_window = var.kms_deletion_window
+  rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     APPCONFIG_APPLICATION          = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT          = module.ndr-app-config.app_config_environment_id
@@ -45,7 +46,6 @@ module "authoriser-alarm" {
 module "authoriser-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "create_doc-alarms-topic"
   topic_protocol        = "lambda"
   topic_endpoint        = module.authoriser-lambda.lambda_arn

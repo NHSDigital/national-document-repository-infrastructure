@@ -25,7 +25,6 @@ module "virus_scan_result_alarm" {
 module "virus_scan_result_alarm_topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "virus_scan_result_alarm-topic"
   topic_protocol        = "lambda"
   topic_endpoint        = module.virus_scan_result_lambda.lambda_arn
@@ -66,10 +65,11 @@ module "virus_scan_result_lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
   ]
-  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = module.virus_scan_result_gateway.gateway_resource_id
-  http_methods      = ["POST"]
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  kms_deletion_window = var.kms_deletion_window
+  rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id         = module.virus_scan_result_gateway.gateway_resource_id
+  http_methods        = ["POST"]
+  api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
@@ -78,6 +78,7 @@ module "virus_scan_result_lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     STAGING_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.staging_store_bucket_name}"
     WORKSPACE                    = terraform.workspace
+    VIRUS_SCAN_STUB              = !local.is_production
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

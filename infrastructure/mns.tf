@@ -8,12 +8,12 @@ module "mns_encryption_key" {
   source                = "./modules/kms"
   kms_key_name          = "alias/mns-notification-encryption-key-kms-${terraform.workspace}"
   kms_key_description   = "Custom KMS Key to enable server side encryption for mns subscriptions"
-  current_account_id    = data.aws_caller_identity.current.account_id
   environment           = var.environment
   owner                 = var.owner
   service_identifiers   = ["sns.amazonaws.com"]
   aws_identifiers       = [data.aws_ssm_parameter.mns_lambda_role.value]
   allow_decrypt_for_arn = true
+  kms_deletion_window   = var.kms_deletion_window
 }
 
 module "sqs-mns-notification-queue" {
@@ -73,7 +73,6 @@ resource "aws_cloudwatch_metric_alarm" "msn_dlq_new_message" {
 module "mns-dlq-alarm-topic" {
   source                 = "./modules/sns"
   sns_encryption_key_id  = module.sns_encryption_key.id
-  current_account_id     = data.aws_caller_identity.current.account_id
   topic_name             = "mns-dlq-topic"
   topic_protocol         = "email"
   is_topic_endpoint_list = true

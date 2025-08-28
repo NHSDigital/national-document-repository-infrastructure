@@ -12,8 +12,9 @@ module "bulk-upload-report-lambda" {
     aws_iam_policy.dynamodb_policy_scan_bulk_report.policy,
     module.ndr-app-config.app_config_policy
   ]
-  rest_api_id       = null
-  api_execution_arn = null
+  kms_deletion_window = var.kms_deletion_window
+  rest_api_id         = null
+  api_execution_arn   = null
 
   lambda_environment_variables = {
     APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
@@ -62,7 +63,6 @@ module "bulk-upload-report-alarm" {
 module "bulk-upload-report-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  current_account_id    = data.aws_caller_identity.current.account_id
   topic_name            = "bulk-upload-report-topic"
   topic_protocol        = "lambda"
   topic_endpoint        = module.bulk-upload-report-lambda.lambda_arn
