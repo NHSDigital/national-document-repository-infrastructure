@@ -1025,12 +1025,16 @@ for arg in "$@"; do
 done
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f839b98 (Allow delete or list)
 # Run correct function
 if $do_delete; then
   _delete_workspace_resources
 else
   _list_workspace_resources
 fi
+<<<<<<< HEAD
 =======
 # CloudWatch Logs log group: /aws/ecs/containerinsights/mockcis2-app-cluster/performance
 # CloudWatch Logs log group: /aws/ecs/containerinsights/ndrv-app-cluster/performance
@@ -1395,3 +1399,5 @@ fi
 # SNS Subscription: arn:aws:sns:eu-west-2:533825906475:ndrc-sns-nems-message-lambda-alarm-topic202406030855077835000000ae:cfa0091e-603e-4283-95b7-bc9b860d904e
 # SNS Subscription: arn:aws:sns:eu-west-2:533825906475:ndrc-sns-upload_confirm_result_alarm-topic20240603085136503300000019:ec2a2017-dfaa-4c72-ae04-b7c1d8cb3749
 >>>>>>> 31685c1 (Creating tickets)
+=======
+>>>>>>> f839b98 (Allow delete or list)
