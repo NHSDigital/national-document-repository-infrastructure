@@ -28,7 +28,7 @@ module "document_upload_check_lambda" {
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
   vpc_subnet_ids                = length(data.aws_security_groups.virus_scanner_api.ids) == 1 ? module.ndr-vpc-ui.private_subnets : []
-  vpc_security_group_ids        = length(data.aws_security_groups.virus_scanner_api.ids) == 1 ? [data.aws_security_groups.virus_scanner_api[0].id] : []
+  vpc_security_group_ids        = length(data.aws_security_groups.virus_scanner_api.ids) == 1 ? [data.aws_security_groups.virus_scanner_api.ids[0]] : []
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-bulk-staging-store,
