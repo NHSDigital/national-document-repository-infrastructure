@@ -2,6 +2,7 @@
 
 TERRAFORM_WORKSPACE=""
 do_delete=false
+dry_run=false
 
 function _list_tagged_resources() {
   local workspace=$1
@@ -118,7 +119,9 @@ function _delete_log_groups() {
   # Loop through each log group and delete it
   for log_group in $log_groups; do
     echo "Deleting CloudWatch Logs log group: $log_group"
-    aws logs delete-log-group --log-group-name "$log_group"
+    if ! $dry_run; then
+      aws logs delete-log-group --log-group-name "$log_group"
+    fi
   done
 }
 
@@ -677,7 +680,9 @@ function _delete_cloudwatch_alarms() {
   for alarm in $alarms; do
     echo "$alarm"
   done
-  aws cloudwatch delete-alarms --alarm-names $alarms
+  if ! $dry_run; then
+    aws cloudwatch delete-alarms --alarm-names $alarms
+  fi
 }
 
 function _list_appconfig() {
@@ -757,6 +762,27 @@ function _list_cloudwatch_dashboards() {
   for dashboard in $dashboards; do
     echo "CloudWatch Dashboard: $dashboard"
   done
+}
+
+function _delete_cloudwatch_dashboards() {
+  local workspace=$1
+  local dashboards=$(aws cloudwatch list-dashboards --output json)
+
+  if [ -n "$workspace" ]; then
+    dashboards=$(echo "$dashboards" | jq -r --arg SUBSTRING "$workspace" '.DashboardEntries[] | select(.DashboardName | contains($SUBSTRING)) | .DashboardName')
+  else
+    dashboards=$(echo "$dashboards" | jq -r '.DashboardEntries[] | .DashboardName')
+  fi
+
+  [ -z "$dashboards" ] && echo "No CloudWatch Dashboards found for deletion." && return 0
+
+  echo "Deleting the following CloudWatch Dashboards:"
+  for dashboard in $dashboards; do
+    echo "$dashboard"
+  done
+  if ! $dry_run; then
+    aws cloudwatch delete-dashboards --dashboard-names $dashboards
+  fi
 }
 
 function _list_iam_instance_profiles() {
@@ -1008,6 +1034,7 @@ function _delete_workspace_resources() {
   _delete_lambda_layers "$TERRAFORM_WORKSPACE"
   _delete_cloudwatch_alarms "$TERRAFORM_WORKSPACE"
   _delete_sns_subscriptions "$TERRAFORM_WORKSPACE"
+  _delete_cloudwatch_dashboards "$TERRAFORM_WORKSPACE"
 }
 
 # Parse args
@@ -1015,6 +1042,10 @@ for arg in "$@"; do
   case "$arg" in
   --delete)
     do_delete=true
+    shift
+    ;;
+  --dry-run)
+    dry_run=true
     shift
     ;;
   *)
