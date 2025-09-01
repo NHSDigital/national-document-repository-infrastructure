@@ -2,7 +2,6 @@
 
 TERRAFORM_WORKSPACE=""
 do_delete=false
-dry_run=false
 
 function _list_tagged_resources() {
   local workspace=$1
@@ -119,9 +118,7 @@ function _delete_log_groups() {
   # Loop through each log group and delete it
   for log_group in $log_groups; do
     echo "Deleting CloudWatch Logs log group: $log_group"
-    if ! $dry_run; then
-      aws logs delete-log-group --log-group-name "$log_group"
-    fi
+    aws logs delete-log-group --log-group-name "$log_group"
   done
 }
 
@@ -680,9 +677,7 @@ function _delete_cloudwatch_alarms() {
   for alarm in $alarms; do
     echo "$alarm"
   done
-  if ! $dry_run; then
-    aws cloudwatch delete-alarms --alarm-names $alarms
-  fi
+  aws cloudwatch delete-alarms --alarm-names $alarms
 }
 
 function _list_appconfig() {
@@ -780,9 +775,7 @@ function _delete_cloudwatch_dashboards() {
   for dashboard in $dashboards; do
     echo "$dashboard"
   done
-  if ! $dry_run; then
-    aws cloudwatch delete-dashboards --dashboard-names $dashboards
-  fi
+  aws cloudwatch delete-dashboards --dashboard-names $dashboards
 }
 
 function _list_iam_instance_profiles() {
@@ -1042,10 +1035,6 @@ for arg in "$@"; do
   case "$arg" in
   --delete)
     do_delete=true
-    shift
-    ;;
-  --dry-run)
-    dry_run=true
     shift
     ;;
   *)
