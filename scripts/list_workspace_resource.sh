@@ -765,8 +765,6 @@ function _delete_cloudwatch_dashboards() {
 
   if [ -n "$workspace" ]; then
     dashboards=$(echo "$dashboards" | jq -r --arg SUBSTRING "$workspace" '.DashboardEntries[] | select(.DashboardName | contains($SUBSTRING)) | .DashboardName')
-  else
-    dashboards=$(echo "$dashboards" | jq -r '.DashboardEntries[] | .DashboardName')
   fi
 
   [ -z "$dashboards" ] && echo "No CloudWatch Dashboards found for deletion." && return 0
