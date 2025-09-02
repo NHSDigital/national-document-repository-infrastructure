@@ -997,7 +997,7 @@ function _delete_sns_subscriptions() {
 
   for sub in $subs; do
     echo "Deleting SNS Subscription: $sub"
-    aws sns unsubscribe --subscription-arn "$sub"
+    # aws sns unsubscribe --subscription-arn "$sub"
   done
 }
 
