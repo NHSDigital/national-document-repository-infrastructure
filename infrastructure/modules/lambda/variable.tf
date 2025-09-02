@@ -120,12 +120,12 @@ variable "kms_deletion_window" {
 
 variable "vpc_subnet_ids" {
   description = "List of subnet IDs associated with the Lambda function, if it sits within a VPC."
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 variable "vpc_security_group_ids" {
   description = "List of security group IDs associated with the Lambda function, if it sits within a VPC."
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
