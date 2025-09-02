@@ -759,6 +759,25 @@ function _list_cloudwatch_dashboards() {
   done
 }
 
+function _delete_cloudwatch_dashboards() {
+  local workspace=$1
+  if [ -z "$workspace" ]; then
+    echo "Error: Workspace substring must be provided. Refusing to delete all dashboards."
+    return 1
+  fi
+
+  local dashboards=$(aws cloudwatch list-dashboards --output json)
+  dashboards=$(echo "$dashboards" | jq -r --arg SUBSTRING "$workspace" '.DashboardEntries[] | select(.DashboardName | contains($SUBSTRING)) | .DashboardName')
+
+  [ -z "$dashboards" ] && echo "No CloudWatch Dashboards found for deletion." && return 0
+
+  echo "Deleting the following CloudWatch Dashboards:"
+  for dashboard in $dashboards; do
+    echo "$dashboard"
+  done
+  aws cloudwatch delete-dashboards --dashboard-names $dashboards
+}
+
 function _list_iam_instance_profiles() {
   local workspace=$1
   local profiles=$(aws iam list-instance-profiles --output json)
@@ -1008,6 +1027,7 @@ function _delete_workspace_resources() {
   _delete_lambda_layers "$TERRAFORM_WORKSPACE"
   _delete_cloudwatch_alarms "$TERRAFORM_WORKSPACE"
   _delete_sns_subscriptions "$TERRAFORM_WORKSPACE"
+  _delete_cloudwatch_dashboards "$TERRAFORM_WORKSPACE"
 }
 
 # Parse args
