@@ -10,7 +10,7 @@ module "document_upload_check_lambda" {
     aws_iam_policy.ssm_access_policy.policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
-    data.aws_iam_policy.AWSLambdaVPCAccessExecutionRole.policy
+    data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = null
@@ -37,7 +37,7 @@ module "document_upload_check_lambda" {
   ]
 }
 
-data "aws_iam_policy" "AWSLambdaVPCAccessExecutionRole" {
+data "aws_iam_policy" "aws_lambda_vpc_access_execution_role" {
   arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
