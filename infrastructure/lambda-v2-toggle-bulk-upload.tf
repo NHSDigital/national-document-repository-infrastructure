@@ -1,5 +1,5 @@
 module "v2-toggle-bulk-upload-lambda" {
-  count   = local.is_sandbox || (terraform.workspace == "ndr-dev") ? 1 : 0
+  count          = local.is_sandbox || (terraform.workspace == "ndr-dev") ? 1 : 0
   source         = "./modules/lambda"
   name           = "V2ToggleBulkUploadLambda"
   handler        = "handlers.toggle_bulk_upload_handler.lambda_handler"
