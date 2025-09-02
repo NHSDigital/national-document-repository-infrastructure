@@ -1086,7 +1086,7 @@ function _delete_workspace_resources() {
   echo ""
 
   # Ask for confirmation
-  read -p "Do you want to proceed with deleting these resources? (yes/no): " confirm
+  read -p "Enter 'yes' to proceed with deletion, or enter any other string to cancel: " confirm
   if [[ "$confirm" != "yes" ]]; then
     echo "Deletion cancelled."
     exit 0
