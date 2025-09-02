@@ -17,12 +17,15 @@ module "v2-bulk-upload-metadata-lambda" {
   api_execution_arn = null
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION     = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT     = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE                 = terraform.workspace
-    STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    METADATA_SQS_QUEUE_URL    = module.v2-sqs-lg-bulk-upload-metadata-queue[0].sqs_url
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE                  = terraform.workspace
+    STAGING_STORE_BUCKET_NAME  = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    METADATA_SQS_QUEUE_URL     = module.v2-sqs-lg-bulk-upload-metadata-queue[0].sqs_url
+    BULK_UPLOAD_DYNAMODB_NAME  = "${terraform.workspace}_${var.bulk_upload_report_dynamodb_table_name}"
+    LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
