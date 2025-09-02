@@ -10,13 +10,22 @@ resource "aws_lambda_function" "lambda" {
   timeout                        = var.lambda_timeout
   memory_size                    = var.memory_size
   reserved_concurrent_executions = var.reserved_concurrent_executions
+
   ephemeral_storage {
     size = var.lambda_ephemeral_storage
   }
+
   environment {
     variables = var.lambda_environment_variables
   }
+
+  vpc_config {
+    subnet_ids         = var.vpc_subnet_ids
+    security_group_ids = var.vpc_security_group_ids
+  }
+
   layers = local.lambda_layers
+
   lifecycle {
     ignore_changes = [
       # These are required as Lambdas are deployed via the CI/CD pipelines
@@ -24,6 +33,11 @@ resource "aws_lambda_function" "lambda" {
       layers
     ]
   }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.default_policies,
+    aws_iam_role_policy_attachment.lambda_execution_policy
+  ]
 }
 
 resource "aws_cloudwatch_log_group" "lambda_logs" {
