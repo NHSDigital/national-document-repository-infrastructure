@@ -13,8 +13,8 @@ data "aws_ssm_parameter" "itoc_feedback_testing_teams_webhook" {
   name = "/ndr/itoc/feedback_testing/teams_webhook"
 }
 
-data "aws_ssm_parameter" "itoc_feedback_testing_email_address" {
-  name = "/ndr/itoc/feedback_testing/email_address"
+data "aws_ssm_parameter" "itoc_feedback_testing_ods_code" {
+  name = "/ndr/itoc/feedback_testing/ods_code"
 }
 
 data "aws_ssm_parameter" "itoc_feedback_testing_slack_channel_id" {
@@ -101,7 +101,7 @@ module "send-feedback-lambda" {
     EMAIL_SUBJECT                 = "Digitised Lloyd George feedback"
     EMAIL_RECIPIENT_SSM_PARAM_KEY = local.feedback_recipient_list_ssm_param_key
     ITOC_TESTING_TEAMS_WEBHOOK    = data.aws_ssm_parameter.itoc_feedback_testing_teams_webhook.value
-    ITOC_TESTING_EMAIL_ADDRESS    = data.aws_ssm_parameter.itoc_feedback_testing_email_address.value
+    ITOC_TESTING_ODS_CODE         = data.aws_ssm_parameter.itoc_feedback_testing_ods_code.value
     ITOC_TESTING_CHANNEL_ID       = data.aws_ssm_parameter.itoc_feedback_testing_slack_channel_id.value
     ITOC_TESTING_SLACK_BOT_TOKEN  = data.aws_ssm_parameter.itoc_feedback_testing_slack_bot_token.value
   }
