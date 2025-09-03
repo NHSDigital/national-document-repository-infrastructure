@@ -69,6 +69,12 @@ variable "truststore_bucket_name" {
   default     = "ndr-truststore"
 }
 
+variable "ca_pem_filename" {
+  type        = string
+  description = "Filename of the CA Truststore pem file stored in the core Truststore s3 bucket"
+  default     = "ndr-truststore.pem"
+}
+
 # DynamoDB Table Variables
 
 variable "pdm_dynamodb_table_name" {
