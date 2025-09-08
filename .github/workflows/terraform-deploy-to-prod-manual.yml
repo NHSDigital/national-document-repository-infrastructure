@@ -1,5 +1,5 @@
 # .github/workflows/terraform-dev
-name: "Deploy tagged version to Prod"
+name: "Deploy: Prod"
 
 on:
   workflow_dispatch:

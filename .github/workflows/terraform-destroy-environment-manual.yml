@@ -1,6 +1,6 @@
 # .github/workflows/destroy.yml
 
-name: "Destroy (Select Account) Environment"
+name: "Tear down: Sandbox"
 
 on:
   workflow_dispatch:
@@ -24,6 +24,7 @@ on:
         default: "backend.conf"
         description: "Terraform backend configuration."
         required: true
+
   workflow_call:
     inputs:
       build_branch:

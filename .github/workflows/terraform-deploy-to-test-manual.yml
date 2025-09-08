@@ -1,5 +1,5 @@
 # .github/workflows/terraform-dev
-name: "Deploy Feature Branch to Test"
+name: "Deploy: Test"
 
 on:
   workflow_dispatch:

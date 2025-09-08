@@ -1,4 +1,4 @@
-name: 'Git - Rename Tag'
+name: 'Tool: Rename Git Tag'
 
 on:
   workflow_dispatch:
