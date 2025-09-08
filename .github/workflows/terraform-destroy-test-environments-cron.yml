@@ -1,4 +1,4 @@
-name: '	Z-AUTOMATED Tear down: Test'
+name: 'Z-AUTOMATED Tear down: Test'
 
 on:
   schedule:
