@@ -27,11 +27,6 @@ moved {
 #NDR-205
 
 moved {
-  from = module.fhir_document_reference_gateway[0]
-  to   = module.fhir_document_reference_gateway
-}
-
-moved {
   from = module.post-document-references-fhir-lambda[0].aws_iam_role.lambda_execution_role
   to   = module.post-document-references-fhir-lambda.aws_iam_role.lambda_execution_role
 }
