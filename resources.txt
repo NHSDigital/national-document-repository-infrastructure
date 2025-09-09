@@ -1,0 +1,1004 @@
+
+Lambda function: user-case-2-push-to-orc-queue
+Lambda function: serverlessrepo-lambda-janitor-Clean-UvqCAGGNm2ps
+Lambda function: aws-quicksetup-lifecycle-LA-gf3e2
+Lambda function: aws-controltower-NotificationForwarder
+KMS alias: alias/alarm-notification-encryption-kms-key
+KMS Key ID: fb298b47-4bff-4100-ae73-ad5ece57bb31
+KMS alias: alias/aws/acm
+KMS Key ID: dd35ddcd-f95a-4f82-a5e0-272e5a0ffa36
+KMS alias: alias/aws/backup
+KMS Key ID: a92ea73e-daca-4f24-afee-cdee6ea6ca3a
+KMS alias: alias/aws/dynamodb
+KMS Key ID: 3044dcab-b2a4-4293-b9bb-d6223840b224
+KMS alias: alias/aws/ebs
+KMS Key ID: 5489cdc4-43e3-410a-bfb7-5a83ac88778b
+KMS alias: alias/aws/ecr
+KMS Key ID: edbde105-ee65-4310-a917-1bc5dd78f059
+KMS alias: alias/aws/elasticfilesystem
+KMS Key ID: 84bc1a4d-6e09-49e8-9ce0-0a4ee0f4efcd
+KMS alias: alias/aws/es
+KMS Key ID: da9c0307-aeb5-4da1-b43a-6feac6eaacf3
+KMS alias: alias/aws/glue
+KMS Key ID: aec7d508-0326-4d2e-bce9-ef227433c144
+KMS alias: alias/aws/kendra
+KMS Key ID: a2293f73-d6e3-4cfd-b9b7-2283272450bf
+KMS alias: alias/aws/kinesisvideo
+KMS Key ID: e784c6d7-4b99-45d0-8e2d-2e1418a47fb4
+KMS alias: alias/aws/lambda
+KMS Key ID: f8cb5095-46ad-471b-bcb9-c696ac28f391
+KMS alias: alias/aws/lightsail
+KMS Key ID: 3133805c-7fd1-412b-9aba-4b3f1c07f4f4
+KMS alias: alias/aws/rds
+KMS Key ID: 9d8a31b2-0649-4a42-beca-61f50a40e401
+KMS alias: alias/aws/redshift
+KMS Key ID: 1c39479b-23cd-4049-a28a-3527c9d5d348
+KMS alias: alias/aws/redshifttest
+KMS Key ID: 69f416c1-568b-4011-b5f3-65d4c126a607
+KMS alias: alias/aws/s3
+KMS Key ID: f4901df3-5d1d-417a-832e-d578db9b6925
+KMS alias: alias/aws/secretsmanager
+KMS Key ID: 6f294bb3-28cf-4aa4-8681-44ccc455767c
+KMS alias: alias/aws/sns
+KMS Key ID: b92de54e-658e-4209-a354-06a67f2c6950
+KMS alias: alias/aws/sqs
+KMS Key ID: 71b2618e-5474-4f69-b157-18b9ce724f09
+KMS alias: alias/aws/ssm
+KMS Key ID: 69f6093c-d0b9-4fee-b84d-96f8799ec71c
+KMS alias: alias/aws/xray
+KMS Key ID: 95940593-688d-4ef4-bb3d-8f634502af40
+KMS alias: alias/document-store-bucket-encryption-key
+KMS Key ID: 8180c27a-6ea0-4050-b509-9dd584efd890
+KMS alias: alias/document-store-bucket-encryption-key-testbox
+KMS Key ID: ad292291-1274-48e2-b26c-877c7eaa6ff8
+KMS alias: alias/test-lambda-key
+KMS Key ID: 63f103e6-8dca-42b2-bb0e-9f821887482c
+KMS alias: alias/testbox-alarm-notification-encryption-kms-key
+KMS Key ID: 8f251ca3-82ac-40b1-bd45-b3617f2c3fe7
+CloudWatch Logs log group: /aws-dynamodb/imports
+CloudWatch Logs log group: /aws/api-gateway/access-logs
+CloudWatch Logs log group: /aws/apigateway/welcome
+CloudWatch Logs log group: /aws/cloudfront/LambdaEdge/E2OR6PHQH494PS
+CloudWatch Logs log group: /aws/cloudfront/LambdaEdge/EN6HH2KW8TFVD
+CloudWatch Logs log group: /aws/ecs/containerinsights/dev-mesh-forwarder-ecs-cluster/performance
+CloudWatch Logs log group: /aws/lambda-insights
+CloudWatch Logs log group: /aws/lambda/AuthoriserHandler
+CloudWatch Logs log group: /aws/lambda/BackChannelLogoutHandler
+CloudWatch Logs log group: /aws/lambda/CreateDocumentManifestByNhsNumber
+CloudWatch Logs log group: /aws/lambda/CreateDocumentManifestByNhsNumberHandler
+CloudWatch Logs log group: /aws/lambda/CreateDocumentReferenceHandler
+CloudWatch Logs log group: /aws/lambda/DeleteDocumentReferenceHandler
+CloudWatch Logs log group: /aws/lambda/DocumentReferenceSearch
+CloudWatch Logs log group: /aws/lambda/DocumentReferenceSearchHandler
+CloudWatch Logs log group: /aws/lambda/DocumentUploadedEventHandler
+CloudWatch Logs log group: /aws/lambda/FakeVirusScannedEvent
+CloudWatch Logs log group: /aws/lambda/FakeVirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/LoginRedirectHandler
+CloudWatch Logs log group: /aws/lambda/LogoutHandler
+CloudWatch Logs log group: /aws/lambda/NetworkToolSSMRunbookExecution26ae07613162
+CloudWatch Logs log group: /aws/lambda/NetworkToolSSMRunbookExecutione93d9e58d02d
+CloudWatch Logs log group: /aws/lambda/PRMT371_NhsOauthTokenGeneratorLambda
+CloudWatch Logs log group: /aws/lambda/ReRegistrationEventHandler
+CloudWatch Logs log group: /aws/lambda/RetrieveDocumentReferenceHandler
+CloudWatch Logs log group: /aws/lambda/RetrievePatientDetailsHandler
+CloudWatch Logs log group: /aws/lambda/SearchPatientDetailsHandler
+CloudWatch Logs log group: /aws/lambda/TestLambda
+CloudWatch Logs log group: /aws/lambda/TokenRequestHandler
+CloudWatch Logs log group: /aws/lambda/VirusScannedEvent
+CloudWatch Logs log group: /aws/lambda/VirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/aws-controltower-NotificationForwarder
+CloudWatch Logs log group: /aws/lambda/default_BulkUploadMetadataLambda
+CloudWatch Logs log group: /aws/lambda/default_BulkUploadReportLambda
+CloudWatch Logs log group: /aws/lambda/delete1_BulkUploadMetadataLambda
+CloudWatch Logs log group: /aws/lambda/delete1_BulkUploadReportLambda
+CloudWatch Logs log group: /aws/lambda/delete1_NhsOauthTokenGeneratorLambda
+CloudWatch Logs log group: /aws/lambda/delete2_NhsOauthTokenGeneratorLambda
+CloudWatch Logs log group: /aws/lambda/delete3_NhsOauthTokenGeneratorLambda
+CloudWatch Logs log group: /aws/lambda/delete_NhsOauthTokenGeneratorLambda
+CloudWatch Logs log group: /aws/lambda/dev_AuthoriserHandler
+CloudWatch Logs log group: /aws/lambda/dev_BackChannelLogoutHandler
+CloudWatch Logs log group: /aws/lambda/dev_CreateDocumentManifestByNhsNumberHandler
+CloudWatch Logs log group: /aws/lambda/dev_CreateDocumentReferenceHandler
+CloudWatch Logs log group: /aws/lambda/dev_DeleteDocumentReferenceHandler
+CloudWatch Logs log group: /aws/lambda/dev_DocumentReferenceSearchHandler
+CloudWatch Logs log group: /aws/lambda/dev_FakeVirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/dev_LoginRedirectHandler
+CloudWatch Logs log group: /aws/lambda/dev_LogoutHandler
+CloudWatch Logs log group: /aws/lambda/dev_ReRegistrationEventHandler
+CloudWatch Logs log group: /aws/lambda/dev_SearchPatientDetailsHandler
+CloudWatch Logs log group: /aws/lambda/dev_TokenRequestHandler
+CloudWatch Logs log group: /aws/lambda/dev_VerifyOrganisationHandler
+CloudWatch Logs log group: /aws/lambda/dev_VirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/java-basic-function-c2sr4GMnwLbc
+CloudWatch Logs log group: /aws/lambda/ndr-101_DocumentReferenceVirusScanCheck
+CloudWatch Logs log group: /aws/lambda/ndr-101_NhsOauthTokenGeneratorLambda
+CloudWatch Logs log group: /aws/lambda/ndr-b_BulkUploadMetadataLambda
+CloudWatch Logs log group: /aws/lambda/ndr-b_BulkUploadReportLambda
+CloudWatch Logs log group: /aws/lambda/ndr-demo_BulkUploadMetadataLambda
+CloudWatch Logs log group: /aws/lambda/ndr-demo_BulkUploadReportLambda
+CloudWatch Logs log group: /aws/lambda/ndr-demo_LoginRedirectHandler
+CloudWatch Logs log group: /aws/lambda/ndr-test_AuthoriserLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_BackChannelLogoutHandler
+CloudWatch Logs log group: /aws/lambda/ndr-test_BulkUploadLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_BulkUploadMetadataLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_BulkUploadReportLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_CreateDocRefLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_DeleteDocRefLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_DocumentManifestByNHSNumberLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_FeatureFlagsLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_LloydGeorgeStitchLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_LoginRedirectHandler
+CloudWatch Logs log group: /aws/lambda/ndr-test_LogoutHandler
+CloudWatch Logs log group: /aws/lambda/ndr-test_SearchDocumentReferencesLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_SearchPatientDetailsLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_SendFeedbackLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_TokenRequestHandler
+CloudWatch Logs log group: /aws/lambda/ndr-test_UploadConfirmResultLambda
+CloudWatch Logs log group: /aws/lambda/ndr-test_VirusScanResult
+CloudWatch Logs log group: /aws/lambda/ndr194_NhsOauthTokenGeneratorLambda
+CloudWatch Logs log group: /aws/lambda/ndr_dev_CreateDocRefLAmbda
+CloudWatch Logs log group: /aws/lambda/ndr_dev_CreateDocRefLambda
+CloudWatch Logs log group: /aws/lambda/ndr_pdf_stitching
+CloudWatch Logs log group: /aws/lambda/prme16_NhsOauthTokenGeneratorLambda
+CloudWatch Logs log group: /aws/lambda/prmt-3343_LoginRedirectHandler
+CloudWatch Logs log group: /aws/lambda/prmt-3343_ReRegistrationEventHandler
+CloudWatch Logs log group: /aws/lambda/prmt-3343_VirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/rich-test_VirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/sanda_AuthoriserHandler
+CloudWatch Logs log group: /aws/lambda/sanda_CreateDocumentManifestByNhsNumberHandler
+CloudWatch Logs log group: /aws/lambda/sanda_CreateDocumentReferenceHandler
+CloudWatch Logs log group: /aws/lambda/sanda_DeleteDocumentReferenceHandler
+CloudWatch Logs log group: /aws/lambda/sanda_DocumentReferenceSearchHandler
+CloudWatch Logs log group: /aws/lambda/sanda_FakeVirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/sanda_LoginRedirectHandler
+CloudWatch Logs log group: /aws/lambda/sanda_LogoutHandler
+CloudWatch Logs log group: /aws/lambda/sanda_ReRegistrationEventHandler
+CloudWatch Logs log group: /aws/lambda/sanda_SearchPatientDetailsHandler
+CloudWatch Logs log group: /aws/lambda/sanda_TokenRequestHandler
+CloudWatch Logs log group: /aws/lambda/sanda_VerifyOrganisationHandler
+CloudWatch Logs log group: /aws/lambda/sanda_VirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/sandb_AuthoriserHandler
+CloudWatch Logs log group: /aws/lambda/sandb_CreateDocumentManifestByNhsNumberHandler
+CloudWatch Logs log group: /aws/lambda/sandb_CreateDocumentReferenceHandler
+CloudWatch Logs log group: /aws/lambda/sandb_DeleteDocumentReferenceHandler
+CloudWatch Logs log group: /aws/lambda/sandb_DocumentReferenceSearchHandler
+CloudWatch Logs log group: /aws/lambda/sandb_FakeVirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/sandb_LoginRedirectHandler
+CloudWatch Logs log group: /aws/lambda/sandb_LogoutHandler
+CloudWatch Logs log group: /aws/lambda/sandb_ReRegistrationEventHandler
+CloudWatch Logs log group: /aws/lambda/sandb_SearchPatientDetailsHandler
+CloudWatch Logs log group: /aws/lambda/sandb_TokenRequestHandler
+CloudWatch Logs log group: /aws/lambda/sandb_VerifyOrganisationHandler
+CloudWatch Logs log group: /aws/lambda/sandb_VirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/serverlessrepo-lambda-janitor-Clean-UvqCAGGNm2ps
+CloudWatch Logs log group: /aws/lambda/spike914
+CloudWatch Logs log group: /aws/lambda/spike_prmdr_855_reporting_data
+CloudWatch Logs log group: /aws/lambda/teams_alert
+CloudWatch Logs log group: /aws/lambda/test
+CloudWatch Logs log group: /aws/lambda/test-encryption
+CloudWatch Logs log group: /aws/lambda/test-zip
+CloudWatch Logs log group: /aws/lambda/test_build
+CloudWatch Logs log group: /aws/lambda/testbox_ReRegistrationEventHandler
+CloudWatch Logs log group: /aws/lambda/testbox_VirusScannedEventHandler
+CloudWatch Logs log group: /aws/lambda/upload_test
+CloudWatch Logs log group: /aws/lambda/us-east-1.1dee5kp-osrj8mp
+CloudWatch Logs log group: /aws/lambda/user-case-2-push-to-orc-queue
+CloudWatch Logs log group: /aws/transfer/s-2dce93cf4c5340a8b
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_PRMT371-app-monitor624651b8
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_delete-app-monitor8ed61235
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_delete1-app-monitor3724fb64
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_delete1-app-monitor3ed510b9
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_delete1-app-monitor5feaeb76
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_delete1-app-monitor8219560e
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_delete2-app-monitor054cfbdf
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_delete2-app-monitorc3e2bdde
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_delete3-app-monitor7acab492
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_ndr-101-app-monitor7160822e
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_ndr194-app-monitor41840478
+CloudWatch Logs log group: /aws/vendedlogs/RUMService_prme16-app-monitordeead498
+CloudWatch Logs log group: API-Gateway-Execution-Logs_ccy0v3rve9/dev
+CloudWatch Logs log group: API-Gateway-Execution-Logs_hlmfnil69j/prod
+CloudWatch Logs log group: API-Gateway-Execution-Logs_qxrewe7u1l/dev
+CloudWatch Logs log group: API-Gateway-Execution-Logs_vcgwt2yx18/prod
+CloudWatch Logs log group: API-Gateway-Execution-Logs_vmoljy0aw1/prod
+CloudWatch Logs log group: API-Gateway-Execution-Logs_yfx70w18y4/test
+CloudWatch Logs log group: API-Gateway-Execution-Logs_zmfty7efcg/dev
+CloudWatch Logs log group: CloudStorageSecurity.Agent.ClassificationResults
+CloudWatch Logs log group: CloudStorageSecurity.Agent.ClassificationStatistics
+CloudWatch Logs log group: CloudStorageSecurity.Agent.Jobs
+CloudWatch Logs log group: CloudStorageSecurity.Agent.Notifications
+CloudWatch Logs log group: CloudStorageSecurity.Agent.ScanConfig
+CloudWatch Logs log group: CloudStorageSecurity.Agent.ScanResults
+CloudWatch Logs log group: CloudStorageSecurity.Agent.ScanStatistics
+CloudWatch Logs log group: CloudStorageSecurity.Agent.StorageAssessment
+CloudWatch Logs log group: CloudStorageSecurity.Agent.SystemEvents
+CloudWatch Logs log group: CloudStorageSecurity.Console.AgentConfig
+CloudWatch Logs log group: CloudStorageSecurity.Console.AuditLogging
+CloudWatch Logs log group: CloudStorageSecurity.Console.BlobContainers
+CloudWatch Logs log group: CloudStorageSecurity.Console.BucketClassificationStats
+CloudWatch Logs log group: CloudStorageSecurity.Console.BucketScanStats
+CloudWatch Logs log group: CloudStorageSecurity.Console.Buckets
+CloudWatch Logs log group: CloudStorageSecurity.Console.EbsVolumes
+CloudWatch Logs log group: CloudStorageSecurity.Console.EcsConfig
+CloudWatch Logs log group: CloudStorageSecurity.Console.EfsVolumes
+CloudWatch Logs log group: CloudStorageSecurity.Console.Errors
+CloudWatch Logs log group: CloudStorageSecurity.Console.FsxVolumes
+CloudWatch Logs log group: CloudStorageSecurity.Console.GcpBuckets
+CloudWatch Logs log group: CloudStorageSecurity.Console.Groups
+CloudWatch Logs log group: CloudStorageSecurity.Console.JobNetworking
+CloudWatch Logs log group: CloudStorageSecurity.Console.Jobs
+CloudWatch Logs log group: CloudStorageSecurity.Console.Metering
+CloudWatch Logs log group: CloudStorageSecurity.Console.Metrics
+CloudWatch Logs log group: CloudStorageSecurity.Console.Monitoring
+CloudWatch Logs log group: CloudStorageSecurity.Console.Notifications
+CloudWatch Logs log group: CloudStorageSecurity.Console.RetroScan
+CloudWatch Logs log group: CloudStorageSecurity.Console.ScanStatistics
+CloudWatch Logs log group: CloudStorageSecurity.Console.ScheduledClassifications
+CloudWatch Logs log group: CloudStorageSecurity.Console.ScheduledScans
+CloudWatch Logs log group: CloudStorageSecurity.Console.StorageAssessment
+CloudWatch Logs log group: CloudStorageSecurity.Console.Subdomain
+CloudWatch Logs log group: CloudStorageSecurity.Console.System
+CloudWatch Logs log group: CloudStorageSecurity.Console.Updates
+CloudWatch Logs log group: CloudStorageSecurity.Console.Users
+CloudWatch Logs log group: CloudStorageSecurity.Console.WorkDocs
+CloudWatch Logs log group: CloudStorageSecurity.ECS.36ckfco.AVEvent
+CloudWatch Logs log group: CloudStorageSecurity.ECS.69d4kyh.AVEvent
+CloudWatch Logs log group: CloudStorageSecurity.ECS.77i747u.API
+CloudWatch Logs log group: CloudStorageSecurity.ECS.77i747u.AVEvent
+CloudWatch Logs log group: CloudStorageSecurity.ECS.dka1jxp.API
+CloudWatch Logs log group: CloudStorageSecurity.ECS.k2xp0tr.AVEvent
+CloudWatch Logs log group: CloudStorageSecurity.ECS.miyho7d.AVEvent
+CloudWatch Logs log group: NHSDAudit_trail_log_group
+S3 bucket: aws-cloudtrail-logs-533825906475-fa65740f
+S3 bucket: aws-sam-cli-managed-default-samclisourcebucket-6j0fj9wbz1ui
+S3 bucket: cloudstoragesecquarantine-2x46wur-533825906475-eu-west-2
+S3 bucket: cloudstoragesecquarantine-36ckfco-533825906475-eu-west-2
+S3 bucket: cloudstoragesecquarantine-69d4kyh-533825906475-eu-west-2
+S3 bucket: cloudstoragesecquarantine-77i747u-533825906475-eu-west-2
+S3 bucket: cloudstoragesecquarantine-dka1jxp-533825906475-eu-west-2
+S3 bucket: cloudstoragesecquarantine-k2xp0tr-533825906475-eu-west-2
+S3 bucket: cloudstoragesecquarantine-miyho7d-533825906475-eu-west-2
+S3 bucket: cloudstoragesecquarantine-zwh8uk1-533825906475-eu-west-2
+S3 bucket: do-not-delete-ssm-diagnosis-533825906475-eu-west-2-gf3e2
+S3 bucket: document-store-terraform-state
+S3 bucket: lambda-artifacts-1ecf43c7a05e8cf5
+S3 bucket: ndr-athena-logs
+S3 bucket: ndr-testdata
+S3 bucket: prs-dev-terraform-state
+S3 bucket: test-lambda-compression-streaming-performance
+S3 bucket: textract-console-eu-west-2-a5d2292d-003a-4d51-8231-dcb2b37cf598
+DynamoDB table: TestTableV2
+DynamoDB table: ndr-terraform-locks
+DynamoDB table: prs-dev-terraform-state-locking
+DynamoDB table: virus-scanner-terraform-lock
+API Gateway: ccy0v3rve9
+API Gateway: hlmfnil69j
+API Gateway: qxrewe7u1l
+SSM Parameter: GP_ORGANISATION_ROLE_CODE
+SSM Parameter: OIDC_AUTHORISE_URL
+SSM Parameter: OIDC_AUTHORIZE_URL
+SSM Parameter: OIDC_CLIENT_ID
+SSM Parameter: OIDC_CLIENT_SECRET
+SSM Parameter: OIDC_JWKS_URL
+SSM Parameter: OIDC_TOKEN_URL
+SSM Parameter: OIDC_USER_INFO_URL
+SSM Parameter: backup-target-account
+SSM Parameter: jwt_token_private_key
+SSM Parameter: /CloudStorageSecConsole-2x46wur/Config/CurrentLowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-2x46wur/Config/LastKmsAppliedHash
+SSM Parameter: /CloudStorageSecConsole-2x46wur/Config/LowPrepaidDataNotificationThresholdGB
+SSM Parameter: EDGE_REFERENCE_TABLE
+SSM Parameter: OIDC_ISSUER_URL
+SSM Parameter: RBAC_USER_ROLE_CODES
+SSM Parameter: backup-target-vault-arn
+SSM Parameter: jwt_token_public_key
+SSM Parameter: ndr_ods_code
+SSM Parameter: test-param-for-concurrent-update
+SSM Parameter: /CloudStorageSecConsole-36ckfco/Config/CurrentLowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-36ckfco/Config/FirstStepsCompleted
+SSM Parameter: /CloudStorageSecConsole-36ckfco/Config/LastKmsAppliedHash
+SSM Parameter: /CloudStorageSecConsole-36ckfco/Config/LowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-77i747u/Config/CurrentLowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-77i747u/Config/LowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-77i747u/dev/API_ACCESSTOKEN
+SSM Parameter: /CloudStorageSecConsole-77i747u/dev/API_BASEURL
+SSM Parameter: /CloudStorageSecConsole-77i747u/dev/API_PASSWORD
+SSM Parameter: /CloudStorageSecConsole-77i747u/dev/API_USERNAME
+SSM Parameter: /CloudStorageSecConsole-dka1jxp/Config/CurrentLowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-dka1jxp/Config/LastKmsAppliedHash
+SSM Parameter: /CloudStorageSecConsole-dka1jxp/Config/LowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-k2xp0tr/Config/CurrentLowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-k2xp0tr/Config/FirstStepsCompleted
+SSM Parameter: /CloudStorageSecConsole-k2xp0tr/Config/LastKmsAppliedHash
+SSM Parameter: /CloudStorageSecConsole-k2xp0tr/Config/LowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-miyho7d/AdminPassword
+SSM Parameter: /CloudStorageSecConsole-ze0ah1v/Config/CurrentLowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-ze0ah1v/Config/LowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-zwh8uk1/Config/CurrentLowPrepaidDataNotificationThresholdGB
+SSM Parameter: /CloudStorageSecConsole-zwh8uk1/Config/LowPrepaidDataNotificationThresholdGB
+SSM Parameter: /VirusScanner/API_ACCESS_TOKEN
+SSM Parameter: /VirusScanner/API_BASE_URL
+SSM Parameter: /VirusScanner/API_PASSWORD
+SSM Parameter: /VirusScanner/API_USER_NAME
+SSM Parameter: /VirusScanner/dev/API_ACCESS_TOKEN
+SSM Parameter: /VirusScanner/dev/API_BASE_URL
+SSM Parameter: /VirusScanner/dev/API_PASSWORD
+SSM Parameter: /VirusScanner/dev/API_USER_NAME
+SSM Parameter: /aft/account-request/custom-fields/nhsdaudit_trail_log_group
+SSM Parameter: /aft/account-request/custom-fields/s3_PublicAccessBlock
+SSM Parameter: /aft/account-request/custom-fields/s3_data_events
+SSM Parameter: /auth/mock/OIDC_USER_INFO_URL
+SSM Parameter: /auth/org/ods_code/allowed_list
+SSM Parameter: /auth/org/ods_code/allowed_list_itoc
+SSM Parameter: /auth/org/ods_code/pcse
+SSM Parameter: /auth/org/role_code/gpp
+SSM Parameter: /auth/password/OIDC_JWKS_URL
+SSM Parameter: /auth/password/OIDC_TOKEN_URL
+SSM Parameter: /auth/password/MOCK_KEY
+SSM Parameter: /auth/password/OIDC_AUTHORISE_URL
+SSM Parameter: /auth/password/OIDC_CLIENT_ID
+SSM Parameter: /auth/password/OIDC_CLIENT_SECRET
+SSM Parameter: /auth/password/OIDC_ISSUER_URL
+SSM Parameter: /auth/password/OIDC_USER_INFO_URL
+SSM Parameter: /auth/smartcard/OIDC_AUTHORISE_URL
+SSM Parameter: /auth/smartcard/OIDC_CLIENT_SECRET
+SSM Parameter: /auth/smartcard/OIDC_TOKEN_URL
+SSM Parameter: /auth/smartcard/OIDC_USER_INFO_URL
+SSM Parameter: /auth/smartcard/OIDC_CLIENT_ID
+SSM Parameter: /auth/smartcard/OIDC_ISSUER_URL
+SSM Parameter: /auth/smartcard/OIDC_JWKS_URL
+SSM Parameter: /auth/smartcard/role/gp_admin
+SSM Parameter: /auth/smartcard/role/gp_admin_test
+SSM Parameter: /auth/smartcard/role/gp_clinical
+SSM Parameter: /auth/smartcard/role/pcse
+SSM Parameter: /development/cis2/client_id
+SSM Parameter: /development/cis2/client_secret
+SSM Parameter: /ndr/GP_ODS_code
+SSM Parameter: /ndr/alerting/confluence/url
+SSM Parameter: /ndr/alerting/slack/bot_token
+SSM Parameter: /ndr/alerting/slack/channel_id
+SSM Parameter: /ndr/alerting/teams/webhook_url
+SSM Parameter: /ndr/dev/mns/lambda_role
+SSM Parameter: /ndr/itoc/feedback_testing/email_address
+SSM Parameter: /ndr/itoc/feedback_testing/ods_code
+SSM Parameter: /ndr/itoc/feedback_testing/slack/bot_token
+SSM Parameter: /ndr/itoc/feedback_testing/slack/channel_id
+SSM Parameter: /ndr/itoc/feedback_testing/teams_webhook
+SSM Parameter: /ndr/ndr-dev/api_endpoint
+SSM Parameter: /ndr/ndr-dev/mns/subscription-id/pds-change-of-gp-1
+SSM Parameter: /ndr/ndr-dev/mns/subscription-id/pds-death-notification-1
+SSM Parameter: /prs/dev-ndr/pds-fhir-access-token
+SSM Parameter: /prs/dev/pds-fhir-access-token
+SSM Parameter: /prs/dev/user-input/cypress-username
+SSM Parameter: /prs/dev/user-input/pds-fhir-endpoint
+SSM Parameter: /prs/dev/user-input/pds-fhir-test-key
+SSM Parameter: /prs/dev/user-input/basic-auth-password
+SSM Parameter: /prs/dev/user-input/cloud-security-admin-email
+SSM Parameter: /prs/dev/user-input/cloud-security-notification-email-list
+SSM Parameter: /prs/dev/user-input/cypress-password
+SSM Parameter: /prs/dev/user-input/feedback-recipient-email-list
+SSM Parameter: /prs/dev/user-input/nhs-api-key
+SSM Parameter: /prs/dev/user-input/nhs-oauth-endpoint
+SSM Parameter: /prs/dev/user-input/pds-fhir-kid
+SSM Parameter: /prs/dev/user-input/pds-fhir-private-key
+SSM Parameter: /prs/dev/user-input/pds-fhir-public-key
+SSM Parameter: /prs/dev/user-input/external/re-registration-sns-topic-arn
+SSM Parameter: /prs/test/user-input/cloud-security-notification-email-list
+SSM Parameter: /prs/test/user-input/feedback-recipient-email-list
+SSM Parameter: /prs/user-input/external/cis2-e2e-login-username
+SSM Parameter: /prs/user-input/external/cis2-login-password
+SSM Parameter: /prs/user-input/external/gocd-trusted-principal
+SSM Parameter: /prs/user-input/external/splunk-trusted-principal
+SSM Parameter: /prs/virus-scanner/subnet-cidr-range
+SSM Parameter: /repo/dev/user-input/apim-api-url
+SSM Parameter: /repo/dev/user-input/external/mesh-mailbox-shared-secret
+SSM Parameter: /repo/dev/user-input/external/mesh-mailbox-ca-cert
+SSM Parameter: /repo/dev/user-input/external/mesh-mailbox-client-cert
+SSM Parameter: /repo/dev/user-input/external/mesh-mailbox-client-key
+SSM Parameter: /repo/dev/user-input/external/mesh-mailbox-id
+SSM Parameter: /repo/dev/user-input/external/mesh-mailbox-password
+SSM Parameter: /repo/ndr-dev/user-input/apim-api-url
+SSM Parameter: /upload_pilot/ods_allowed_list
+SQS queue: CloudStorageSecQueue-36ckfco
+SQS queue: CloudStorageSecQueue-69d4kyh
+SQS queue: CloudStorageSecQueue-77i747u
+SQS queue: CloudStorageSecQueue-k2xp0tr
+SQS queue: CloudStorageSecQueue-miyho7d
+SQS queue: CloudStorageSecQueue-miyho7d-433afdaa-4aee-4c98-8f2e-2bbceb720c83
+SQS queue: testbox-re-registration
+SQS queue: testbox-re-registration-dlq
+SQS queue: testbox-sensitive-audit
+SQS queue: testbox-sensitive-nems-audit
+SQS queue: user-case-1-cross-account-dead-letter-queue
+SQS queue: user-case-1-cross-account-queue
+Target ControlTower-ManagedRuleTarget from rule: AWSControlTowerManagedRule
+Target AwsBackupManagedRule-Target from rule: AwsBackupManagedRule-1
+Target AwsBackupManagedRule-Target from rule: AwsBackupManagedRule-2
+Target AwsBackupManagedRule-Target from rule: AwsBackupManagedRule-5
+Target Compliance-Change-Topic from rule: aws-controltower-ConfigComplianceChangeEventRule
+No targets found for rule: ndrd_test_lambda_cron
+Target CleanCleanScheduledEventLambdaTarget from rule: serverlessrepo-lambda-jani-CleanCleanScheduledEvent-isaI0hTR9DM0
+IAM role: aft-account-prep
+IAM role: amplifyconsole-backend-role
+IAM role: AuthoriserExecution
+IAM role: authoriserLambda-role-xgdmnddi
+IAM role: AuthoriserLambdaExecution
+IAM role: aws-controltower-AdministratorExecutionRole
+IAM role: aws-controltower-ConfigRecorderRole
+IAM role: aws-controltower-ForwardSnsNotificationRole
+IAM role: aws-controltower-ReadOnlyExecutionRole
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-ap-northeast-1
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-ap-northeast-2
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-ap-south-1
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-ap-southeast-1
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-ap-southeast-2
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-ca-central-1
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-eu-central-1
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-eu-north-1
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-eu-west-1
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-eu-west-2
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-eu-west-3
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-sa-east-1
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-us-east-1
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-us-east-2
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-us-west-1
+IAM role: AWS-QuickSetup-ResourceExplorerRole-9c005-us-west-2
+IAM role: AWS-QuickSetup-SSM-DefaultEC2MgmtRole-eu-west-2
+IAM role: AWS-QuickSetup-SSM-EnableAREX-gf3e2
+IAM role: AWS-QuickSetup-SSM-EnableDHMC-gf3e2
+IAM role: AWS-QuickSetup-SSM-EnableExplorer-gf3e2
+IAM role: AWS-QuickSetup-SSM-LifecycleManagement-LA-eu-west-2
+IAM role: AWS-QuickSetup-SSM-LocalAdministrationRole
+IAM role: AWS-QuickSetup-SSM-LocalExecutionRole
+IAM role: AWS-QuickSetup-SSM-ManageResources-LA-eu-west-2
+IAM role: AWS-SSM-DiagnosisAdminRole-533825906475-eu-west-2
+IAM role: AWS-SSM-DiagnosisExecutionRole-533825906475-eu-west-2
+IAM role: AWS-SSM-RemediationAdminRole-533825906475-eu-west-2
+IAM role: AWS-SSM-RemediationExecutionRole-533825906475-eu-west-2
+IAM role: AWS-Support-Role
+IAM role: AWSAFTExecution
+IAM role: AWSAFTService
+IAM role: AWSBackupDefaultServiceRole
+IAM role: AWSControlTowerExecution
+IAM role: AWSReservedSSO_AWSAdministratorAccess_2b715aa46f434430
+IAM role: AWSReservedSSO_AWSOrganizationsFullAccess_69f99f07c4c9daac
+IAM role: AWSReservedSSO_AWSPowerUserAccess_2c731cffe4d57385
+IAM role: AWSReservedSSO_AWSReadOnlyAccess_8121ccd19c7cea37
+IAM role: AWSReservedSSO_DomainCGpit-Administrators_e00623801cb4b59e
+IAM role: AWSReservedSSO_DomainCGpit-Developers_b6a511826b32166e
+IAM role: AWSReservedSSO_DomainCGpit-ReadOnly_c93c4936b9c09ad3
+IAM role: AWSServiceRoleForAmazonGuardDuty
+IAM role: AWSServiceRoleForAmazonSSM
+IAM role: AWSServiceRoleForAPIGateway
+IAM role: AWSServiceRoleForApplicationAutoScaling_DynamoDBTable
+IAM role: AWSServiceRoleForApplicationAutoScaling_ECSService
+IAM role: AWSServiceRoleForAWSControlTower
+IAM role: AWSServiceRoleForAWSLicenseManagerRole
+IAM role: AWSServiceRoleForBackup
+IAM role: AWSServiceRoleForCloudFormationStackSetsOrgMember
+IAM role: AWSServiceRoleForCloudFrontLogger
+IAM role: AWSServiceRoleForCloudTrail
+IAM role: AWSServiceRoleForCloudWatchRUM
+IAM role: AWSServiceRoleForConfig
+IAM role: AWSServiceRoleForCostOptimizationHub
+IAM role: AWSServiceRoleForECS
+IAM role: AWSServiceRoleForElasticLoadBalancing
+IAM role: AWSServiceRoleForGlobalAccelerator
+IAM role: AWSServiceRoleForLambdaReplicator
+IAM role: AWSServiceRoleForOrganizations
+IAM role: AWSServiceRoleForResourceExplorer
+IAM role: AWSServiceRoleForSecurityHub
+IAM role: AWSServiceRoleForServiceQuotas
+IAM role: AWSServiceRoleForSSMQuickSetup
+IAM role: AWSServiceRoleForSSO
+IAM role: AWSServiceRoleForSupport
+IAM role: AWSServiceRoleForTrustedAdvisor
+IAM role: ccoe-sso-policy-reader
+IAM role: ci-agent
+IAM role: CloudStorageSecEc2ContainerRole-dka1jxp
+IAM role: CloudTrail_CloudWatch
+IAM role: Deployer
+IAM role: DocStoreAPIGatewayLogs
+IAM role: github-actions-dev-role
+IAM role: java-basic-functionRole-Q3N85EL75TL4
+IAM role: LambdaExecution
+IAM role: lambda_invoke_function_assume_apigw_role
+IAM role: ndr_dev_CreateDocRefLAmbda-role-2rr9it5t
+IAM role: ndr_dev_CreateDocRefLambda-role-lietcvny
+IAM role: ndr_pdf_stitching-role-cmkxb493
+IAM role: NetworkToolSSMRunbookExecutione93d9e58d02d
+IAM role: NHSDAdminRole
+IAM role: nhsd_audit
+IAM role: nhsd_audit_config
+IAM role: nhsd_cloudhealth
+IAM role: nhsd_readonly_preaft
+IAM role: OrganizationAccountAccessRole
+IAM role: RepoTransferFamilyUpload
+IAM role: RUM-Monitor-eu-west-2-533825906475-7704231649371-Unauth
+IAM role: SecurityOfficer
+IAM role: serverlessrepo-lambda-janitor-CleanRole-rZqRveJGj2HH
+IAM role: spike914-role-oabte22f
+IAM role: spike_prmdr_855_reporting_data-role-tho6x36w
+IAM role: SplunkSqsForwarder
+IAM role: stacksets-exec-73878286cc0559b74f73d5b56b8b0c4d
+IAM role: teams_alert-role-yha1fc6p
+IAM role: test-role-8mxnfqdl
+IAM role: test-role-u2oxvy32
+IAM role: test-ses-role
+IAM role: test-zip-role-bletck0o
+IAM role: testEdge-role-fuxfg3kn
+IAM role: testEdge-role-grcrqruv
+IAM role: testErrorHandling-role-uwxye7xt
+IAM role: TestKMSLambdaRole
+IAM role: test_build-role-be7dxbej
+IAM role: test_lambda_ods-role-yq2omfk8
+IAM role: test_role
+IAM role: user-case-2-cross-account-lambda-sqs-role
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20250905105817137600000007
+IAM policy: arn:aws:iam::533825906475:policy/terraform-2024042313281284500000000b
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-89a60077-ca01-426a-9f86-add10d73531d
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-392c841e-b2ae-49b0-a653-277297d8b2e8
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-28e1d022-ff31-4f88-8980-a86b9e359668
+IAM policy: arn:aws:iam::533825906475:policy/github_mtls_gateway
+IAM policy: arn:aws:iam::533825906475:policy/authoriser_access_policy
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240603085050819600000002
+IAM policy: arn:aws:iam::533825906475:policy/TestKMSAccess
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240130115910117100000003
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240410205156790200000003
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-31aa912f-91ae-4712-ac78-eae8b8be9205
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20250905105811488000000005
+IAM policy: arn:aws:iam::533825906475:policy/DynamoDBTableAccess
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20250626104738628200000001
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240603085114113500000004
+IAM policy: arn:aws:iam::533825906475:policy/github_actions_terraform_full
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20250905105737764600000003
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240410205157192500000004
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240919074631790900000001
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaEdgeExecutionRole-404552a7-9468-4fde-b1d1-a19896dcbcec
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240612081738370000000001
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-33e88ff4-7573-4970-bd6b-a833bf2710c8
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-e5f1ce5c-0ca2-4085-9c94-618edac33dd1
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240410205154921300000001
+IAM policy: arn:aws:iam::533825906475:policy/terraform-2024042313281299700000000c
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-6f0e92bf-ae1f-4b54-8003-66eea559e8d5
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-cdf969c2-a79c-4f21-835e-fa4ba146987f
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240130115911581100000004
+IAM policy: arn:aws:iam::533825906475:policy/terraform-2024060308511765910000000a
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-bed6efca-de67-4030-ae4f-f30d66078ee4
+IAM policy: arn:aws:iam::533825906475:policy/config-policy
+IAM policy: arn:aws:iam::533825906475:policy/terraform-github-dynamodb-access-policy
+IAM policy: arn:aws:iam::533825906475:policy/terraform-2024060308512010470000000b
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaTracerAccessExecutionRole-fb1a7ef3-06c4-4ee4-a73a-f0e3f10f255b
+IAM policy: arn:aws:iam::533825906475:policy/lambda_execute
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-e6e50efe-3d4e-4719-b5a9-020b07c35344
+IAM policy: arn:aws:iam::533825906475:policy/RUMPutBatchMetrics-7704231649371
+IAM policy: arn:aws:iam::533825906475:policy/terraform-2024060308512613010000000c
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240423132744657300000001
+IAM policy: arn:aws:iam::533825906475:policy/DomainCGpit-ReadOnly
+IAM policy: arn:aws:iam::533825906475:policy/TemporaryKMSKeyAllow
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240919074632034700000002
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20250905105736143000000001
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-f22f00cb-35ee-40ed-8201-108abf75ac78
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20250822082320796900000001
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240130115908805500000001
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240130115909842500000002
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240603085051009200000003
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240423132809962800000004
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240423132746888000000002
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20250905105736145300000002
+IAM policy: arn:aws:iam::533825906475:policy/ecr-github-access-policy
+IAM policy: arn:aws:iam::533825906475:policy/github_terraform_tagging_policy
+IAM policy: arn:aws:iam::533825906475:policy/RepoTransferFamilyUpload
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240423132809226300000003
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20250905105747871600000004
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20250905105815454000000006
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-1b0dfd32-42a7-48b8-8782-cf42c27d4b38
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-3b7492b0-0384-4dac-a747-4d8dc6c9f07e
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240919074637705500000004
+IAM policy: arn:aws:iam::533825906475:policy/terraform-2024042313281280530000000a
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-f8863a37-2f69-4284-8b21-f1d82835c720
+IAM policy: arn:aws:iam::533825906475:policy/terraform-github-s3-access-policy
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240919074633186000000003
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-c207264c-a2ec-4a22-9b3a-82e870a3767e
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240603085048233500000001
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-d795b065-8ea6-43ef-b12f-9720b997abb1
+IAM policy: arn:aws:iam::533825906475:policy/splunk_access_policy
+IAM policy: arn:aws:iam::533825906475:policy/test_lambda_get_parameter_from_ssm_policy
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-a9783ce9-240c-4c7f-9981-bc10f2fcb858
+IAM policy: arn:aws:iam::533825906475:policy/PRMDevelopers
+IAM policy: arn:aws:iam::533825906475:policy/terraform-20240410205155366200000002
+IAM policy: arn:aws:iam::533825906475:policy/repo_app_config
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-595b3756-9e7b-433e-8c9d-a569a34920e3
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-1aebf532-ff44-4fa5-b3d6-ca87229e0906
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-9e04bc1f-9834-454c-92ad-6feda116c10e
+IAM policy: arn:aws:iam::533825906475:policy/arf_auth_table_policy
+IAM policy: arn:aws:iam::533825906475:policy/lambda-github-access-policy
+IAM policy: arn:aws:iam::533825906475:policy/service-role/AWSLambdaBasicExecutionRole-c6aaf49f-77a6-47c2-98ce-1d153aed90d0
+IAM policy: arn:aws:iam::533825906475:policy/S3ObjectAccess
+IAM policy: arn:aws:iam::533825906475:policy/PRMDevelopers_Logging
+Resource Group: AppManager-CFN-AWS-QuickSetup-SSM-LocalDeploymentRolesStack
+Resource Group: AppManager-CFN-StackSet-AWS-QuickSetup-ResourceExplorer-TA-9c005-0225c41c-b4ac-4e63-b87d-9c23b67c7172
+Resource Group: AppManager-CFN-StackSet-AWS-QuickSetup-SSM-LA-gf3e2-e10b79fe-43ca-492e-8cef-41b39e174d95
+Resource Group: AppManager-CFN-StackSet-AWSControlTowerBP-BASELINE-CLOUDWATCH-4a246db6-acc8-4273-b8e7-9f19f51c1abb
+Resource Group: AppManager-CFN-StackSet-AWSControlTowerBP-BASELINE-CONFIG-ecb532ea-b9fd-4fdf-843d-01d720261e1d
+Resource Group: AppManager-CFN-StackSet-AWSControlTowerBP-BASELINE-ROLES-6a328321-99b6-4f14-86d4-682469c2ae4b
+Resource Group: AppManager-CFN-StackSet-AWSControlTowerBP-BASELINE-SERVICE-LINKED-ROLE-67265c20-86f1-4bbe-9fd7-ded5c2929ef0
+Resource Group: AppManager-CFN-StackSet-AWSControlTowerBP-BASELINE-SERVICE-ROLES-d8a70969-1c77-42d8-a728-a569d98b6242
+Resource Group: AppManager-CFN-StackSet-CSOC-SecurityOfficer-StackSet-cc66a726-12c4-40ef-b9e4-e7335cf6491a
+Resource Group: AppManager-CFN-StackSet-Turbonomics-POC-0dbfe7d2-0879-4f88-9ea3-a6e6d9006795
+Resource Group: AppManager-CFN-StackSet-Virtasant-Read-Only-12410cf3-e2a2-49bc-ae1a-5a3fc07c364d
+Resource Group: AppManager-CFN-StackSet-ccoe-aft-account-prep-role-37a00723-3559-45c6-9734-e2088b897305
+Resource Group: AppManager-CFN-StackSet-ccoe-sso-policy-reader-role-1a549dbc-a3b2-4407-8b0f-145f97573fa4
+Resource Group: AppManager-CFN-aws-sam-cli-managed-default
+Resource Group: AppManager-CFN-java-basic
+Resource Group: AppManager-CFN-s3-virus-scanning-cloudformation-stack
+Resource Group: AppManager-CFN-serverlessrepo-lambda-janitor
+Resource Group: AppManager-ECS-CloudStorageSecCluster-69d4kyh
+Resource Group: AppManager-ECS-CloudStorageSecCluster-dka1jxp
+Resource Group: AppManager-ECS-CloudStorageSecCluster-miyho7d
+Resource Group: AppManager-ECS-ndr-test-app-cluster
+Backup Vault: Default
+ECS cluster: CloudStorageSecCluster-dka1jxp
+ECR repository: ndr-ndr-dev-app
+ECR repository: ndr-ndr-pre-prod-app
+SNS topic: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-36ckfco
+SNS topic: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-69d4kyh
+SNS topic: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-77i747u
+SNS topic: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-k2xp0tr
+SNS topic: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-miyho7d
+SNS topic: arn:aws:sns:eu-west-2:533825906475:aws-controltower-SecurityNotifications
+SES identity: noga.sasson1@nhs.net
+SES identity: gp2gp@nhs.net
+SES identity: abbas.khan10@nhs.net
+SES identity: beth.kish1@nhs.net
+SES identity: rob.gaskin1@nhs.net
+VPC: vpc-0dd4a5729aa76a544
+VPC: vpc-076b27d0e8b5066f5
+Subnet: subnet-06c32a7f50661674f
+Subnet: subnet-0ecab5e2bc4c15a24
+Subnet: subnet-07fd9ae4fe4b1f527
+Subnet: subnet-0c44302b5ac8febb5
+Subnet: subnet-052fc7a92a9774264
+Subnet: subnet-0b328185954631b3a
+Subnet: subnet-03f659a0e2c97031c
+Subnet: subnet-0a3a18ca595e35a88
+Subnet: subnet-0ea3d03f3d9d001de
+CloudFront distribution: E3MY5DTOCCTK2Y
+CloudFront distribution: E8N74LCQYOFL9
+CloudWatch metric: 4XXError
+CloudWatch metric: 5XXError
+CloudWatch metric: AccountMaxReads
+CloudWatch metric: AccountMaxTableLevelReads
+CloudWatch metric: AccountMaxTableLevelWrites
+CloudWatch metric: AccountMaxWrites
+CloudWatch metric: AccountProvisionedReadCapacityUtilization
+CloudWatch metric: AccountProvisionedWriteCapacityUtilization
+CloudWatch metric: ActiveConnectionCount
+CloudWatch metric: ActiveConnections
+CloudWatch metric: AllowedRequests
+CloudWatch metric: AllowRuleMatch
+CloudWatch metric: AnomalousHostCount
+CloudWatch metric: ApproximateAgeOfOldestMessage
+CloudWatch metric: ApproximateAgeOfOldestMessageInQuietGroups
+CloudWatch metric: ApproximateNumberOfGroupsWithInflightMessages
+CloudWatch metric: ApproximateNumberOfMessagesDelayed
+CloudWatch metric: ApproximateNumberOfMessagesDelayedInQuietGroups
+CloudWatch metric: ApproximateNumberOfMessagesNotVisible
+CloudWatch metric: ApproximateNumberOfMessagesNotVisibleInQuietGroups
+CloudWatch metric: ApproximateNumberOfMessagesVisible
+CloudWatch metric: ApproximateNumberOfMessagesVisibleInQuietGroups
+CloudWatch metric: ApproximateNumberOfNoisyGroups
+CloudWatch metric: AsyncEventAge
+CloudWatch metric: AsyncEventsDropped
+CloudWatch metric: AsyncEventsReceived
+CloudWatch metric: BlockedRequests
+CloudWatch metric: BlockRuleMatch
+CloudWatch metric: BucketSizeBytes
+CloudWatch metric: BytesInFromDestination
+CloudWatch metric: BytesInFromSource
+CloudWatch metric: BytesOutToDestination
+CloudWatch metric: BytesOutToSource
+CloudWatch metric: BytesProcessed
+CloudWatch metric: CallCount
+CloudWatch metric: CallLatency
+CloudWatch metric: ChangeNotificationsDeliveryFailed
+CloudWatch metric: ClaimedAccountConcurrency
+CloudWatch metric: ClientTLSNegotiationErrorCount
+CloudWatch metric: ConcurrentExecutions
+CloudWatch metric: ConditionalCheckFailedRequests
+CloudWatch metric: ConfigHistoryExportFailed
+CloudWatch metric: ConfigSnapshotExportFailed
+CloudWatch metric: ConfigurationItemsRecorded
+CloudWatch metric: ConfigurationRecorderInsufficientPermissionsFailure
+CloudWatch metric: ConnectionAttemptCount
+CloudWatch metric: ConnectionEstablishedCount
+CloudWatch metric: ConsumedCapacity
+CloudWatch metric: ConsumedLCUs
+CloudWatch metric: ConsumedReadCapacityUnits
+CloudWatch metric: ConsumedWriteCapacityUnits
+CloudWatch metric: ContainerInstanceCount
+CloudWatch metric: Count
+CloudWatch metric: CountedRequests
+CloudWatch metric: CountRuleMatch
+CloudWatch metric: CpuReserved
+CloudWatch metric: cpu_total_time
+CloudWatch metric: CPUUtilization
+CloudWatch metric: CpuUtilized
+CloudWatch metric: DaysToExpiry
+CloudWatch metric: Delivery
+CloudWatch metric: DeploymentCount
+CloudWatch metric: DesiredTaskCount
+CloudWatch metric: DesyncMitigationMode_NonCompliant_Request_Count
+CloudWatch metric: DroppedInvalidHeaderRequestCount
+CloudWatch metric: Duration
+CloudWatch metric: EphemeralStorageReserved
+CloudWatch metric: EphemeralStorageUtilized
+CloudWatch metric: ErrorCount
+CloudWatch metric: ErrorPortAllocation
+CloudWatch metric: Errors
+CloudWatch metric: ExcessiveLowReputationPackets
+CloudWatch metric: FailedInvocations
+CloudWatch metric: HealthyHostCount
+CloudWatch metric: HealthyStateDNS
+CloudWatch metric: HealthyStateRouting
+CloudWatch metric: Http4xxCount
+CloudWatch metric: Http4xxCountPerPageView
+CloudWatch metric: Http4xxCountPerSession
+CloudWatch metric: Http5xxCount
+CloudWatch metric: Http5xxCountPerPageView
+CloudWatch metric: Http5xxCountPerSession
+CloudWatch metric: HTTPCode_ELB_3XX_Count
+CloudWatch metric: HTTPCode_ELB_4XX_Count
+CloudWatch metric: HTTPCode_ELB_503_Count
+CloudWatch metric: HTTPCode_ELB_5XX_Count
+CloudWatch metric: HTTPCode_Target_2XX_Count
+CloudWatch metric: HTTPCode_Target_3XX_Count
+CloudWatch metric: HTTPCode_Target_4XX_Count
+CloudWatch metric: HTTP_Redirect_Count
+CloudWatch metric: HttpStatusCodeCount
+CloudWatch metric: IdleTimeoutCount
+CloudWatch metric: IncomingBytes
+CloudWatch metric: IncomingLogEvents
+CloudWatch metric: IngestionToInvocationCompleteLatency
+CloudWatch metric: IngestionToInvocationStartLatency
+CloudWatch metric: IngestionToInvocationSuccessLatency
+CloudWatch metric: init_duration
+CloudWatch metric: IntegrationLatency
+CloudWatch metric: InvocationAttemptCount
+CloudWatch metric: InvocationAttempts
+CloudWatch metric: InvocationClientErrors
+CloudWatch metric: InvocationLatency
+CloudWatch metric: Invocations
+CloudWatch metric: InvocationsCreated
+CloudWatch metric: InvocationServerErrors
+CloudWatch metric: InvocationThrottleErrors
+CloudWatch metric: IteratorAge
+CloudWatch metric: JsErrorCount
+CloudWatch metric: JsErrorCountPerPageView
+CloudWatch metric: JsErrorCountPerSession
+CloudWatch metric: Latency
+CloudWatch metric: ListDeliveryStreams.Latency
+CloudWatch metric: ListDeliveryStreams.Requests
+CloudWatch metric: MatchedEvents
+CloudWatch metric: MaxProvisionedTableReadCapacityUtilization
+CloudWatch metric: MaxProvisionedTableWriteCapacityUtilization
+CloudWatch metric: MemoryReserved
+CloudWatch metric: memory_utilization
+CloudWatch metric: MemoryUtilization
+CloudWatch metric: MemoryUtilized
+CloudWatch metric: MitigatedHostCount
+CloudWatch metric: NavigationFrustratedTransaction
+CloudWatch metric: NavigationSatisfiedTransaction
+CloudWatch metric: NavigationToleratedTransaction
+CloudWatch metric: NetworkRxBytes
+CloudWatch metric: NetworkTxBytes
+CloudWatch metric: NewConnectionCount
+CloudWatch metric: NewConnections
+CloudWatch metric: NumberOfBackupJobsCompleted
+CloudWatch metric: NumberOfBackupJobsCreated
+CloudWatch metric: NumberOfBackupJobsFailed
+CloudWatch metric: NumberOfBackupJobsRunning
+CloudWatch metric: NumberOfDeduplicatedSentMessages
+CloudWatch metric: NumberOfEmptyReceives
+CloudWatch metric: NumberOfMessagesDeleted
+CloudWatch metric: NumberOfMessagesPublished
+CloudWatch metric: NumberOfMessagesReceived
+CloudWatch metric: NumberOfMessagesSent
+CloudWatch metric: NumberOfNotificationsDelivered
+CloudWatch metric: NumberOfNotificationsFailed
+CloudWatch metric: NumberOfObjects
+CloudWatch metric: NumberOfRecoveryPointsCompleted
+CloudWatch metric: Open
+CloudWatch metric: PacketsDropCount
+CloudWatch metric: PacketsDropped
+CloudWatch metric: PacketsInFromDestination
+CloudWatch metric: PacketsInFromSource
+CloudWatch metric: PacketsOutToDestination
+CloudWatch metric: PacketsOutToSource
+CloudWatch metric: PageViewCount
+CloudWatch metric: PageViewCountPerSession
+CloudWatch metric: PDS_API_SERVICE
+CloudWatch metric: PDSEventCount
+CloudWatch metric: PeakBytesPerSecond
+CloudWatch metric: PeakLCUs
+CloudWatch metric: PeakPacketsPerSecond
+CloudWatch metric: PendingTaskCount
+CloudWatch metric: PerformanceNavigationDuration
+CloudWatch metric: PerformanceResourceDuration
+CloudWatch metric: PostRuntimeExtensionsDuration
+CloudWatch metric: ProcessedBytes
+CloudWatch metric: ProvisionedBucketSize
+CloudWatch metric: ProvisionedReadCapacityUnits
+CloudWatch metric: ProvisionedRefillRate
+CloudWatch metric: ProvisionedWriteCapacityUnits
+CloudWatch metric: PublishSize
+CloudWatch metric: RepositoryPullCount
+CloudWatch metric: Reputation.BounceRate
+CloudWatch metric: Reputation.ComplaintRate
+CloudWatch metric: RequestCount
+CloudWatch metric: RequestCountPerTarget
+CloudWatch metric: ResourceCount
+CloudWatch metric: ResponseTime
+CloudWatch metric: ReturnedBytes
+CloudWatch metric: ReturnedItemCount
+CloudWatch metric: ReturnedRecordsCount
+CloudWatch metric: RstPacketsReceived
+CloudWatch metric: RumEventPayloadSize
+CloudWatch metric: RunningTaskCount
+CloudWatch metric: rx_bytes
+CloudWatch metric: SampleAllowedRequest
+CloudWatch metric: SampleBlockedRequest
+CloudWatch metric: Send
+CloudWatch metric: SentMessageSize
+CloudWatch metric: ServerErrors
+CloudWatch metric: ServiceCount
+CloudWatch metric: SessionCount
+CloudWatch metric: SessionDuration
+CloudWatch metric: StorageReadBytes
+CloudWatch metric: StorageWriteBytes
+CloudWatch metric: SuccessCount
+CloudWatch metric: SuccessfulInvocationAttempts
+CloudWatch metric: SuccessfulRequest
+CloudWatch metric: SuccessfulRequestCount
+CloudWatch metric: SuccessfulRequestLatency
+CloudWatch metric: SuccessfulRequests
+CloudWatch metric: TargetResponseTime
+CloudWatch metric: TaskCount
+CloudWatch metric: TaskSetCount
+CloudWatch metric: ThrottleCount
+CloudWatch metric: ThrottledCount
+CloudWatch metric: ThrottledEvents
+CloudWatch metric: ThrottledRequests
+CloudWatch metric: Throttles
+CloudWatch metric: TimeOnPage
+CloudWatch metric: TimeToLiveDeletedItemCount
+CloudWatch metric: tmp_used
+CloudWatch metric: total_memory
+CloudWatch metric: total_network
+CloudWatch metric: TriggeredRules
+CloudWatch metric: tx_bytes
+CloudWatch metric: UnHealthyHostCount
+CloudWatch metric: UnhealthyStateDNS
+CloudWatch metric: UnhealthyStateRouting
+CloudWatch metric: UnreservedConcurrentExecutions
+CloudWatch metric: used_memory_max
+CloudWatch metric: UserErrorCount
+CloudWatch metric: UserErrors
+CloudWatch metric: WebVitalsCumulativeLayoutShift
+CloudWatch metric: WebVitalsFirstInputDelay
+CloudWatch metric: WebVitalsInteractionToNextPaint
+CloudWatch metric: WebVitalsLargestContentfulPaint
+CloudWatch alarm: 4XX-status-ndr-dev-DocStoreAPI
+CloudWatch alarm: 4XX-status-ndr-dev-lb
+CloudWatch alarm: 4XX-status-ndrbob-lb
+CloudWatch alarm: 5XX-status-ndr-dev-DocStoreAPI
+CloudWatch alarm: 5XX-status-ndr-dev-lb
+CloudWatch alarm: 5XX-status-ndrbob-lb
+CloudWatch alarm: CloudStorageSecLargeQueue-36ckfco
+CloudWatch alarm: CloudStorageSecLargeQueue-3k85qxs
+CloudWatch alarm: CloudStorageSecLargeQueue-69d4kyh
+CloudWatch alarm: CloudStorageSecLargeQueue-77i747u
+CloudWatch alarm: CloudStorageSecLargeQueue-k2xp0tr
+CloudWatch alarm: CloudStorageSecLargeQueue-miyho7d
+CloudWatch alarm: CloudStorageSecSmallQueue-36ckfco
+CloudWatch alarm: CloudStorageSecSmallQueue-3k85qxs
+CloudWatch alarm: CloudStorageSecSmallQueue-69d4kyh
+CloudWatch alarm: CloudStorageSecSmallQueue-77i747u
+CloudWatch alarm: CloudStorageSecSmallQueue-k2xp0tr
+CloudWatch alarm: CloudStorageSecSmallQueue-miyho7d
+CloudWatch alarm: TargetTracking-service/CloudStorageSecCluster-dka1jxp/CloudStorageSecApiAgentService-dka1jxp-AlarmHigh-7d337caf-dd43-4fae-81e0-90335183dcbd
+CloudWatch alarm: TargetTracking-service/CloudStorageSecCluster-dka1jxp/CloudStorageSecApiAgentService-dka1jxp-AlarmHigh-f0746a76-0e17-4f36-81af-26dd935b2052
+CloudWatch alarm: TargetTracking-service/CloudStorageSecCluster-dka1jxp/CloudStorageSecApiAgentService-dka1jxp-AlarmLow-520bd0ea-b138-479f-9b36-df34ffe9d252
+CloudWatch alarm: TargetTracking-service/CloudStorageSecCluster-dka1jxp/CloudStorageSecApiAgentService-dka1jxp-AlarmLow-f124c241-dcc7-4b05-92c8-4e8e41a96e3c
+CloudWatch alarm: TargetTracking-table/ndr-test_DocumentReferenceMetadata-AlarmHigh-e5310df3-9957-4270-a761-d5a433ae2bd6
+CloudWatch alarm: TargetTracking-table/ndr-test_DocumentReferenceMetadata-AlarmHigh-e550811d-6271-4129-8275-52ad2f9ca1a2
+CloudWatch alarm: TargetTracking-table/ndr-test_DocumentReferenceMetadata-AlarmLow-45619e83-fae4-40ae-965c-2118804e5116
+CloudWatch alarm: TargetTracking-table/ndr-test_DocumentReferenceMetadata-AlarmLow-b5b21c2c-ff7f-4324-9e43-8bff024ccea0
+CloudWatch alarm: TargetTracking-table/ndr-test_DocumentReferenceMetadata-ProvisionedCapacityHigh-2f18eb4c-ba2d-41c8-9b7a-6b8efbc5d20e
+CloudWatch alarm: TargetTracking-table/ndr-test_DocumentReferenceMetadata-ProvisionedCapacityHigh-a553ec52-3463-4629-a2ab-6107a186aefb
+CloudWatch alarm: TargetTracking-table/ndr-test_DocumentReferenceMetadata-ProvisionedCapacityLow-46b2c387-d42e-4c3d-a3f5-36b3990902e5
+CloudWatch alarm: TargetTracking-table/ndr-test_DocumentReferenceMetadata-ProvisionedCapacityLow-58cb41a8-5018-4bcd-8595-d33e1f1c7923
+CloudWatch alarm: TargetTracking-table/ndr-test_LloydGeorgeReferenceMetadata-AlarmHigh-5ec1cb29-9199-40a5-95fb-5355616613a2
+CloudWatch alarm: TargetTracking-table/ndr-test_LloydGeorgeReferenceMetadata-AlarmHigh-bb39ad09-4817-4a8e-a556-177bc54ebaa2
+CloudWatch alarm: TargetTracking-table/ndr-test_LloydGeorgeReferenceMetadata-AlarmLow-0f6e8177-c849-4aee-ab0a-e5b6fa4362d1
+CloudWatch alarm: TargetTracking-table/ndr-test_LloydGeorgeReferenceMetadata-AlarmLow-2e068111-3b37-4877-bbf1-25330266b0be
+CloudWatch alarm: TargetTracking-table/ndr-test_LloydGeorgeReferenceMetadata-ProvisionedCapacityHigh-1ea0265a-f7d6-4e40-b050-160b3fcf4360
+CloudWatch alarm: TargetTracking-table/ndr-test_LloydGeorgeReferenceMetadata-ProvisionedCapacityHigh-cc0f0658-8680-4235-980a-45842f6626ab
+CloudWatch alarm: TargetTracking-table/ndr-test_LloydGeorgeReferenceMetadata-ProvisionedCapacityLow-3f65f0a8-db86-435c-9887-b7bbcd3c2bb3
+CloudWatch alarm: TargetTracking-table/ndr-test_LloydGeorgeReferenceMetadata-ProvisionedCapacityLow-ea3e8861-2437-4661-b7d3-b235c36e9749
+CloudWatch alarm: TargetTracking-table/virus-scanner-terraform-lock-AlarmHigh-5e0ee178-f1ac-4c60-b90d-c745dfb7c4c1
+CloudWatch alarm: TargetTracking-table/virus-scanner-terraform-lock-AlarmHigh-e8ee1b89-5f1d-4991-8c4a-44169f685efb
+CloudWatch alarm: TargetTracking-table/virus-scanner-terraform-lock-AlarmLow-26f43d90-1f34-46f2-9caf-a27ad161bffe
+CloudWatch alarm: TargetTracking-table/virus-scanner-terraform-lock-AlarmLow-b2fa5283-ad82-45c0-8e81-ec5d93f1e74b
+CloudWatch alarm: TargetTracking-table/virus-scanner-terraform-lock-ProvisionedCapacityHigh-353ae9fa-c4c3-49ff-8ee1-69d8a425b8f2
+CloudWatch alarm: TargetTracking-table/virus-scanner-terraform-lock-ProvisionedCapacityHigh-b28bc2e4-b42a-4b54-94ea-f2fdf679c5eb
+CloudWatch alarm: TargetTracking-table/virus-scanner-terraform-lock-ProvisionedCapacityLow-541ab662-a732-4e94-a069-d33d538a2648
+CloudWatch alarm: TargetTracking-table/virus-scanner-terraform-lock-ProvisionedCapacityLow-5c7a4be1-2ebc-4ce0-924a-8ec64527f5f8
+AppConfig application: RepositoryConfiguration-ndrbob
+AppConfig application: RepositoryConfiguration-ndr-dev
+AppConfig application: CloudStorageSec-520f5900
+Lambda Layer: ndr-test_core_lambda_layer
+Lambda Layer: ndr-test_data_lambda_layer
+Lambda Layer: ndr_alerting_lambda_layer
+Lambda Layer: ndr_core_lambda_layer
+Lambda Layer: ndr_data_lambda_layer
+Lambda Layer: ndr_reports_lambda_layer
+IAM Instance Profile: CloudStorageSecEc2ContainerRole-dka1jxp
+IAM Instance Profile: Deployer
+No CloudWatch Dashboards found.
+VPC Endpoint: vpce-0a9bfdc0b49644874
+VPC Endpoint: vpce-0436095f07c200609
+VPC Endpoint: vpce-029bf0c7fec3c6277
+VPC Endpoint: vpce-0727af45e51fa89d8
+VPC Endpoint: vpce-0f99877b582cd3be1
+VPC Endpoint: vpce-0211ed816451ea605
+VPC Endpoint: vpce-0a6febe35fba0ba18
+No EFS File Systems found.
+Elastic Load Balancer: CloudStorageSecApiLB-dka1jxp
+Target Group: CloudStorageSecApiTG-77i747u
+Target Group: CloudStorageSecApiTG-dka1jxp
+Cognito User Pool: CloudStorageSecUserPool-j23y620
+Cognito Identity Pool: RUM-Monitor-eu-west-2-533825906475-7704231649371
+EventBridge Bus: default
+SNS Subscription: arn:aws:sns:eu-west-2:108148468272:pre-prod-nems-event-processor-re-registrations-sns-topic:79e3524c-e748-4d7c-84db-5bf363727c80
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-w4402se:00a6892c-bf4f-4805-b0e5-b4bff6458dd6
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-3k85qxs:15dcd2b4-3961-4453-b2bd-815ee5bd4c8c
+SNS Subscription: arn:aws:sns:eu-west-2:108148468272:pre-prod-nems-event-processor-re-registrations-sns-topic:7a76b56c-e99f-40ba-a9f2-17a8ee3a7fdf
+SNS Subscription: PendingConfirmation
+SNS Subscription: arn:aws:sns:eu-west-2:108148468272:pre-prod-nems-event-processor-re-registrations-sns-topic:eacf0421-e75e-4a6e-99bd-766567a5340d
+SNS Subscription: PendingConfirmation
+SNS Subscription: PendingConfirmation
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecNotificationsTopic-miyho7d:b8905941-57e6-42d4-8766-d06b057b91c3
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-miyho7d:1466037c-bbf1-4492-82d4-f43d78baf070
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:aws-controltower-SecurityNotifications:279bd69a-01c9-4b45-99f2-7e83a3824d16
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecNotificationsTopic-miyho7d:5dc9b42e-ffb5-45f0-9190-62eae6a7d31a
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecNotificationsTopic-miyho7d:8ac89d9c-a557-42b3-8f4a-356afe833d26
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:ndr-test-sns-create_doc-alarms-topic:b7131a4a-a41c-4124-9c62-1980caf6cef5
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecNotificationsTopic-miyho7d:03b1f17d-e4c1-49ef-a3a9-ff0f168d6a74
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-azf2kr0:0d421a0d-f9fe-4a3b-9c85-49f26f2eab4c
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-a6ldvyb:08692c20-8746-4168-8ce2-f96e7002dd1d
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecNotifications-8km0aj3:752d06a2-f004-421c-ae5d-43bcc5791878
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecNotificationsTopic-azf2kr0:3e281762-2d3b-4b86-a8bd-00c465ee58e9
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-36ckfco:5cf8026b-6bb9-4cce-935f-626a7844019f
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-69d4kyh:9c95aba9-4270-4d0f-8046-daffcecf7737
+SNS Subscription: arn:aws:sns:eu-west-2:533825906475:CloudStorageSecTopic-k2xp0tr:b57ba511-4a40-44e2-a302-870c463ca8af
+Lambda Event Source Mapping UUID: e650bda2-40c2-4686-83f7-1d4b05ba5778
+Lambda Event Source Mapping UUID: 79f47971-403d-4e1c-b0a6-220f8d0927a8
+Lambda Event Source Mapping UUID: 48679fe1-120f-4fe7-838a-275890e05e8a
+Lambda Event Source Mapping UUID: 4e7a8db8-f870-468c-8539-0ccc1634a772
+Lambda Event Source Mapping UUID: 619740f6-e73b-4757-865a-3279e23c953d
+Lambda Event Source Mapping UUID: 611075b1-f002-4739-85e4-689fdd04099f
+Lambda Event Source Mapping UUID: 7a5bda37-11e9-4300-a838-b356d2794791
+Lambda Event Source Mapping UUID: c654e3e9-c149-4481-ba18-437513e8ad78
+Lambda Event Source Mapping UUID: c2ff99ed-b2cb-4400-83d5-8546a31d3b92
+Lambda Event Source Mapping UUID: 181a2f1d-30c9-4b02-aecf-1b2e3f6558aa
+Lambda Event Source Mapping UUID: d1782c8d-bb9d-4e76-8fef-61067629398e
+Lambda Event Source Mapping UUID: b5f7bc77-dd99-4a30-98bb-9f36e159817b
+Lambda Event Source Mapping UUID: 0fa4a4a0-ae07-4f2a-874c-1946dd20bbe8
+Lambda Event Source Mapping UUID: 61fb099a-c89e-48ec-b4f4-da724336046f
+Lambda Event Source Mapping UUID: f405dcf5-bc00-4c5e-b89a-94055bac2d5a
+Lambda Event Source Mapping UUID: 282bc4e5-d279-4970-b9d0-c03468f8affa
+Lambda Event Source Mapping UUID: 94414538-a59d-4948-aebc-c9cfe4b33bc0
+Lambda Event Source Mapping UUID: 413b0615-8236-49b1-b3a5-8e479068ab40
+Lambda Event Source Mapping UUID: 61979aa3-85cf-4cd9-8a48-b6c597abfca9
+Lambda Event Source Mapping UUID: f5c9b86f-fbad-4881-a70a-dfee8f3290c5
