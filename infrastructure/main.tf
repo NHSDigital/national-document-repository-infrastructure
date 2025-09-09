@@ -80,7 +80,3 @@ data "aws_ssm_parameter" "apim_url" {
   name = "/repo/${var.environment}/user-input/apim-api-url"
 }
 
-import {
-  to = module.fhir_document_reference_gateway[0].aws_api_gateway_resource.gateway_resource
-  id = "ccy0v3rve9"
-}
