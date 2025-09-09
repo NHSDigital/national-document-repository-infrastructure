@@ -5,11 +5,11 @@ locals {
     "stitching_main" = module.sqs-stitching-queue.sqs_name
     "lg_bulk_main"   = module.sqs-lg-bulk-upload-metadata-queue.sqs_name
     "lg_inv_main"    = module.sqs-lg-bulk-upload-invalid-queue.sqs_name
-    "mns_main"       = module.sqs-mns-notification-queue[0].sqs_name
+    "mns_main"       = module.sqs-mns-notification-queue.sqs_name
     # dead-letter queues
     "nrl_dlq"       = module.sqs-nrl-queue.dlq_name
     "stitching_dlq" = module.sqs-stitching-queue.dlq_name
-    "mns_dlq"       = module.sqs-mns-notification-queue[0].dlq_name
+    "mns_dlq"       = module.sqs-mns-notification-queue.dlq_name
   }
 
 
