@@ -70,6 +70,9 @@ resource "aws_api_gateway_integration" "get_doc_fhir_lambda_integration" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = module.get-doc-fhir-lambda.invoke_arn
+
+  depends_on = [aws_api_gateway_method.get_document_reference_mtls]
+
 }
 
 resource "aws_lambda_permission" "lambda_permission_get_mtls_api" {
