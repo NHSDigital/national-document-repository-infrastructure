@@ -21,9 +21,9 @@ variable "certificate_subdomain_name_prefix" {
 }
 
 variable "certificate_subdomain_name_prefix_mtls" {
-  description = "Prefix to add to subdomains on certification configurations, dev envs use api-{env}, prod envs use api.{env}."
+  description = "Prefix to add to subdomains on certification configurations."
   type        = string
-  default     = "mtls-"
+  default     = "mtls."
 }
 
 # Bucket Variables
