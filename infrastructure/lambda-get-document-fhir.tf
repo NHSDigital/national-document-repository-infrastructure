@@ -69,13 +69,13 @@ resource "aws_api_gateway_integration" "get_doc_fhir_lambda_integration" {
   http_method             = "GET"
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = module.get-doc-fhir-lambda[0].invoke_arn
+  uri                     = module.get-doc-fhir-lambda.invoke_arn
 }
 
 resource "aws_lambda_permission" "lambda_permission_get_mtls_api" {
   statement_id  = "AllowAPImTLSGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = module.get-doc-fhir-lambda[0].lambda_arn
+  function_name = module.get-doc-fhir-lambda.lambda_arn
   principal     = "apigateway.amazonaws.com"
   # The "/*/*" portion grants access from any method on any resource
   # within the API Gateway REST API.
