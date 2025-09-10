@@ -1,5 +1,4 @@
 module "v2-bulk-upload-metadata-lambda" {
-  count          = local.is_sandbox || (terraform.workspace == "ndr-dev") ? 1 : 0
   source         = "./modules/lambda"
   name           = "V2BulkUploadMetadataLambda"
   handler        = "handlers.V2_bulk_upload_metadata_handler.lambda_handler"
@@ -8,8 +7,6 @@ module "v2-bulk-upload-metadata-lambda" {
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
-    module.v2-sqs-lg-bulk-upload-metadata-queue[0].sqs_read_policy_document,
-    module.v2-sqs-lg-bulk-upload-metadata-queue[0].sqs_write_policy_document,
     module.ndr-app-config.app_config_policy
   ]
 
@@ -22,7 +19,6 @@ module "v2-bulk-upload-metadata-lambda" {
     APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                  = terraform.workspace
     STAGING_STORE_BUCKET_NAME  = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    METADATA_SQS_QUEUE_URL     = module.v2-sqs-lg-bulk-upload-metadata-queue[0].sqs_url
     BULK_UPLOAD_DYNAMODB_NAME  = "${terraform.workspace}_${var.bulk_upload_report_dynamodb_table_name}"
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
@@ -33,13 +29,13 @@ module "v2-bulk-upload-metadata-lambda" {
 
 module "v2-bulk-upload-metadata-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.v2-bulk-upload-metadata-lambda[0].function_name
-  lambda_timeout       = module.v2-bulk-upload-metadata-lambda[0].timeout
+  lambda_function_name = module.v2-bulk-upload-metadata-lambda.function_name
+  lambda_timeout       = module.v2-bulk-upload-metadata-lambda.timeout
   lambda_name          = "bulk_upload_metadata_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.v2-bulk-upload-metadata-alarm-topic.arn]
   ok_actions           = [module.v2-bulk-upload-metadata-alarm-topic.arn]
-  depends_on           = [module.v2-bulk-upload-metadata-lambda[0], module.v2-bulk-upload-metadata-alarm-topic]
+  depends_on           = [module.v2-bulk-upload-metadata-lambda, module.v2-bulk-upload-metadata-alarm-topic]
 }
 
 module "v2-bulk-upload-metadata-alarm-topic" {
@@ -47,7 +43,7 @@ module "v2-bulk-upload-metadata-alarm-topic" {
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_name            = "v2-bulk-upload-metadata-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.v2-bulk-upload-metadata-lambda[0].lambda_arn
+  topic_endpoint        = module.v2-bulk-upload-metadata-lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -69,5 +65,5 @@ module "v2-bulk-upload-metadata-alarm-topic" {
     ]
   })
 
-  depends_on = [module.v2-bulk-upload-metadata-lambda[0], module.sns_encryption_key]
+  depends_on = [module.v2-bulk-upload-metadata-lambda, module.sns_encryption_key]
 }
