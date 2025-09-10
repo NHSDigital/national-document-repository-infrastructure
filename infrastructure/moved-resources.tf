@@ -82,3 +82,10 @@ moved {
   from = module.get-doc-fhir-lambda[0].aws_lambda_permission.lambda_permission[0]
   to   = module.get-doc-fhir-lambda.aws_lambda_permission.lambda_permission[0]
 }
+
+# NDR-249 
+
+moved {
+  from = module.fhir_document_reference_gateway[0]
+  to   = module.fhir_document_reference_gateway
+}
