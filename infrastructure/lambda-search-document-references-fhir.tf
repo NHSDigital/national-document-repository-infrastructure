@@ -1,5 +1,4 @@
 module "search-document-references-fhir-lambda" {
-  count   = 1
   source  = "./modules/lambda"
   name    = "SearchDocumentReferencesFHIR"
   handler = "handlers.fhir_document_reference_search_handler.lambda_handler"
