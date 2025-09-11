@@ -117,6 +117,7 @@ module "ndr-bulk-staging-store" {
 }
 
 module "ndr-truststore" {
+  count                    = local.is_sandbox ? 0 : 1
   source                   = "./modules/s3"
   access_logs_enabled      = local.is_production
   access_logs_bucket_id    = local.access_logs_bucket_id
