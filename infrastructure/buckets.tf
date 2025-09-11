@@ -129,7 +129,7 @@ module "ndr-truststore" {
 }
 
 data "aws_s3_object" "truststore_ext_cert" {
-  bucket = module.ndr_truststore[0].bucket_id
+  bucket = module.ndr-truststore[0].bucket_id
   key    = var.ca_pem_filename
 }
 
