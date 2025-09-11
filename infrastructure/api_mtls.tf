@@ -10,7 +10,7 @@ resource "aws_api_gateway_rest_api" "ndr_doc_store_api_mtls" {
 
 resource "aws_api_gateway_domain_name" "custom_api_domain_mtls" {
   domain_name              = local.mtls_api_gateway_full_domain_name
-  regional_certificate_arn = aws_acm_certificate_validation.mtls_api_gateway_cert[0].certificate_arn
+  regional_certificate_arn = aws_acm_certificate_validation.mtls_api_gateway_cert.certificate_arn
   security_policy          = "TLS_1_2"
 
   endpoint_configuration {
