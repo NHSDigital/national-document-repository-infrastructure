@@ -1,4 +1,4 @@
-name: 'Z-BASE: Cleanup (Lambda@Edge)'
+name: 'Z-BASE: Cleanup - Lambda@Edge'
 
 on:
   workflow_call:

@@ -1,6 +1,6 @@
 # .github/workflows/destroy.yml
 
-name: "Tear down: Sandbox"
+name: "Tear down - Sandbox"
 
 on:
   workflow_dispatch:

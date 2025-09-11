@@ -1,4 +1,4 @@
-name: "Deploy: Pre-prod"
+name: "Deploy - Pre-prod"
 
 on:
   workflow_dispatch:

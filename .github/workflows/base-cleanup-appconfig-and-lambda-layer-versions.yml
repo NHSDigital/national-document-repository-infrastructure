@@ -1,4 +1,4 @@
-name: 'Z-BASE: Cleanup (App Config Profiles & Lambda Layer Versions)'
+name: 'Z-BASE: Cleanup - Workspace'
 
 on:
   workflow_call:

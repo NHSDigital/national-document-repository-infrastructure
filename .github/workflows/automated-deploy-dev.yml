@@ -1,5 +1,5 @@
 # .github/workflows/terraform-dev
-name: 'Z-AUTOMATED Deploy: Dev'
+name: 'Z-AUTOMATED: Deploy - Dev'
 
 on:
   push:
