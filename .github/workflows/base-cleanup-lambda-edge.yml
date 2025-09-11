@@ -1,4 +1,4 @@
-name: 'Remove Lambda@Edge Associations'
+name: 'Z-BASE: Cleanup - Lambda@Edge'
 
 on:
   workflow_call:

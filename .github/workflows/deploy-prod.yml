@@ -1,21 +1,13 @@
 # .github/workflows/terraform-dev
-name: 'Deploy Virus Scanner'
+name: "Deploy - Prod"
 
 on:
   workflow_dispatch:
     inputs:
-      buildBranch:
-        description: 'Feature branch to push to sandbox.'
+      tagVersion:
+        description: "What tagged verison do you want to push to prod?"
         required: true
-        type: 'string'
-      sandboxWorkspace:
-        description: 'Which Sandbox to push to.'
-        required: true
-        type: 'string'
-      environment:
-        description: 'Environment to run against'
-        required: true
-        type: 'string'
+        type: "string"
 
 permissions:
   pull-requests: write
@@ -25,14 +17,15 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment}}
+    environment: prod
 
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.inputs.buildBranch}}
+          ref: ${{ github.event.inputs.tagVersion}}
+          fetch-depth: "0"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
@@ -54,28 +47,34 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="${{ github.event.inputs.sandboxWorkspace}}.tfbackend"
-        working-directory: ./virusscanner/terraform
+        run: terraform init -backend-config=backend-prod.conf
+        working-directory: ./infrastructure
         shell: bash
 
       - name: Terraform Set Workspace
         id: workspace
-        run: terraform workspace select -or-create ${{ github.event.inputs.sandboxWorkspace}}
-        working-directory: ./virusscanner/terraform
+        run: terraform workspace select ${{ secrets.AWS_WORKSPACE }}
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Lambda Layer Imports
+        id: lambda_layer_import
+        run: ./import_lambda_layers.sh ${{ secrets.AWS_WORKSPACE }} ${{ vars.TF_VARS_FILE }}
+        working-directory: ./scripts
         shell: bash
 
         # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
         run: terraform fmt -check
-        working-directory: ./virusscanner/terraform
+        working-directory: ./infrastructure
 
       - name: Terraform Plan
         id: plan
         run: |
           terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
-        working-directory: ./virusscanner/terraform
+        working-directory: ./infrastructure
         shell: bash
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false tf.plan
-        working-directory: ./virusscanner/terraform
+        working-directory: ./infrastructure

@@ -1,4 +1,4 @@
-name: 'Destroy Test (Test Account) Environment CRON'
+name: 'Z-AUTOMATED: Tear down - Test'
 
 on:
   schedule:

@@ -1,4 +1,4 @@
-name: 'Daily Healthcheck Deploy, Test and Destroy'
+name: 'Z-AUTOMATED: Daily health check'
 
 on:
  schedule:

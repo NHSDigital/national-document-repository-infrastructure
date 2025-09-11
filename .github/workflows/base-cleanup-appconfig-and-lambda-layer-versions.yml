@@ -1,4 +1,4 @@
-name: 'Cleanup Untracked App Config Profiles and Lambda Layer Versions'
+name: 'Z-BASE: Cleanup - Workspace'
 
 on:
   workflow_call:
@@ -22,7 +22,6 @@ on:
     secrets:
       AWS_ASSUME_ROLE:
         required: true
-
 
 permissions:
   pull-requests: write
@@ -75,4 +74,4 @@ jobs:
 
       - name: Run Version Cleanup Script
         run: |
-          ./venv/bin/python3 scripts/cleanup_versions.py ${{ inputs.sandbox }} 
+          ./venv/bin/python3 scripts/cleanup_versions.py ${{ inputs.sandbox }}

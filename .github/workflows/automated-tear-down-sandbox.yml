@@ -1,4 +1,4 @@
-name: 'Destroy Sandbox Environments (CRON)'
+name: 'Z-AUTOMATED: Tear down - Sandbox'
 
 on:
   schedule:

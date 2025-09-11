@@ -1,5 +1,5 @@
 # .github/workflows/terraform-dev
-name: 'Development CI Feature to Main'
+name: 'Z-AUTOMATED: Deploy - Dev'
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
   pull_request:
     branches:
     - main
-
 
 permissions:
   pull-requests: write
@@ -229,6 +228,3 @@ jobs:
     uses: nhsconnect/national-document-repository/.github/workflows/ui-dev-to-main-ci.yml@main
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-
-        
-        
