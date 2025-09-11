@@ -111,3 +111,21 @@ variable "extra_lambda_layers" {
   type    = list(string)
   default = ["arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:53"]
 }
+
+variable "kms_deletion_window" {
+  description = "Lambda KMS time to deletion in days"
+  type        = number
+  default     = 30
+}
+
+variable "vpc_subnet_ids" {
+  description = "List of subnet IDs associated with the Lambda function, if it sits within a VPC."
+  type        = list(string)
+  default     = []
+}
+
+variable "vpc_security_group_ids" {
+  description = "List of security group IDs associated with the Lambda function, if it sits within a VPC."
+  type        = list(string)
+  default     = []
+}

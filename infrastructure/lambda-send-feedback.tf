@@ -9,6 +9,18 @@ locals {
   )
 }
 
+data "aws_ssm_parameter" "itoc_feedback_testing_teams_webhook" {
+  name = "/ndr/itoc/feedback_testing/teams_webhook"
+}
+
+data "aws_ssm_parameter" "itoc_testing_ods_codes" {
+  name = "/auth/org/ods_code/allowed_list_itoc"
+}
+
+data "aws_ssm_parameter" "itoc_feedback_testing_slack_channel_id" {
+  name = "/ndr/itoc/feedback_testing/slack/channel_id"
+}
+
 module "send-feedback-gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -71,10 +83,11 @@ module "send-feedback-lambda" {
     aws_iam_policy.ses_send_email_policy.policy,
     module.ndr-app-config.app_config_policy
   ]
-  rest_api_id       = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id       = module.send-feedback-gateway.gateway_resource_id
-  http_methods      = ["POST"]
-  api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  kms_deletion_window = var.kms_deletion_window
+  rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id         = module.send-feedback-gateway.gateway_resource_id
+  http_methods        = ["POST"]
+  api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
@@ -83,6 +96,10 @@ module "send-feedback-lambda" {
     FROM_EMAIL_ADDRESS            = local.ses_feedback_sender_email_address
     EMAIL_SUBJECT                 = "Digitised Lloyd George feedback"
     EMAIL_RECIPIENT_SSM_PARAM_KEY = local.feedback_recipient_list_ssm_param_key
+    ITOC_TESTING_TEAMS_WEBHOOK    = data.aws_ssm_parameter.itoc_feedback_testing_teams_webhook.value
+    ITOC_TESTING_ODS_CODES        = data.aws_ssm_parameter.itoc_testing_ods_codes.value
+    ITOC_TESTING_CHANNEL_ID       = data.aws_ssm_parameter.itoc_feedback_testing_slack_channel_id.value
+    ITOC_TESTING_SLACK_BOT_TOKEN  = data.aws_ssm_parameter.slack_alerting_bot_token.value
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
