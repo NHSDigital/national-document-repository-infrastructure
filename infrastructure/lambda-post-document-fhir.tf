@@ -1,5 +1,4 @@
 module "post-document-references-fhir-lambda" {
-  count   = 1
   source  = "./modules/lambda"
   name    = "PostDocumentReferencesFHIR"
   handler = "handlers.post_fhir_document_reference_handler.lambda_handler"

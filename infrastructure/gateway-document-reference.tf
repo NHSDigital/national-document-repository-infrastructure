@@ -9,3 +9,4 @@ module "fhir_document_reference_gateway" {
   gateway_path        = "FhirDocumentReference"
   require_credentials = true
 }
+
