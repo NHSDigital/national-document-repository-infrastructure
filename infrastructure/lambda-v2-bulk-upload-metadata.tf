@@ -7,6 +7,8 @@ module "v2-bulk-upload-metadata-lambda" {
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
+    module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
+    module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
     module.ndr-app-config.app_config_policy
   ]
 
@@ -22,6 +24,7 @@ module "v2-bulk-upload-metadata-lambda" {
     BULK_UPLOAD_DYNAMODB_NAME  = "${terraform.workspace}_${var.bulk_upload_report_dynamodb_table_name}"
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
