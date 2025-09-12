@@ -18,7 +18,7 @@ resource "aws_api_gateway_domain_name" "custom_api_domain_mtls" {
   }
 
   mutual_tls_authentication {
-    truststore_uri     = local.is_sandbox ? "s3://ndr-dev-${var.truststore_bucket_name}/${var.ca_pem_filename}" : "s3://${module.ndr-truststore[0].bucket_id}/${var.ca_pem_filename}"
+    truststore_uri     = local.truststore_uri
     truststore_version = data.aws_s3_object.truststore_ext_cert.version_id
   }
 }

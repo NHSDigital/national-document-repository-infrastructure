@@ -129,7 +129,7 @@ module "ndr-truststore" {
 }
 
 data "aws_s3_object" "truststore_ext_cert" {
-  bucket = local.is_sandbox ? "ndr-dev-${var.truststore_bucket_name}" : module.ndr-truststore[0].bucket_id
+  bucket = local.truststore_bucket_id
   key    = var.ca_pem_filename
 }
 
