@@ -128,6 +128,11 @@ module "ndr-truststore" {
   force_destroy            = local.is_force_destroy
 }
 
+data "aws_s3_object" "truststore_ext_cert" {
+  bucket = local.truststore_bucket_id
+  key    = var.ca_pem_filename
+}
+
 # Lifecycle Rules
 resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   bucket = module.ndr-lloyd-george-store.bucket_id
