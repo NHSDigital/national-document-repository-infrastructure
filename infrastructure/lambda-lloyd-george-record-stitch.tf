@@ -51,7 +51,7 @@ module "lloyd-george-stitch_topic" {
   })
 }
 
-module "lloyd-george-stitch-lambda" {
+module "lloyd_george_stitch_lambda" {
   source  = "./modules/lambda"
   name    = "LloydGeorgeStitchLambda"
   handler = "handlers.lloyd_george_record_stitch_handler.lambda_handler"

@@ -1,4 +1,4 @@
-module "nhs-oauth-token-generator-lambda" {
+module "nhs_oauth_token_generator_lambda" {
   source         = "./modules/lambda"
   name           = "NhsOauthTokenGeneratorLambda"
   handler        = "handlers.nhs_oauth_token_generator_handler.lambda_handler"

@@ -39,7 +39,7 @@ module "generate-document-manifest-alarm-topic" {
   depends_on = [module.generate-document-manifest-lambda, module.sns_encryption_key]
 }
 
-module "generate-document-manifest-lambda" {
+module "generate_document_manifest_lambda" {
   source                   = "./modules/lambda"
   name                     = "GenerateDocumentManifest"
   handler                  = "handlers.generate_document_manifest_handler.lambda_handler"

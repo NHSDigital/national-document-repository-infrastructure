@@ -36,7 +36,7 @@ module "delete-document-object-alarm-topic" {
   })
 }
 
-module "delete-document-object-lambda" {
+module "delete_document_object_lambda" {
   source         = "./modules/lambda"
   name           = "DeleteDocumentObjectS3"
   handler        = "handlers.delete_document_object_handler.lambda_handler"

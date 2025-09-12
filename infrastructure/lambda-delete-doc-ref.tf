@@ -50,7 +50,7 @@ module "delete_doc_alarm_topic" {
   })
 }
 
-module "delete-doc-ref-lambda" {
+module "delete_doc_ref_lambda" {
   source  = "./modules/lambda"
   name    = "DeleteDocRefLambda"
   handler = "handlers.delete_document_reference_handler.lambda_handler"
