@@ -4,6 +4,10 @@ resource "aws_api_gateway_rest_api" "ndr_doc_store_api_mtls" {
   description                  = "Document store API with mTLS enabled"
   disable_execute_api_endpoint = true
 
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+
   tags = {
     Name = "${terraform.workspace}_DocStoreApiMtls"
   }
