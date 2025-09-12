@@ -12,7 +12,7 @@ permissions:
 jobs:
   remove_edge_associations:
     name: Remove Lambda@Edge Associations
-    uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
+    uses: ./.github/workflows/base-cleanup-lambda-edge.yml
     with:
       sandbox_workspace: ndr-test
       lambda_function_name: 'ndr-test_EdgePresignLambda'
@@ -24,7 +24,7 @@ jobs:
 
   cleanup_versions_process:
     name: Cleanup Versions Process
-    uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
+    uses: ./.github/workflows/base-cleanup-workspace.yml
     with:
       build_branch: main
       sandbox: ndr-test

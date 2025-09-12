@@ -6,7 +6,7 @@ from botocore.exceptions import ClientError
 def trigger_delete_workflow(token: str, sandbox: str):
     owner = "nhsconnect"
     repo = "national-document-repository-infrastructure"
-    workflow = "terraform-destroy-environment-manual.yml"
+    workflow = "tear-down-sandbox.yml"
 
     url = f"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflow}/dispatches"
     headers = {
