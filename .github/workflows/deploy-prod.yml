@@ -57,12 +57,6 @@ jobs:
         working-directory: ./infrastructure
         shell: bash
 
-      - name: Lambda Layer Imports
-        id: lambda_layer_import
-        run: ./import_lambda_layers.sh ${{ secrets.AWS_WORKSPACE }} ${{ vars.TF_VARS_FILE }}
-        working-directory: ./scripts
-        shell: bash
-
         # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
         run: terraform fmt -check
