@@ -1,7 +1,8 @@
 # New API Gateway for mTLS
 resource "aws_api_gateway_rest_api" "ndr_doc_store_api_mtls" {
-  name        = "${terraform.workspace}_DocStoreApiMtls"
-  description = "Document store API with mTLS enabled"
+  name                         = "${terraform.workspace}_DocStoreApiMtls"
+  description                  = "Document store API with mTLS enabled"
+  disable_execute_api_endpoint = true
 
   tags = {
     Name = "${terraform.workspace}_DocStoreApiMtls"
