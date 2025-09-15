@@ -4,11 +4,11 @@ on:
   workflow_call:
     inputs:
       git_ref:
-        description: 'The branch, tag or SHA'
+        description: 'Branch, tag or SHA'
         required: true
         type: string
       sandbox_name:
-        description: 'The sandbox name'
+        description: 'Sandbox name'
         required: true
         type: string
       environment:

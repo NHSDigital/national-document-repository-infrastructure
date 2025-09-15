@@ -7,11 +7,11 @@ on:
     inputs:
       git_ref:
         default: "main"
-        description: "The branch, tag or SHA for the destroy action"
+        description: "Branch, tag or SHA for the destroy action"
         required: true
         type: "string"
       sandbox_name:
-        description: "The sandbox to destroy"
+        description: "Sandbox to destroy"
         required: true
         type: "string"
       environment:
@@ -27,11 +27,11 @@ on:
     inputs:
       git_ref:
         default: "main"
-        description: "The branch, tag or SHA for the destroy action"
+        description: "Branch, tag or SHA for the destroy action"
         required: true
         type: "string"
       sandbox_name:
-        description: "The sandbox to destroy"
+        description: "Sandbox to destroy"
         required: true
         type: "string"
       environment:

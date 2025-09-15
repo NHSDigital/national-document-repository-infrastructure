@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       branch_or_tag:
-        description: "The branch or tag to deploy"
+        description: "Branch or tag to deploy"
         required: true
         type: string
         default: main

@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       git_ref:
-        description: "The branch, tag or SHA to deploy"
+        description: "Branch, tag or SHA to deploy"
         required: true
         type: "string"
 
