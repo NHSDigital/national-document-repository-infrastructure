@@ -1,4 +1,4 @@
-module "search-document-references-fhir-lambda" {
+module "search_document_references_fhir_lambda" {
   source  = "./modules/lambda"
   name    = "SearchDocumentReferencesFHIR"
   handler = "handlers.fhir_document_reference_search_handler.lambda_handler"
@@ -51,3 +51,4 @@ resource "aws_lambda_permission" "lambda_permission_search_mtls_api" {
   # within the API Gateway REST API.
   source_arn = "${aws_api_gateway_rest_api.ndr_doc_store_api_mtls.execution_arn}/*/*"
 }
+

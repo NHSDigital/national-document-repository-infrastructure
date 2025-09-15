@@ -1,4 +1,4 @@
-module "post-document-references-fhir-lambda" {
+module "post_document_references_fhir_lambda" {
   source  = "./modules/lambda"
   name    = "PostDocumentReferencesFHIR"
   handler = "handlers.post_fhir_document_reference_handler.lambda_handler"
@@ -49,3 +49,4 @@ resource "aws_lambda_permission" "lambda_permission_post_mtls_api" {
   # within the API Gateway REST API.
   source_arn = "${aws_api_gateway_rest_api.ndr_doc_store_api_mtls.execution_arn}/*/*"
 }
+

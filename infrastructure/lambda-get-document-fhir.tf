@@ -33,7 +33,7 @@ resource "aws_api_gateway_method" "get_document_reference_mtls" {
 }
 
 
-module "get-doc-fhir-lambda" {
+module "get_doc_fhir_lambda" {
   source  = "./modules/lambda"
   name    = "GetDocumentReference"
   handler = "handlers.get_fhir_document_reference_handler.lambda_handler"
@@ -84,3 +84,4 @@ resource "aws_lambda_permission" "lambda_permission_get_mtls_api" {
   # within the API Gateway REST API.
   source_arn = "${aws_api_gateway_rest_api.ndr_doc_store_api_mtls.execution_arn}/*/*"
 }
+
