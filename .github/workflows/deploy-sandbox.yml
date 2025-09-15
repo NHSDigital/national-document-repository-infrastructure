@@ -27,10 +27,6 @@ jobs:
     steps:
       - name: Validate inputs
         run: |
-          if [ ${#SANDBOX_WORKSPACE} -gt 9 ]; then
-            echo "Sandbox name too long (max 9 chars)."
-            exit 1
-          fi
           if ! [[ "$SANDBOX_WORKSPACE" =~ ^[a-z0-9]{1,9}$ ]]; then
             echo "Sandbox name must match [a-z0-9]{1,9} (lowercase letters and digits only, 1-9 chars)."
             exit 1
