@@ -1,6 +1,6 @@
 name: "Deploy - Sandbox"
 
-run-name: "${{ format('yyyy-MM-dd', github.event.timestamp) }} | ${{ github.actor }} | ${{ github.event.inputs.git_ref }} | ${{ github.event.inputs.sandbox_name }}"
+run-name: "${{ github.event.inputs.git_ref }} | ${{ github.event.inputs.sandbox_name }}"
 
 on:
   workflow_dispatch:

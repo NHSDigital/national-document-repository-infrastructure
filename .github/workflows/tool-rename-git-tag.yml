@@ -1,6 +1,6 @@
 name: 'Tool: Rename Git Tag'
 
-run-name: "${{ format('yyyy-MM-dd', github.event.timestamp) }} | ${{ github.actor }} | ${{ github.event.inputs.old_tag }} -> ${{ github.event.inputs.new_tag }}"
+run-name: "${{ github.event.inputs.old_tag }} -> ${{ github.event.inputs.new_tag }}"
 
 on:
   workflow_dispatch:

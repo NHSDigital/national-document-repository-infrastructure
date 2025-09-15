@@ -1,6 +1,6 @@
 name: "Deploy - Prod"
 
-run-name: "${{ format('yyyy-MM-dd', github.event.timestamp) }} | ${{ github.actor }} | ${{ github.event.inputs.git_tag }}"
+run-name: "${{ github.event.inputs.git_tag }}"
 
 on:
   workflow_dispatch:

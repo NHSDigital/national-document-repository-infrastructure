@@ -1,6 +1,6 @@
 name: "Deploy - Pre-prod"
 
-run-name: "${{ format('yyyy-MM-dd', github.event.timestamp) }} | ${{ github.actor }} | ${{ github.event.inputs.branch_or_tag }}"
+run-name: "${{ github.event.inputs.branch_or_tag }}"
 
 on:
   workflow_dispatch:

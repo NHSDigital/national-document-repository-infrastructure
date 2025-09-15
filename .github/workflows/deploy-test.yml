@@ -1,6 +1,6 @@
 name: "Deploy - Test"
 
-run-name: "${{ format('yyyy-MM-dd', github.event.timestamp) }} | ${{ github.actor }} | ${{ github.event.inputs.git_ref }}"
+run-name: "${{ github.event.inputs.git_ref }}"
 
 on:
   workflow_dispatch:

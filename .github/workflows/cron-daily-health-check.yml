@@ -1,7 +1,5 @@
 name: 'Z-CRON: Daily health check'
 
-run-name: "${{ format('yyyy-MM-dd', github.event.timestamp) }}"
-
 on:
   schedule:
     - cron: 30 4 * * 1-5

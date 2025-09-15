@@ -1,6 +1,6 @@
 name: "Tear down - Sandbox/Test"
 
-run-name: "${{ format('yyyy-MM-dd', github.event.timestamp) }} | ${{ github.actor }} | ${{ github.event.inputs.git_ref }} | ${{ github.event.inputs.sandbox_name }} | ${{ github.event.inputs.environment }}"
+run-name: "${{ github.event.inputs.git_ref }} | ${{ github.event.inputs.sandbox_name }} | ${{ github.event.inputs.environment }}"
 
 on:
   workflow_dispatch:
