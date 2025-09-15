@@ -1,6 +1,6 @@
 # .github/workflows/destroy.yml
 
-name: "Destroy (Select Account) Environment"
+name: "Tear down - Sandbox"
 
 on:
   workflow_dispatch:
@@ -24,6 +24,7 @@ on:
         default: "backend.conf"
         description: "Terraform backend configuration."
         required: true
+
   workflow_call:
     inputs:
       build_branch:
@@ -59,7 +60,7 @@ permissions:
 jobs:
   remove_edge_associations:
     name: Remove Lambda@Edge Associations
-    uses: ./.github/workflows/cleanup-cloudfront-edge-associations.yml
+    uses: ./.github/workflows/base-cleanup-lambda-edge.yml
     with:
       sandbox_workspace: ${{ inputs.sandbox_workspace }}
       lambda_function_name: "${{ inputs.sandbox_workspace }}_EdgePresignLambda"
@@ -71,7 +72,7 @@ jobs:
 
   cleanup_versions_process:
     name: Cleanup Versions Process
-    uses: ./.github/workflows/cleanup-appconfig-and-lambda-layer-versions.yml
+    uses: ./.github/workflows/base-cleanup-workspace.yml
     with:
       build_branch: ${{ inputs.build_branch }}
       sandbox: ${{ inputs.sandbox_workspace }}
@@ -93,7 +94,7 @@ jobs:
           ref: ${{ inputs.build_branch }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.11
 

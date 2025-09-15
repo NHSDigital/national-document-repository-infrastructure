@@ -117,6 +117,7 @@ module "ndr-bulk-staging-store" {
 }
 
 module "ndr-truststore" {
+  count                    = local.is_sandbox ? 0 : 1
   source                   = "./modules/s3"
   access_logs_enabled      = local.is_production
   access_logs_bucket_id    = local.access_logs_bucket_id
@@ -125,6 +126,11 @@ module "ndr-truststore" {
   owner                    = var.owner
   enable_bucket_versioning = true
   force_destroy            = local.is_force_destroy
+}
+
+data "aws_s3_object" "truststore_ext_cert" {
+  bucket = local.truststore_bucket_id
+  key    = var.ca_pem_filename
 }
 
 # Lifecycle Rules

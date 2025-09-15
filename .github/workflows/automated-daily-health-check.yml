@@ -1,4 +1,4 @@
-name: 'Daily Healthcheck Deploy, Test and Destroy'
+name: 'Z-AUTOMATED: Daily health check'
 
 on:
  schedule:
@@ -187,7 +187,7 @@ jobs:
     if: always()
     name: Destroy the Sandbox Environment from previous job
     needs: [ 'set_workspace', 'deploy_ui', 'deploy_all_lambdas' ]
-    uses: ./.github/workflows/terraform-destroy-environment-manual.yml
+    uses: ./.github/workflows/tear-down-sandbox.yml
     with:
       build_branch: main
       environment: development

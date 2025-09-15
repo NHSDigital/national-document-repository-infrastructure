@@ -69,6 +69,12 @@ variable "truststore_bucket_name" {
   default     = "ndr-truststore"
 }
 
+variable "ca_pem_filename" {
+  type        = string
+  description = "Filename of the CA Truststore pem file stored in the core Truststore s3 bucket"
+  default     = "ndr-truststore.pem"
+}
+
 # DynamoDB Table Variables
 
 variable "pdm_dynamodb_table_name" {
@@ -232,6 +238,9 @@ locals {
   current_account_id = data.aws_caller_identity.current.account_id
 
   apim_api_url = "https://${var.apim_environment}api.service.nhs.uk/national-document-repository"
+
+  truststore_bucket_id = local.is_sandbox ? "ndr-dev-${var.truststore_bucket_name}" : module.ndr-truststore[0].bucket_id
+  truststore_uri       = "s3://${local.truststore_bucket_id}/${var.ca_pem_filename}"
 }
 
 variable "nrl_api_endpoint_suffix" {
