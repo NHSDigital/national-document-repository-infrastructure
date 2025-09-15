@@ -1,4 +1,6 @@
-name: 'Z-AUTOMATED: Tear down - Sandbox'
+name: 'Z-CRON: Tear down - Sandbox'
+
+run-name: "${{ format('yyyy-MM-dd', github.event.timestamp) }}"
 
 on:
   schedule:

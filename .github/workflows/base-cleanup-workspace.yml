@@ -3,22 +3,18 @@ name: 'Z-BASE: Cleanup - Workspace'
 on:
   workflow_call:
     inputs:
-      build_branch:
-        description: 'Feature branch to push to sandbox.'
+      git_ref:
+        description: 'The branch, tag or SHA'
         required: true
-        type: 'string'
-      sandbox:
-        description: 'Which Sandbox to push to.'
+        type: string
+      sandbox_name:
+        description: 'The sandbox name'
         required: true
-        type: 'string'
+        type: string
       environment:
-        description: "Which environment should this run against"
+        description: "GitHub Environment name"
         required: true
-        type: "string"
-      python_version:
-        description: "Version of Python to run the cleanup script against"
-        required: true
-        type: "string"
+        type: string
     secrets:
       AWS_ASSUME_ROLE:
         required: true
@@ -35,10 +31,9 @@ jobs:
     steps:
       - name: Display client passed variables
         run: |
-          echo Python Version: ${{ inputs.python_version }}
-          echo Build Branch: ${{ inputs.build_branch }}
+          echo Sandbox name: ${{ inputs.sandbox_name }}
+          echo Git branch/tag/sha: ${{ inputs.git_ref }}
           echo Environment: ${{ inputs.environment }}
-          echo Sandbox: ${{ inputs.sandbox }}
 
   cleanup_process:
     name: Run Cleanup Versions script
@@ -50,13 +45,13 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: 'nhsconnect/national-document-repository-infrastructure'
-          ref: ${{ inputs.build_branch }}
+          ref: ${{ inputs.git_ref }}
           fetch-depth: '0'
 
-      - name: Set up Python ${{ inputs.python_version }}
+      - name: Set up Python 3.11
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ inputs.python_version }}
+          python-version: 3.11
 
       - name: Make virtual environment
         run: |
@@ -74,4 +69,4 @@ jobs:
 
       - name: Run Version Cleanup Script
         run: |
-          ./venv/bin/python3 scripts/cleanup_versions.py ${{ inputs.sandbox }}
+          ./venv/bin/python3 scripts/cleanup_versions.py ${{ inputs.sandbox_name }}

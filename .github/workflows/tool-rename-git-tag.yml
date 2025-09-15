@@ -1,16 +1,20 @@
 name: 'Tool: Rename Git Tag'
 
+run-name: "${{ format('yyyy-MM-dd', github.event.timestamp) }} | ${{ github.actor }} | ${{ github.event.inputs.old_tag }} -> ${{ github.event.inputs.new_tag }}"
+
 on:
   workflow_dispatch:
     inputs:
       old_tag:
-        description: 'Numerical only e.g. 1.0.0'
+        description: 'Existing tag'
         required: true
         type: 'string'
+        default: 1.0.0
       new_tag:
-        description: 'Numerical only e.g. 1.1.0'
+        description: 'Replacement tag'
         required: true
         type: 'string'
+        default: 1.1.0
 
 permissions:
   pull-requests: write
@@ -23,7 +27,6 @@ jobs:
     permissions: write-all
 
     steps:
-      
       - name: Checkout
         uses: actions/checkout@v5
         with:

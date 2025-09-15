@@ -3,25 +3,18 @@ name: 'Z-BASE: Cleanup - Lambda@Edge'
 on:
   workflow_call:
     inputs:
-      sandbox_workspace:
-        description: 'The sandbox workspace name'
+      git_ref:
+        description: 'The branch, tag or SHA'
+        required: true
+        type: string
+      sandbox_name:
+        description: 'The sandbox name'
         required: true
         type: string
       environment:
+        description: "GitHub Environment name"
         required: true
         type: string
-      lambda_function_name:
-        description: 'The sandbox workspace name'
-        required: true
-        type: string
-      python_version:
-        description: 'Version of Python to run the cleanup script against'
-        required: true
-        type: 'string'
-      build_branch:
-        description: 'Feature branch to push to sandbox.'
-        required: true
-        type: 'string'
     secrets:
       AWS_ASSUME_ROLE:
         required: true
@@ -39,23 +32,21 @@ jobs:
     steps:
       - name: Display passed variables
         run: |
-          echo Python Version: ${{ inputs.python_version }}
-          echo Build Branch: ${{ inputs.build_branch }}
+          echo Sandbox name: ${{ inputs.sandbox_name }}
+          echo Git branch/tag/sha: ${{ inputs.git_ref }}
           echo Environment: ${{ inputs.environment }}
-          echo Sandbox: ${{ inputs.sandbox_workspace }}
-          echo Lambda Function Name: ${{ inputs.lambda_function_name }}
 
       - name: Checkout
         uses: actions/checkout@v5
         with:
           repository: 'nhsconnect/national-document-repository-infrastructure'
-          ref: ${{ inputs.build_branch }}
+          ref: ${{ inputs.git_ref }}
           fetch-depth: '0'
 
-      - name: Set up Python ${{ inputs.python_version }}
+      - name: Set up Python 3.11
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ inputs.python_version }}
+          python-version: 3.11
 
       - name: Configure AWS Credentials for ${{ vars.AWS_REGION }}
         uses: aws-actions/configure-aws-credentials@v5
@@ -69,11 +60,11 @@ jobs:
         id: cloudfront
         run: |
           aws cloudfront list-distributions > distributions.json
-          distribution_id=$(jq -r --arg origin_id "${{ inputs.sandbox_workspace }}-lloyd-george-store" \
+          distribution_id=$(jq -r --arg origin_id "${{ inputs.sandbox_name }}-lloyd-george-store" \
           '.DistributionList.Items[] | select(.Origins.Items[].Id==$origin_id) | .Id' distributions.json | head -n 1)
 
           if [ -z "$distribution_id" ]; then
-            echo "No distribution found for origin ID: ${{ inputs.sandbox_workspace }}-lloyd-george-store"
+            echo "No distribution found for origin ID: ${{ inputs.sandbox_name }}-lloyd-george-store"
           else
             echo "Distribution ID found: $distribution_id"
           fi
@@ -91,4 +82,4 @@ jobs:
         run: ./venv/bin/python3 -u scripts/remove_edge_associations.py
         env:
           DISTRIBUTION_ID: ${{ env.DISTRIBUTION_ID }}
-          LAMBDA_FUNCTION_NAME: ${{ inputs.lambda_function_name }}
+          LAMBDA_FUNCTION_NAME: "${{ inputs.sandbox_name }}_EdgePresignLambda"
