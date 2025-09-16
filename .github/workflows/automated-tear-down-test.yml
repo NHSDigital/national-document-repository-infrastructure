@@ -86,7 +86,7 @@ jobs:
         run: |
           BACKUP_VAULT_EXISTS=$(aws backup list-backup-vaults \
             --region eu-west-2 \
-            --query "BackupVaultList[?BackupVaultName=='${{ matrix.sandbox-name }}_backup_vault'] \
+            --query "BackupVaultList[?BackupVaultName=='${{ matrix.sandbox-name }}_backup_vault']" \
             --output text)
 
           if [ -z "$BACKUP_VAULT_EXISTS" ]; then
