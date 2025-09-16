@@ -1,10 +1,12 @@
 name: "Deploy - Pre-prod"
 
+run-name: "${{ github.event.inputs.branch_or_tag }}"
+
 on:
   workflow_dispatch:
     inputs:
       branch_or_tag:
-        description: "Which branch or tag do you want to deploy to pre-prod?"
+        description: "Branch or tag to deploy"
         required: true
         type: string
         default: main

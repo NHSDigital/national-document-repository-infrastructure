@@ -1,20 +1,16 @@
-# .github/workflows/terraform-dev
 name: "Deploy - Sandbox"
+
+run-name: "${{ github.event.inputs.git_ref }} | ${{ github.event.inputs.sandbox_name }}"
 
 on:
   workflow_dispatch:
     inputs:
-      buildBranch:
-        description: "Feature branch to push to sandbox."
+      git_ref:
+        description: "Branch, tag or SHA to deploy"
         required: true
         type: "string"
-      sandboxWorkspace:
-        description: "Which Sandbox to push to."
-        required: true
-        type: "string"
-      environment:
-        default: "development"
-        description: "Which environment should this run against"
+      sandbox_name:
+        description: "Sandbox name [a-z0-9]{1,9}"
         required: true
         type: "string"
 
@@ -26,9 +22,18 @@ permissions:
 jobs:
   terraform_process:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+    environment: development
 
     steps:
+      - name: Validate inputs
+        run: |
+          if ! [[ "$SANDBOX_NAME" =~ ^[a-z0-9]{1,9}$ ]]; then
+            echo "Sandbox name must match [a-z0-9]{1,9} (lowercase letters and digits only, 1-9 chars)."
+            exit 1
+          fi
+        env:
+          SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
+
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout Base
         uses: actions/checkout@v5
@@ -61,7 +66,7 @@ jobs:
 
       - name: Terraform Set Workspace Base
         id: base_workspace
-        run: terraform workspace select -or-create ${{ github.event.inputs.sandboxWorkspace}}
+        run: terraform workspace select -or-create ${{ github.event.inputs.sandbox_name}}
         working-directory: ./infrastructure
         shell: bash
 
@@ -79,7 +84,7 @@ jobs:
       - name: Checkout Branch
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.inputs.buildBranch}}
+          ref: ${{ github.event.inputs.git_ref}}
 
         # Checks that all Terraform configuration files adhere to a canonical format.
       - name: Terraform Format
@@ -94,7 +99,7 @@ jobs:
 
       - name: Terraform Set Workspace
         id: workspace
-        run: terraform workspace select ${{ github.event.inputs.sandboxWorkspace}}
+        run: terraform workspace select ${{ github.event.inputs.sandbox_name}}
         working-directory: ./infrastructure
         shell: bash
 

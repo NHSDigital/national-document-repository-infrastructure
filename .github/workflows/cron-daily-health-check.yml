@@ -1,8 +1,8 @@
-name: 'Z-AUTOMATED: Daily health check'
+name: 'Z-CRON: Daily health check'
 
 on:
- schedule:
-   - cron: 30 4 * * 1-5
+  schedule:
+    - cron: 30 4 * * 1-5
 
 permissions:
   pull-requests: write
@@ -189,9 +189,7 @@ jobs:
     needs: [ 'set_workspace', 'deploy_ui', 'deploy_all_lambdas' ]
     uses: ./.github/workflows/tear-down-sandbox.yml
     with:
-      build_branch: main
+      git_ref: main
+      sandbox_name: ${{ needs.set_workspace.outputs.workspace }}
       environment: development
-      sandbox_workspace: ${{ needs.set_workspace.outputs.workspace }}
-      terraform_vars: dev.tfvars
-      backend: backend.conf
     secrets: inherit
