@@ -34,7 +34,7 @@ resource "aws_api_gateway_integration" "post_doc_fhir_lambda_integration" {
   http_method             = "POST"
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = module.post-document-references-fhir-lambda.invoke_arn
+  uri                     = module.post_document_references_fhir_lambda.invoke_arn
 
   depends_on = [module.fhir_document_reference_mtls_gateway]
 
@@ -43,7 +43,7 @@ resource "aws_api_gateway_integration" "post_doc_fhir_lambda_integration" {
 resource "aws_lambda_permission" "lambda_permission_post_mtls_api" {
   statement_id  = "AllowAPImTLSGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = module.post-document-references-fhir-lambda.lambda_arn
+  function_name = module.post_document_references_fhir_lambda.lambda_arn
   principal     = "apigateway.amazonaws.com"
   # The "/*/*" portion grants access from any method on any resource
   # within the API Gateway REST API.

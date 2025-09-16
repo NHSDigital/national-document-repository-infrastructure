@@ -12,13 +12,13 @@ module "create_document_reference_gateway" {
 
 module "create_doc_alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.create-doc-ref-lambda.function_name
-  lambda_timeout       = module.create-doc-ref-lambda.timeout
+  lambda_function_name = module.create_doc_ref_lambda.function_name
+  lambda_timeout       = module.create_doc_ref_lambda.timeout
   lambda_name          = "create_document_reference_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.create_doc_alarm_topic.arn]
   ok_actions           = [module.create_doc_alarm_topic.arn]
-  depends_on           = [module.create-doc-ref-lambda, module.create_doc_alarm_topic]
+  depends_on           = [module.create_doc_ref_lambda, module.create_doc_alarm_topic]
 }
 
 
@@ -27,7 +27,7 @@ module "create_doc_alarm_topic" {
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_name            = "create_doc-alarms-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.create-doc-ref-lambda.lambda_arn
+  topic_endpoint        = module.create_doc_ref_lambda.lambda_arn
   depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",

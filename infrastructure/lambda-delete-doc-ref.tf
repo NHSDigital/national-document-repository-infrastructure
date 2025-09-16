@@ -12,13 +12,13 @@ module "delete-doc-ref-gateway" {
 
 module "delete_doc_alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.delete-doc-ref-lambda.function_name
-  lambda_timeout       = module.delete-doc-ref-lambda.timeout
+  lambda_function_name = module.delete_doc_ref_lambda.function_name
+  lambda_timeout       = module.delete_doc_ref_lambda.timeout
   lambda_name          = "delete_document_reference_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.delete_doc_alarm_topic.arn]
   ok_actions           = [module.delete_doc_alarm_topic.arn]
-  depends_on           = [module.delete-doc-ref-lambda, module.delete_doc_alarm_topic]
+  depends_on           = [module.delete_doc_ref_lambda, module.delete_doc_alarm_topic]
 }
 
 module "delete_doc_alarm_topic" {
@@ -26,7 +26,7 @@ module "delete_doc_alarm_topic" {
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_name            = "delete_doc-alarms-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.delete-doc-ref-lambda.lambda_arn
+  topic_endpoint        = module.delete_doc_ref_lambda.lambda_arn
   depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",

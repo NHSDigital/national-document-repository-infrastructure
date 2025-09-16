@@ -1,12 +1,12 @@
 module "generate-document-manifest-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.generate-document-manifest-lambda.function_name
-  lambda_timeout       = module.generate-document-manifest-lambda.timeout
+  lambda_function_name = module.generate_document_manifest_lambda.function_name
+  lambda_timeout       = module.generate_document_manifest_lambda.timeout
   lambda_name          = "generate_document_manifest_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.generate-document-manifest-alarm-topic.arn]
   ok_actions           = [module.generate-document-manifest-alarm-topic.arn]
-  depends_on           = [module.generate-document-manifest-lambda, module.generate-document-manifest-alarm-topic]
+  depends_on           = [module.generate_document_manifest_lambda, module.generate-document-manifest-alarm-topic]
 }
 
 module "generate-document-manifest-alarm-topic" {
@@ -14,7 +14,7 @@ module "generate-document-manifest-alarm-topic" {
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_name            = "generate-document-manifest-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.generate-document-manifest-lambda.lambda_arn
+  topic_endpoint        = module.generate_document_manifest_lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -36,7 +36,7 @@ module "generate-document-manifest-alarm-topic" {
     ]
   })
 
-  depends_on = [module.generate-document-manifest-lambda, module.sns_encryption_key]
+  depends_on = [module.generate_document_manifest_lambda, module.sns_encryption_key]
 }
 
 module "generate_document_manifest_lambda" {
@@ -100,7 +100,7 @@ resource "aws_iam_policy" "dynamodb_stream_manifest" {
 
 resource "aws_lambda_event_source_mapping" "dynamodb_stream_manifest" {
   event_source_arn  = module.zip_store_reference_dynamodb_table.dynamodb_stream_arn
-  function_name     = module.generate-document-manifest-lambda.lambda_arn
+  function_name     = module.generate_document_manifest_lambda.lambda_arn
   batch_size        = 1
   starting_position = "TRIM_HORIZON"
 

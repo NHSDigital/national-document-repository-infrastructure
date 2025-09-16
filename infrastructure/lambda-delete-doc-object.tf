@@ -1,7 +1,7 @@
 module "delete-document-object-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.delete-document-object-lambda.function_name
-  lambda_timeout       = module.delete-document-object-lambda.timeout
+  lambda_function_name = module.delete_document_object_lambda.function_name
+  lambda_timeout       = module.delete_document_object_lambda.timeout
   lambda_name          = "delete_document_object_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.delete-document-object-alarm-topic.arn]
@@ -13,7 +13,7 @@ module "delete-document-object-alarm-topic" {
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_name            = "delete-document-object-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.delete-document-object-lambda.lambda_arn
+  topic_endpoint        = module.delete_document_object_lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -87,7 +87,7 @@ resource "aws_iam_policy" "dynamodb_stream_delete_object_policy" {
 
 resource "aws_lambda_event_source_mapping" "lloyd_george_dynamodb_stream" {
   event_source_arn  = module.lloyd_george_reference_dynamodb_table.dynamodb_stream_arn
-  function_name     = module.delete-document-object-lambda.lambda_arn
+  function_name     = module.delete_document_object_lambda.lambda_arn
   batch_size        = 1
   starting_position = "LATEST"
 
@@ -108,7 +108,7 @@ resource "aws_lambda_event_source_mapping" "lloyd_george_dynamodb_stream" {
 
 resource "aws_lambda_event_source_mapping" "unstitched_lloyd_george_dynamodb_stream" {
   event_source_arn  = module.unstitched_lloyd_george_reference_dynamodb_table.dynamodb_stream_arn
-  function_name     = module.delete-document-object-lambda.lambda_arn
+  function_name     = module.delete_document_object_lambda.lambda_arn
   batch_size        = 1
   starting_position = "LATEST"
 
@@ -129,7 +129,7 @@ resource "aws_lambda_event_source_mapping" "unstitched_lloyd_george_dynamodb_str
 
 resource "aws_lambda_event_source_mapping" "document_reference_dynamodb_stream" {
   event_source_arn  = module.document_reference_dynamodb_table.dynamodb_stream_arn
-  function_name     = module.delete-document-object-lambda.lambda_arn
+  function_name     = module.delete_document_object_lambda.lambda_arn
   batch_size        = 1
   starting_position = "LATEST"
 

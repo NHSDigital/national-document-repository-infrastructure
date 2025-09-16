@@ -37,7 +37,7 @@ resource "aws_api_gateway_integration" "search_doc_fhir_lambda_integration" {
   http_method             = "GET"
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = module.search-document-references-fhir-lambda.invoke_arn
+  uri                     = module.search_document_references_fhir_lambda.invoke_arn
 
   depends_on = [module.fhir_document_reference_mtls_gateway]
 }
@@ -45,7 +45,7 @@ resource "aws_api_gateway_integration" "search_doc_fhir_lambda_integration" {
 resource "aws_lambda_permission" "lambda_permission_search_mtls_api" {
   statement_id  = "AllowMtlsApiGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = module.search-document-references-fhir-lambda.lambda_arn
+  function_name = module.search_document_references_fhir_lambda.lambda_arn
   principal     = "apigateway.amazonaws.com"
   # The "/*/*" portion grants access from any method on any resource
   # within the API Gateway REST API.

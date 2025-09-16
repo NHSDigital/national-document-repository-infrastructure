@@ -22,8 +22,8 @@ data "aws_iam_policy_document" "assume_role_policy_for_create_lambda" {
     principals {
       type = "AWS"
       identifiers = compact([
-        module.create-doc-ref-lambda.lambda_execution_role_arn,
-        local.is_production ? null : module.post-document-references-fhir-lambda.lambda_execution_role_arn
+        module.create_doc_ref_lambda.lambda_execution_role_arn,
+        local.is_production ? null : module.post_document_references_fhir_lambda.lambda_execution_role_arn
       ])
     }
   }
@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "assume_role_policy_for_stitch_lambda" {
 
     principals {
       type        = "AWS"
-      identifiers = [module.lloyd-george-stitch-lambda.lambda_execution_role_arn]
+      identifiers = [module.lloyd_george_stitch_lambda.lambda_execution_role_arn]
     }
   }
 }
@@ -140,7 +140,7 @@ data "aws_iam_policy_document" "assume_role_policy_for_get_doc_ref_lambda" {
 
     principals {
       type        = "AWS"
-      identifiers = [module.get-doc-fhir-lambda.lambda_execution_role_arn]
+      identifiers = [module.get_doc_fhir_lambda.lambda_execution_role_arn]
     }
   }
 }
