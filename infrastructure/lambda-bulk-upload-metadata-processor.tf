@@ -1,7 +1,7 @@
-module "v2-bulk-upload-metadata-lambda" {
+module "bulk-upload-metadata-processor-lambda" {
   source         = "./modules/lambda"
-  name           = "V2BulkUploadMetadataLambda"
-  handler        = "handlers.V2_bulk_upload_metadata_handler.lambda_handler"
+  name           = "BulkUploadMetadataProcessor"
+  handler        = "handlers.bulk_upload_metadata_processor_handler.lambda_handler"
   lambda_timeout = 900
   memory_size    = 1769
   iam_role_policy_documents = [
@@ -32,23 +32,23 @@ module "v2-bulk-upload-metadata-lambda" {
   is_invoked_from_gateway       = false
 }
 
-module "v2-bulk-upload-metadata-alarm" {
+module "bulk-upload-metadata-processor-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.v2-bulk-upload-metadata-lambda.function_name
-  lambda_timeout       = module.v2-bulk-upload-metadata-lambda.timeout
-  lambda_name          = "bulk_upload_metadata_handler"
+  lambda_function_name = module.bulk-upload-metadata-processor-lambda.function_name
+  lambda_timeout       = module.bulk-upload-metadata-processor-lambda.timeout
+  lambda_name          = "bulk_upload_metadata_processor_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.v2-bulk-upload-metadata-alarm-topic.arn]
-  ok_actions           = [module.v2-bulk-upload-metadata-alarm-topic.arn]
-  depends_on           = [module.v2-bulk-upload-metadata-lambda, module.v2-bulk-upload-metadata-alarm-topic]
+  alarm_actions        = [module.bulk-upload-metadata-processor-alarm-topic.arn]
+  ok_actions           = [module.bulk-upload-metadata-processor-alarm-topic.arn]
+  depends_on           = [module.bulk-upload-metadata-processor-lambda, module.bulk-upload-metadata-processor-alarm-topic]
 }
 
-module "v2-bulk-upload-metadata-alarm-topic" {
+module "bulk-upload-metadata-processor-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "v2-bulk-upload-metadata-topic"
+  topic_name            = "bulk-upload-metadata-processor-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.v2-bulk-upload-metadata-lambda.lambda_arn
+  topic_endpoint        = module.bulk-upload-metadata-processor-lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -70,5 +70,5 @@ module "v2-bulk-upload-metadata-alarm-topic" {
     ]
   })
 
-  depends_on = [module.v2-bulk-upload-metadata-lambda, module.sns_encryption_key]
+  depends_on = [module.bulk-upload-metadata-processor-lambda, module.sns_encryption_key]
 }
