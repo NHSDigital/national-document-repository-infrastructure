@@ -87,7 +87,7 @@ jobs:
             --output text)
 
           if [ -z "$BACKUP_VAULT_EXISTS" ]; then
-           exit 0
+            exit 0
           fi
 
           RECOVERY_POINTS=$(aws backup list-recovery-points-by-backup-vault \
