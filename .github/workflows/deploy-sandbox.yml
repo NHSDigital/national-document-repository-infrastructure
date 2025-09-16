@@ -27,12 +27,12 @@ jobs:
     steps:
       - name: Validate inputs
         run: |
-          if ! [[ "$SANDBOX_WORKSPACE" =~ ^[a-z0-9]{1,9}$ ]]; then
+          if ! [[ "$SANDBOX_NAME" =~ ^[a-z0-9]{1,9}$ ]]; then
             echo "Sandbox name must match [a-z0-9]{1,9} (lowercase letters and digits only, 1-9 chars)."
             exit 1
           fi
         env:
-          SANDBOX_WORKSPACE: ${{ github.event.inputs.sandbox_name }}
+          SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
 
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout Base
