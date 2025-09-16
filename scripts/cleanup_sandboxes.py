@@ -16,11 +16,9 @@ def trigger_delete_workflow(token: str, sandbox: str):
     }
 
     inputs = {
-        "build_branch": "main",
-        "sandbox_workspace": sandbox,
-        "terraform_vars": "dev.tfvars",
+        "git_ref": "main",
+        "sandbox_name": sandbox,
         "environment": "development",
-        "backend": "backend.conf",
     }
 
     resp = requests.post(
@@ -43,7 +41,9 @@ def get_workspaces() -> list[str]:
             if not name:
                 print("Failed to extract TF workspace from AppConfig application")
                 sys.exit(1)
-            workspaces.append(name.replace("RepositoryConfiguration-", ""))
+            
+            if name.startswith("RepositoryConfiguration-"):
+                workspaces.append(name.replace("RepositoryConfiguration-", ""))
         return workspaces
     except ClientError as e:
         print(f"Failed to extract TF workspace from AppConfig applications: {str(e)}")
