@@ -78,12 +78,21 @@ jobs:
 
       - name: Pre-cleanup AWS Backup Recovery Points
         run: |
+          BACKUP_VAULT_EXISTS=$(aws backup list-backup-vaults \
+            --region eu-west-2 \
+            --query "BackupVaultList[?BackupVaultName=='${{ matrix.sandbox-name }}_backup_vault']" \
+            --output text)
+
+          if [ -z "$BACKUP_VAULT_EXISTS" ]; then
+            exit 0
+          fi
+
           RECOVERY_POINTS=$(aws backup list-recovery-points-by-backup-vault \
             --backup-vault-name ${{ matrix.sandbox-name }}_backup_vault \
             --region eu-west-2 \
             --query 'RecoveryPoints[*].RecoveryPointArn' \
             --output text)
-      
+
           for ARN in $RECOVERY_POINTS; do
             echo "Deleting recovery point: $ARN"
             aws backup delete-recovery-point \
