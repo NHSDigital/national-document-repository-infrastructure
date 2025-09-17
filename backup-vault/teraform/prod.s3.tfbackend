@@ -1,4 +1,5 @@
 bucket          = "ndr-backup-terraform-state"
+dynamodb_table = "ndr-backup-terraform-lock"
 region          = "eu-west-2"
 key             = "backup/terraform.tfstate"
 encrypt         = true
