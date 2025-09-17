@@ -65,7 +65,7 @@ resource "aws_appautoscaling_target" "ndr_ecs_service_autoscale_target" {
     Environment = var.environment
     Workspace   = terraform.workspace
   }
-  count = !var.is_autoscaling_needed ? 0 : 1
+  count = 1
 
 }
 
