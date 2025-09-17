@@ -86,7 +86,7 @@ resource "aws_appautoscaling_policy" "ndr_ecs_service_autoscale_up" {
       scaling_adjustment          = 1
     }
   }
-  count = local.is_sandbox || !var.is_autoscaling_needed ? 0 : 1
+  count = 1
 }
 
 resource "aws_appautoscaling_policy" "ndr_ecs_service_autoscale_down" {
@@ -106,5 +106,5 @@ resource "aws_appautoscaling_policy" "ndr_ecs_service_autoscale_down" {
       scaling_adjustment          = -1
     }
   }
-  count = local.is_sandbox || !var.is_autoscaling_needed ? 0 : 1
+  count = 1
 }
