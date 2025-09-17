@@ -1,5 +1,5 @@
 resource "aws_ecs_service" "ndr_ecs_service" {
-  count           = var.is_service_needed ? 1 : 0
+  count           = 1
   name            = var.ecs_cluster_service_name
   cluster         = aws_ecs_cluster.ndr_ecs_cluster.id
   task_definition = aws_ecs_task_definition.ndr_ecs_task.arn
