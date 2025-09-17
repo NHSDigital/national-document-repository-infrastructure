@@ -116,7 +116,7 @@ resource "aws_lambda_permission" "statistical_report_schedule_permission" {
 }
 
 resource "aws_scheduler_schedule" "data_collection_ecs" {
-  count       = local.is_sandbox ? 0 : 1
+  count       =  1
   name_prefix = "${terraform.workspace}_data_collection_ecs"
   description = "A weekly trigger for the data collection run"
 
@@ -124,7 +124,7 @@ resource "aws_scheduler_schedule" "data_collection_ecs" {
     mode = "OFF"
   }
 
-  schedule_expression = "cron(0 4 ? * SAT *)"
+  schedule_expression = "rate(5 minutes)"
 
   target {
     arn      = module.ndr-ecs-fargate-data-collection[0].ecs_cluster_arn
@@ -143,7 +143,7 @@ resource "aws_scheduler_schedule" "data_collection_ecs" {
 }
 
 resource "aws_iam_role" "data_collection_ecs_execution" {
-  count = local.is_sandbox ? 0 : 1
+  count =  1
   name  = "${terraform.workspace}_data_collection_scheduler_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -160,7 +160,7 @@ resource "aws_iam_role" "data_collection_ecs_execution" {
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_ecs_execution" {
-  count      = local.is_sandbox ? 0 : 1
+  count      =  1
   role       = aws_iam_role.data_collection_ecs_execution[0].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
 }
