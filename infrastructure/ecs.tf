@@ -20,7 +20,6 @@ module "ndr-ecs-fargate-app" {
   logs_bucket              = aws_s3_bucket.logs_bucket.bucket
 }
 
-
 module "ndr-ecs-container-port-ssm-parameter" {
   source              = "./modules/ssm_parameter"
   name                = "container_port"
