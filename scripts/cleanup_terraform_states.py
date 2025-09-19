@@ -47,18 +47,6 @@ class CleanupTerraformStates:
                 )
             print("All object versions deleted.")
 
-    def delete_record_in_dynamo(self, tf_bucket: str, file_key: str):
-        print(f"Deleting sandbox tfstate DynamoDB record")
-        table_name = "ndr-terraform-locks"
-        lock_id = f'{tf_bucket}/{file_key}-md5'
-
-        self.dynamo_client.delete_item(
-            TableName=table_name,
-            Key={'LockID': {'S': lock_id}},
-            ConditionExpression="attribute_exists(LockID)"
-        )
-        print("DynamoDB record deleted successfully")
-
 
     def main(self, sandbox: str):
         tf_bucket = self.get_terraform_bucket()
@@ -71,7 +59,6 @@ class CleanupTerraformStates:
                 if parent_folder == sandbox:
                     folder_prefix = f"{self.env_folder}{parent_folder}/"
                     self.remove_object_versions(tf_bucket=tf_bucket, folder_prefix=folder_prefix)
-                    self.delete_record_in_dynamo(tf_bucket, key)
 
 if __name__ == '__main__':
     sandbox = sys.argv[1]
