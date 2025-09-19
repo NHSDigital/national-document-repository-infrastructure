@@ -45,6 +45,7 @@ module "mns-notification-alarm" {
 }
 
 module "mns-notification-alarm-topic" {
+  count                 = 1
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_name            = "mns-notification-topic"
