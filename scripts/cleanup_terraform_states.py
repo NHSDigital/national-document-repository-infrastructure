@@ -8,7 +8,6 @@ class CleanupTerraformStates:
     def __init__(self):
         self.env_folder = "env:/"
         self.s3_client = boto3.client("s3")
-        self.dynamo_client = boto3.client("dynamodb")
         self.objects_paginator = self.s3_client.get_paginator('list_objects_v2')
         self.object_versions_paginator = self.s3_client.get_paginator('list_object_versions')
 
