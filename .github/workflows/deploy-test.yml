@@ -1,11 +1,12 @@
-# .github/workflows/terraform-dev
 name: "Deploy - Test"
+
+run-name: "${{ github.event.inputs.git_ref }}"
 
 on:
   workflow_dispatch:
     inputs:
-      build_branch:
-        description: "Feature branch to push to test?"
+      git_ref:
+        description: "Branch, tag or SHA to deploy"
         required: true
         type: "string"
 
@@ -24,7 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.inputs.build_branch}}
+          ref: ${{ github.event.inputs.git_ref}}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5

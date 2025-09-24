@@ -1,4 +1,4 @@
-name: 'Z-AUTOMATED: Tear down - Sandbox'
+name: 'Z-CRON: Tear down - Sandbox'
 
 on:
   schedule:

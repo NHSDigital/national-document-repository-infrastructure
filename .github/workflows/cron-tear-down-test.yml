@@ -1,4 +1,4 @@
-name: 'Z-AUTOMATED: Tear down - Test'
+name: 'Z-CRON: Tear down - Test'
 
 on:
   schedule:
@@ -14,10 +14,8 @@ jobs:
     name: Remove Lambda@Edge Associations
     uses: ./.github/workflows/base-cleanup-lambda-edge.yml
     with:
-      sandbox_workspace: ndr-test
-      lambda_function_name: 'ndr-test_EdgePresignLambda'
-      python_version: 3.11
-      build_branch: main
+      git_ref: main
+      sandbox_name: ndr-test
       environment: test
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
@@ -26,10 +24,9 @@ jobs:
     name: Cleanup Versions Process
     uses: ./.github/workflows/base-cleanup-workspace.yml
     with:
-      build_branch: main
-      sandbox: ndr-test
+      git_ref: main
+      sandbox_name: ndr-test
       environment: test
-      python_version: 3.11
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
@@ -81,12 +78,21 @@ jobs:
 
       - name: Pre-cleanup AWS Backup Recovery Points
         run: |
+          BACKUP_VAULT_EXISTS=$(aws backup list-backup-vaults \
+            --region eu-west-2 \
+            --query "BackupVaultList[?BackupVaultName=='${{ matrix.sandbox-name }}_backup_vault']" \
+            --output text)
+
+          if [ -z "$BACKUP_VAULT_EXISTS" ]; then
+            exit 0
+          fi
+
           RECOVERY_POINTS=$(aws backup list-recovery-points-by-backup-vault \
             --backup-vault-name ${{ matrix.sandbox-name }}_backup_vault \
             --region eu-west-2 \
             --query 'RecoveryPoints[*].RecoveryPointArn' \
             --output text)
-      
+
           for ARN in $RECOVERY_POINTS; do
             echo "Deleting recovery point: $ARN"
             aws backup delete-recovery-point \
