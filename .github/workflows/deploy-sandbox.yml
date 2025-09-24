@@ -20,6 +20,22 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
+  validate--inputs:
+    runs-on: ubuntu-latest
+    environment: development
+
+    steps:
+      - name: Validate inputs
+        run: |
+          if ! [[ "$SANDBOX_NAME" =~ ^[a-z0-9]{1,9}$ ]]; then
+            echo "Sandbox name must match [a-z0-9]{1,9} (lowercase letters and digits only, 1-9 chars)."
+            exit 1
+          fi
+        env:
+          SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
+
+  terraform--main:
+    runs-on: ubuntu-latest
   terraform_process:
     runs-on: ubuntu-latest
     environment: development
