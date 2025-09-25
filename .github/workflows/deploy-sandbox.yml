@@ -41,8 +41,9 @@ jobs:
       workspace: ${{ github.event.inputs.sandbox_name }}
       branch: main
       environment: development
-      role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
       aws-region: ${{ vars.AWS_REGION }}
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   terraform_process--branch:
     if: ${{ github.event.inputs.git_ref != 'main' }}
@@ -52,8 +53,9 @@ jobs:
       workspace: ${{ github.event.inputs.sandbox_name }}
       branch: ${{ github.event.inputs.git_ref }}
       environment: development
-      role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
       aws-region: ${{ vars.AWS_REGION }}
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
   # terraform_process--main:
   #   runs-on: ubuntu-latest
   #   needs: validate_inputs
