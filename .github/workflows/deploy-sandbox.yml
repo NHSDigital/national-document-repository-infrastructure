@@ -36,17 +36,17 @@ jobs:
 
   terraform_process--main:
     needs: validate_inputs
-    uses: ./.github/workflows/_deploy.yml
+    uses: ./.github/workflows/base-deploy-workspace.yml
     with:
-      workspace: ${{ env.SANDBOX_NAME }}
+      workspace: ${{ github.event.inputs.sandbox_name }}
       branch: main
 
   terraform_process--branch:
     if: ${{ github.event.inputs.git_ref != 'main' }}
-    needs: validate_inputs
-    uses: ./.github/workflows/_deploy.yml
+    needs: terraform_process--main
+    uses: ./.github/workflows/base-deploy-workspace.yml
     with:
-      workspace: ${{ env.SANDBOX_NAME }}
+      workspace: ${{ github.event.inputs.sandbox_name }}
       branch: ${{ github.event.inputs.git_ref }}
   # terraform_process--main:
   #   runs-on: ubuntu-latest
