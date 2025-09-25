@@ -1,0 +1,68 @@
+on:
+  workflow_call:
+    inputs:
+      workspace:
+        description: The terraform workspace being deployed.
+        type: string
+        required: true
+      branch:
+        description: The branch to be deployed.
+        type: string
+        required: true
+      environment:
+        description: The environment to deploy to.
+        type: string
+        required: true
+
+permissions:
+  pull-requests: write
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+env:
+  WORKSPACE: ${{ inputs.workspace }}
+  BRANCH: ${{ inputs.branch }}
+  ENVIRONMENT: ${{ inputs.environment }}
+
+jobs:
+  terraform--init:
+    runs-on: ubuntu-latest
+    environment: ${{ env.ENVIRONMENT }}
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.BRANCH }}
+
+      - name: Configure AWS
+        uses: ./.github/actions/aws-setup
+
+      - name: Configure Terraform
+        uses: ./.github/actions/terraform
+
+      - name: Terraform Init
+        id: terraform_init
+        run: terraform init -backend-config=backend.conf
+        working-directory: ./infrastructure
+        shell: bash
+
+  terraform--workspace:
+    runs-on: ubuntu-latest
+    environment: ${{ env.ENVIRONMENT }}
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.BRANCH }}
+
+      - name: Configure AWS
+        uses: ./.github/actions/aws-setup
+
+      - name: Configure Terraform
+        uses: ./.github/actions/terraform
+
+      - name: Terraform Set Workspace
+        id: terraform_workspace
+        run: terraform workspace select -or-create ${{ env.WORKSPACE }}
+        working-directory: ./infrastructure
+        shell: bash

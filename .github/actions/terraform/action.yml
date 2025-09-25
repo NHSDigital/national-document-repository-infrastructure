@@ -1,0 +1,11 @@
+name: Setup Terraform
+description: Terraform setup
+runs:
+  using: composite
+  steps:
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.13.3
+        terraform_wrapper: false

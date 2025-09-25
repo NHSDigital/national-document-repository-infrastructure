@@ -1,0 +1,16 @@
+name: Setup AWS
+description: Assume role
+runs:
+  using: composite
+  steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v5
+      with:
+        role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+        aws-region: ${{ vars.AWS_REGION }}
+        role-skip-session-tagging: true
+        mask-aws-account-id: true
+
+    - name: View AWS Role
+      run: aws sts get-caller-identity
+      shell: bash
