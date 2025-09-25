@@ -22,9 +22,9 @@ permissions:
   contents: read # This is required for actions/checkout
 
 env:
-  WORKSPACE: ${{ inputs.workspace }}
-  BRANCH: ${{ inputs.branch }}
-  ENVIRONMENT: ${{ inputs.environment }}
+  WORKSPACE: ${{ github.event.inputs.workspace }}
+  BRANCH: ${{ github.event.inputs.branch }}
+  ENVIRONMENT: ${{ github.event.inputs.environment }}
 
 jobs:
   terraform--init:
