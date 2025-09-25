@@ -21,20 +21,15 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
 
-env:
-  WORKSPACE: ${{ github.event.inputs.workspace }}
-  BRANCH: ${{ github.event.inputs.branch }}
-  ENVIRONMENT: ${{ github.event.inputs.environment }}
-
 jobs:
   terraform--init:
     runs-on: ubuntu-latest
-    environment: ${{ env.ENVIRONMENT }}
+    environment: ${{ github.event.inputs.branch }}
     steps:
       - name: Checkout branch
         uses: actions/checkout@v5
         with:
-          ref: ${{ env.BRANCH }}
+          ref: ${{ github.event.inputs.branch }}
 
       - name: Configure AWS
         uses: ./.github/actions/aws-setup
@@ -50,12 +45,12 @@ jobs:
 
   terraform--workspace:
     runs-on: ubuntu-latest
-    environment: ${{ env.ENVIRONMENT }}
+    environment: ${{ github.event.inputs.branch }}
     steps:
       - name: Checkout branch
         uses: actions/checkout@v5
         with:
-          ref: ${{ env.BRANCH }}
+          ref: ${{ github.event.inputs.branch }}
 
       - name: Configure AWS
         uses: ./.github/actions/aws-setup
@@ -65,6 +60,6 @@ jobs:
 
       - name: Terraform Set Workspace
         id: terraform_workspace
-        run: terraform workspace select -or-create ${{ env.WORKSPACE }}
+        run: terraform workspace select -or-create ${{ github.event.inputs.workspace }}
         working-directory: ./infrastructure
         shell: bash
