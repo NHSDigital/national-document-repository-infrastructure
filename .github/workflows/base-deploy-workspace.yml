@@ -15,6 +15,14 @@ on:
         description: The environment to deploy to.
         type: string
         required: true
+      role-to-assume:
+        type: string
+        description: "The IAM role to assume"
+        required: true
+      aws-region:
+        description: "AWS region"
+        type: string
+        required: true
 
 permissions:
   pull-requests: write
@@ -33,6 +41,9 @@ jobs:
 
       - name: Configure AWS
         uses: ./.github/actions/aws-setup
+        with:
+          role-to-assume: ${{ github.event.inputs.role-to-assume }}
+          aws-region: ${{ github.event.inputs.AWS_REGION }}
 
       - name: Configure Terraform
         uses: ./.github/actions/terraform
@@ -54,6 +65,9 @@ jobs:
 
       - name: Configure AWS
         uses: ./.github/actions/aws-setup
+        with:
+          role-to-assume: ${{ github.event.inputs.role-to-assume }}
+          aws-region: ${{ github.event.inputs.AWS_REGION }}
 
       - name: Configure Terraform
         uses: ./.github/actions/terraform
