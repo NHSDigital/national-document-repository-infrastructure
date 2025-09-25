@@ -35,7 +35,7 @@ jobs:
           SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
 
       # Checkout the repository to the GitHub Actions runner
-      - name: Checkout Base
+      - name: Checkout main
         uses: actions/checkout@v5
         with:
           ref: main
@@ -58,58 +58,64 @@ jobs:
           terraform_version: 1.13.3
           terraform_wrapper: false
 
-      - name: Terraform Init Base
-        id: base_init
+      - name: Terraform Init main
+        id: main_init
         run: terraform init -backend-config=backend.conf
         working-directory: ./infrastructure
         shell: bash
 
-      - name: Terraform Set Workspace Base
-        id: base_workspace
+      - name: Terraform Set Workspace
+        id: main_workspace
         run: terraform workspace select -or-create ${{ github.event.inputs.sandbox_name}}
         working-directory: ./infrastructure
         shell: bash
 
-      - name: Terraform Plan Base
-        id: base_plan
+      - name: Terraform Plan main
+        id: main_plan
         run: |
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf-base.plan
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf-main.plan
         working-directory: ./infrastructure
         shell: bash
 
-      - name: Terraform Apply Base
-        run: terraform apply -auto-approve -input=false tf-base.plan
+      - name: Terraform Apply main
+        run: terraform apply -auto-approve -input=false tf-main.plan
         working-directory: ./infrastructure
 
       - name: Checkout Branch
+        if: ${{ github.event.inputs.git_ref != 'main' }}
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.inputs.git_ref}}
 
         # Checks that all Terraform configuration files adhere to a canonical format.
-      - name: Terraform Format
+      - name: Terraform Format Branch
+        if: ${{ github.event.inputs.git_ref != 'main' }}
         run: terraform fmt -check
         working-directory: ./infrastructure
 
-      - name: Terraform Init
+      - name: Terraform Init Branch
+        if: ${{ github.event.inputs.git_ref != 'main' }}
         id: init
         run: terraform init -backend-config=backend.conf
         working-directory: ./infrastructure
         shell: bash
 
       - name: Terraform Set Workspace
+        if: ${{ github.event.inputs.git_ref != 'main' }}
         id: workspace
         run: terraform workspace select ${{ github.event.inputs.sandbox_name}}
         working-directory: ./infrastructure
         shell: bash
 
-      - name: Terraform Plan
+      - name: Terraform Plan Branch
+        if: ${{ github.event.inputs.git_ref != 'main' }}
         id: plan
         run: |
           terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
         working-directory: ./infrastructure
         shell: bash
 
-      - name: Terraform Apply
+      - name: Terraform Apply Branch (over main)
+        if: ${{ github.event.inputs.git_ref != 'main' }}
         run: terraform apply -auto-approve -input=false tf.plan
         working-directory: ./infrastructure
