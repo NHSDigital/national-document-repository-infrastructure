@@ -20,7 +20,7 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
-  validate--inputs:
+  validate_inputs:
     runs-on: ubuntu-latest
     environment: development
 
@@ -34,9 +34,9 @@ jobs:
         env:
           SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
 
-  terraform-process--main:
+  terraform_process--main:
     runs-on: ubuntu-latest
-    needs: validate--inputs
+    needs: validate_inputs
     environment: development
 
     steps:
@@ -87,9 +87,9 @@ jobs:
         run: terraform apply -auto-approve -input=false tf-main.plan
         working-directory: ./infrastructure
 
-  terraform-process--branch:
+  terraform_process--branch:
     runs-on: ubuntu-latest
-    needs: terraform-process--main
+    needs: terraform_process--main
     environment: development
 
     steps:
