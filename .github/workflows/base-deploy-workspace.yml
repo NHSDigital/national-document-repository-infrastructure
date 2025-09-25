@@ -43,7 +43,7 @@ jobs:
         uses: ./.github/actions/aws-setup
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          aws-region: ${{ github.event.inputs.AWS_REGION }}
+          aws-region: ${{ github.event.inputs.aws-region }}
 
       - name: Configure Terraform
         uses: ./.github/actions/terraform
@@ -67,7 +67,7 @@ jobs:
         uses: ./.github/actions/aws-setup
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          aws-region: ${{ github.event.inputs.AWS_REGION }}
+          aws-region: ${{ github.event.inputs.aws-region }}
 
       - name: Configure Terraform
         uses: ./.github/actions/terraform
