@@ -88,6 +88,7 @@ jobs:
         working-directory: ./infrastructure
 
   terraform_process--branch:
+    if: ${{ github.event.inputs.git_ref != 'main' }}
     runs-on: ubuntu-latest
     needs: terraform_process--main
     environment: development
@@ -111,33 +112,28 @@ jobs:
           terraform_wrapper: false
 
       - name: Checkout Branch
-        if: ${{ github.event.inputs.git_ref != 'main' }}
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.inputs.git_ref}}
 
         # Checks that all Terraform configuration files adhere to a canonical format.
       - name: Terraform Format Branch
-        if: ${{ github.event.inputs.git_ref != 'main' }}
         run: terraform fmt -check
         working-directory: ./infrastructure
 
       - name: Terraform Init Branch
-        if: ${{ github.event.inputs.git_ref != 'main' }}
         id: init
         run: terraform init -backend-config=backend.conf
         working-directory: ./infrastructure
         shell: bash
 
       - name: Terraform Set Workspace
-        if: ${{ github.event.inputs.git_ref != 'main' }}
         id: workspace
         run: terraform workspace select ${{ github.event.inputs.sandbox_name}}
         working-directory: ./infrastructure
         shell: bash
 
       - name: Terraform Plan Branch
-        if: ${{ github.event.inputs.git_ref != 'main' }}
         id: plan
         run: |
           terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
@@ -145,6 +141,5 @@ jobs:
         shell: bash
 
       - name: Terraform Apply Branch (over main)
-        if: ${{ github.event.inputs.git_ref != 'main' }}
         run: terraform apply -auto-approve -input=false tf.plan
         working-directory: ./infrastructure
