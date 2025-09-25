@@ -10,7 +10,7 @@ on:
         required: true
         type: "string"
       sandbox_name:
-        description: "Sandbox name [a-z0-9]{1,9}"
+        description: "Sandbox name [a-z0-9]{1,8}"
         required: true
         type: "string"
 
@@ -27,8 +27,8 @@ jobs:
     steps:
       - name: Validate inputs
         run: |
-          if ! [[ "$SANDBOX_NAME" =~ ^[a-z0-9]{1,9}$ ]]; then
-            echo "Sandbox name must match [a-z0-9]{1,9} (lowercase letters and digits only, 1-9 chars)."
+          if ! [[ "$SANDBOX_NAME" =~ ^[a-z0-9]{1,8}$ ]]; then
+            echo "Sandbox name must match [a-z0-9]{1,8} (lowercase letters and digits only, 1-8 chars)."
             exit 1
           fi
         env:
