@@ -64,6 +64,7 @@ jobs:
       branch: ${{ github.event.inputs.git_ref }}
       environment: development
       aws-region: ${{ vars.AWS_REGION }}
+      tf-vars: ${{ vars.TF_VARS_FILE }}
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
   # terraform_process--main:

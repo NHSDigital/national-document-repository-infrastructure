@@ -19,6 +19,10 @@ on:
         description: AWS region
         type: string
         required: true
+      tf-vars:
+        description: TF vars file
+        type: string
+        required: true
     secrets:
       AWS_ASSUME_ROLE:
         description: The IAM role to assume
@@ -61,6 +65,7 @@ jobs:
         shell: bash
 
   terraform--workspace:
+    needs: terraform--init
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
@@ -81,5 +86,31 @@ jobs:
       - name: Terraform Set Workspace
         id: terraform_workspace
         run: terraform workspace select -or-create ${{ inputs.workspace }}
+        working-directory: ./infrastructure
+        shell: bash
+
+  terraform--plan:
+    needs: terraform--workspace
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Configure AWS
+        uses: ./.github/actions/aws-setup
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          aws-region: ${{ inputs.aws-region }}
+
+      - name: Configure Terraform
+        uses: ./.github/actions/terraform
+
+      - name: Terraform Plan
+        id: terraform_plan
+        run: |
+          terraform plan -input=false -no-color -var-file="${{ inputs.tf-vars }}" -out tf-main.plan
         working-directory: ./infrastructure
         shell: bash
