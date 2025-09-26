@@ -19,7 +19,7 @@ on:
         description: AWS region
         type: string
         required: true
-      tf-vars:
+      tfvars:
         description: TF vars file
         type: string
         required: true
@@ -72,7 +72,7 @@ jobs:
           path: ./infrastructure/.terraform
           cache-key: terraform-${{ github.run_id }}
 
-  terraform--workspace:
+  terraform--plan:
     needs: terraform--init
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
@@ -104,44 +104,11 @@ jobs:
         working-directory: ./infrastructure
         shell: bash
 
-      - name: Save cache
-        uses: ./.github/actions/terraform-cache
-        with:
-          mode: save
-          path: ./infrastructure/.terraform
-          cache-key: terraform-${{ github.run_id }}
-
-  terraform--plan:
-    needs: terraform--workspace
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    steps:
-      - name: Checkout branch
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ inputs.branch }}
-
-      - name: Configure AWS
-        uses: ./.github/actions/aws-setup
-        with:
-          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          aws-region: ${{ inputs.aws-region }}
-
-      - name: Configure Terraform
-        uses: ./.github/actions/terraform
-
-      - name: Restore cache
-        uses: ./.github/actions/terraform-cache
-        with:
-          mode: restore
-          path: ./infrastructure/.terraform
-          cache-key: terraform-${{ github.run_id }}
-
       - name: Terraform Plan
         id: terraform_plan
         run: |
-          echo "Running terraform plan with ${{ inputs.tf-vars }} on workspace $(terraform workspace show)"
-          terraform plan -input=false -no-color -var-file="${{ inputs.tf-vars }}" -out tf-main.plan
+          echo "Running terraform plan with ${{ inputs.tfvars }} on workspace $(terraform workspace show)"
+          terraform plan -input=false -no-color -var-file="${{ inputs.tfvars }}" -out tf-main.plan
         working-directory: ./infrastructure
         shell: bash
 

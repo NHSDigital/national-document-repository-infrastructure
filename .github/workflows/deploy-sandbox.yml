@@ -53,6 +53,8 @@ jobs:
         run: |
           echo "Assume Role"
           echo ${{ secrets.AWS_ASSUME_ROLE }}
+          echo "tfvars"
+          echo ${{ needs.set_vars.outputs.tf_vars }}
         shell: bash
   # terraform_process--main:
   #   needs: validate_inputs
@@ -74,7 +76,7 @@ jobs:
       branch: ${{ github.event.inputs.git_ref }}
       environment: development
       aws-region: ${{ vars.AWS_REGION }}
-      tf-vars: ${{ needs.set_vars.outputs.tf_vars }}
+      tfvars: ${{ needs.set_vars.outputs.tf_vars }}
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
   # terraform_process--main:
