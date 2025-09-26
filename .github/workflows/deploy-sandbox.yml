@@ -39,7 +39,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo main
-        run: echo "main"
+        run: |
+          echo "Assume Role"
+          echo ${{ secrets.AWS_ASSUME_ROLE }}
         shell: bash
   # terraform_process--main:
   #   needs: validate_inputs
