@@ -37,6 +37,7 @@ jobs:
   terraform_process--main:
     needs: validate_inputs
     runs-on: ubuntu-latest
+    environment: development
     steps:
       - name: Echo main
         run: |
