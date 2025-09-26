@@ -34,8 +34,14 @@ jobs:
         env:
           SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
 
+  set_vars:
+    environment: development
+    runs-on: ubuntu-latest
+    outputs:
+      tf-vars: ${{ vars.TF_VARS_FILE }}
+
   terraform_process--main:
-    needs: validate_inputs
+    needs: [validate_inputs, set_vars]
     runs-on: ubuntu-latest
     environment: development
     steps:
@@ -64,7 +70,7 @@ jobs:
       branch: ${{ github.event.inputs.git_ref }}
       environment: development
       aws-region: ${{ vars.AWS_REGION }}
-      tf-vars: ${{ vars.TF_VARS_FILE }}
+      tf-vars: ${{ needs.set_vars.outputs.tf-vars }}
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
   # terraform_process--main:
