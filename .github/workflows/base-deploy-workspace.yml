@@ -39,10 +39,16 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
 
+      - name: Debug AWS Inputs
+        run: |
+          echo "Role to assume: ${{ secrets.AWS_ASSUME_ROLE }}"
+          echo "AWS Region: ${{ inputs.aws-region }}"
+        shell: bash
+
       - name: Configure AWS
         uses: ./.github/actions/aws-setup
         with:
-          role-to-assume: ${{ inputs.AWS_ASSUME_ROLE }}
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           aws-region: ${{ inputs.aws-region }}
 
       - name: Configure Terraform
@@ -66,7 +72,7 @@ jobs:
       - name: Configure AWS
         uses: ./.github/actions/aws-setup
         with:
-          role-to-assume: ${{ inputs.AWS_ASSUME_ROLE }}
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           aws-region: ${{ inputs.aws-region }}
 
       - name: Configure Terraform
