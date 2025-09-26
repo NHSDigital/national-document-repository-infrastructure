@@ -1,0 +1,30 @@
+name: "Terraform Cache"
+description: "Restore or save Terraform .terraform folder cache"
+inputs:
+  mode:
+    description: "restore or save"
+    required: true
+    default: "restore"
+  cache-key:
+    description: "The cache key to use"
+    required: true
+  path:
+    description: "Path to cache (usually ./infrastructure/.terraform)"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Run Terraform Cache
+      if: ${{ inputs.mode == 'restore' }}
+      uses: actions/cache@v3
+      with:
+        path: ${{ inputs.path }}
+        key: ${{ inputs.cache-key }}
+        restore-keys: ${{ inputs.cache-key }}
+
+    - name: Save Terraform Cache
+      if: ${{ inputs.mode == 'save' }}
+      uses: actions/cache@v3
+      with:
+        path: ${{ inputs.path }}
+        key: ${{ inputs.cache-key }}

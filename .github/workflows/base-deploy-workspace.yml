@@ -43,12 +43,6 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
 
-      - name: Debug AWS Inputs
-        run: |
-          echo "Role to assume: ${{ secrets.AWS_ASSUME_ROLE }}"
-          echo "AWS Region: ${{ inputs.aws-region }}"
-        shell: bash
-
       - name: Configure AWS
         uses: ./.github/actions/aws-setup
         with:
@@ -58,11 +52,25 @@ jobs:
       - name: Configure Terraform
         uses: ./.github/actions/terraform
 
+      - name: Restore cache
+        uses: ./.github/actions/terraform-cache
+        with:
+          mode: restore
+          path: ./infrastructure/.terraform
+          cache-key: terraform-${{ github.run_id }}
+
       - name: Terraform Init
         id: terraform_init
         run: terraform init -backend-config=backend.conf
         working-directory: ./infrastructure
         shell: bash
+
+      - name: Save cache
+        uses: ./.github/actions/terraform-cache
+        with:
+          mode: save
+          path: ./infrastructure/.terraform
+          cache-key: terraform-${{ github.run_id }}
 
   terraform--workspace:
     needs: terraform--init
@@ -83,11 +91,25 @@ jobs:
       - name: Configure Terraform
         uses: ./.github/actions/terraform
 
+      - name: Restore cache
+        uses: ./.github/actions/terraform-cache
+        with:
+          mode: restore
+          path: ./infrastructure/.terraform
+          cache-key: terraform-${{ github.run_id }}
+
       - name: Terraform Set Workspace
         id: terraform_workspace
         run: terraform workspace select -or-create ${{ inputs.workspace }}
         working-directory: ./infrastructure
         shell: bash
+
+      - name: Save cache
+        uses: ./.github/actions/terraform-cache
+        with:
+          mode: save
+          path: ./infrastructure/.terraform
+          cache-key: terraform-${{ github.run_id }}
 
   terraform--plan:
     needs: terraform--workspace
@@ -108,9 +130,23 @@ jobs:
       - name: Configure Terraform
         uses: ./.github/actions/terraform
 
+      - name: Restore cache
+        uses: ./.github/actions/terraform-cache
+        with:
+          mode: restore
+          path: ./infrastructure/.terraform
+          cache-key: terraform-${{ github.run_id }}
+
       - name: Terraform Plan
         id: terraform_plan
         run: |
           terraform plan -input=false -no-color -var-file="${{ inputs.tf-vars }}" -out tf-main.plan
         working-directory: ./infrastructure
         shell: bash
+
+      - name: Save cache
+        uses: ./.github/actions/terraform-cache
+        with:
+          mode: save
+          path: ./infrastructure/.terraform
+          cache-key: terraform-${{ github.run_id }}
