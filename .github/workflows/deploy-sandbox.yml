@@ -34,6 +34,13 @@ jobs:
         env:
           SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
 
+  terraform_process--main:
+    needs: validate_inputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo main
+        run: echo "main"
+        shell: bash
   # terraform_process--main:
   #   needs: validate_inputs
   #   uses: ./.github/workflows/base-deploy-workspace.yml
