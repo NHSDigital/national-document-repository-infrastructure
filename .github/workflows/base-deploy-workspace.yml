@@ -16,12 +16,12 @@ on:
         type: string
         required: true
       aws-region:
-        description: "AWS region"
+        description: AWS region
         type: string
         required: true
     secrets:
       AWS_ASSUME_ROLE:
-        description: "The IAM role to assume"
+        description: The IAM role to assume
         required: true
 
 permissions:
