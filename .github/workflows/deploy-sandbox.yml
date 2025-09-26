@@ -69,7 +69,7 @@ jobs:
 
   terraform_process--branch:
     if: ${{ github.event.inputs.git_ref != 'main' }}
-    needs: terraform_process--main
+    needs: [terraform_process--main, set_vars]
     uses: ./.github/workflows/base-deploy-workspace.yml
     with:
       workspace: ${{ github.event.inputs.sandbox_name }}
