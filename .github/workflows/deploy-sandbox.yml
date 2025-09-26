@@ -34,16 +34,16 @@ jobs:
         env:
           SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
 
-  terraform_process--main:
-    needs: validate_inputs
-    uses: ./.github/workflows/base-deploy-workspace.yml
-    with:
-      workspace: ${{ github.event.inputs.sandbox_name }}
-      branch: main
-      environment: development
-      aws-region: ${{ vars.AWS_REGION }}
-    secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+  # terraform_process--main:
+  #   needs: validate_inputs
+  #   uses: ./.github/workflows/base-deploy-workspace.yml
+  #   with:
+  #     workspace: ${{ github.event.inputs.sandbox_name }}
+  #     branch: main
+  #     environment: development
+  #     aws-region: ${{ vars.AWS_REGION }}
+  #   secrets:
+  #     AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   terraform_process--branch:
     if: ${{ github.event.inputs.git_ref != 'main' }}
