@@ -32,18 +32,18 @@ permissions:
 jobs:
   terraform--init:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.branch }}
+    environment: ${{ inputs.branch }}
     steps:
       - name: Checkout branch
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ inputs.branch }}
 
       - name: Configure AWS
         uses: ./.github/actions/aws-setup
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          aws-region: ${{ github.event.inputs.aws-region }}
+          aws-region: ${{ inputs.aws-region }}
 
       - name: Configure Terraform
         uses: ./.github/actions/terraform
@@ -56,24 +56,24 @@ jobs:
 
   terraform--workspace:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.branch }}
+    environment: ${{ inputs.branch }}
     steps:
       - name: Checkout branch
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ inputs.branch }}
 
       - name: Configure AWS
         uses: ./.github/actions/aws-setup
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          aws-region: ${{ github.event.inputs.aws-region }}
+          aws-region: ${{ inputs.aws-region }}
 
       - name: Configure Terraform
         uses: ./.github/actions/terraform
 
       - name: Terraform Set Workspace
         id: terraform_workspace
-        run: terraform workspace select -or-create ${{ github.event.inputs.workspace }}
+        run: terraform workspace select -or-create ${{ inputs.workspace }}
         working-directory: ./infrastructure
         shell: bash
