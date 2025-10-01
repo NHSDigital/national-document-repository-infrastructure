@@ -55,12 +55,17 @@ module "get-doc-fhir-lambda" {
     WORKSPACE                  = terraform.workspace
     ENVIRONMENT                = var.environment
     PRESIGNED_ASSUME_ROLE      = aws_iam_role.get_fhir_doc_presign_url_role.arn
-    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    LLOYD_GEORGE_DYNAMODB_NAME = module.lloyd_george_reference_dynamodb_table.table_name
+    PDM_DYNAMODB_NAME          = module.pdm_dynamodb_table.table_name
     OIDC_CALLBACK_URL          = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
     CLOUDFRONT_URL             = module.cloudfront-distribution-lg.cloudfront_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
   }
-  depends_on = [aws_api_gateway_method.get_document_reference]
+  depends_on = [
+    aws_api_gateway_method.get_document_reference,
+    module.pdm_dynamodb_table,
+    module.lloyd_george_reference_dynamodb_table,
+  ]
 }
 
 resource "aws_api_gateway_integration" "get_doc_fhir_lambda_integration" {
@@ -84,3 +89,4 @@ resource "aws_lambda_permission" "lambda_permission_get_mtls_api" {
   # within the API Gateway REST API.
   source_arn = "${aws_api_gateway_rest_api.ndr_doc_store_api_mtls.execution_arn}/*/*"
 }
+
