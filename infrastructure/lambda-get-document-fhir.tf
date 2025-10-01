@@ -61,7 +61,11 @@ module "get-doc-fhir-lambda" {
     CLOUDFRONT_URL             = module.cloudfront-distribution-lg.cloudfront_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
   }
-  depends_on = [aws_api_gateway_method.get_document_reference]
+  depends_on = [
+    aws_api_gateway_method.get_document_reference,
+    module.pdm_dynamodb_table,
+    module.lloyd_george_reference_dynamodb_table,
+  ]
 }
 
 resource "aws_api_gateway_integration" "get_doc_fhir_lambda_integration" {

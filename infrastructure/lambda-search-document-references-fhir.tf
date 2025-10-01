@@ -27,7 +27,9 @@ module "search-document-references-fhir-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.search-document-references-gateway,
-    module.ndr-app-config
+    module.ndr-app-config,
+    module.pdm_dynamodb_table,
+    module.lloyd_george_reference_dynamodb_table,
   ]
 }
 
