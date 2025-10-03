@@ -30,7 +30,7 @@ resource "aws_iam_policy" "read_only_role_extra_permissions" {
           "kms:Decrypt",
         ],
         Resource = [
-          "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:*",
+          "arn:aws:kms:eu-west-2:${data.aws_caller_identity.current.account_id}:key/*",
         ]
       }
     ]
