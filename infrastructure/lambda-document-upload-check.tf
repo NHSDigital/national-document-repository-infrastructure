@@ -48,7 +48,8 @@ data "aws_security_groups" "virus_scanner_api" {
 }
 
 resource "aws_s3_bucket_notification" "document_upload_check_lambda_trigger" {
-  bucket = module.ndr-bulk-staging-store.bucket_id
+  bucket      = module.ndr-bulk-staging-store.bucket_id
+  eventbridge = true
   lambda_function {
     lambda_function_arn = module.document_upload_check_lambda.lambda_arn
     events              = ["s3:ObjectCreated:*"]
