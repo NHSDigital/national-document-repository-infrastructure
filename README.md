@@ -1,4 +1,6 @@
-# Terraform Readme
+# National Document Repository Infrastructure
+
+This repository is used to build the infrastructure the NDR. That is it's sole purpose. There is no functional code on this repository. Please read the Installation section carefully. You must configure git to use the pre-commit.
 
 ## Pre-requisites
 
