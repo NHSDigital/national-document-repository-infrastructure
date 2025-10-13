@@ -83,12 +83,6 @@ module "migration-dynamodb-segment-store" {
   environment               = var.environment
   owner                     = var.owner
   force_destroy             = local.is_force_destroy
-  cors_rules = [
-    {
-      allowed_methods = ["GET", "PUT", "POST"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
-    }
-  ]
 }
 
 module "statistical-reports-store" {
