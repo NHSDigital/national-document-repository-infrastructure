@@ -133,27 +133,13 @@ examples.
 
 ### pre-commit hook
 
-With pre-commit, you can ensure your Terraform module documentation is kept
-up-to-date each time you make a commit.
+Set this repository to get it's pre-commit hooks from .githooks
 
-First [install pre-commit] and then create or update a `.pre-commit-config.yaml`
-in the root of your Git repo with at least the following content:
-
-```yaml
-repos:
-  - repo: https://github.com/terraform-docs/terraform-docs
-    rev: "v0.19.0"
-    hooks:
-      - id: terraform-docs-go
-        args: ["markdown", "table", "--output-file", "README.md", "./mymodule/path"]
+```
+git config core.hooksPath .githooks
 ```
 
-Then run:
-
-```bash
-pre-commit install
-pre-commit install-hooks
-```
+Pre-commits will run on any commit. This will build docs and format the terraform.
 
 Further changes to your module's `.tf` files will cause an update to documentation
 when you make a commit.
@@ -420,7 +406,6 @@ MIT License - Copyright (c) 2021 The terraform-docs Authors.
 [`formatter`]: https://terraform-docs.io/user-guide/configuration/formatter/
 [here]: https://golang.org/doc/code.html#GOPATH
 [Homebrew]: https://brew.sh
-[install pre-commit]: https://pre-commit.com/#install
 [`output`]: https://terraform-docs.io/user-guide/configuration/output/
 [releases]: https://github.com/terraform-docs/terraform-docs/releases
 [Scoop]: https://scoop.sh/
