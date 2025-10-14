@@ -12,8 +12,8 @@ permissions:
   pull-requests: write
   actions: read   # This is required for Plan comment
   id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
-
+  contents: write # This is required for SBOM action
+    
 jobs:
   terraform_plan_apply:
     name: Terraform Plan/Apply (ndr-dev)
