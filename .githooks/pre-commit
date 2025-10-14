@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Running Terraform docs..."
+make generate-terraform-docs
+
+echo "Running terraform fmt..."
+make format-all
