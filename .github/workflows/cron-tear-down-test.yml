@@ -59,13 +59,13 @@ jobs:
           terraform_version: 1.13.3
           terraform_wrapper: false
 
-      - name: terraform init
+      - name: Initialise Terraform
         id: init
         run: terraform init -backend-config=backend-test.conf
         working-directory: ./infrastructure
         shell: bash
 
-      - name: terraform workspace select
+      - name: Select Terraform Workspace
         id: workspace
         run: terraform workspace select ${{ matrix.sandbox-name }}
         working-directory: ./infrastructure
@@ -96,7 +96,7 @@ jobs:
               --region eu-west-2
           done
 
-      - name: terraform destroy
+      - name: Run Terraform Destroy
         id: destroy
         run: terraform destroy -auto-approve -var-file="${{ vars.TF_VARS_FILE }}"
         working-directory: ./infrastructure

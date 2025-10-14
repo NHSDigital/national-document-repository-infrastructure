@@ -37,28 +37,28 @@ jobs:
           terraform_version: 1.13.3
           terraform_wrapper: true
 
-      - name: terraform init
+      - name: Initialise Terraform
         id: init
         run: terraform init -backend-config=backend.conf -no-color
         working-directory: ./infrastructure
         shell: bash
 
-      - name: terraform workspace select
+      - name: Select Terraform Workspace
         id: workspace
         run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
         working-directory: ./infrastructure
         shell: bash
 
-      - name: terraform fmt
+      - name: Check Terraform Formatting
         id: fmt
         run: terraform fmt -check
         working-directory: ./infrastructure
 
-      - name: terraform validate
+      - name: Check Terraform Validation
         id: validate
         run: terraform validate -no-color
 
-      - name: terraform plan
+      - name: Run Terraform Plan
         id: plan
         run: |
           terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan > plan_output.txt 2>&1
@@ -200,7 +200,7 @@ jobs:
             })
 
       # Terraform apply will only occur on a push (merge request completion)
-      - name: terraform apply
+      - name: Run Terraform Apply
         if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve -input=false tf.plan
         working-directory: ./infrastructure

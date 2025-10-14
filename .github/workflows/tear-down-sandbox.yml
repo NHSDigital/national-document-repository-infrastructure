@@ -99,15 +99,15 @@ jobs:
         with:
           terraform_version: 1.13.3
 
-      - name: terraform init
+      - name: Initialise Terraform
         run: terraform init -backend-config=${{ vars.TF_BACKEND_FILE }}
         working-directory: ./infrastructure
 
-      - name: terraform workspace select
+      - name: Select Terraform Workspace
         run: terraform workspace select ${{ inputs.sandbox_name }}
         working-directory: ./infrastructure
 
-      - name: terraform destroy
+      - name: Run Terraform Destroy
         run: terraform destroy -auto-approve -var-file="${{ vars.TF_VARS_FILE }}"
         working-directory: ./infrastructure
 
