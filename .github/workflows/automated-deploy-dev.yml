@@ -209,7 +209,7 @@ jobs:
     name: Deploy Lambdas (ndr-dev)
     needs: ['terraform_plan_apply']
     if: github.ref == 'refs/heads/main'
-    uses: nhsconnect/national-document-repository/.github/workflows/lambdas-dev-to-main-ci.yml@main
+    uses: NHSDigital/national-document-repository/.github/workflows/lambdas-dev-to-main-ci.yml@main
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
@@ -217,6 +217,6 @@ jobs:
     name: Deploy UI (ndr-dev)
     needs: ['terraform_plan_apply']
     if: github.ref == 'refs/heads/main'
-    uses: nhsconnect/national-document-repository/.github/workflows/ui-dev-to-main-ci.yml@main
+    uses: NHSDigital/national-document-repository/.github/workflows/ui-dev-to-main-ci.yml@main
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}

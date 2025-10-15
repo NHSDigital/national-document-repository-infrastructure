@@ -75,14 +75,14 @@ jobs:
 
   run_lambda_unit_tests:
     name: Run Lambda Unit Tests
-    uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-test.yml@main
+    uses: NHSDigital/national-document-repository/.github/workflows/base-lambdas-reusable-test.yml@main
     with:
       python_version: "3.11"
       build_branch: main
       
   run_ui_unit_tests:
     name: Run UI Unit Tests
-    uses: nhsconnect/national-document-repository/.github/workflows/base-vitest-test.yml@main
+    uses: NHSDigital/national-document-repository/.github/workflows/base-vitest-test.yml@main
     with:
       build_branch: main
 
@@ -93,7 +93,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          repository: nhsconnect/national-document-repository
+          repository: NHSDigital/national-document-repository
 
       - name: npm install
         run: npm install --legacy-peer-deps
@@ -153,7 +153,7 @@ jobs:
   publish_lambda_layers:
     name: Publish Lambda Layers
     needs: ['set_workspace', 'terraform_plan_apply']
-    uses: nhsconnect/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
+    uses: NHSDigital/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
     with:
       build_branch: main
       sandbox: ${{ needs.set_workspace.outputs.workspace }}
@@ -164,7 +164,7 @@ jobs:
         
   deploy_lambdas:
     name: Deploy Lambdas
-    uses: nhsconnect/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
+    uses: NHSDigital/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
     needs: ['set_workspace', 'publish_lambda_layers']
     with:
       build_branch: main
@@ -177,7 +177,7 @@ jobs:
 
   deploy_ui:
     name: Deploy UI
-    uses: nhsconnect/national-document-repository/.github/workflows/base-deploy-ui.yml@main
+    uses: NHSDigital/national-document-repository/.github/workflows/base-deploy-ui.yml@main
     needs: ['terraform_plan_apply', 'set_workspace']
     with:
       build_branch: main
