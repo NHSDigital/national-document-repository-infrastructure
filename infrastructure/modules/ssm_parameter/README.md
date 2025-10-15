@@ -49,12 +49,15 @@ module "ssm_param" {
 | Name | Type |
 |------|------|
 | [aws_ssm_parameter.secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.secret_ignore_value_changes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_description"></a> [description](#input\_description) | Description of the parameter | `string` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment tag used for classifying the SSM parameter. | `string` | n/a | yes |
+| <a name="input_ignore_value_changes"></a> [ignore\_value\_changes](#input\_ignore\_value\_changes) | Whether to ignore changes to the value field | `bool` | `false` | no |
+| <a name="input_key_id"></a> [key\_id](#input\_key\_id) | KMS Key ID or ARN to encrypt the SecureString parameter | `string` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of SSM parameter | `string` | `null` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | Owner tag used to identify the team or individual responsible for the resource. | `string` | n/a | yes |
 | <a name="input_resource_depends_on"></a> [resource\_depends\_on](#input\_resource\_depends\_on) | Optional resource to depend on before creating the SSM parameter. | `string` | `""` | no |
