@@ -12,7 +12,7 @@ format-all:
 # Documentation
 .PHONY:generate-terraform-docs
 generate-terraform-docs:
-	./scripts/create-terraform-docs.sh
+	./scripts/run_terraform_docs.py
 
 # Installing
 
