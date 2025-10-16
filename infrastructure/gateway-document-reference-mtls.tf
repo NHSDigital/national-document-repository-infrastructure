@@ -7,3 +7,4 @@ module "fhir_document_reference_mtls_gateway" {
   gateway_path        = "DocumentReference"
   require_credentials = true
 }
+
