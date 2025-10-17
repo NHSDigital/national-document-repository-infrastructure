@@ -75,6 +75,8 @@ resource "aws_api_gateway_stage" "ndr_api_mtls" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [aws_cloudwatch_log_group.mtls_api_gateway_stage]
 }
 
 resource "aws_cloudwatch_log_group" "mtls_api_gateway_stage" {
