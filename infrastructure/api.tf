@@ -23,7 +23,7 @@ resource "aws_api_gateway_base_path_mapping" "api_mapping" {
   stage_name  = var.environment
   domain_name = local.api_gateway_full_domain_name
 
-  depends_on = [aws_api_gateway_deployment.ndr_api_deploy, aws_api_gateway_rest_api.ndr_doc_store_api]
+  depends_on = [aws_api_gateway_deployment.ndr_api_deploy, aws_api_gateway_rest_api.ndr_doc_store_api, aws_api_gateway_stage.ndr_api]
 }
 
 resource "aws_api_gateway_resource" "auth_resource" {
@@ -95,6 +95,10 @@ resource "aws_api_gateway_stage" "ndr_api" {
   depends_on = [
     aws_cloudwatch_log_group.api_gateway_stage
   ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_cloudwatch_log_group" "api_gateway_stage" {
