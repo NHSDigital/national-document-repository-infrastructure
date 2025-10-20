@@ -7,7 +7,6 @@ module "document_review_queue" {
   environment           = var.environment
   owner                 = var.owner
   max_visibility        = 1020
-  enable_deduplication  = true
   enable_dlq            = true
   delay                 = 60
   enable_sse            = true
