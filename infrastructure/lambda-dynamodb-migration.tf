@@ -12,17 +12,17 @@ module "dynamodb-migration-lambda" {
     module.ndr-app-config.app_config_policy
   ]
 
-  kms_deletion_window = var.kms_deletion_window
-  rest_api_id               = null
-  api_execution_arn         = null
-  is_gateway_integration_needed  = false
-  is_invoked_from_gateway        = false
+  kms_deletion_window           = var.kms_deletion_window
+  rest_api_id                   = null
+  api_execution_arn             = null
+  is_gateway_integration_needed = false
+  is_invoked_from_gateway       = false
 
   lambda_environment_variables = {
-    WORKSPACE                = terraform.workspace
-    APPCONFIG_APPLICATION    = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT    = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION  = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE               = terraform.workspace
+    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
   }
 
   lambda_timeout                 = 900
