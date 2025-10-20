@@ -93,6 +93,7 @@ module "sqs_queue" {
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | The SQS queue ARN e.g. for use when setting the queue as the endpoint of an SNS topic. |
 | <a name="output_sqs_arn"></a> [sqs\_arn](#output\_sqs\_arn) | Amazon Resource Name (ARN) of the primary SQS queue. |
 | <a name="output_sqs_id"></a> [sqs\_id](#output\_sqs\_id) | ID of the main SQS queue. |
+| <a name="output_sqs_name"></a> [sqs\_name](#output\_sqs\_name) | Name of the queue |
 | <a name="output_sqs_read_policy_document"></a> [sqs\_read\_policy\_document](#output\_sqs\_read\_policy\_document) | IAM policy document granting read access to the SQS queue. |
 | <a name="output_sqs_url"></a> [sqs\_url](#output\_sqs\_url) | URL of the SQS queue for use with API clients or AWS SDKs. |
 | <a name="output_sqs_write_policy_document"></a> [sqs\_write\_policy\_document](#output\_sqs\_write\_policy\_document) | IAM policy document granting write access to the SQS queue. |

@@ -22,11 +22,10 @@ resource "aws_api_gateway_method" "get_document_reference" {
 }
 
 resource "aws_api_gateway_method" "get_document_reference_mtls" {
-  rest_api_id      = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
-  resource_id      = aws_api_gateway_resource.get_document_reference_mtls.id
-  http_method      = "GET"
-  authorization    = "NONE"
-  api_key_required = true
+  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
+  resource_id   = aws_api_gateway_resource.get_document_reference_mtls.id
+  http_method   = "GET"
+  authorization = "NONE"
   request_parameters = {
     "method.request.path.id" = true
   }
@@ -40,8 +39,10 @@ module "get-doc-fhir-lambda" {
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
+    module.pdm_dynamodb_table.dynamodb_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-lloyd-george-store.s3_read_policy_document,
+    module.pdm-document-store.s3_read_policy_document,
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
