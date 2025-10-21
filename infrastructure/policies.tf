@@ -77,9 +77,9 @@ resource "aws_iam_policy" "production_support" {
         }
       },
       {
-        Sid    = "AllowCreateRootFoldersOnlyInProdStagingBulkStore",
-        Effect = "Allow"
-        Action = "s3:PutObject"
+        Sid      = "AllowCreateRootFoldersOnlyInProdStagingBulkStore",
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
         Resource = "arn:aws:s3:::prod-staging-bulk-store/*"
         Condition = {
           StringLike = {
