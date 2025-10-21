@@ -41,4 +41,4 @@ jobs:
       - name: Run Sandbox Cleanup Script
         run: ./venv/bin/python3 -u scripts/cleanup_sandboxes.py
         env:
-          GIT_WORKFLOW_PAT: ${{ secrets.GIT_WORKFLOW_PAT }}  # Has "repo" and "workflow" privileges
+          GIT_WORKFLOW_PAT: ${{ secrets.GIT_WORKFLOW_PAT }} # See https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
