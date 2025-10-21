@@ -105,8 +105,8 @@ resource "aws_sns_topic_subscription" "proactive_virus_scanning_notifications" {
 }
 
 resource "aws_sns_topic_subscription" "virus_scanner_im_alerting" {
-  protocol = "lambda"
-  endpoint = module.im-alerting-lambda.lambda_arn
+  protocol  = "lambda"
+  endpoint  = module.im-alerting-lambda.lambda_arn
   topic_arn = module.cloud_storage_security[0].proactive_notification_topic_arn
   filter_policy = jsonencode({
     "notificationType" : ["scanResult"],
@@ -115,8 +115,8 @@ resource "aws_sns_topic_subscription" "virus_scanner_im_alerting" {
 }
 
 resource "aws_lambda_permission" "virsu_scanner_iam_alerting" {
-  action = "lambda:InvokeFunction"
+  action        = "lambda:InvokeFunction"
   function_name = module.im-alerting-lambda.lambda_arn
-  principal = "sns.amzamonaws.com"
-  source_arn = aws_sns_topic_subscription.virus_scanner_im_alerting.arn
+  principal     = "sns.amzamonaws.com"
+  source_arn    = aws_sns_topic_subscription.virus_scanner_im_alerting.arn
 }
