@@ -40,3 +40,27 @@ resource "aws_iam_policy" "read_only_role_extra_permissions" {
     Workspace = "core"
   }
 }
+
+resource "aws_iam_policy" "production_support" {
+  count = local.is_production ? 1 : 0
+  name  = "ProductionSupport"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "AWS Transfer Family",
+        Effect = "Allow",
+        Action = [
+          "transfer:CreateUser"
+        ],
+        Resource = [
+          "*"
+        ]
+      }
+    ]
+  })
+  tags = {
+    Name      = "ProductionSupport"
+    Workspace = "core"
+  }
+}
