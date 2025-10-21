@@ -8,7 +8,7 @@ module "document_review_queue" {
   owner                 = var.owner
   max_visibility        = 1020
   enable_dlq            = true
-  delay                 = 60
+  delay                 = 0
   enable_sse            = true
 
 }
