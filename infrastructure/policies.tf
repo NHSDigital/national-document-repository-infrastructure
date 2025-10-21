@@ -54,7 +54,7 @@ resource "aws_iam_policy" "production_support" {
           "transfer:CreateUser"
         ],
         Resource = [
-          "*"
+          "arn:aws:transfer:eu-west-2:${data.aws_caller_identity.current.account_id}:*"
         ]
       }
     ]
