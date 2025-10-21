@@ -48,10 +48,66 @@ resource "aws_iam_policy" "production_support" {
     Version = "2012-10-17",
     Statement = [
       {
-        Sid    = "AWS Transfer Family",
+        Sid    = "AllowListBucketsForConsole",
         Effect = "Allow",
         Action = [
-          "transfer:CreateUser"
+          "s3:ListAllMyBuckets",
+          "s3:GetBucketLocation"
+        ],
+        Resource = [
+          "arn:aws:s3:::*"
+        ]
+      },
+      {
+        Sid    = "AllowListRootFoldersInProdStagingBulkStore",
+        Effect = "Allow",
+        Action = [
+          "s3:ListBucket"
+        ],
+        Resource = [
+          "arn:aws:s3:::prod-staging-bulk-store"
+        ]
+        Condition = {
+          StringEquals = {
+            "s3:delimiter" = "/"
+          }
+          StringEqualsIfExists = {
+            "s3:prefix" = ""
+          }
+        }
+      },
+      {
+        Sid    = "AllowCreateRootFoldersOnlyInProdStagingBulkStore",
+        Effect = "Allow"
+        Action = "s3:PutObject"
+        Resource = "arn:aws:s3:::prod-staging-bulk-store/*"
+        Condition = {
+          StringLike = {
+            "s3:prefix" = "[^/]+/"
+          }
+        }
+      },
+      {
+        Sid    = "ExplicitDenyObjectAccessInProdStagingBulkStore",
+        Effect = "Deny",
+        Action = [
+          "s3:GetObject",
+          "s3:GetObjectVersion",
+          "s3:GetObjectAcl",
+          "s3:GetObjectTagging"
+        ],
+        Resource = [
+          "arn:aws:s3:::prod-staging-bulk-store/*"
+        ]
+      },
+      {
+        Sid    = "AWSTransferFamilyManager",
+        Effect = "Allow",
+        Action = [
+          "transfer:CreateUser",
+          "transfer:Describe*",
+          "transfer:List*",
+          "transfer:TestIdentityProvider",
         ],
         Resource = [
           "arn:aws:transfer:eu-west-2:${data.aws_caller_identity.current.account_id}:*"
