@@ -73,6 +73,18 @@ module "ndr-lloyd-george-store" {
   ]
 }
 
+module "migration-dynamodb-segment-store" {
+  source                    = "./modules/s3/"
+  access_logs_enabled       = local.is_production
+  access_logs_bucket_id     = local.access_logs_bucket_id
+  bucket_name               = var.migration_dynamodb_segment_store_bucket_name
+  enable_cors_configuration = false
+  enable_bucket_versioning  = true
+  environment               = var.environment
+  owner                     = var.owner
+  force_destroy             = local.is_force_destroy
+}
+
 module "statistical-reports-store" {
   source                    = "./modules/s3/"
   access_logs_enabled       = local.is_production
