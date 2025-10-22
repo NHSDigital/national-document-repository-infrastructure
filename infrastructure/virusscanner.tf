@@ -119,5 +119,5 @@ resource "aws_lambda_permission" "virus_scanner_im_alerting" {
   action        = "lambda:InvokeFunction"
   function_name = module.im-alerting-lambda.lambda_arn
   principal     = "sns.amzamonaws.com"
-  source_arn    = aws_sns_topic_subscription.virus_scanner_im_alerting.arn
+  source_arn    = aws_sns_topic_subscription.virus_scanner_im_alerting[0].arn
 }
