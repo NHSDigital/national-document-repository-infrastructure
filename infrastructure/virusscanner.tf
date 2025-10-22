@@ -105,6 +105,7 @@ resource "aws_sns_topic_subscription" "proactive_virus_scanning_notifications" {
 }
 
 resource "aws_sns_topic_subscription" "virus_scanner_im_alerting" {
+  count     = local.is_production ? 1 : 0
   protocol  = "lambda"
   endpoint  = module.im-alerting-lambda.lambda_arn
   topic_arn = module.cloud_storage_security[0].proactive_notifications_topic_arn
