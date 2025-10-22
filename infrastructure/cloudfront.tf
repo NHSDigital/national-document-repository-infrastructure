@@ -16,3 +16,12 @@ module "cloudfront-distribution-lg" {
   depends_on         = [module.edge-presign-lambda.qualified_arn, module.ndr-lloyd-george-store.bucket_id, module.ndr-lloyd-george-store.bucket_domain_name]
   web_acl_id         = try(module.cloudfront_firewall_waf_v2[0].arn, "")
 }
+
+module "cloudfront-distribution-document-pending-review" {
+  source             = "./modules/cloudfront"
+  bucket_domain_name = "${terraform.workspace}-${var.document_review_bucket_name}.s3.eu-west-2.amazonaws.com"
+  bucket_id          = module.ndr-document-pending-review-store.bucket_id
+  qualifed_arn       = module.edge-presign-lambda.qualified_arn
+  depends_on         = [module.edge-presign-lambda.qualified_arn, module.ndr-lloyd-george-store.bucket_id, module.ndr-lloyd-george-store.bucket_domain_name]
+  web_acl_id         = try(module.cloudfront_firewall_waf_v2[0].arn, "")
+}

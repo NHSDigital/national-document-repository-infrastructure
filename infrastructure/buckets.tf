@@ -155,6 +155,7 @@ module "ndr-document-pending-review-store" {
   enable_bucket_versioning  = true
   force_destroy             = local.is_force_destroy
   cloudfront_enabled        = true
+  cloudfront_arn            = module.cloudfront-distribution-document-pending-review.cloudfront_arn
   enable_cors_configuration = true
   cors_rules = [
     {
