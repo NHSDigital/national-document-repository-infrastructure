@@ -80,7 +80,7 @@ module "document_review_dynamodb_table" {
       name            = "NhsNumberIndex"
       hash_key        = "NhsNumber"
       range_key       = "UploadDate"
-      projection_type = "ALL"
+      projection_type = "KEYS_ONLY"
     }
   ]
 
