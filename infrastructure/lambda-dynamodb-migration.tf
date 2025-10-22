@@ -6,8 +6,6 @@ module "dynamodb-migration-lambda" {
   iam_role_policy_documents = [
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
-    module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
-    module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy
   ]
