@@ -116,6 +116,7 @@ resource "aws_sns_topic_subscription" "virus_scanner_im_alerting" {
 }
 
 resource "aws_lambda_permission" "virus_scanner_im_alerting" {
+  count         = local.is_production ? 1 : 0
   action        = "lambda:InvokeFunction"
   function_name = module.im-alerting-lambda.lambda_arn
   principal     = "sns.amzamonaws.com"
