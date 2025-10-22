@@ -157,6 +157,32 @@ data "aws_s3_object" "truststore_ext_cert" {
   key    = var.ca_pem_filename
 }
 
+module "ndr-document-pending-review-store" {
+  source                    = "./modules/s3"
+  access_logs_enabled       = local.is_production
+  access_logs_bucket_id     = local.access_logs_bucket_id
+  bucket_name               = var.document_review_bucket_name
+  environment               = var.environment
+  owner                     = var.owner
+  enable_bucket_versioning  = true
+  force_destroy             = local.is_force_destroy
+  cloudfront_enabled        = true
+  enable_cors_configuration = true
+  cors_rules = [
+    {
+      allowed_headers = ["*"]
+      allowed_methods = ["POST", "PUT", "DELETE"]
+      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      expose_headers  = ["ETag"]
+      max_age_seconds = 3000
+    },
+    {
+      allowed_methods = ["GET"]
+      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+    }
+  ]
+}
+
 # Lifecycle Rules
 resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   bucket = module.ndr-lloyd-george-store.bucket_id
