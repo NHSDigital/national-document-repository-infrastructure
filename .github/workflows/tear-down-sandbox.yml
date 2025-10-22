@@ -45,6 +45,9 @@ permissions:
   id-token: write
   contents: read
 
+concurrency:
+  group: ${{ inputs.sandbox_name }}
+
 jobs:
   remove_edge_associations:
     name: Remove Lambda@Edge Associations

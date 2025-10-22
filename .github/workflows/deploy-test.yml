@@ -15,6 +15,9 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
 
+concurrency:
+  group: ndr-test
+
 jobs:
   terraform_plan_apply:
     name: Terraform Plan/Apply (ndr-test)

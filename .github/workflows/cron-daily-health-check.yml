@@ -10,6 +10,9 @@ permissions:
   pull-requests: write
   id-token: write
 
+concurrency:
+  group: ndrd
+
 jobs:
   set_workspace:
     name: Set Workspace (ndrd)

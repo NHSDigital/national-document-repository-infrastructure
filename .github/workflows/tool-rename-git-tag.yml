@@ -21,6 +21,9 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: write # This is required for actions/checkout
 
+concurrency:
+  group: ${{ inputs.old_tag }}
+
 jobs:
   tag_renaming_process:
     runs-on: ubuntu-latest
