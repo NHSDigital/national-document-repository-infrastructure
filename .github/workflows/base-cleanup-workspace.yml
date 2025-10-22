@@ -1,14 +1,14 @@
-name: 'Z-BASE: Cleanup - Workspace'
+name: "Z-BASE: Cleanup - Workspace"
 
 on:
   workflow_call:
     inputs:
       git_ref:
-        description: 'Branch, tag or SHA'
+        description: "Branch, tag or SHA"
         required: true
         type: string
       sandbox_name:
-        description: 'Sandbox name'
+        description: "Sandbox name"
         required: true
         type: string
       environment:
@@ -33,9 +33,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          repository: 'NHSDigital/national-document-repository-infrastructure'
+          repository: "NHSDigital/national-document-repository-infrastructure"
           ref: ${{ inputs.git_ref }}
-          fetch-depth: '0'
+          fetch-depth: "0"
 
       - name: Setup Python 3.11
         uses: actions/setup-python@v6

@@ -1,4 +1,4 @@
-name: 'Z-CRON: Tear down - Test'
+name: "Z-CRON: Tear down - Test"
 
 on:
   schedule:

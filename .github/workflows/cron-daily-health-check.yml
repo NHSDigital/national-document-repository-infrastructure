@@ -1,11 +1,11 @@
-name: 'Z-CRON: Daily health check'
+name: "Z-CRON: Daily health check"
 
 on:
   schedule:
     - cron: 30 4 * * 1-5
 
 permissions:
-  actions: read   # Required for anchore/sbom-action
+  actions: read # Required for anchore/sbom-action
   contents: write # Required for anchore/sbom-action
   pull-requests: write
   id-token: write
@@ -19,13 +19,13 @@ jobs:
     steps:
       - name: Set Output
         id: set-output
-        run: echo 'workspace=ndrd' >> $GITHUB_OUTPUT      
+        run: echo 'workspace=ndrd' >> $GITHUB_OUTPUT
 
   terraform_plan_apply:
     name: Terraform Plan/Apply (ndrd)
     runs-on: ubuntu-latest
     environment: development
-    needs: ['set_workspace']
+    needs: ["set_workspace"]
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -79,7 +79,7 @@ jobs:
     with:
       python_version: "3.11"
       build_branch: main
-      
+
   run_ui_unit_tests:
     name: Run UI Unit Tests
     uses: NHSDigital/national-document-repository/.github/workflows/base-vitest-test.yml@main
@@ -88,7 +88,7 @@ jobs:
 
   run_cypress_tests:
     name: Run Cypress Tests
-    runs-on: ubuntu-22.04 
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -107,9 +107,9 @@ jobs:
           IDENTITY_PROVIDER_POOL_ID: not provided yet
           MONITOR_ACCOUNT_ID: not provided yet
           BUILD_ENV: development
-          IMAGE_VERSION: 'not-required'
+          IMAGE_VERSION: "not-required"
         run: |
-            ./react-environment-config.sh
+          ./react-environment-config.sh
         working-directory: ./app
 
       - name: Cypress Build
@@ -119,7 +119,7 @@ jobs:
           runTests: false
           build: npm run build
           working-directory: ./app
-      
+
       - name: npm install serve -g
         run: npm install serve -g
 
@@ -132,8 +132,8 @@ jobs:
           working-directory: ./app
         env:
           CYPRESS_BASE_URL: http://localhost:3000
-          CYPRESS_grepTags: 'regression'
-  
+          CYPRESS_grepTags: "regression"
+
       - name: Upload Artifacts (Screenshots)
         uses: actions/upload-artifact@v4
         if: failure()
@@ -152,7 +152,7 @@ jobs:
 
   publish_lambda_layers:
     name: Publish Lambda Layers
-    needs: ['set_workspace', 'terraform_plan_apply']
+    needs: ["set_workspace", "terraform_plan_apply"]
     uses: NHSDigital/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
     with:
       build_branch: main
@@ -160,12 +160,12 @@ jobs:
       environment: development
       python_version: "3.11"
     secrets:
-        AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-        
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
   deploy_lambdas:
     name: Deploy Lambdas
     uses: NHSDigital/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
-    needs: ['set_workspace', 'publish_lambda_layers']
+    needs: ["set_workspace", "publish_lambda_layers"]
     with:
       build_branch: main
       sandbox: ${{ needs.set_workspace.outputs.workspace }}
@@ -178,7 +178,7 @@ jobs:
   deploy_ui:
     name: Deploy UI
     uses: NHSDigital/national-document-repository/.github/workflows/base-deploy-ui.yml@main
-    needs: ['terraform_plan_apply', 'set_workspace']
+    needs: ["terraform_plan_apply", "set_workspace"]
     with:
       build_branch: main
       sandbox: ${{ needs.set_workspace.outputs.workspace }}
@@ -188,8 +188,8 @@ jobs:
 
   destroy_test_environment:
     if: always()
-    name: Destroy Sandbox (ndrd) 
-    needs: ['set_workspace', 'deploy_ui', 'deploy_lambdas']
+    name: Destroy Sandbox (ndrd)
+    needs: ["set_workspace", "deploy_ui", "deploy_lambdas"]
     uses: ./.github/workflows/tear-down-sandbox.yml
     with:
       git_ref: main
