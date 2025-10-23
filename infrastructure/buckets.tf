@@ -155,7 +155,7 @@ module "ndr-document-pending-review-store" {
   enable_bucket_versioning  = true
   force_destroy             = local.is_force_destroy
   cloudfront_enabled        = true
-  cloudfront_arn            = module.cloudfront-distribution-document-pending-review.cloudfront_arn
+  cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
   enable_cors_configuration = true
   cors_rules = [
     {
@@ -264,6 +264,20 @@ resource "aws_s3_bucket_lifecycle_configuration" "pdm_document_store" {
     filter {}
   }
 }
+
+resource "aws_s3_bucket_lifecycle_configuration" "ndr-document_pending_review" {
+  bucket = module.ndr-document-pending-review-store.bucket_id
+  rule {
+    id     = "default-to-intelligent-tiering"
+    status = "Enabled"
+    transition {
+      storage_class = "INTELLIGENT_TIERING"
+      days          = 0
+    }
+    filter {}
+  }
+}
+
 
 # Logging Buckets
 resource "aws_s3_bucket" "access_logs" {
