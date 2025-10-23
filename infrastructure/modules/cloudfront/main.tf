@@ -12,6 +12,7 @@ resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
 }
 
 resource "aws_cloudfront_distribution" "distribution" {
+  count = var.has_secondary_bucket ? 0 : 1
   origin {
     domain_name              = var.bucket_domain_name
     origin_id                = var.bucket_id
@@ -32,6 +33,7 @@ resource "aws_cloudfront_distribution" "distribution" {
       lambda_arn = var.qualifed_arn
     }
   }
+
   viewer_certificate {
     cloudfront_default_certificate = true
   }
@@ -43,6 +45,65 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
   web_acl_id = var.web_acl_id
 }
+
+resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
+  count           = var.has_secondary_bucket ? 1 : 0
+  enabled         = true
+  is_ipv6_enabled = true
+
+  origin {
+    domain_name              = var.bucket_domain_name
+    origin_id                = var.bucket_id
+    origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_oac.id
+  }
+
+  default_cache_behavior {
+    allowed_methods          = ["HEAD", "GET", "OPTIONS"]
+    cached_methods           = ["HEAD", "GET", "OPTIONS"]
+    target_origin_id         = var.bucket_id
+    viewer_protocol_policy   = "redirect-to-https"
+    cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer_policy.id
+
+    lambda_function_association {
+      event_type = "origin-request"
+      lambda_arn = var.qualifed_arn
+    }
+  }
+
+  origin {
+    domain_name              = var.secondary_bucket_domain_name
+    origin_id                = var.secondary_bucket_id
+    origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_oac.id
+  }
+
+  ordered_cache_behavior {
+    allowed_methods          = ["HEAD", "GET", "OPTIONS"]
+    cached_methods           = ["HEAD", "GET", "OPTIONS"]
+    path_pattern             = var.secondary_bucket_path_pattern
+    target_origin_id         = var.secondary_bucket_id
+    viewer_protocol_policy   = "redirect-to-https"
+    cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer_policy.id
+
+    lambda_function_association {
+      event_type = "origin-request"
+      lambda_arn = var.qualifed_arn
+    }
+  }
+
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
+  restrictions {
+    geo_restriction {
+      restriction_type = "whitelist"
+      locations        = local.allow_us_comms ? ["GB", "US"] : ["GB"]
+    }
+  }
+  web_acl_id = var.web_acl_id
+}
+
 
 resource "aws_cloudfront_origin_request_policy" "viewer_policy" {
   name = "${terraform.workspace}_BlockQueriesAndAllowViewer"
