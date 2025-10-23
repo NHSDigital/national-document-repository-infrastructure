@@ -88,7 +88,7 @@ module "lloyd-george-stitch-lambda" {
     module.ndr-lloyd-george-store,
     module.lloyd-george-stitch-gateway,
     module.ndr-app-config,
-    module.cloudfront-distribution-lg,
+    module.cloudfront-distribution-lg[0],
     module.stitch_metadata_reference_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table
   ]
