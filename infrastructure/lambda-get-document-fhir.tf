@@ -59,7 +59,7 @@ module "get-doc-fhir-lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME = module.lloyd_george_reference_dynamodb_table.table_name
     PDM_DYNAMODB_NAME          = module.pdm_dynamodb_table.table_name
     OIDC_CALLBACK_URL          = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
-    CLOUDFRONT_URL             = module.cloudfront-distribution-lg.cloudfront_url
+    CLOUDFRONT_URL             = module.cloudfront-distribution-lg[0].cloudfront_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
   }
   depends_on = [
