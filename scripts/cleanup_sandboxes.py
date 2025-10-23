@@ -63,4 +63,4 @@ if __name__ == "__main__":
     for workspace in workspaces:
         if workspace not in excluded:
             trigger_delete_workflow(token=gh_pat, sandbox=workspace)
-            time.sleep(300)
+            time.sleep(300) # Wait 5 min between executions to avoid an AWS concurrency issue.
