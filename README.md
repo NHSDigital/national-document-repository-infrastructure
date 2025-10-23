@@ -7,12 +7,12 @@ This repository is used to build the infrastructure the NDR. That is it's sole p
 - [Terraform](https://developer.hashicorp.com/terraform/install)
 - [Terraform docs](https://github.com/terraform-docs/terraform-docs)
 
-To install terraform-docs on WSL use the following command
+To install terraform-docs on WSL use the following commands (e.g. for v0.20.0):
 ```
-curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.20.0/terraform-docs-v0.20.0-$(uname)-amd64.tar.gz &&
-tar -xzf terraform-docs.tar.gz &&
-chmod +x terraform-docs &&
-sudo mv terraform-docs /usr/local/bin/terraform-docs &&
+curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.20.0/terraform-docs-v0.20.0-$(uname)-amd64.tar.gz
+tar -xzf terraform-docs.tar.gz
+chmod +x terraform-docs
+sudo mv terraform-docs /usr/local/bin/terraform-docs
 rm terraform-docs.tar.gz
 ```
 
