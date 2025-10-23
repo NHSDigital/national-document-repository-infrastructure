@@ -1,4 +1,4 @@
-name: 'Tool: Rename Git Tag'
+name: "Tool: Rename Git Tag"
 
 run-name: "${{ github.event.inputs.old_tag }} -> ${{ github.event.inputs.new_tag }}"
 
@@ -6,20 +6,23 @@ on:
   workflow_dispatch:
     inputs:
       old_tag:
-        description: 'Existing tag'
+        description: "Existing tag"
         required: true
-        type: 'string'
+        type: "string"
         default: 1.0.0
       new_tag:
-        description: 'Replacement tag'
+        description: "Replacement tag"
         required: true
-        type: 'string'
+        type: "string"
         default: 1.1.0
 
 permissions:
   pull-requests: write
   id-token: write # This is required for requesting the JWT
   contents: write # This is required for actions/checkout
+
+concurrency:
+  group: ${{ inputs.old_tag }}
 
 jobs:
   tag_renaming_process:
@@ -31,16 +34,16 @@ jobs:
         with:
           ref: ${{ github.event.inputs.old_tag }}
           fetch-depth: 0
-      
+
       - name: Check SHA
         id: get-sha
         run: |
           echo "BRANCH_SHA=$(git log -1 '--format=format:%H')">> $GITHUB_OUTPUT
-      
+
       - name: Check SHA value
         run: |
           echo Branch SHA: ${{ steps.get-sha.outputs.BRANCH_SHA }}
-          
+
       - name: Overwrite tag
         uses: actions/github-script@v8
         with:
