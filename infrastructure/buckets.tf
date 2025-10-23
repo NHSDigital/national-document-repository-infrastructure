@@ -51,7 +51,7 @@ module "ndr-lloyd-george-store" {
   access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
   cloudfront_enabled        = true
-  cloudfront_arn            = module.cloudfront-distribution-lg[0].cloudfront_arn
+  cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
   bucket_name               = var.lloyd_george_bucket_name
   enable_bucket_versioning  = true
   environment               = var.environment
@@ -155,7 +155,7 @@ module "ndr-document-pending-review-store" {
   enable_bucket_versioning  = true
   force_destroy             = local.is_force_destroy
   cloudfront_enabled        = true
-  cloudfront_arn            = module.cloudfront-distribution-lg[0].cloudfront_arn
+  cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
   enable_cors_configuration = true
   cors_rules = [
     {
