@@ -90,6 +90,7 @@ resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
       event_type = "origin-request"
       lambda_arn = var.qualifed_arn
     }
+
   }
 
   viewer_certificate {
@@ -102,6 +103,11 @@ resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
     }
   }
   web_acl_id = var.web_acl_id
+
+  logging_config {
+    bucket = var.access_log_bucket
+    prefix = var.log_prefix
+  }
 }
 
 

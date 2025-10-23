@@ -38,3 +38,13 @@ variable "secondary_bucket_path_pattern" {
   description = "Path patter for secondary bucket"
   type        = string
 }
+
+variable "access_log_bucket" {
+  description = "Bucket to store access logs"
+  type        = string
+}
+
+variable "log_prefix" {
+  description = "Prefix to store access logs under"
+  type        = string
+}

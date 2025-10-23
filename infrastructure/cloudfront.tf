@@ -19,6 +19,8 @@ module "cloudfront-distribution-lg" {
   qualifed_arn                  = module.edge-presign-lambda.qualified_arn
   depends_on                    = [module.edge-presign-lambda.qualified_arn, module.ndr-lloyd-george-store.bucket_id, module.ndr-lloyd-george-store.bucket_domain_name, module.ndr-document-pending-review-store.bucket_id, module.ndr-document-pending-review-store.bucket_domain_name]
   web_acl_id                    = try(module.cloudfront_firewall_waf_v2[0].arn, "")
+  access_log_bucket             = "${aws_s3_bucket.access_logs.bucket}.s3.eu-west-2.amazonaws.com"
+  log_prefix                    = "cloudfront/"
 }
 
 # module "cloudfront-distribution-document-pending-review" {
