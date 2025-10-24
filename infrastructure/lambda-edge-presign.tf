@@ -70,12 +70,11 @@ module "edge-presign-lambda" {
   source  = "./modules/lambda_edge"
   name    = "EdgePresignLambda"
   handler = "handlers.edge_presign_handler.lambda_handler"
-  iam_role_policies = [
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-    aws_iam_policy.ssm_access_policy.arn,
-    module.ndr-app-config.app_config_policy_arn,
+  iam_role_policy_documents = [
+    module.ndr-document-pending-review-store.s3_read_policy_document,
+    aws_iam_policy.ssm_access_policy.policy,
+    module.ndr-app-config.app_config_policy,
   ]
-  iam_role_policy_documents = [module.ndr-document-pending-review-store.s3_read_policy_document]
   providers = {
     aws = aws.us_east_1
   }

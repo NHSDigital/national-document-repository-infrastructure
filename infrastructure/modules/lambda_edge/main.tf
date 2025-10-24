@@ -25,8 +25,7 @@ data "archive_file" "lambda" {
 }
 
 resource "aws_iam_role" "lambda_exec_role" {
-  name = "${terraform.workspace}_lambda_edge_exec_role"
-
+  name               = "${terraform.workspace}_lambda_edge_exec_role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
@@ -76,14 +75,13 @@ resource "aws_iam_role_policy" "lambda_exec_policy" {
 }
 
 
-resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
-  count      = length(var.iam_role_policies)
-  role       = aws_iam_role.lambda_exec_role.name
-  policy_arn = var.iam_role_policies[count.index]
+resource "aws_iam_role" "lambda_execution_role" {
+  name               = "${terraform.workspace}_lambda_execution_role_${var.name}"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 data "aws_iam_policy_document" "merged_policy" {
-  source_policy_documents = concat(var.iam_role_policy_documents, [data.aws_iam_policy_document.lambda_kms_access.json])
+  source_policy_documents = concat(var.iam_role_policy_documents)
 }
 
 resource "aws_iam_policy" "combined_policies" {
@@ -93,11 +91,11 @@ resource "aws_iam_policy" "combined_policies" {
 
 resource "aws_iam_role_policy_attachment" "default_policies" {
   for_each   = toset(var.default_policies)
-  role       = aws_iam_role.lambda_exec_role.name
+  role       = aws_iam_role.lambda_execution_role.name
   policy_arn = each.value
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
-  role       = aws_iam_role.lambda_exec_role.name
+  role       = aws_iam_role.lambda_execution_role.name
   policy_arn = aws_iam_policy.combined_policies.arn
 }
