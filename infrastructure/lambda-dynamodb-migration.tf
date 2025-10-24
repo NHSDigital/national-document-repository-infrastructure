@@ -1,7 +1,7 @@
 module "migration-dynamodb-lambda" {
   source  = "./modules/lambda"
   name    = "MigrationDynamoDBLambda"
-  handler = "handlers.dynamodb_migration_handler.lambda_handler"
+  handler = "handlers.migration_dynamodb_handler.lambda_handler"
 
   iam_role_policy_documents = [
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
