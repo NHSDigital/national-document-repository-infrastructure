@@ -81,3 +81,23 @@ resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
   role       = aws_iam_role.lambda_exec_role.name
   policy_arn = var.iam_role_policies[count.index]
 }
+
+data "aws_iam_policy_document" "merged_policy" {
+  source_policy_documents = concat(var.iam_role_policy_documents, [data.aws_iam_policy_document.lambda_kms_access.json])
+}
+
+resource "aws_iam_policy" "combined_policies" {
+  name   = "${terraform.workspace}_${var.name}_combined_policy"
+  policy = data.aws_iam_policy_document.merged_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "default_policies" {
+  for_each   = toset(var.default_policies)
+  role       = aws_iam_role.lambda_exec_role.name
+  policy_arn = each.value
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_execution_policy" {
+  role       = aws_iam_role.lambda_exec_role.name
+  policy_arn = aws_iam_policy.combined_policies.arn
+}

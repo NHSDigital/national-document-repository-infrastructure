@@ -40,3 +40,9 @@ variable "table_name" {
   description = "The name of the DynamoDB table used by the Lambda function."
   type        = string
 }
+
+variable "iam_role_policy_documents" {
+  description = "List of IAM policy document ARNs to attach to the Lambda execution role."
+  type        = list(string)
+  default     = []
+}
