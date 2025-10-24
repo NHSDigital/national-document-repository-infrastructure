@@ -58,6 +58,7 @@ module "s3_proxy_lambda" {
 |------|------|
 | [aws_iam_policy.combined_policies](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.lambda_exec_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role.lambda_execution_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy.lambda_exec_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy_attachment.default_policies](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.lambda_execution_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -72,8 +73,8 @@ module "s3_proxy_lambda" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | The name of the S3 bucket the Lambda will proxy requests to. | `string` | n/a | yes |
+| <a name="input_default_policies"></a> [default\_policies](#input\_default\_policies) | List of default IAM policy ARNs to attach to the Lambda execution role. | `list(string)` | <pre>[<br/>  "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"<br/>]</pre> | no |
 | <a name="input_handler"></a> [handler](#input\_handler) | Handler function in the code package (e.g., 'index.handler'). | `string` | n/a | yes |
-| <a name="input_iam_role_policies"></a> [iam\_role\_policies](#input\_iam\_role\_policies) | List of IAM policy ARNs or JSON documents to attach to the Lambda execution role. | `list(string)` | n/a | yes |
 | <a name="input_iam_role_policy_documents"></a> [iam\_role\_policy\_documents](#input\_iam\_role\_policy\_documents) | List of IAM policy document ARNs to attach to the Lambda execution role. | `list(string)` | `[]` | no |
 | <a name="input_lambda_ephemeral_storage"></a> [lambda\_ephemeral\_storage](#input\_lambda\_ephemeral\_storage) | Amount of ephemeral storage (in MB) allocated to the Lambda function. | `number` | `512` | no |
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Amount of memory (in MB) to allocate to the Lambda function. | `number` | `128` | no |
