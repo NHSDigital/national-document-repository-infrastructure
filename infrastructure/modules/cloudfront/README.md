@@ -49,11 +49,9 @@ module "cloudfront" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_access_log_bucket"></a> [access\_log\_bucket](#input\_access\_log\_bucket) | Bucket to store access logs | `string` | n/a | yes |
 | <a name="input_bucket_domain_name"></a> [bucket\_domain\_name](#input\_bucket\_domain\_name) | Domain name to assign CloudFront distribution to. | `string` | n/a | yes |
 | <a name="input_bucket_id"></a> [bucket\_id](#input\_bucket\_id) | Bucket ID to assign CloudFront distribution to. | `string` | n/a | yes |
 | <a name="input_has_secondary_bucket"></a> [has\_secondary\_bucket](#input\_has\_secondary\_bucket) | Whether distribution is associated with a secondary buckets | `bool` | n/a | yes |
-| <a name="input_log_prefix"></a> [log\_prefix](#input\_log\_prefix) | Prefix to store access logs under | `string` | n/a | yes |
 | <a name="input_qualifed_arn"></a> [qualifed\_arn](#input\_qualifed\_arn) | Lambda@Edge function association. | `string` | n/a | yes |
 | <a name="input_secondary_bucket_domain_name"></a> [secondary\_bucket\_domain\_name](#input\_secondary\_bucket\_domain\_name) | Secondary bucket domain names | `string` | n/a | yes |
 | <a name="input_secondary_bucket_id"></a> [secondary\_bucket\_id](#input\_secondary\_bucket\_id) | Secondary bucket IDs | `string` | n/a | yes |
