@@ -14,6 +14,9 @@
         },
         "lloydGeorgeValidationStrictModeEnabled": {
             "name": "lloydGeorgeValidationStrictModeEnabled"
+        },
+        "uploadDocumentIteration3Enabled": {
+            "name": "uploadDocumentIteration3Enabled"
         }
     },
     "values": {
@@ -30,6 +33,9 @@
             "enabled": "false"
         },
         "lloydGeorgeValidationStrictModeEnabled": {
+            "enabled": "true"
+        },
+        "uploadDocumentIteration3Enabled": {
             "enabled": "true"
         }
     },
