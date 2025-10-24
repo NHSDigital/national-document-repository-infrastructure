@@ -20,6 +20,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
   enabled         = true
   is_ipv6_enabled = true
+
   default_cache_behavior {
     allowed_methods          = ["HEAD", "GET", "OPTIONS"]
     cached_methods           = ["HEAD", "GET", "OPTIONS"]
@@ -37,6 +38,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   viewer_certificate {
     cloudfront_default_certificate = true
   }
+
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
@@ -96,6 +98,7 @@ resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
   viewer_certificate {
     cloudfront_default_certificate = true
   }
+
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
