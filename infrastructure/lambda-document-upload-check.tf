@@ -62,6 +62,16 @@ resource "aws_s3_bucket_notification" "document_upload_check_lambda_trigger" {
   }
 }
 
+resource "aws_s3_bucket_notification" "document_fhir_upload_check_lambda_trigger" {
+  bucket      = module.ndr-bulk-staging-store.bucket_id
+  eventbridge = true
+  lambda_function {
+    lambda_function_arn = module.document_upload_check_lambda.lambda_arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = "fhir_upload"
+  }
+}
+
 resource "aws_lambda_permission" "document_upload_check_lambda" {
   statement_id  = "AllowS3Invoke"
   action        = "lambda:InvokeFunction"
