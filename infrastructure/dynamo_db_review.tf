@@ -2,7 +2,6 @@ module "document_review_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.document_review_table_name
   hash_key                       = "ID"
-  sort_key                       = "DocumentSnomedCodeType"
   deletion_protection_enabled    = local.is_production
   stream_enabled                 = false
   ttl_enabled                    = true
@@ -20,10 +19,6 @@ module "document_review_dynamodb_table" {
     },
     {
       name = "NhsNumber"
-      type = "S"
-    },
-    {
-      name = "DocumentSnomedCodeType"
       type = "S"
     },
     {
@@ -80,7 +75,7 @@ module "document_review_dynamodb_table" {
       name            = "NhsNumberIndex"
       hash_key        = "NhsNumber"
       range_key       = "UploadDate"
-      projection_type = "KEYS_ONLY"
+      projection_type = "ALL"
     }
   ]
 
