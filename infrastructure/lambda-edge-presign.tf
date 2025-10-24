@@ -73,7 +73,8 @@ module "edge-presign-lambda" {
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     aws_iam_policy.ssm_access_policy.arn,
-    module.ndr-app-config.app_config_policy_arn
+    module.ndr-app-config.app_config_policy_arn,
+    module.ndr-document-pending-review-store.s3_read_policy_document,
   ]
   providers = {
     aws = aws.us_east_1
