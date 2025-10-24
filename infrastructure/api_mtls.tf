@@ -33,7 +33,10 @@ resource "aws_api_gateway_base_path_mapping" "api_mapping_mtls" {
   stage_name  = var.environment
   domain_name = aws_api_gateway_domain_name.custom_api_domain_mtls.domain_name
 
-  depends_on = [aws_api_gateway_deployment.ndr_api_deploy_mtls]
+  depends_on = [
+    aws_api_gateway_deployment.ndr_api_deploy_mtls,
+    aws_api_gateway_rest_api.ndr_doc_store_api_mtls
+  ]
 }
 
 resource "aws_api_gateway_deployment" "ndr_api_deploy_mtls" {
@@ -67,6 +70,12 @@ resource "aws_api_gateway_stage" "ndr_api_mtls" {
   rest_api_id          = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
   stage_name           = var.environment
   xray_tracing_enabled = var.enable_xray_tracing
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  depends_on = [aws_cloudwatch_log_group.mtls_api_gateway_stage]
 }
 
 resource "aws_cloudwatch_log_group" "mtls_api_gateway_stage" {
