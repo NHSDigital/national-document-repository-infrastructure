@@ -95,6 +95,10 @@ resource "aws_api_gateway_stage" "ndr_api" {
   depends_on = [
     aws_cloudwatch_log_group.api_gateway_stage
   ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_cloudwatch_log_group" "api_gateway_stage" {
