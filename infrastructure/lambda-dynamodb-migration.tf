@@ -1,6 +1,6 @@
 module "migration-dynamodb-lambda" {
   source  = "./modules/lambda"
-  name    = "MigrationDynamoDBLambda"
+  name    = "MigrationDynamoDB"
   handler = "handlers.migration_dynamodb_handler.lambda_handler"
 
   iam_role_policy_documents = [
