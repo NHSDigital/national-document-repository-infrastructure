@@ -1,6 +1,4 @@
-############################
 # IAM Role for Step Functions
-############################
 
 data "aws_iam_policy_document" "sfn_assume" {
   statement {
@@ -93,9 +91,7 @@ resource "aws_iam_role_policy" "sfn_policy" {
   policy = data.aws_iam_policy_document.sfn_permissions.json
 }
 
-############################
 # Step Function Definition
-############################
 
 resource "aws_sfn_state_machine" "migration_dynamodb" {
   name     = "${terraform.workspace}_migration_dynamodb_step_function"
