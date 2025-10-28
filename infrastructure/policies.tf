@@ -42,7 +42,8 @@ resource "aws_iam_policy" "read_only_role_extra_permissions" {
 }
 
 resource "aws_iam_policy" "administrator_permission_restrictions" {
-  name = "AdministratorRestriction"
+  count = local.is_sandbox ? 0 : 1
+  name  = "AdministratorRestriction"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
