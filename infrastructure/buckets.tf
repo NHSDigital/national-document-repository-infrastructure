@@ -149,7 +149,7 @@ module "ndr-document-pending-review-store" {
   source                    = "./modules/s3"
   access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
-  bucket_name               = var.document_review_bucket_name
+  bucket_name               = var.document_pending_review_bucket_name
   environment               = var.environment
   owner                     = var.owner
   enable_bucket_versioning  = true
@@ -265,7 +265,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "pdm_document_store" {
   }
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "ndr-document_pending_review" {
+resource "aws_s3_bucket_lifecycle_configuration" "ndr_document_pending_review-store" {
   bucket = module.ndr-document-pending-review-store.bucket_id
   rule {
     id     = "default-to-intelligent-tiering"

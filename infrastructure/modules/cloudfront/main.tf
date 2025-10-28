@@ -12,7 +12,9 @@ resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
 }
 
 resource "aws_cloudfront_distribution" "distribution" {
-  count = var.has_secondary_bucket ? 0 : 1
+  count       = var.has_secondary_bucket ? 0 : 1
+  price_class = "PriceClass_100"
+
   origin {
     domain_name              = var.bucket_domain_name
     origin_id                = var.bucket_id
@@ -52,6 +54,7 @@ resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
   count           = var.has_secondary_bucket ? 1 : 0
   enabled         = true
   is_ipv6_enabled = true
+  price_class     = "PriceClass_100"
 
   origin {
     domain_name              = var.bucket_domain_name

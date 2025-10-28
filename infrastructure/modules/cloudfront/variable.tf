@@ -20,22 +20,22 @@ variable "web_acl_id" {
 }
 
 variable "has_secondary_bucket" {
-  description = "Whether distribution is associated with a secondary buckets"
+  description = "Whether distribution is associated with a secondary bucket"
   type        = bool
 }
 
 variable "secondary_bucket_id" {
-  description = "Secondary bucket IDs"
+  description = "Secondary bucket ID"
   type        = string
 }
 
 variable "secondary_bucket_domain_name" {
-  description = "Secondary bucket domain names"
+  description = "Secondary bucket domain name"
   type        = string
 }
 
 variable "secondary_bucket_path_pattern" {
-  description = "Path patter for secondary bucket"
+  description = "Path pattern for secondary bucket"
   type        = string
 }
 

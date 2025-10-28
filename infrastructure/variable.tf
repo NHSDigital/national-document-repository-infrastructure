@@ -81,7 +81,7 @@ variable "ca_pem_filename" {
   default     = "ndr-truststore.pem"
 }
 
-variable "document_review_bucket_name" {
+variable "document_pending_review_bucket_name" {
   type        = string
   description = "The S3 bucket name to store documents pending review"
   default     = "document-pending-review-store"
