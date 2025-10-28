@@ -402,3 +402,39 @@ module "pdm-document-store" {
   owner                    = var.owner
   force_destroy            = local.is_force_destroy
 }
+
+module "ndr-configs-store" {
+  source                    = "./modules/s3/"
+  access_logs_enabled       = local.is_production
+  access_logs_bucket_id     = local.access_logs_bucket_id
+  bucket_name               = var.configs_bucket_name
+  enable_cors_configuration = false
+  enable_bucket_versioning  = true
+  environment               = var.environment
+  owner                     = var.owner
+  force_destroy             = local.is_force_destroy
+}
+
+# Creating metadata_aliases folder in the configs bucket
+resource "aws_s3_object" "metadata_aliases_placeholder" {
+  bucket = module.ndr-configs-store.bucket_id
+  key    = "metadata_aliases/.keep"
+  source = "/dev/null"
+  etag   = filemd5("/dev/null")
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "configs-store-lifecycle-rules" {
+  bucket = module.ndr-configs-store.bucket_id
+
+  rule {
+    id     = "default-to-intelligent-tiering"
+    status = "Enabled"
+
+    transition {
+      storage_class = "INTELLIGENT_TIERING"
+      days          = 0
+    }
+
+    filter {}
+  }
+}

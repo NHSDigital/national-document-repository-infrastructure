@@ -1,3 +1,19 @@
+data "aws_iam_policy_document" "configs_bucket_read" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket"
+    ]
+
+    resources = [
+      module.ndr-configs-store.bucket_arn,
+      "${module.ndr-configs-store.bucket_arn}/metadata_aliases/*"
+    ]
+  }
+}
+
 module "bulk-upload-metadata-processor-lambda" {
   source         = "./modules/lambda"
   name           = "BulkUploadMetadataProcessor"
@@ -11,7 +27,8 @@ module "bulk-upload-metadata-processor-lambda" {
     module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
-    module.ndr-app-config.app_config_policy
+    module.ndr-app-config.app_config_policy,
+    data.aws_iam_policy_document.configs_bucket_read.json
   ]
 
   rest_api_id       = null
@@ -27,6 +44,7 @@ module "bulk-upload-metadata-processor-lambda" {
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
+    CONFIGS_BUCKET_NAME        = module.ndr-configs-store.bucket_id
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
