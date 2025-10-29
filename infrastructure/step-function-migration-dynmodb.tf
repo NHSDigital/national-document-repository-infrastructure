@@ -121,7 +121,7 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
 
       "Segment Map (Distributed)" = {
         Type           = "Map",
-        MaxConcurrency = 50,
+        MaxConcurrency = 100,
 
         ItemReader = {
           Resource = "arn:aws:states:::s3:getObject",
