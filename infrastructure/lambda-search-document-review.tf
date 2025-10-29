@@ -44,7 +44,7 @@ module "search-document-review-lambda-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.search-document-review-lambda.function_name
   lambda_timeout       = module.search-document-review-lambda.timeout
-  lambda_name          = ""
+  lambda_name          = "search_document_review_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.search-document-review-lambda-alarm-topic.arn]
   ok_actions           = [module.search-document-review-lambda-alarm-topic.arn]

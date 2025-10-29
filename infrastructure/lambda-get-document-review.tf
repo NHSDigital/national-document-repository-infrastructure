@@ -54,7 +54,7 @@ module "get-document-review-lambda-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.get-document-review-lambda.function_name
   lambda_timeout       = module.get-document-review-lambda.timeout
-  lambda_name          = ""
+  lambda_name          = "get_document_review_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.get-document-review-lambda-alarm-topic.arn]
   ok_actions           = [module.get-document-review-lambda-alarm-topic.arn]

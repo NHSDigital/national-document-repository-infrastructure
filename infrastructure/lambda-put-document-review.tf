@@ -37,14 +37,14 @@ module "put-document-review-gateway" {
   authorization       = "CUSTOM"
   require_credentials = true
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
-  gateway_path        = "putDocumentReview"
+  gateway_path        = "PutDocumentReview"
 }
 
 module "put-document-review-lambda-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.put-document-review-lambda.function_name
   lambda_timeout       = module.put-document-review-lambda.timeout
-  lambda_name          = ""
+  lambda_name          = "put_document_review_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.put-document-review-lambda-alarm-topic.arn]
   ok_actions           = [module.put-document-review-lambda-alarm-topic.arn]
