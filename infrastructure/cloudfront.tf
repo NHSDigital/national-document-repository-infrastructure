@@ -19,4 +19,5 @@ module "cloudfront-distribution-lg" {
   secondary_bucket_domain_name  = module.ndr-document-pending-review-store.bucket_regional_domain_name
   secondary_bucket_id           = module.ndr-document-pending-review-store.bucket_id
   secondary_bucket_path_pattern = "/review/*"
+  log_bucket_id                 = local.access_logs_bucket_id
 }
