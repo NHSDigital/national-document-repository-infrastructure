@@ -38,6 +38,16 @@ module "get-document-review-gateway" {
   require_credentials = true
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
   gateway_path        = "GetDocumentReview"
+
+  request_parameters = {
+    "method.request.path.id" = true
+  }
+}
+
+resource "aws_api_gateway_resource" "get_document_review" {
+  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  parent_id   = module.get-document-review-gateway.gateway_resource_id
+  path_part   = "{id}"
 }
 
 module "get-document-review-lambda-alarm" {
