@@ -39,3 +39,8 @@ variable "secondary_bucket_path_pattern" {
   type        = string
 }
 
+variable "log_bucket_id" {
+  description = "The bucket ID to send access logs to"
+  type        = string
+}
+
