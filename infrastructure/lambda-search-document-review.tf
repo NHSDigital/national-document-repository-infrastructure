@@ -1,7 +1,7 @@
 module "search-document-review-lambda" {
   source  = "./modules/lambda"
   name    = "SearchDocumentReview"
-  handler = ""
+  handler = "handlers.search_document_review_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
   ]

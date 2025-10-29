@@ -1,7 +1,7 @@
 module "put-document-review-lambda" {
   source  = "./modules/lambda"
   name    = "PutDocumentReview"
-  handler = ""
+  handler = "handlers.put_document_review_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
   ]
