@@ -98,10 +98,13 @@ resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
 
   }
 
-  logging_config {
-    bucket = var.log_bucket_id
-    # this might break it as path pattern is in format /pattern/
-    prefix = var.secondary_bucket_path_pattern
+  dynamic "logging_config" {
+    for_each = var.log_bucket_id != "" ? [1] : []
+    content {
+      bucket = var.log_bucket_id
+      # this might break it as path pattern is in format /pattern/
+      prefix = var.secondary_bucket_path_pattern
+    }
   }
 
   viewer_certificate {
