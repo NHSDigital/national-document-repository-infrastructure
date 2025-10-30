@@ -19,8 +19,8 @@ module "document_review_processor_lambda" {
   api_execution_arn             = null
   lambda_timeout                = 900
   lambda_environment_variables = {
-    PENDING_REVIEW_BUCKET_NAME    = module.ndr-document-pending-review-store.bucket_name
-    STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_name
+    PENDING_REVIEW_BUCKET_NAME    = module.ndr-document-pending-review-store.bucket_id
+    STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_review_dynamodb_table.table_name
     WORKSPACE                     = terraform.workspace
   }
