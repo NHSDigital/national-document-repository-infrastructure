@@ -171,13 +171,6 @@ module "ndr-document-pending-review-store" {
   enable_cors_configuration = true
   cors_rules = [
     {
-      allowed_headers = ["*"]
-      allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
-      expose_headers  = ["ETag"]
-      max_age_seconds = 3000
-    },
-    {
       allowed_methods = ["GET"]
       allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
     }
