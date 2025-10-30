@@ -172,6 +172,8 @@ variable "document_review_table_name" {
   type        = string
   default     = "DocumentReview"
 }
+
+
 # VPC Variables
 
 variable "standalone_vpc_tag" {
