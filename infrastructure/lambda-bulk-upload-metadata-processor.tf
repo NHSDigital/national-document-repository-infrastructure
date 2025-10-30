@@ -73,7 +73,6 @@ module "bulk-upload-metadata-processor-alarm-topic" {
   depends_on = [module.bulk-upload-metadata-processor-lambda, module.sns_encryption_key]
 }
 
-
 resource "aws_lambda_permission" "bulk_upload_metadata_processor_lambda" {
   statement_id  = "AllowS3Invoke"
   action        = "lambda:InvokeFunction"
