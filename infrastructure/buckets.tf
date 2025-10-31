@@ -415,6 +415,24 @@ module "ndr-configs-store" {
   force_destroy             = local.is_force_destroy
 }
 
+resource "aws_s3_object" "metadata_aliases_general" {
+  bucket = module.ndr-configs-store.bucket_id
+  key    = "metadata_aliases/general/general.json"
+
+  source        = "${path.module}/modules/aliases_config/general/general.json"
+  etag          = filemd5("${path.module}/modules/aliases_config/general/general.json")
+  content_type  = "application/json"
+}
+
+resource "aws_s3_object" "metadata_aliases_usb" {
+  bucket = module.ndr-configs-store.bucket_id
+  key    = "metadata_aliases/usb/usb.json"
+
+  source        = "${path.module}/modules/aliases_config/usb/usb.json"
+  etag          = filemd5("${path.module}/modules/aliases_config/usb/usb.json")
+  content_type  = "application/json"
+}
+
 resource "aws_s3_bucket_lifecycle_configuration" "configs-store-lifecycle-rules" {
   bucket = module.ndr-configs-store.bucket_id
 
