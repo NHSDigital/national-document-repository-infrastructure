@@ -4,6 +4,7 @@ module "get_document_review_lambda" {
   handler = "handlers.get_document_review_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
+    module.cloudfront_edge_dynamodb_table.dynamodb_read_policy_document
   ]
 
   rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -19,12 +20,14 @@ module "get_document_review_lambda" {
     APPCONFIG_CONFIGURATION        = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_REVIEW_DYNAMO_NAME    = ""
     PENDING_REVIEW_DOCUMENT_BUCKET = ""
+    EDGE_REFERENCE_TABLE           = module.cloudfront_edge_dynamodb_table.table_name
     CLOUDFRONT_URL                 = module.cloudfront-distribution-lg.cloudfront_url
     WORKSPACE                      = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.review_document_id_gateway
+    module.review_document_id_gateway,
+    module.cloudfront-distribution-lg
   ]
 }
 
