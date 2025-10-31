@@ -24,7 +24,7 @@ module "put_document_review_lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.review_document_gateway
+    module.review_document_id_gateway
   ]
 }
 
