@@ -407,7 +407,7 @@ module "ndr-configs-store" {
   source                    = "./modules/s3/"
   access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
-  bucket_name               = "ndr-${var.configs_bucket_name}"
+  bucket_name               = var.configs_bucket_name
   enable_cors_configuration = false
   enable_bucket_versioning  = true
   environment               = var.environment
