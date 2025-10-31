@@ -15,14 +15,13 @@ module "get_document_review_lambda" {
   is_gateway_integration_needed = true
   is_invoked_from_gateway       = true
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION          = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT          = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION        = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_REVIEW_DYNAMO_NAME    = ""
-    PENDING_REVIEW_DOCUMENT_BUCKET = ""
-    EDGE_REFERENCE_TABLE           = module.cloudfront_edge_dynamodb_table.table_name
-    CLOUDFRONT_URL                 = module.cloudfront-distribution-lg.cloudfront_url
-    WORKSPACE                      = terraform.workspace
+    APPCONFIG_APPLICATION       = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT       = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION     = module.ndr-app-config.app_config_configuration_profile_id
+    DOCUMENT_REVIEW_DYNAMO_NAME = ""
+    EDGE_REFERENCE_TABLE        = module.cloudfront_edge_dynamodb_table.table_name
+    CLOUDFRONT_URL              = module.cloudfront-distribution-lg.cloudfront_url
+    WORKSPACE                   = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
