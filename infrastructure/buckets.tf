@@ -415,14 +415,6 @@ module "ndr-configs-store" {
   force_destroy             = local.is_force_destroy
 }
 
-# Creating metadata_aliases folder in the configs bucket
-resource "aws_s3_object" "metadata_aliases_placeholder" {
-  bucket = module.ndr-configs-store.bucket_id
-  key    = "metadata_aliases/.keep"
-  source = "/dev/null"
-  etag   = filemd5("/dev/null")
-}
-
 resource "aws_s3_bucket_lifecycle_configuration" "configs-store-lifecycle-rules" {
   bucket = module.ndr-configs-store.bucket_id
 
