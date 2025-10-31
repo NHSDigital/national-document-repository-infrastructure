@@ -19,7 +19,6 @@ module "get_document_review_lambda" {
     APPCONFIG_ENVIRONMENT          = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION        = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_REVIEW_DYNAMO_NAME    = ""
-    PENDING_REVIEW_DOCUMENT_BUCKET = ""
     EDGE_REFERENCE_TABLE           = module.cloudfront_edge_dynamodb_table.table_name
     CLOUDFRONT_URL                 = module.cloudfront-distribution-lg.cloudfront_url
     WORKSPACE                      = terraform.workspace
