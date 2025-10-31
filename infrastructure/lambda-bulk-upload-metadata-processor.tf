@@ -1,19 +1,3 @@
-data "aws_iam_policy_document" "configs_bucket_read" {
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "s3:GetObject",
-      "s3:ListBucket"
-    ]
-
-    resources = [
-      module.ndr-configs-store.bucket_arn,
-      "${module.ndr-configs-store.bucket_arn}/metadata_aliases/*"
-    ]
-  }
-}
-
 module "bulk-upload-metadata-processor-lambda" {
   source         = "./modules/lambda"
   name           = "BulkUploadMetadataProcessor"
@@ -28,7 +12,7 @@ module "bulk-upload-metadata-processor-lambda" {
     module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
     module.ndr-app-config.app_config_policy,
-    data.aws_iam_policy_document.configs_bucket_read.json
+    module.ndr-configs-store.s3_read_policy_document
   ]
 
   rest_api_id       = null
@@ -46,6 +30,7 @@ module "bulk-upload-metadata-processor-lambda" {
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
     CONFIGS_BUCKET_NAME        = module.ndr-configs-store.bucket_id
   }
+
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
 }
