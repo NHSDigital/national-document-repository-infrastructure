@@ -116,7 +116,16 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
           "key.$"    = "$.Payload.key"
         },
         ResultPath = "$.SegmentSource",
-        Next       = "Segment Map (Distributed)"
+        Next       = "Segment Map (Distributed)",
+
+        Retry = [
+          {
+            ErrorEquals     = ["States.ALL"]
+            IntervalSeconds = 2
+            MaxAttempts      = 10
+            BackoffRate     = 2.0
+          }
+        ]
       },
 
       "Segment Map (Distributed)" = {
@@ -166,7 +175,15 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
               },
               ResultSelector = { "migrationResult.$" = "$.Payload" },
               ResultPath     = "$.MigrationResult",
-              End            = true
+              End            = true,
+              Retry = [
+                {
+                  ErrorEquals     = ["States.ALL"]
+                  IntervalSeconds = 2
+                  MaxAttempts     = 10
+                  BackoffRate     = 2.0
+                }
+              ]
             }
           }
         },
