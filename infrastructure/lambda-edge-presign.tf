@@ -67,18 +67,17 @@ module "edge_presign_alarm_topic" {
 }
 
 module "edge-presign-lambda" {
-  source           = "./modules/lambda_edge"
-  name             = "EdgePresignLambda"
-  handler          = "handlers.edge_presign_handler.lambda_handler"
-  default_policies = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
-  iam_role_policy_documents = [
-    module.ndr-document-pending-review-store.s3_read_policy_document,
-    aws_iam_policy.ssm_access_policy.policy,
-    module.ndr-app-config.app_config_policy,
+  source  = "./modules/lambda_edge"
+  name    = "EdgePresignLambda"
+  handler = "handlers.edge_presign_handler.lambda_handler"
+  iam_role_policies = [
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+    aws_iam_policy.ssm_access_policy.arn,
+    module.ndr-app-config.app_config_policy_arn
   ]
   providers = {
     aws = aws.us_east_1
   }
-  bucket_name = module.ndr-lloyd-george-store.bucket_id
-  table_name  = module.cloudfront_edge_dynamodb_table.table_name
+  bucket_names = [module.ndr-lloyd-george-store.bucket_id, module.ndr-document-pending-review-store.bucket_id]
+  table_name   = module.cloudfront_edge_dynamodb_table.table_name
 }
