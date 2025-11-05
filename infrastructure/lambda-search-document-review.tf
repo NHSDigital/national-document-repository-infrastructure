@@ -15,11 +15,11 @@ module "search_document_review_lambda" {
   is_gateway_integration_needed = true
   is_invoked_from_gateway       = true
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION       = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT       = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION     = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_REVIEW_DYNAMO_NAME = module.document_review_dynamodb_table.table_name
-    WORKSPACE                   = terraform.workspace
+    APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
+    DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_review_dynamodb_table.table_name
+    WORKSPACE                     = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
