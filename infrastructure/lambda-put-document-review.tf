@@ -14,11 +14,11 @@ module "put_document_review_lambda" {
   is_gateway_integration_needed = true
   is_invoked_from_gateway       = true
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION       = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT       = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION     = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_REVIEW_DYNAMO_NAME = ""
-    WORKSPACE                   = terraform.workspace
+    APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
+    DOCUMENT_REVIEW_DYNAMODB_NAME = ""
+    WORKSPACE                     = terraform.workspace
 
 
   }
