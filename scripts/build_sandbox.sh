@@ -14,6 +14,11 @@ branch=$(echo "$branch" | sed 's/[^a-zA-Z0-9]//g')
 branch="${branch,,}"
 apply="${APPLY:-false}"
 
+if [ ${#branch} -gt 7 ]; then
+  echo "Error: your workspace name '$branch' is longer than 7 characters, please start again and choose a workspace less than 7 characters."
+  exit 1
+fi
+
 # Forbidden branches
 forbidden_workspaces=("main" "prod" "pre-prod" "ndr-test" "ndr-dev" "preprod" "ndrtest" "ndrdev", "dev", "test")
 
