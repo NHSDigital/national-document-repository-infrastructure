@@ -35,6 +35,7 @@ module "migration-dynamodb-lambda" {
     module.lloyd_george_reference_dynamodb_table,
     module.bulk_upload_report_dynamodb_table,
     module.ndr-app-config,
-    aws_iam_policy.ssm_access_policy
+    aws_iam_policy.ssm_access_policy,
+    module.migration-failed-items-store
   ]
 }
