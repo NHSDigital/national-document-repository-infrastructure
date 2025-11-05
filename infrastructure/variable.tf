@@ -161,15 +161,20 @@ variable "alarm_state_history_table_name" {
   default     = "AlarmStateHistory"
 }
 
+variable "document_review_table_name" {
+  description = "The name of the DynamoDB table to store document review records."
+  type        = string
+  default     = "DocumentReview"
+}
 # VPC Variables
 
 variable "standalone_vpc_tag" {
-  description = "This is the tag assigned to the standalone VPC that should be created manaully before the first run of the infrastructure."
+  description = "This is the tag assigned to the standalone VPC that should be created manually before the first run of the infrastructure."
   type        = string
 }
 
 variable "standalone_vpc_ig_tag" {
-  description = "This is the tag assigned to the standalone VPC internet gateway that should be created manaully before the first run of the infrastructure."
+  description = "This is the tag assigned to the standalone VPC internet gateway that should be created manually before the first run of the infrastructure."
   type        = string
 }
 
@@ -243,7 +248,7 @@ locals {
   current_region     = data.aws_region.current.name
   current_account_id = data.aws_caller_identity.current.account_id
 
-  apim_api_url = "https://${var.apim_environment}api.service.nhs.uk/national-document-repository"
+  apim_api_url = "https://${var.apim_environment}api.service.nhs.uk/national-document-repository/FHIR/R4"
 
   truststore_bucket_id = local.is_sandbox ? "ndr-dev-${var.truststore_bucket_name}" : module.ndr-truststore[0].bucket_id
   truststore_uri       = "s3://${local.truststore_bucket_id}/${var.ca_pem_filename}"

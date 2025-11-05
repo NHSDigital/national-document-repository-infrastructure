@@ -23,7 +23,11 @@ resource "aws_api_gateway_base_path_mapping" "api_mapping" {
   stage_name  = var.environment
   domain_name = local.api_gateway_full_domain_name
 
-  depends_on = [aws_api_gateway_deployment.ndr_api_deploy, aws_api_gateway_rest_api.ndr_doc_store_api]
+  depends_on = [
+    aws_api_gateway_deployment.ndr_api_deploy,
+    aws_api_gateway_rest_api.ndr_doc_store_api,
+    aws_api_gateway_stage.ndr_api
+  ]
 }
 
 resource "aws_api_gateway_resource" "auth_resource" {
@@ -45,13 +49,13 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.back-channel-logout-gateway,
     module.back_channel_logout_lambda,
     module.create-doc-ref-lambda,
-    module.create_document_reference_gateway,
     module.create-token-gateway,
     module.create-token-lambda,
     module.delete-doc-ref-gateway,
     module.delete-doc-ref-lambda,
     module.document-manifest-job-gateway,
     module.document-manifest-job-lambda,
+    module.document_reference_gateway,
     module.feature-flags-gateway,
     module.feature-flags-lambda,
     module.fhir_document_reference_gateway,
@@ -68,6 +72,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.search-patient-details-lambda,
     module.send-feedback-gateway,
     module.send-feedback-lambda,
+    module.update_doc_ref_lambda,
     module.update-upload-state-gateway,
     module.update-upload-state-lambda,
     module.document-status-check-gateway,
@@ -95,6 +100,10 @@ resource "aws_api_gateway_stage" "ndr_api" {
   depends_on = [
     aws_cloudwatch_log_group.api_gateway_stage
   ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_cloudwatch_log_group" "api_gateway_stage" {
