@@ -5,6 +5,8 @@ module "document_review_processor_lambda" {
   iam_role_policy_documents = [
     module.document_review_queue.sqs_read_policy_document,
     module.document_review_queue.sqs_write_policy_document,
+    module.ndr-document-pending-review-store.s3_write_policy_document,
+    module.document_review_dynamodb_table.dynamodb_write_policy_document
   ]
   kms_deletion_window           = var.kms_deletion_window
   is_gateway_integration_needed = false
@@ -13,11 +15,10 @@ module "document_review_processor_lambda" {
   api_execution_arn             = null
   lambda_timeout                = 900
   lambda_environment_variables = {
-    DOCUMENT_REVIEW_BUCKET_NAME = "${terraform.workspace}-placeholder-document-review-bucket"
-    DOCUMENT_REVIEW_TABLE_NAME  = "${terraform.workspace}_placeholder_document_review_table"
+    DOCUMENT_REVIEW_BUCKET_NAME = module.ndr-document-pending-review-store.bucket_id
+    DOCUMENT_REVIEW_TABLE_NAME  = module.document_review_dynamodb_table.table_name
     WORKSPACE                   = terraform.workspace
   }
-  depends_on = []
 }
 
 
