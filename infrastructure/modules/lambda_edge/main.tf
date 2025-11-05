@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "lambda_policy" {
     resources = ["arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*"]
   }
 
-  for_each = var.bucket_names
+  for_each = toset(var.bucket_names)
   statement {
     effect    = "Allow"
     actions   = ["s3:GetObject"]
