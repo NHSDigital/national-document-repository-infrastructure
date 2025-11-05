@@ -26,9 +26,9 @@ variable "reserved_concurrent_executions" {
   default     = -1
 }
 
-variable "bucket_name" {
-  description = "The name of the S3 bucket the Lambda will proxy requests to."
-  type        = string
+variable "bucket_names" {
+  description = "The name of the S3 buckets the Lambda will proxy requests to."
+  type        = list(string)
 }
 
 variable "table_name" {
@@ -36,16 +36,7 @@ variable "table_name" {
   type        = string
 }
 
-variable "iam_role_policy_documents" {
-  description = "List of IAM policy document ARNs to attach to the Lambda execution role."
+variable "iam_role_policies" {
+  description = "List of IAM policy ARNs or JSON documents to attach to the Lambda execution role."
   type        = list(string)
-  default     = []
-}
-
-variable "default_policies" {
-  description = "List of default IAM policy ARNs to attach to the Lambda execution role."
-  type        = list(string)
-  default = [
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-  ]
 }
