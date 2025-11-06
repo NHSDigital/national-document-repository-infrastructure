@@ -148,8 +148,8 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
           "totalSegments.$"   = "$.totalSegments",
           "tableArn.$"        = "$.tableArn",
           "migrationScript.$" = "$.migrationScript",
-          "run_migration.$"   = "$.run_migration",
-          "execution_Id.$"    = "$$.Execution.Id"
+          "runMigration.$"    = "$.runMigration",
+          "executionId.$"     = "$$.Execution.Id"
         },
 
         ItemProcessor = {
@@ -169,8 +169,8 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
                   "totalSegments.$"   = "$.totalSegments",
                   "tableArn.$"        = "$.tableArn",
                   "migrationScript.$" = "$.migrationScript",
-                  "run_migration.$"   = "$.run_migration",
-                  "execution_Id.$"    = "$.execution_Id"
+                  "runMigration.$"    = "$.runMigration",
+                  "executionId.$"     = "$.executionId"
                 }
               },
               ResultSelector = { "migrationResult.$" = "$.Payload" },
