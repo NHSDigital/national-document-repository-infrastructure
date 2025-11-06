@@ -15,7 +15,7 @@ branch="${branch,,}"
 apply="${APPLY:-false}"
 
 if [ ${#branch} -gt 7 ]; then
-  echo "Error: your workspace name '$branch' is longer than 7 characters, please start again and choose a workspace less than 7 characters."
+  echo "Error: your workspace name '$branch' is longer than 7 characters, please start again and choose a workspace less than 8 characters."
   exit 1
 fi
 
