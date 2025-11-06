@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "administrator_permission_restrictions" {
-  name  = "AdministratorRestriction"
+  name = "AdministratorRestriction"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
