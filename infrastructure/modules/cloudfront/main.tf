@@ -48,6 +48,14 @@ resource "aws_cloudfront_distribution" "distribution" {
     }
   }
   web_acl_id = var.web_acl_id
+
+  dynamic "logging_config" {
+    for_each = var.log_bucket_id != "" ? [1] : []
+    content {
+      bucket = var.log_bucket_id
+      prefix = "cloudfront"
+    }
+  }
 }
 
 resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
@@ -102,8 +110,7 @@ resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
     for_each = var.log_bucket_id != "" ? [1] : []
     content {
       bucket = var.log_bucket_id
-      # this might break it as path pattern is in format /pattern/
-      prefix = var.secondary_bucket_path_pattern
+      prefix = "cloudfront"
     }
   }
 
