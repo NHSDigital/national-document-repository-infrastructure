@@ -10,7 +10,8 @@ module "migration-dynamodb-lambda" {
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
-    module.ndr-app-config.app_config_policy
+    module.ndr-app-config.app_config_policy,
+    module.migration-failed-items-store.s3_write_policy_document
   ]
 
   kms_deletion_window           = var.kms_deletion_window
