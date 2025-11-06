@@ -170,7 +170,7 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
                   "tableArn.$"        = "$.tableArn",
                   "migrationScript.$" = "$.migrationScript",
                   "run_migration.$"   = "$.run_migration",
-                  "execution_Id.$"    = "$.execution_Id"
+                  "execution_id.$"    = "$.Execution.Id"
                 }
               },
               ResultSelector = { "migrationResult.$" = "$.Payload" },
