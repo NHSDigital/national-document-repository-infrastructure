@@ -254,7 +254,7 @@ data "aws_iam_policy_document" "assume_role_policy_for_update_lambda" {
     principals {
       type = "AWS"
       identifiers = compact([
-        module.update_doc_ref_lambda.lambda_execution_role_arn
+        module.update-doc-ref-lambda.lambda_execution_role_arn
       ])
     }
   }
