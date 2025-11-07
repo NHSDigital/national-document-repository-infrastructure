@@ -60,6 +60,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.feature-flags-lambda,
     module.fhir_document_reference_gateway,
     module.get-doc-fhir-lambda,
+    module.get-doc-ref-lambda,
     module.get-report-by-ods-gateway,
     module.get-report-by-ods-lambda,
     module.lloyd-george-stitch-gateway,
