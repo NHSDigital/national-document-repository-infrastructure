@@ -139,8 +139,11 @@ data "aws_iam_policy_document" "assume_role_policy_for_get_doc_ref_lambda" {
     actions = ["sts:AssumeRole"]
 
     principals {
-      type        = "AWS"
-      identifiers = [module.get-doc-fhir-lambda.lambda_execution_role_arn]
+      type = "AWS"
+      identifiers = [
+        module.get-doc-fhir-lambda.lambda_execution_role_arn,
+        module.get-doc-ref-lambda.lambda_execution_role_arn
+      ]
     }
   }
 }
@@ -265,4 +268,14 @@ resource "aws_iam_role" "update_put_presign_url_role" {
 resource "aws_iam_role_policy_attachment" "update_put_presign_url" {
   role       = aws_iam_role.update_put_presign_url_role.name
   policy_arn = aws_iam_policy.s3_document_data_policy_put_only.arn
+}
+
+resource "aws_iam_role" "get_doc_ref_presign_url_role" {
+  name               = "${terraform.workspace}_get_doc_ref_presign_url_role"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy_for_get_doc_ref_lambda.json
+}
+
+resource "aws_iam_role_policy_attachment" "get_doc_ref_presign_url" {
+  role       = aws_iam_role.get_doc_ref_presign_url_role.name
+  policy_arn = aws_iam_policy.s3_document_data_policy_for_get_doc_ref_lambda.arn
 }
