@@ -1,20 +1,20 @@
-module "get_doc_ref_alarm" {
+module "get-doc-ref-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.get_doc_ref_lambda.function_name
-  lambda_timeout       = module.get_doc_ref_lambda.timeout
+  lambda_function_name = module.get-doc-ref-lambda.function_name
+  lambda_timeout       = module.get-doc-ref-lambda.timeout
   lambda_name          = "get_document_reference_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.get_doc_ref_alarm_topic.arn]
-  ok_actions           = [module.get_doc_ref_alarm_topic.arn]
-  depends_on           = [module.get_doc_ref_lambda, module.get_doc_ref_alarm_topic]
+  alarm_actions        = [module.get-doc-ref-alarm-topic.arn]
+  ok_actions           = [module.get-doc-ref-alarm-topic.arn]
+  depends_on           = [module.get-doc-ref-lambda, module.get-doc-ref-alarm-topic]
 }
 
-module "get_doc_ref_alarm_topic" {
+module "get-doc-ref-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_name            = "get_doc-alarms-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.get_doc_ref_lambda.lambda_arn
+  topic_endpoint        = module.get-doc-ref-lambda.lambda_arn
   depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -38,7 +38,7 @@ module "get_doc_ref_alarm_topic" {
   })
 }
 
-module "get_doc_ref_lambda" {
+module "get-doc-ref-lambda" {
   source  = "./modules/lambda"
   name    = "GetDocRefLambda"
   handler = "handlers.get_document_reference_handler.lambda_handler"
