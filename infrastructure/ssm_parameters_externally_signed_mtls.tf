@@ -38,7 +38,7 @@ module "ssm_param_foobar_client_cert" {
   ignore_value_changes = true
 }
 
-module "ssm_param_foobar_client_key_" {
+module "ssm_param_foobar_client_key" {
   count                = local.is_sandbox ? 0 : 1
   source               = "./modules/ssm_parameter"
   environment          = var.environment
