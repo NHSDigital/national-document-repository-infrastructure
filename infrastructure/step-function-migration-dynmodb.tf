@@ -124,6 +124,7 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
             IntervalSeconds = 2
             MaxAttempts     = 10
             BackoffRate     = 2.0
+            JitterStrategy  = "FULL"
           }
         ]
       },
@@ -182,6 +183,7 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
                   IntervalSeconds = 2
                   MaxAttempts     = 10
                   BackoffRate     = 2.0
+                  JitterStrategy  = "FULL"
                 }
               ]
             }
