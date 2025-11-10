@@ -25,12 +25,12 @@ module "ssm_param_external_client_key" {
   ignore_value_changes = true
 }
 
-module "ssm_param_foobar_client_cert" {
+module "ssm_param_unauthorised_client_cert" {
   count                = local.is_sandbox ? 0 : 1
   source               = "./modules/ssm_parameter"
   environment          = var.environment
   owner                = var.owner
-  name                 = "foobar_client_cert"
+  name                 = "unauthorised_client_cert"
   type                 = "SecureString"
   description          = "Externally signed foobar client certificate for test purposes"
   value                = "REPLACE_ME"
@@ -38,12 +38,12 @@ module "ssm_param_foobar_client_cert" {
   ignore_value_changes = true
 }
 
-module "ssm_param_foobar_client_key" {
+module "ssm_param_unauthorised_client_key" {
   count                = local.is_sandbox ? 0 : 1
   source               = "./modules/ssm_parameter"
   environment          = var.environment
   owner                = var.owner
-  name                 = "foobar_client_key"
+  name                 = "unauthorised_client_key"
   type                 = "SecureString"
   description          = "Externally signed foobar client certificate for test purposes"
   value                = "REPLACE_ME"
