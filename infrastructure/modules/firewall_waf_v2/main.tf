@@ -104,6 +104,8 @@ resource "aws_wafv2_web_acl" "waf_v2_acl" {
 
 resource "aws_cloudwatch_log_group" "waf" {
   name = "aws-waf-logs-${aws_wafv2_web_acl.waf_v2_acl.name}"
+
+  retention_in_days = 0
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "this" {
