@@ -35,7 +35,8 @@ resource "aws_api_gateway_base_path_mapping" "api_mapping_mtls" {
 
   depends_on = [
     aws_api_gateway_deployment.ndr_api_deploy_mtls,
-    aws_api_gateway_rest_api.ndr_doc_store_api_mtls
+    aws_api_gateway_rest_api.ndr_doc_store_api_mtls,
+    aws_api_gateway_stage.ndr_api_mtls
   ]
 }
 
