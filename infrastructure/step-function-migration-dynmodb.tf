@@ -180,7 +180,7 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
               Retry = [
                 {
                   ErrorEquals     = ["States.ALL"]
-                  IntervalSeconds = 2
+                  IntervalSeconds = 10
                   MaxAttempts     = 3
                   BackoffRate     = 2.0
                   JitterStrategy  = "FULL"
