@@ -74,7 +74,7 @@ module "bulk-upload-metadata-processor-alarm-topic" {
 }
 
 resource "aws_cloudwatch_event_rule" "bulk_upload_metadata_processor_lambda_expedite" {
-  name        = "staging-bulk-store-expedite-folder-object-created-rule"
+  name        = "${terraform.workspace}-staging-bulk-store-expedite-folder-object-created-rule"
   description = "Trigger bulk_upload_metadata_processor_lambda when a file is added to the expedite/ folder in the staging-bulk-store bucket"
   event_pattern = jsonencode({
     "source" : ["aws.s3"],
