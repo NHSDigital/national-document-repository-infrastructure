@@ -96,8 +96,9 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_metadata_processor_lambda_expe
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_metadata_processor_lambda" {
-  rule = aws_cloudwatch_event_rule.bulk_upload_metadata_processor_lambda_expedite.name
-  arn  = module.bulk-upload-metadata-processor-lambda.lambda_arn
+  rule      = aws_cloudwatch_event_rule.bulk_upload_metadata_processor_lambda_expedite.name
+  arn       = module.bulk-upload-metadata-processor-lambda.lambda_arn
+  target_id = "bulk-upload-metadata-processor-lambda"
   depends_on = [
     module.bulk-upload-metadata-processor-lambda,
     aws_cloudwatch_event_rule.bulk_upload_metadata_processor_lambda_expedite
