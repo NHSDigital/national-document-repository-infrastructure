@@ -73,14 +73,6 @@ module "bulk-upload-metadata-processor-alarm-topic" {
   depends_on = [module.bulk-upload-metadata-processor-lambda, module.sns_encryption_key]
 }
 
-resource "aws_lambda_permission" "bulk_upload_metadata_processor_lambda" {
-  statement_id  = "AllowS3Invoke"
-  action        = "lambda:InvokeFunction"
-  function_name = module.bulk-upload-metadata-processor-lambda.function_name
-  principal     = "s3.amazonaws.com"
-  source_arn    = module.ndr-bulk-staging-store.bucket_arn
-}
-
 resource "aws_cloudwatch_event_rule" "bulk_upload_metadata_processor_lambda_expedite" {
   name        = "staging-bulk-store-expedite-folder-object-created-rule"
   description = "Trigger bulk_upload_metadata_processor_lambda when a file is added to the expedite/ folder in the staging-bulk-store bucket"
