@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "assume_role_policy_for_create_lambda" {
       type = "AWS"
       identifiers = compact([
         module.create-doc-ref-lambda.lambda_execution_role_arn,
-        local.is_production ? null : module.post-document-references-fhir-lambda.lambda_execution_role_arn
+        module.post-document-references-fhir-lambda.lambda_execution_role_arn
       ])
     }
   }
@@ -239,10 +239,32 @@ resource "aws_iam_role_policy_attachment" "api_gateway_logs" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
 }
 
-
 resource "aws_api_gateway_account" "logging" {
   count               = local.is_sandbox ? 0 : 1
   cloudwatch_role_arn = aws_iam_role.api_gateway_cloudwatch[0].arn
+}
+
+data "aws_iam_policy_document" "assume_role_policy_for_update_lambda" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type = "AWS"
+      identifiers = compact([
+        module.update_doc_ref_lambda.lambda_execution_role_arn
+      ])
+    }
+  }
+}
+
+resource "aws_iam_role" "update_put_presign_url_role" {
+  name               = "${terraform.workspace}_update_put_presign_url_role"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy_for_update_lambda.json
+}
+
+resource "aws_iam_role_policy_attachment" "update_put_presign_url" {
+  role       = aws_iam_role.update_put_presign_url_role.name
+  policy_arn = aws_iam_policy.s3_document_data_policy_put_only.arn
 }
 
 data "aws_iam_policy_document" "assume_role_policy_get_document_review_lambda" {

@@ -173,7 +173,6 @@ variable "document_review_table_name" {
   default     = "DocumentReview"
 }
 
-
 # VPC Variables
 
 variable "standalone_vpc_tag" {
