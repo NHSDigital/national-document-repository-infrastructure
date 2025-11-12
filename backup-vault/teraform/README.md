@@ -1,33 +1,23 @@
-## Requirements
+# AWS Backup Vault Terraform Configuration
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
+To create or update the AWS config, Terraform must be run from a local machine, as there is currently no GitHub Action set up for this.
 
-## Providers
+The following commands should be used as a suggestion for the process:
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
+```shell
+aws sso login --sso-session PRM
 
-## Modules
+export AWS_PROFILE=NDR-Pre-Prod-Backup-RW
+terraform init -backend-config=pre-prod.s3.tfbackend -upgrade -reconfigure
+terraform workspace list
+terraform workspace select pre-prod
+terraform plan
+terraform apply
 
-No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [aws_backup_vault.backup_vault](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/backup_vault) | resource |
-| [aws_backup_vault_policy.backup_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/backup_vault_policy) | resource |
-| [aws_kms_alias.encryption_key_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
-| [aws_kms_key.encryption_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
-| [aws_ssm_parameter.backup-source-account](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-No outputs.
+export AWS_PROFILE=NDR-Prod-Backup-RW
+terraform init -backend-config=prod.s3.tfbackend -upgrade -reconfigure
+terraform workspace list
+terraform workspace select prod-backup
+terraform plan
+terraform apply
+```

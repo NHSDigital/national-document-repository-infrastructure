@@ -12,7 +12,6 @@ resource "aws_kms_alias" "encryption_key_alias" {
   target_key_id = aws_kms_key.encryption_key.id
 }
 
-
 resource "aws_backup_vault_policy" "backup_policy" {
   backup_vault_name = aws_backup_vault.backup_vault.name
 
@@ -21,10 +20,10 @@ resource "aws_backup_vault_policy" "backup_policy" {
       "Version" : "2012-10-17",
       "Statement" : [
         {
-          "Sid" : "Allow ${data.aws_ssm_parameter.backup-source-account.value} to copy into pre-prod_backup_vault",
+          "Sid" : "Allow ${data.aws_ssm_parameter.backup_source_account.value} to copy into pre-prod_backup_vault",
           "Effect" : "Allow",
           "Principal" : {
-            "AWS" : "arn:aws:iam::${data.aws_ssm_parameter.backup-source-account.value}:root"
+            "AWS" : "arn:aws:iam::${data.aws_ssm_parameter.backup_source_account.value}:root"
           },
           "Action" : "backup:CopyIntoBackupVault",
           "Resource" : "*"
@@ -34,7 +33,6 @@ resource "aws_backup_vault_policy" "backup_policy" {
   )
 }
 
-data "aws_ssm_parameter" "backup-source-account" {
+data "aws_ssm_parameter" "backup_source_account" {
   name = "backup-source-account"
 }
-

@@ -61,7 +61,7 @@ jobs:
       - name: Run Terraform Plan
         id: plan
         run: |
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan > plan_output.txt 2>&1
+          terraform plan -lock-timeout=20m -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan > plan_output.txt 2>&1
           terraform show -no-color tf.plan > tfplan.txt 2>&1
 
           # Mask PEM certificates (BEGIN...END CERTIFICATE)
@@ -202,7 +202,7 @@ jobs:
       # Terraform apply will only occur on a push (merge request completion)
       - name: Run Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve -input=false tf.plan
+        run: terraform apply -lock-timeout=20m -auto-approve -input=false tf.plan
         working-directory: ./infrastructure
 
   deploy_lambdas:
