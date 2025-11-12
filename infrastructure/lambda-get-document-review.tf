@@ -7,6 +7,7 @@ module "get_document_review_lambda" {
     module.cloudfront_edge_dynamodb_table.dynamodb_read_policy_document,
     module.cloudfront_edge_dynamodb_table.dynamodb_write_policy_document,
     module.document_review_dynamodb_table.dynamodb_read_policy_document,
+    aws_iam_policy.ssm_access_policy.policy
   ]
 
   rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id

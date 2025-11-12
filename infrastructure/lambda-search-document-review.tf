@@ -4,7 +4,8 @@ module "search_document_review_lambda" {
   handler = "handlers.search_document_review_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
-    module.document_review_dynamodb_table.dynamodb_read_policy_document
+    module.document_review_dynamodb_table.dynamodb_read_policy_document,
+    aws_iam_policy.ssm_access_policy.policy
   ]
 
   rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id
