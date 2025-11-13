@@ -30,7 +30,7 @@
             "enabled": "true"
         },
         "uploadArfWorkflowEnabled": {
-            "enabled": "true"
+            "enabled": "false"
         },
         "useSmartcardAuth": {
             "enabled": "false"
@@ -39,10 +39,10 @@
             "enabled": "true"
         },
         "uploadDocumentIteration2Enabled": {
-            "enabled": "true"
+            "enabled": "false"
         },
         "uploadDocumentIteration3Enabled": {
-            "enabled": "true"
+            "enabled": "false"
         }
     },
     "version": "1"
