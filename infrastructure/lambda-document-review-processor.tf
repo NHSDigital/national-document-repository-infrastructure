@@ -6,7 +6,7 @@ module "document_review_processor_lambda" {
     module.document_review_queue.sqs_read_policy_document,
     module.document_review_queue.sqs_write_policy_document,
     module.ndr-document-pending-review-store.s3_write_policy_document,
-    module.document_review_dynamodb_table.dynamodb_write_policy_document
+    module.document_review_dynamodb_table[0].dynamodb_write_policy_document
   ]
   kms_deletion_window           = var.kms_deletion_window
   is_gateway_integration_needed = false
@@ -16,7 +16,7 @@ module "document_review_processor_lambda" {
   lambda_timeout                = 900
   lambda_environment_variables = {
     DOCUMENT_REVIEW_BUCKET_NAME = module.ndr-document-pending-review-store.bucket_id
-    DOCUMENT_REVIEW_TABLE_NAME  = module.document_review_dynamodb_table.table_name
+    DOCUMENT_REVIEW_TABLE_NAME  = local.is_production ? "" : module.document_review_dynamodb_table[0].table_name
     WORKSPACE                   = terraform.workspace
   }
 }
