@@ -43,6 +43,7 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 data "aws_iam_policy_document" "lambda_policy" {
+
   statement {
     effect = "Allow"
     actions = [
@@ -53,10 +54,13 @@ data "aws_iam_policy_document" "lambda_policy" {
     resources = ["arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*"]
   }
 
-  statement {
-    effect    = "Allow"
-    actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::${var.bucket_name}/*"]
+  dynamic "statement" {
+    for_each = toset(var.bucket_names)
+    content {
+      effect    = "Allow"
+      actions   = ["s3:GetObject"]
+      resources = ["arn:aws:s3:::${statement.value}/*"]
+    }
   }
 
   statement {
