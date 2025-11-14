@@ -8,8 +8,6 @@ module "sqs-stitching-queue" {
   enable_sse            = true
   max_visibility        = 1200
   enable_dlq            = true
-  enable_fifo           = true
-  enable_deduplication  = true
 }
 
 resource "aws_cloudwatch_metric_alarm" "stitching_dlq_new_messages" {
