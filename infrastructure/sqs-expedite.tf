@@ -16,30 +16,6 @@ module "lg_bulk_upload_expedite_metadata_queue" {
   max_receive_count      = 5
 }
 
-resource "aws_iam_policy" "bulk_upload_lambda_expedite_sqs_policy" {
-  name        = "${var.environment}-BulkUploadLambdaExpediteSQSPolicy"
-  description = "Allow BulkUploadLambda to send/receive messages from expedite SQS queue"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "sqs:SendMessage",
-          "sqs:ReceiveMessage",
-          "sqs:DeleteMessage",
-          "sqs:GetQueueAttributes",
-          "sqs:GetQueueUrl"
-        ]
-        Resource = [
-          module.lg_bulk_upload_expedite_metadata_queue.queue_arn,
-          module.lg_bulk_upload_expedite_metadata_queue.deadletter_queue_arn
-        ]
-      }
-    ]
-  })
-}
-
 resource "aws_iam_role_policy_attachment" "bulk_upload_lambda_expedite_sqs_attach" {
   role       = aws_iam_role.bulk_upload_lambda.name
   policy_arn = aws_iam_policy.bulk_upload_lambda_expedite_sqs_policy.arn
