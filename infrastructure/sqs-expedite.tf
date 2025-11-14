@@ -1,12 +1,10 @@
 module "lg_bulk_upload_expedite_metadata_queue" {
-  source                 = "../modules/sqs"
+  source                 = "./modules/sqs"
   name                   = "lg-bulk-upload-expedite-metadata-queue.fifo"
+  environment            = var.environment
+  owner                  = var.owner
   enable_fifo            = true
   enable_deduplication   = true
-  message_retention      = 345600 # 4 days
-  max_visibility         = 60
-  delay                  = 0
-  max_size_message       = 262144
   receive_wait           = 0
   enable_sse             = true
   kms_master_key_id      = null
