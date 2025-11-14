@@ -17,6 +17,8 @@ module "bulk-upload-lambda" {
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_write_policy_document,
+    module.lg_bulk_upload_expedite_metadata_queue.sqs_write_policy_document,
+    module.lg_bulk_upload_expedite_metadata_queue.sqs_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy
   ]
@@ -53,6 +55,7 @@ module "bulk-upload-lambda" {
     module.lloyd_george_reference_dynamodb_table,
     module.bulk_upload_report_dynamodb_table,
     aws_iam_policy.ssm_access_policy,
+    module.lg_bulk_upload_expedite_metadata_queue,
   ]
 }
 
