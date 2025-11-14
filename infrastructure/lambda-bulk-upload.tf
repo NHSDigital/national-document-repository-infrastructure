@@ -17,6 +17,8 @@ module "bulk-upload-lambda" {
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_write_policy_document,
+    module.lg-bulk-upload-expedite-metadata-queue.sqs_write_policy_document,
+    module.lg-bulk-upload-expedite-metadata-queue.sqs_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy
   ]
@@ -53,6 +55,7 @@ module "bulk-upload-lambda" {
     module.lloyd_george_reference_dynamodb_table,
     module.bulk_upload_report_dynamodb_table,
     aws_iam_policy.ssm_access_policy,
+    module.lg-bulk-upload-expedite-metadata-queue,
   ]
 }
 
@@ -68,6 +71,18 @@ resource "aws_lambda_event_source_mapping" "bulk_upload_lambda" {
   depends_on = [
     module.bulk-upload-lambda,
     module.sqs-lg-bulk-upload-metadata-queue
+  ]
+}
+
+resource "aws_lambda_event_source_mapping" "bulk_upload_lambda_expedite_trigger" {
+  event_source_arn = module.lg-bulk-upload-expedite-metadata-queue.sqs_arn
+  function_name    = module.bulk-upload-lambda.lambda_arn
+  batch_size       = 10
+  enabled          = true
+
+  depends_on = [
+    module.bulk-upload-lambda,
+    module.lg-bulk-upload-expedite-metadata-queue
   ]
 }
 
