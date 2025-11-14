@@ -11,7 +11,8 @@ module "bulk-upload-metadata-processor-lambda" {
     module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
-    module.ndr-app-config.app_config_policy
+    module.ndr-app-config.app_config_policy,
+    aws_iam_policy.ssm_access_policy.policy,
   ]
 
   rest_api_id       = null
