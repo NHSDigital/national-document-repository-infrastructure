@@ -13,8 +13,3 @@ module "lg_bulk_upload_expedite_metadata_queue" {
   dlq_message_retention  = 1209600 # 14 days
   dlq_visibility_timeout = 60
 }
-
-resource "aws_iam_role_policy_attachment" "bulk_upload_lambda_expedite_sqs_attach" {
-  role       = aws_iam_role.bulk_upload_lambda.name
-  policy_arn = aws_iam_policy.bulk_upload_lambda_expedite_sqs_policy.arn
-}
