@@ -160,7 +160,7 @@ jobs:
       environment: development
       python_version: "3.11"
     secrets:
-        AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
         
   deploy_lambdas:
     name: Deploy Lambdas
@@ -196,3 +196,72 @@ jobs:
       sandbox_name: ${{ needs.set_workspace.outputs.workspace }}
       environment: development
     secrets: inherit
+
+  notify-slack:
+    runs-on: ubuntu-latest
+    needs: [terraform_plan_apply, run_lambda_unit_tests, run_ui_unit_tests, run_cypress_tests, publish_lambda_layers, deploy_lambdas, deploy_ui]
+    if: failure()
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Get SSM parameters
+        run: |
+          slack_bot_token=$(aws ssm get-parameter --name "/ndr/alerting/slack/bot_token" --with-decryption --query "Parameter.Value" --output text)
+          echo "::add-mask::$slack_bot_token"
+          echo "SLACK_BOT_TOKEN=$slack_bot_token" >> $GITHUB_ENV
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          method: chat.postMessage
+          token: ${{ env.SLACK_BOT_TOKEN }}
+          payload: |
+            {
+              "channel": "${{ vars.ALERTS_SLACK_CHANNEL_ID }}",
+              "attachments": [
+                {
+                  "color": "#ff0000",
+                  "blocks": [
+                    {
+                      "type": "header",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "❌ Workflow `${{ github.workflow }}` failed"
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "*Triggered by:* `Scheduled Job`\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"
+                      }
+                    },
+                    {
+                      "type": "divider"
+                    },
+                    {
+                      "type": "section",
+                      "fields": [
+                        { "type": "mrkdwn", "text": "*terraform_plan_apply:* ${{ needs.terraform_plan_apply.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*run_lambda_unit_tests:* ${{ needs.run_lambda_unit_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*run_ui_unit_tests:* ${{ needs.run_ui_unit_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*run_cypress_tests:* ${{ needs.run_cypress_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*publish_lambda_layers:* ${{ needs.publish_lambda_layers.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*deploy_lambdas:* ${{ needs.deploy_lambdas.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*deploy_ui:* ${{ needs.deploy_ui.result == 'success' && ':white_check_mark:' || ':x:' }}" }
+                      ]
+                    },
+                    {
+                      "type": "context",
+                      "elements": [
+                        { "type": "mrkdwn", "text": "Environment: `development` | Sandbox: `${{ needs.set_workspace.outputs.workspace }}`" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
