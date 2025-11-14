@@ -1,4 +1,4 @@
-module "lg_bulk_upload_expedite_metadata_queue" {
+module "lg-bulk-upload-expedite-metadata-queue" {
   source                 = "./modules/sqs"
   name                   = "lg-bulk-upload-expedite-metadata-queue.fifo"
   max_size_message       = 256 * 1024        # allow message size up to 256 KB

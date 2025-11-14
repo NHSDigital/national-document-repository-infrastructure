@@ -17,8 +17,8 @@ module "bulk-upload-lambda" {
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-invalid-queue.sqs_write_policy_document,
-    module.lg_bulk_upload_expedite_metadata_queue.sqs_write_policy_document,
-    module.lg_bulk_upload_expedite_metadata_queue.sqs_read_policy_document,
+    module.lg-bulk-upload-expedite-metadata-queue.sqs_write_policy_document,
+    module.lg-bulk-upload-expedite-metadata-queue.sqs_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy
   ]
