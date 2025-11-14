@@ -67,6 +67,8 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.lloyd-george-stitch-lambda,
     module.logout-gateway,
     module.logout_lambda,
+    module.review_document_status_id_gateway,
+    module.review-document-status-check-result-lambda,
     module.search-document-references-gateway,
     module.search-document-references-lambda,
     module.search_document_review_lambda,
