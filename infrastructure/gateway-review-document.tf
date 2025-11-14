@@ -26,7 +26,7 @@ module "review_document_id_gateway" {
   }
 }
 
-module "review_document_status_id" {
+module "review_document_status_id_gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = module.review_document_gateway.gateway_resource_id
