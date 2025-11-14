@@ -55,7 +55,7 @@ module "bulk-upload-lambda" {
     module.lloyd_george_reference_dynamodb_table,
     module.bulk_upload_report_dynamodb_table,
     aws_iam_policy.ssm_access_policy,
-    module.lg_bulk_upload_expedite_metadata_queue,
+    module.lg-bulk-upload-expedite-metadata-queue,
   ]
 }
 
