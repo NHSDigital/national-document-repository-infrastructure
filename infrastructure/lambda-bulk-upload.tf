@@ -75,14 +75,14 @@ resource "aws_lambda_event_source_mapping" "bulk_upload_lambda" {
 }
 
 resource "aws_lambda_event_source_mapping" "bulk_upload_lambda_expedite_trigger" {
-  event_source_arn = module.lg_bulk_upload_expedite_metadata_queue.queue_arn
-  function_name    = module.bulk_upload_lambda.arn
+  event_source_arn = module.lg-bulk-upload-expedite-metadata-queue.sqs_arn
+  function_name    = module.bulk-upload-lambda.lambda_arn
   batch_size       = 10
   enabled          = true
 
   depends_on = [
     module.bulk-upload-lambda,
-    module.lg_bulk_upload_expedite_metadata_queue
+    module.lg-bulk-upload-expedite-metadata-queue
   ]
 }
 
