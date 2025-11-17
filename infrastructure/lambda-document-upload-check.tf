@@ -25,8 +25,7 @@ module "document_upload_check_lambda" {
     LLOYD_GEORGE_BUCKET_NAME   = module.ndr-lloyd-george-store.bucket_id
     PDM_BUCKET_NAME            = module.pdm-document-store.bucket_id
     WORKSPACE                  = terraform.workspace
-    # TODO
-    VIRUS_SCAN_STUB = false #!local.is_production
+    VIRUS_SCAN_STUB = !local.is_production
 
   }
   lambda_timeout                = 900
