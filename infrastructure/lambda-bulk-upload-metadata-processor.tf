@@ -28,7 +28,7 @@ module "bulk-upload-metadata-processor-lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
 
-    VIRUS_SCAN_STUB = false #!local.is_production
+    VIRUS_SCAN_STUB = !local.is_production
   }
 
   vpc_subnet_ids         = length(data.aws_security_groups.virus_scanner_api.ids) == 1 ? module.ndr-vpc-ui.private_subnets : []
