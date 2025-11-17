@@ -26,7 +26,7 @@ module "document_upload_check_lambda" {
     PDM_BUCKET_NAME            = module.pdm-document-store.bucket_id
     WORKSPACE                  = terraform.workspace
     # TODO
-    VIRUS_SCAN_STUB            = false #!local.is_production
+    VIRUS_SCAN_STUB = false #!local.is_production
 
   }
   lambda_timeout                = 900

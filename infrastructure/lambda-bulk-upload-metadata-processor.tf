@@ -30,14 +30,14 @@ module "bulk-upload-metadata-processor-lambda" {
 
     # TODO
     # Later: change to !local.is_production to stub in non-prod.
-    VIRUS_SCAN_STUB            = false # !local.is_production
+    VIRUS_SCAN_STUB = false # !local.is_production
   }
 
   vpc_subnet_ids         = module.ndr-vpc-ui.private_subnets
   vpc_security_group_ids = [data.aws_security_groups.virus_scanner_api.ids[0]]
 
-  rest_api_id                 = null
-  api_execution_arn           = null
+  rest_api_id                   = null
+  api_execution_arn             = null
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
 }
