@@ -23,7 +23,7 @@ module "mns-notification-lambda" {
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                     = terraform.workspace
     LLOYD_GEORGE_DYNAMODB_NAME    = module.lloyd_george_reference_dynamodb_table.table_name
-    DOCUMENT_REVIEW_DYNAMODB_NAME = local.is_production ? module.document_review_dynamodb_table[0].table_name : ""
+    DOCUMENT_REVIEW_DYNAMODB_NAME = local.is_production ? "" : module.document_review_dynamodb_table[0].table_name
     MNS_NOTIFICATION_QUEUE_URL    = module.sqs-mns-notification-queue[0].sqs_url
     PDS_FHIR_IS_STUBBED           = local.is_sandbox
   }
