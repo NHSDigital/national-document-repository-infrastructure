@@ -43,6 +43,7 @@ module "get-doc-fhir-lambda" {
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.pdm-document-store.s3_read_policy_document,
+    data.aws_iam_policy_document.get_lambda_xray_access.json,
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -62,6 +63,7 @@ module "get-doc-fhir-lambda" {
     CLOUDFRONT_URL             = module.cloudfront-distribution-lg.cloudfront_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
   }
+  xray_tracing = "Active"
   depends_on = [
     aws_api_gateway_method.get_document_reference,
     module.pdm_dynamodb_table,
@@ -91,3 +93,15 @@ resource "aws_lambda_permission" "lambda_permission_get_mtls_api" {
   source_arn = "${aws_api_gateway_rest_api.ndr_doc_store_api_mtls.execution_arn}/*/*"
 }
 
+data "aws_iam_policy_document" "get_lambda_xray_access" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "xray:PutTelemetryRecords",
+      "xray:PutTraceSegments"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+}
