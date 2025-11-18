@@ -129,3 +129,9 @@ variable "vpc_security_group_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "xray_tracing" {
+  description = "Allow xray_tracing for lambda profiling."
+  type        = string
+  default     = "PassThrough"
+}

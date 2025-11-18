@@ -8,7 +8,8 @@ module "post-document-references-fhir-lambda" {
     module.pdm_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
     module.ndr-app-config.app_config_policy,
-    aws_iam_policy.ssm_access_policy.policy
+    aws_iam_policy.ssm_access_policy.policy,
+    data.aws_iam_policy_document.post_lambda_xray_access.json
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -27,6 +28,7 @@ module "post-document-references-fhir-lambda" {
     WORKSPACE                       = terraform.workspace
     PRESIGNED_ASSUME_ROLE           = aws_iam_role.create_post_presign_url_role.arn
   }
+  xray_tracing = "Active"
 
   depends_on = [
     module.pdm_dynamodb_table,
@@ -54,5 +56,18 @@ resource "aws_lambda_permission" "lambda_permission_post_mtls_api" {
   # The "/*/*" portion grants access from any method on any resource
   # within the API Gateway REST API.
   source_arn = "${aws_api_gateway_rest_api.ndr_doc_store_api_mtls.execution_arn}/*/*"
+}
+
+data "aws_iam_policy_document" "post_lambda_xray_access" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "xray:PutTelemetryRecords",
+      "xray:PutTraceSegments"
+    ]
+    resources = [
+      "*"
+    ]
+  }
 }
 

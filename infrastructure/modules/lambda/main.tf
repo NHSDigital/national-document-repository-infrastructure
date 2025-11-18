@@ -12,6 +12,10 @@ resource "aws_lambda_function" "lambda" {
   reserved_concurrent_executions = var.reserved_concurrent_executions
   kms_key_arn                    = aws_kms_key.lambda.arn
 
+  tracing_config {
+    mode = var.xray_tracing
+  }
+
   ephemeral_storage {
     size = var.lambda_ephemeral_storage
   }

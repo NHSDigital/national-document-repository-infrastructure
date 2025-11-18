@@ -70,7 +70,7 @@ resource "aws_api_gateway_stage" "ndr_api_mtls" {
   deployment_id        = aws_api_gateway_deployment.ndr_api_deploy_mtls.id
   rest_api_id          = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
   stage_name           = var.environment
-  xray_tracing_enabled = var.enable_xray_tracing
+  xray_tracing_enabled = true
 
   lifecycle {
     create_before_destroy = true
@@ -141,3 +141,4 @@ module "mtls_api_endpoint_url_ssm_parameter" {
   owner               = var.owner
   environment         = var.environment
 }
+

@@ -11,7 +11,8 @@ module "search-document-references-fhir-lambda" {
     module.pdm_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-document-store.s3_read_policy_document,
-    module.ndr-app-config.app_config_policy
+    module.ndr-app-config.app_config_policy,
+    data.aws_iam_policy_document.search_lambda_xray_access.json,
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -26,6 +27,7 @@ module "search-document-references-fhir-lambda" {
     DOCUMENT_RETRIEVE_ENDPOINT_APIM = "${local.apim_api_url}/DocumentReference"
     WORKSPACE                       = terraform.workspace
   }
+  xray_tracing = "Active"
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.search-document-references-gateway,
@@ -56,3 +58,15 @@ resource "aws_lambda_permission" "lambda_permission_search_mtls_api" {
   source_arn = "${aws_api_gateway_rest_api.ndr_doc_store_api_mtls.execution_arn}/*/*"
 }
 
+data "aws_iam_policy_document" "search_lambda_xray_access" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "xray:PutTelemetryRecords",
+      "xray:PutTraceSegments"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+}
