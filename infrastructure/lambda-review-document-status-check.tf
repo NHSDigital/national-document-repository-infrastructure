@@ -1,7 +1,7 @@
 module "review-document-status-check-result-lambda" {
   source  = "./modules/lambda"
   name    = "ReviewDocumentStatusCheckResult"
-  handler = "handlers.review_document_status_check_result.lambda_handler"
+  handler = "handlers.review_document_status_check.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
@@ -9,7 +9,7 @@ module "review-document-status-check-result-lambda" {
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id         = module.review_document_status_id_gateway.gateway_resource_id
+  resource_id         = module.review-document-status-id-gateway.gateway_resource_id
   http_methods        = ["GET"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {

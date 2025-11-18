@@ -1,4 +1,4 @@
-module "review_document_gateway" {
+module "review-document-gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
@@ -10,10 +10,10 @@ module "review_document_gateway" {
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
-module "review_document_id_gateway" {
+module "review-document-id-gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id           = module.review_document_gateway.gateway_resource_id
+  parent_id           = module.review-document-gateway.gateway_resource_id
   http_methods        = ["GET", "PUT"]
   authorization       = "CUSTOM"
   gateway_path        = "{id}"
@@ -26,10 +26,10 @@ module "review_document_id_gateway" {
   }
 }
 
-module "review_document_status_gateway" {
+module "review-document-status-gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id           = module.review_document_gateway.gateway_resource_id
+  parent_id           = module.review-document-gateway.gateway_resource_id
   gateway_path        = "Status"
   http_methods        = []
   require_credentials = true
@@ -38,10 +38,10 @@ module "review_document_status_gateway" {
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
-module "review_document_status_id_gateway" {
+module "review-document-status-id-gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id           = module.review_document_status_gateway.gateway_resource_id
+  parent_id           = module.review-document-status-gateway.gateway_resource_id
   http_methods        = ["GET"]
   authorization       = "CUSTOM"
   gateway_path        = "{id}"

@@ -11,7 +11,7 @@ module "get_document_review_lambda" {
   rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn             = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   http_methods                  = ["GET"]
-  resource_id                   = module.review_document_id_gateway.gateway_resource_id
+  resource_id                   = module.review-document-id-gateway.gateway_resource_id
   kms_deletion_window           = var.kms_deletion_window
   is_gateway_integration_needed = true
   is_invoked_from_gateway       = true
@@ -27,7 +27,7 @@ module "get_document_review_lambda" {
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.review_document_id_gateway,
+    module.review-document-id-gateway,
     module.cloudfront-distribution-lg
   ]
 }
