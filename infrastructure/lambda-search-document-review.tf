@@ -4,7 +4,8 @@ module "search_document_review_lambda" {
   handler = "handlers.search_document_review_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
-    module.document_upload_review_dynamodb_table[0].dynamodb_read_policy_document
+    local.is_production ? "" : module.document_review_dynamodb_table[0].dynamodb_read_policy_document,
+    aws_iam_policy.ssm_access_policy.policy
   ]
 
   rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -18,8 +19,10 @@ module "search_document_review_lambda" {
     APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table[0].table_name
+    DOCUMENT_REVIEW_DYNAMODB_NAME = local.is_production ? "" : module.document_review_dynamodb_table[0].table_name
     WORKSPACE                     = terraform.workspace
+
+
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
