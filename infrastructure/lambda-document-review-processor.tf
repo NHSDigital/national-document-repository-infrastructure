@@ -6,7 +6,7 @@ module "document_review_processor_lambda" {
     module.document_review_queue.sqs_read_policy_document,
     module.document_review_queue.sqs_write_policy_document,
     module.ndr-document-pending-review-store.s3_write_policy_document,
-    module.document_review_dynamodb_table[0].dynamodb_write_policy_document
+    local.is_production ? "" : module.document_review_dynamodb_table[0].dynamodb_read_policy_document,
   ]
   kms_deletion_window           = var.kms_deletion_window
   is_gateway_integration_needed = false
