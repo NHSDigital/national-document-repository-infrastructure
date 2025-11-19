@@ -10,7 +10,8 @@ module "migration-dynamodb-lambda" {
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
-    module.ndr-app-config.app_config_policy
+    module.ndr-app-config.app_config_policy,
+    module.migration-failed-items-store.s3_write_policy_document
   ]
 
   kms_deletion_window           = var.kms_deletion_window
@@ -20,10 +21,11 @@ module "migration-dynamodb-lambda" {
   is_invoked_from_gateway       = false
 
   lambda_environment_variables = {
-    WORKSPACE               = terraform.workspace
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE                                = terraform.workspace
+    APPCONFIG_APPLICATION                    = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT                    = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION                  = module.ndr-app-config.app_config_configuration_profile_id
+    MIGRATION_FAILED_ITEMS_STORE_BUCKET_NAME = "${terraform.workspace}-${var.migration_failed_items_store_bucket_name}"
   }
 
   lambda_timeout                 = 900
@@ -35,5 +37,6 @@ module "migration-dynamodb-lambda" {
     module.bulk_upload_report_dynamodb_table,
     module.ndr-app-config,
     aws_iam_policy.ssm_access_policy,
+    module.migration-failed-items-store
   ]
 }

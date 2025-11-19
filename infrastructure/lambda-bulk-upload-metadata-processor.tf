@@ -73,25 +73,46 @@ module "bulk-upload-metadata-processor-alarm-topic" {
   depends_on = [module.bulk-upload-metadata-processor-lambda, module.sns_encryption_key]
 }
 
-resource "aws_lambda_permission" "bulk_upload_metadata_processor_lambda" {
-  statement_id  = "AllowS3Invoke"
-  action        = "lambda:InvokeFunction"
-  function_name = module.bulk-upload-metadata-processor-lambda.function_name
-  principal     = "s3.amazonaws.com"
-  source_arn    = module.ndr-bulk-staging-store.bucket_arn
+resource "aws_cloudwatch_event_rule" "bulk_upload_metadata_processor_lambda_expedite" {
+  name        = "${terraform.workspace}-staging-bulk-store-expedite-folder-object-created-rule"
+  description = "Trigger bulk_upload_metadata_processor_lambda when a file is added to the expedite/ folder in the staging-bulk-store bucket"
+  event_pattern = jsonencode({
+    "source" : ["aws.s3"],
+    "detail-type" : ["Object Created"],
+    "detail" : {
+      "bucket" : {
+        "name" : [module.ndr-bulk-staging-store.bucket_id]
+      },
+      "object" : {
+        "key" : [{
+          "prefix" : "expedite/"
+        }]
+      }
+    }
+  })
+  depends_on = [
+    module.ndr-bulk-staging-store
+  ]
 }
 
-resource "aws_s3_bucket_notification" "bulk_upload_metadata_processor_lambda_trigger" {
-  bucket = module.ndr-bulk-staging-store.bucket_id
-
-  lambda_function {
-    lambda_function_arn = module.bulk-upload-metadata-processor-lambda.lambda_arn
-    events              = ["s3:ObjectCreated:*"]
-    filter_prefix       = "expedite/"
-    filter_suffix       = ".pdf"
-  }
-
+resource "aws_cloudwatch_event_target" "bulk_upload_metadata_processor_lambda" {
+  rule      = aws_cloudwatch_event_rule.bulk_upload_metadata_processor_lambda_expedite.name
+  arn       = module.bulk-upload-metadata-processor-lambda.lambda_arn
+  target_id = "bulk-upload-metadata-processor-lambda"
   depends_on = [
-    aws_lambda_permission.bulk_upload_metadata_processor_lambda
+    module.bulk-upload-metadata-processor-lambda,
+    aws_cloudwatch_event_rule.bulk_upload_metadata_processor_lambda_expedite
+  ]
+}
+
+resource "aws_lambda_permission" "bulk_upload_metadata_processor_lambda_expedite" {
+  statement_id  = "AllowEventBridgeInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = module.bulk-upload-metadata-processor-lambda.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.bulk_upload_metadata_processor_lambda_expedite.arn
+  depends_on = [
+    module.bulk-upload-metadata-processor-lambda,
+    aws_cloudwatch_event_rule.bulk_upload_metadata_processor_lambda_expedite
   ]
 }

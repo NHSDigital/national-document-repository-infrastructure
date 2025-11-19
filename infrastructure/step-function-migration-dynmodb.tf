@@ -116,7 +116,17 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
           "key.$"    = "$.Payload.key"
         },
         ResultPath = "$.SegmentSource",
-        Next       = "Segment Map (Distributed)"
+        Next       = "Segment Map (Distributed)",
+
+        Retry = [
+          {
+            ErrorEquals     = ["States.ALL"]
+            IntervalSeconds = 2
+            MaxAttempts     = 3
+            BackoffRate     = 2.0
+            JitterStrategy  = "FULL"
+          }
+        ]
       },
 
       "Segment Map (Distributed)" = {
@@ -139,8 +149,8 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
           "totalSegments.$"   = "$.totalSegments",
           "tableArn.$"        = "$.tableArn",
           "migrationScript.$" = "$.migrationScript",
-          "run_migration.$"   = "$.run_migration",
-          "execution_Id.$"    = "$$.Execution.Id"
+          "runMigration.$"    = "$.runMigration",
+          "executionId.$"     = "$$.Execution.Id"
         },
 
         ItemProcessor = {
@@ -160,13 +170,22 @@ resource "aws_sfn_state_machine" "migration_dynamodb" {
                   "totalSegments.$"   = "$.totalSegments",
                   "tableArn.$"        = "$.tableArn",
                   "migrationScript.$" = "$.migrationScript",
-                  "run_migration.$"   = "$.run_migration",
-                  "execution_Id.$"    = "$.execution_Id"
+                  "runMigration.$"    = "$.runMigration",
+                  "executionId.$"     = "$.executionId"
                 }
               },
               ResultSelector = { "migrationResult.$" = "$.Payload" },
               ResultPath     = "$.MigrationResult",
-              End            = true
+              End            = true,
+              Retry = [
+                {
+                  ErrorEquals     = ["States.ALL"]
+                  IntervalSeconds = 10
+                  MaxAttempts     = 3
+                  BackoffRate     = 2.0
+                  JitterStrategy  = "FULL"
+                }
+              ]
             }
           }
         },
