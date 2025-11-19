@@ -1,7 +1,7 @@
-module "put_document_review_lambda" {
+module "patch_document_review_lambda" {
   source  = "./modules/lambda"
-  name    = "PutDocumentReview"
-  handler = "handlers.put_document_review_handler.lambda_handler"
+  name    = "PatchDocumentReview"
+  handler = "handlers.patch_document_review_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     module.document_review_dynamodb_table.dynamodb_write_policy_document,
@@ -11,7 +11,7 @@ module "put_document_review_lambda" {
 
   rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn             = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  http_methods                  = ["PUT"]
+  http_methods                  = ["PATCH"]
   resource_id                   = module.review_document_id_gateway.gateway_resource_id
   kms_deletion_window           = var.kms_deletion_window
   is_gateway_integration_needed = true
@@ -30,23 +30,23 @@ module "put_document_review_lambda" {
 }
 
 
-module "put_document_review_lambda_alarm" {
+module "patch_document_review_lambda_alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.put_document_review_lambda.function_name
-  lambda_timeout       = module.put_document_review_lambda.timeout
-  lambda_name          = "put_document_review_handler"
+  lambda_function_name = module.patch_document_review_lambda.function_name
+  lambda_timeout       = module.patch_document_review_lambda.timeout
+  lambda_name          = "patch_document_review_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.put_document_review_lambda_alarm_topic.arn]
-  ok_actions           = [module.put_document_review_lambda_alarm_topic.arn]
+  alarm_actions        = [module.patch_document_review_lambda_alarm_topic.arn]
+  ok_actions           = [module.patch_document_review_lambda_alarm_topic.arn]
 }
 
 
-module "put_document_review_lambda_alarm_topic" {
+module "patch_document_review_lambda_alarm_topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "put-document-review-lambda-alarm-topic"
+  topic_name            = "patch-document-review-lambda-alarm-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.put_document_review_lambda.lambda_arn
+  topic_endpoint        = module.patch_document_review_lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
