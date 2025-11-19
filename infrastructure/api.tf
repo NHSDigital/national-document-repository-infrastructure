@@ -74,6 +74,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.search-patient-details-lambda,
     module.send-feedback-gateway,
     module.send-feedback-lambda,
+    module.review_document_version_gateway,
     module.update_doc_ref_lambda,
     module.update-upload-state-gateway,
     module.update-upload-state-lambda,
