@@ -41,8 +41,11 @@ module "document_upload_review_dynamodb_table" {
     {
       name = "UploadDate"
       type = "N"
+    },
+    {
+      name = "Version"
+      type = "N"
     }
-
   ]
 
   global_secondary_indexes = [
