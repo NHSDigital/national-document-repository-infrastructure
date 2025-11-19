@@ -38,7 +38,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Get SSM parameters
+      - name: Get slack bot token from SSM parameter store
         run: |
           slack_bot_token=$(aws ssm get-parameter --name "/ndr/alerting/slack/bot_token" --with-decryption --query "Parameter.Value" --output text)
           echo "::add-mask::$slack_bot_token"
