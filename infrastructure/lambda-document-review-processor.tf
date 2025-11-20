@@ -1,12 +1,12 @@
-module "document_review_processor_lambda" {
+module "document-review-processor-lambda" {
   source  = "./modules/lambda"
   name    = "DocumentReviewProcessor"
   handler = "handlers.document_review_processor_handler.lambda_handler"
   iam_role_policy_documents = [
     module.document_review_queue.sqs_read_policy_document,
     module.document_review_queue.sqs_write_policy_document,
-    module.document_review_dynamodb_table[0].dynamodb_read_policy_document,
-    module.document_review_dynamodb_table[0].dynamodb_write_policy_document,
+    module.document_upload_review_dynamodb_table[0].dynamodb_read_policy_document,
+    module.document_upload_review_dynamodb_table[0].dynamodb_write_policy_document,
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
     module.ndr-document-pending-review-store.s3_write_policy_document
@@ -21,7 +21,7 @@ module "document_review_processor_lambda" {
   lambda_environment_variables = {
     PENDING_REVIEW_BUCKET_NAME    = module.ndr-document-pending-review-store.bucket_id
     STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
-    DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_review_dynamodb_table[0].table_name
+    DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table[0].table_name
     WORKSPACE                     = terraform.workspace
   }
   depends_on = []
@@ -29,5 +29,5 @@ module "document_review_processor_lambda" {
 
 resource "aws_lambda_event_source_mapping" "document-review-processor" {
   event_source_arn = module.document_review_queue.endpoint
-  function_name    = module.document_review_processor_lambda.lambda_arn
+  function_name    = module.document-review-processor-lambda.lambda_arn
 }

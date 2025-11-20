@@ -1,17 +1,18 @@
-module "put-document-review-lambda" {
+module "patch-document-review-lambda" {
   source  = "./modules/lambda"
-  name    = "PutDocumentReview"
-  handler = "handlers.put_document_review_handler.lambda_handler"
+  name    = "PatchDocumentReview"
+  handler = "handlers.patch_document_review_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
-    module.document_review_dynamodb_table[0].dynamodb_write_policy_document,
-    module.document_review_dynamodb_table[0].dynamodb_read_policy_document
+    local.is_production ? "" : module.document_upload_review_dynamodb_table[0].dynamodb_write_policy_document,
+    local.is_production ? "" : module.document_upload_review_dynamodb_table[0].dynamodb_read_policy_document,
+    aws_iam_policy.ssm_access_policy.policy,
   ]
 
   rest_api_id                   = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn             = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
-  http_methods                  = ["PUT"]
-  resource_id                   = module.review-document-id-gateway.gateway_resource_id
+  http_methods                  = ["PATCH"]
+  resource_id                   = module.review-document-version-gateway.gateway_resource_id
   kms_deletion_window           = var.kms_deletion_window
   is_gateway_integration_needed = true
   is_invoked_from_gateway       = true
@@ -19,33 +20,33 @@ module "put-document-review-lambda" {
     APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_review_dynamodb_table[0].table_name
+    DOCUMENT_REVIEW_DYNAMODB_NAME = local.is_production ? "" : module.document_upload_review_dynamodb_table[0].table_name
     WORKSPACE                     = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.review-document-id-gateway
+    module.review-document-version-gateway
   ]
 }
 
 
-module "put_document_review_lambda_alarm" {
+module "patch-document-review-lambda-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.put-document-review-lambda.function_name
-  lambda_timeout       = module.put-document-review-lambda.timeout
-  lambda_name          = "put_document_review_handler"
+  lambda_function_name = module.patch-document-review-lambda.function_name
+  lambda_timeout       = module.patch-document-review-lambda.timeout
+  lambda_name          = "patch_document_review_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.put_document_review_lambda_alarm_topic.arn]
-  ok_actions           = [module.put_document_review_lambda_alarm_topic.arn]
+  alarm_actions        = [module.patch-document-review-lambda-alarm-topic.arn]
+  ok_actions           = [module.patch-document-review-lambda-alarm-topic.arn]
 }
 
 
-module "put_document_review_lambda_alarm_topic" {
+module "patch-document-review-lambda-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "put-document-review-lambda-alarm-topic"
+  topic_name            = "patch-document-review-lambda-alarm-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.put-document-review-lambda.lambda_arn
+  topic_endpoint        = module.patch-document-review-lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

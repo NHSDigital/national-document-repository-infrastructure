@@ -60,7 +60,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.feature-flags-lambda,
     module.fhir_document_reference_gateway,
     module.get-doc-fhir-lambda,
-    module.get_document_review_lambda,
+    module.get-document-review-lambda,
     module.get-report-by-ods-gateway,
     module.get-report-by-ods-lambda,
     module.lloyd-george-stitch-gateway,
@@ -82,7 +82,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.document-status-check-gateway,
     module.document-status-check-lambda,
     module.post-document-references-fhir-lambda,
-    module.put-document-review-lambda,
+    module.patch-document-review-lambda,
     module.virus_scan_result_gateway,
     module.virus_scan_result_lambda
   ]
