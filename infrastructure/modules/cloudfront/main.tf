@@ -53,7 +53,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     for_each = var.log_bucket_id != "" ? [1] : []
     content {
       bucket = var.log_bucket_id
-      prefix = "cloudfront"
+      prefix = "cloudfront/"
     }
   }
 }
@@ -110,7 +110,7 @@ resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
     for_each = var.log_bucket_id != "" ? [1] : []
     content {
       bucket = var.log_bucket_id
-      prefix = "cloudfront"
+      prefix = "cloudfront/"
     }
   }
 
