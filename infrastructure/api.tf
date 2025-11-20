@@ -68,7 +68,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.logout-gateway,
     module.logout_lambda,
     module.review-document-status-id-gateway,
-    module.review-document-status-check-result-lambda,
+    module.review-document-status-check-lambda,
     module.search-document-references-gateway,
     module.search-document-references-lambda,
     module.search-document-review-lambda,
