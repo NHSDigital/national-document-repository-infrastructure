@@ -273,7 +273,7 @@ data "aws_iam_policy_document" "assume_role_policy_get_document_review_lambda" {
 
     principals {
       type        = "AWS"
-      identifiers = [module.get_document_review_lambda.lambda_execution_role_arn]
+      identifiers = [module.get-document-review-lambda.lambda_execution_role_arn]
     }
   }
 }

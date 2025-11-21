@@ -1,4 +1,4 @@
-module "document_review_processor_lambda" {
+module "document-review-processor-lambda" {
   source  = "./modules/lambda"
   name    = "DocumentReviewProcessor"
   handler = "handlers.document_review_processor_handler.lambda_handler"
@@ -29,5 +29,5 @@ module "document_review_processor_lambda" {
 
 resource "aws_lambda_event_source_mapping" "document-review-processor" {
   event_source_arn = module.document_review_queue.endpoint
-  function_name    = module.document_review_processor_lambda.lambda_arn
+  function_name    = module.document-review-processor-lambda.lambda_arn
 }
