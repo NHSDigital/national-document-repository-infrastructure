@@ -10,3 +10,5 @@ standalone_vpc_ig_tag = "ndr-prod"
 cloud_security_email_param_environment = "prod"
 
 apim_environment = ""
+
+deletion_protection_enabled = true

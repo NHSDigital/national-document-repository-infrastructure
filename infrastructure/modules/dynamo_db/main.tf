@@ -1,7 +1,7 @@
 resource "aws_dynamodb_table" "ndr_dynamodb_table" {
   name                        = "${terraform.workspace}_${var.table_name}"
   hash_key                    = var.hash_key
-  range_key                   = var.sort_key
+  range_key                   = var.range_key
   billing_mode                = var.billing_mode
   stream_enabled              = var.stream_enabled
   stream_view_type            = var.stream_view_type

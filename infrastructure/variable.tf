@@ -177,6 +177,12 @@ variable "document_review_table_name" {
   type        = string
   default     = "DocumentReview"
 }
+
+variable "deletion_protection_enabled" {
+  description = "Should dynamodb deletion protection be enabled?"
+  type        = bool
+  default     = false
+}
 # VPC Variables
 
 variable "standalone_vpc_tag" {
