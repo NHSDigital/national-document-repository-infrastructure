@@ -9,7 +9,6 @@ module "document_review_processor_lambda" {
     module.document_review_dynamodb_table[0].dynamodb_write_policy_document,
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
-    module.document_review_dynamodb_table.dynamodb_write_policy_document
   ]
   memory_size                   = 512
   kms_deletion_window           = var.kms_deletion_window
