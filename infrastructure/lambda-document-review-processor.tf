@@ -5,13 +5,14 @@ module "document_review_processor_lambda" {
   iam_role_policy_documents = [
     module.document_review_queue.sqs_read_policy_document,
     module.document_review_queue.sqs_write_policy_document,
-    module.document_review_dynamodb_table[0].dynamodb_read_policy_document,
-    module.document_review_dynamodb_table[0].dynamodb_write_policy_document,
+    local.is_production ? "" : module.document_review_dynamodb_table[0].dynamodb_read_policy_document,
+    local.is_production ? "" : module.document_review_dynamodb_table[0].dynamodb_write_policy_document,
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
   ]
   memory_size                   = 512
   kms_deletion_window           = var.kms_deletion_window
+  memory_size                   = 512
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
   rest_api_id                   = null
