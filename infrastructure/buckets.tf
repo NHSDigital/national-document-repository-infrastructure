@@ -270,20 +270,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "pdm_document_store" {
   }
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "ndr_document_pending_review_store" {
-  bucket = module.ndr-document-pending-review-store.bucket_id
-  rule {
-    id     = "default-to-intelligent-tiering"
-    status = "Enabled"
-    transition {
-      storage_class = "INTELLIGENT_TIERING"
-      days          = 0
-    }
-    filter {}
-  }
-}
-
-
 # Logging Buckets
 resource "aws_s3_bucket" "access_logs" {
   count         = local.access_logs_count

@@ -1,6 +1,7 @@
 locals {
   # required by USA-based CI pipeline runners to run smoke tests
-  allow_us_comms = contains(["ndr-dev"], terraform.workspace)
+  is_production  = contains(["prod", "pre-prod", "production"], terraform.workspace)
+  allow_us_comms = !local.is_production
 }
 
 resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
