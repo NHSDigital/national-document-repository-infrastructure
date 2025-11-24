@@ -10,7 +10,6 @@ module "document_review_processor_lambda" {
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
   ]
-  memory_size                   = 512
   kms_deletion_window           = var.kms_deletion_window
   memory_size                   = 512
   is_gateway_integration_needed = false
