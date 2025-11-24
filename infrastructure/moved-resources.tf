@@ -1,4 +1,4 @@
-#PRMP-594
+#release V1.6.7
 moved {
   from = module.update_doc_ref_lambda
   to   = module.update-doc-ref-lambda

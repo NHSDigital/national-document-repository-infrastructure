@@ -36,4 +36,6 @@ module "document_reference_id_gateway" {
   request_parameters = {
     "method.request.path.id" = true
   }
+
+  depends_on = [module.document_reference_gateway]
 }
