@@ -279,7 +279,7 @@ data "aws_iam_policy_document" "assume_role_policy_get_document_review_lambda" {
 }
 
 resource "aws_iam_role" "get_document_review_presign" {
-  name               = "${terraform.workspace}_stitch_presign_url_role"
+  name               = "${terraform.workspace}_get_review_presign_url_role"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy_get_document_review_lambda.json
 }
 
