@@ -21,8 +21,6 @@ module "search_document_review_lambda" {
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_REVIEW_DYNAMODB_NAME = local.is_production ? "" : module.document_review_dynamodb_table[0].table_name
     WORKSPACE                     = terraform.workspace
-
-
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
