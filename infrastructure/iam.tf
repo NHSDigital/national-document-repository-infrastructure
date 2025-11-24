@@ -299,7 +299,7 @@ resource "aws_iam_policy" "s3_document_data_policy_get_document_review_lambda" {
         "Action" : [
           "s3:GetObject",
         ],
-        "Resource" : ["*"]
+        "Resource" : ["${module.ndr-document-pending-review-store.bucket_arn}/*"]
       }
     ]
   })
