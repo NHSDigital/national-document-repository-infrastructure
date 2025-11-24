@@ -442,6 +442,19 @@ module "pdm_dynamodb_table" {
     {
       name = "NhsNumber"
       type = "S"
+    },
+    {
+      name = "DocumentSnomedCodeType"
+      type = "S"
+    }
+  ]
+
+  global_secondary_indexes = [
+    {
+      name            = "idx_gsi_snomed_id"
+      hash_key        = "DocumentSnomedCodeType"
+      range_key       = "ID"
+      projection_type = "ALL"
     }
   ]
   environment = var.environment
