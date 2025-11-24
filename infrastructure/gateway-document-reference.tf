@@ -26,7 +26,7 @@ module "document_reference_id_gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = module.document_reference_gateway.gateway_resource_id
-  http_methods        = ["PUT"]
+  http_methods        = ["PUT", "GET"]
   authorization       = "CUSTOM"
   gateway_path        = "{id}"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
@@ -36,4 +36,6 @@ module "document_reference_id_gateway" {
   request_parameters = {
     "method.request.path.id" = true
   }
+
+  depends_on = [module.document_reference_gateway]
 }

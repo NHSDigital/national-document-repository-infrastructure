@@ -1,21 +1,21 @@
-module "update_doc_ref_alarm" {
+module "update-doc-ref-alarm" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.update_doc_ref_lambda.function_name
-  lambda_timeout       = module.update_doc_ref_lambda.timeout
+  lambda_function_name = module.update-doc-ref-lambda.function_name
+  lambda_timeout       = module.update-doc-ref-lambda.timeout
   lambda_name          = "update_document_reference_handler"
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.update_doc_ref_alarm_topic.arn]
-  ok_actions           = [module.update_doc_ref_alarm_topic.arn]
-  depends_on           = [module.update_doc_ref_lambda, module.update_doc_ref_alarm_topic]
+  alarm_actions        = [module.update-doc-ref-alarm-topic.arn]
+  ok_actions           = [module.update-doc-ref-alarm-topic.arn]
+  depends_on           = [module.update-doc-ref-lambda, module.update-doc-ref-alarm-topic]
 }
 
 
-module "update_doc_ref_alarm_topic" {
+module "update-doc-ref-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
   topic_name            = "update_doc-alarms-topic"
   topic_protocol        = "lambda"
-  topic_endpoint        = module.update_doc_ref_lambda.lambda_arn
+  topic_endpoint        = module.update-doc-ref-lambda.lambda_arn
   depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -39,7 +39,7 @@ module "update_doc_ref_alarm_topic" {
   })
 }
 
-module "update_doc_ref_lambda" {
+module "update-doc-ref-lambda" {
   source  = "./modules/lambda"
   name    = "UpdateDocRefLambda"
   handler = "handlers.update_document_reference_handler.lambda_handler"
@@ -58,7 +58,6 @@ module "update_doc_ref_lambda" {
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id         = module.document_reference_id_gateway.gateway_resource_id
   http_methods        = ["PUT"]
-  memory_size         = 512
 
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
