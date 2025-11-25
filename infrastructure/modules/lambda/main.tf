@@ -160,7 +160,7 @@ resource "aws_iam_role" "lambda_execution_role" {
 }
 
 data "aws_iam_policy_document" "merged_policy" {
-  source_policy_documents = concat(var.iam_role_policy_documents, [data.aws_iam_policy_document.lambda_kms_access.json])
+  source_policy_documents = concat(compact(var.iam_role_policy_documents), [data.aws_iam_policy_document.lambda_kms_access.json])
 }
 
 resource "aws_iam_policy" "combined_policies" {
