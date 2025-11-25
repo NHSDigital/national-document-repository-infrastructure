@@ -76,6 +76,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.send-feedback-gateway,
     module.send-feedback-lambda,
     module.review_document_version_gateway,
+    module.review_document_status_gateway,
     module.update-doc-ref-lambda,
     module.update-upload-state-gateway,
     module.update-upload-state-lambda,
