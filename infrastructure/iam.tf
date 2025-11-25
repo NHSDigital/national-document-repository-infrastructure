@@ -307,7 +307,7 @@ resource "aws_iam_policy" "s3_document_data_policy_get_document_review_lambda" {
     ]
   })
 }
-  
+
 resource "aws_iam_role" "get_doc_ref_presign_url_role" {
   name               = "${terraform.workspace}_get_doc_ref_presign_url_role"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy_for_get_doc_ref_lambda.json
