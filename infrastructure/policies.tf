@@ -75,7 +75,7 @@ data "aws_ssm_parameter" "transfer_server_id" {
 resource "aws_iam_policy" "transfer_kill_switch_policy" {
   name        = "${terraform.workspace}-transfer-kill-switch"
   description = "Permissions for Transfer kill switch Lambda"
-  policy      = jsonencode({
+  policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
