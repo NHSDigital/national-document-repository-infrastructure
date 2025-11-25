@@ -7,7 +7,8 @@ module "transfer_kill_switch_lambda" {
 
   iam_role_policy_documents = [
     aws_iam_policy.transfer_kill_switch_policy.policy,
-    aws_iam_policy.ssm_access_policy.policy
+    aws_iam_policy.ssm_access_policy.policy,
+    data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
   ]
 
   kms_deletion_window = var.kms_deletion_window
