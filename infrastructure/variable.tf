@@ -302,3 +302,9 @@ variable "kms_deletion_window" {
   type        = number
   default     = 30
 }
+
+variable "transfer_server_id" {
+  description = "AWS Transfer Family server ID used by the kill switch Lambda (e.g. s-0123456789abcdef0). Leave empty to disable stopping."
+  type        = string
+  default     = ""
+}

@@ -67,3 +67,22 @@ resource "aws_iam_policy" "administrator_permission_restrictions" {
     Workspace = "core"
   }
 }
+resource "aws_iam_policy" "transfer_kill_switch_policy" {
+  name = "${terraform.workspace}_transfer_kill_switch_policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "transfer:StopServer",
+          "transfer:DescribeServer"
+        ],
+        Resource = [
+          "arn:aws:transfer:${var.region}:${data.aws_caller_identity.current.account_id}:server/${var.transfer_server_id}"
+        ]
+      }
+    ]
+  })
+}

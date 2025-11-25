@@ -103,3 +103,24 @@ resource "aws_sns_topic_subscription" "proactive_virus_scanning_notifications" {
     "scanResult" : ["Infected", "Error", "Unscannable", "Suspicious"]
   })
 }
+
+resource "aws_sns_topic_subscription" "proactive_virus_scanning_kill_switch" {
+  count    = local.is_production ? 1 : 0
+  topic_arn = module.cloud_storage_security[0].proactive_notifications_topic_arn
+  protocol  = "lambda"
+  endpoint  = module.transfer_kill_switch_lambda[0].lambda_arn
+
+  filter_policy = jsonencode({
+    "notificationType" : ["scanResult"],
+    "scanResult" : ["Infected", "Error", "Unscannable", "Suspicious"]
+  })
+}
+
+resource "aws_lambda_permission" "allow_sns_invoke_transfer_kill_switch" {
+  count         = local.is_production ? 1 : 0
+  statement_id  = "AllowExecutionFromVirusScanSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = module.transfer_kill_switch_lambda[0].lambda_arn
+  principal     = "sns.amazonaws.com"
+  source_arn    = module.cloud_storage_security[0].proactive_notifications_topic_arn
+}
