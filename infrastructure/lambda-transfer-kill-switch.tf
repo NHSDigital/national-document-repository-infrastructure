@@ -17,8 +17,8 @@ module "transfer_kill_switch_lambda" {
   api_execution_arn = null
 
   lambda_environment_variables = {
-    WORKSPACE                    = terraform.workspace
-    STAGING_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    WORKSPACE                 = terraform.workspace
+    STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
   }
 
   is_gateway_integration_needed = false
