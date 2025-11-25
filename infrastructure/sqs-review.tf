@@ -10,7 +10,7 @@ module "document_review_queue" {
   enable_dlq            = true
   delay                 = 0
   enable_sse            = true
-
+  max_receive_count     = 3
 }
 
 resource "aws_cloudwatch_metric_alarm" "review_dlq_new_messages" {

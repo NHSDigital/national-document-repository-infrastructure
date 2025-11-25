@@ -24,7 +24,6 @@ module "document_review_processor_lambda" {
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table[0].table_name
     WORKSPACE                     = terraform.workspace
   }
-  depends_on = []
 }
 
 resource "aws_lambda_event_source_mapping" "document-review-processor" {

@@ -220,3 +220,68 @@ jobs:
     uses: NHSDigital/national-document-repository/.github/workflows/ui-dev-to-main-ci.yml@main
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
+  notify-slack:
+    runs-on: ubuntu-latest
+    needs: [terraform_plan_apply, deploy_lambdas, deploy_ui]
+    if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Get slack bot token from SSM parameter store
+        run: |
+          slack_bot_token=$(aws ssm get-parameter --name "/ndr/alerting/slack/bot_token" --with-decryption --query "Parameter.Value" --output text)
+          echo "::add-mask::$slack_bot_token"
+          echo "SLACK_BOT_TOKEN=$slack_bot_token" >> $GITHUB_ENV
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          method: chat.postMessage
+          token: ${{ env.SLACK_BOT_TOKEN }}
+          payload: |
+            {
+              "channel": "${{ vars.ALERTS_SLACK_CHANNEL_ID }}",
+              "attachments": [
+                {
+                  "color": "#ff0000",
+                  "blocks": [
+                    {
+                      "type": "header",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "❌ Workflow `${{ github.workflow }}` failed"
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "*Triggered by:* `${{ github.actor }}`\n*Branch:* `${{ github.ref_name }}`\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"
+                      }
+                    },
+                    {
+                      "type": "divider"
+                    },
+                    {
+                      "type": "section",
+                      "fields": [
+                        { "type": "mrkdwn", "text": "*terraform_plan_apply:* ${{ needs.terraform_plan_apply.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*deploy_lambdas:* ${{ needs.deploy_lambdas.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*deploy_ui:* ${{ needs.deploy_ui.result == 'success' && ':white_check_mark:' || ':x:' }}" }
+                      ]
+                    },
+                    {
+                      "type": "context",
+                      "elements": [
+                        { "type": "mrkdwn", "text": "Environment: `development` | Sandbox: `ndr-dev`" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }

@@ -40,5 +40,3 @@ variable "iam_role_policies" {
   description = "List of IAM policy ARNs or JSON documents to attach to the Lambda execution role."
   type        = list(string)
 }
-
-
