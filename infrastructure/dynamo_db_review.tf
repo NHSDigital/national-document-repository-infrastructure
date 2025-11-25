@@ -1,5 +1,4 @@
 module "document_upload_review_dynamodb_table" {
-  count                          = local.is_production ? 0 : 1
   source                         = "./modules/dynamo_db"
   table_name                     = var.document_review_table_name
   hash_key                       = "ID"
