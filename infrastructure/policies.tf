@@ -67,10 +67,6 @@ resource "aws_iam_policy" "administrator_permission_restrictions" {
     Workspace = "core"
   }
 }
-data "aws_ssm_parameter" "transfer_server_id" {
-  name            = "/prs/${var.environment}/transfer-server-id"
-  with_decryption = true
-}
 
 resource "aws_iam_policy" "transfer_kill_switch_policy" {
   name        = "${terraform.workspace}-transfer-kill-switch"

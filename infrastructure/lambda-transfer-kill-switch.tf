@@ -25,7 +25,7 @@ module "transfer_kill_switch_lambda" {
   is_invoked_from_gateway       = false
 
   lambda_timeout                 = 60
-  memory_size                    = 125
+  memory_size                    = 128
   reserved_concurrent_executions = -1
 
   vpc_subnet_ids         = length(data.aws_security_groups.virus_scanner_api.ids) == 1 ? module.ndr-vpc-ui.private_subnets : []
