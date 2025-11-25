@@ -283,7 +283,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "ndr_document_pending_review_st
   }
 }
 
-
 # Logging Buckets
 resource "aws_s3_bucket" "access_logs" {
   count         = local.access_logs_count
