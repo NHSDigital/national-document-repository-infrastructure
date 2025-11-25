@@ -105,7 +105,7 @@ resource "aws_sns_topic_subscription" "proactive_virus_scanning_notifications" {
 }
 
 resource "aws_sns_topic_subscription" "proactive_virus_scanning_kill_switch" {
-  count    = local.is_production ? 1 : 0
+  count     = local.is_production ? 1 : 0
   topic_arn = module.cloud_storage_security[0].proactive_notifications_topic_arn
   protocol  = "lambda"
   endpoint  = module.transfer_kill_switch_lambda[0].lambda_arn

@@ -18,13 +18,13 @@ module "transfer_kill_switch_lambda" {
   api_execution_arn = null
 
   lambda_environment_variables = {
-    WORKSPACE               = terraform.workspace
-    STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    WORKSPACE                    = terraform.workspace
+    STAGING_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.staging_store_bucket_name}"
     TRANSFER_SERVER_ID_SSM_PARAM = "/prs/${var.environment}/transfer-server-id"
   }
 
-  is_gateway_integration_needed  = false
-  is_invoked_from_gateway        = false
+  is_gateway_integration_needed = false
+  is_invoked_from_gateway       = false
 
   lambda_timeout                 = 60
   memory_size                    = 138
