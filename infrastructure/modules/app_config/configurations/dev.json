@@ -20,6 +20,9 @@
         },
         "uploadDocumentIteration3Enabled": {
             "name": "uploadDocumentIteration3Enabled"
+        },
+        "versionNumberEnabled": {
+            "name": "versionNumberEnabled"
         }
     },
     "values": {
@@ -43,6 +46,10 @@
         },
         "uploadDocumentIteration3Enabled": {
             "enabled": "false"
+        },
+        "versionNumberEnabled": {
+            "enabled": "true",
+            "gitRef": "##GITREF##"
         }
     },
     "version": "1"
