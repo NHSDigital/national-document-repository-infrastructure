@@ -68,7 +68,7 @@ resource "aws_iam_policy" "administrator_permission_restrictions" {
   }
 }
 data "aws_ssm_parameter" "transfer_server_id" {
-  name           = "/prs/${var.environment}/transfer-server-id"
+  name            = "/prs/${var.environment}/transfer-server-id"
   with_decryption = true
 }
 
