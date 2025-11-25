@@ -22,7 +22,14 @@
             "name": "uploadDocumentIteration3Enabled"
         },
         "versionNumberEnabled": {
-            "name": "versionNumberEnabled"
+            "name": "versionNumberEnabled",
+            "attributes": {
+                "gitRef": {
+                    "constraints": {
+                        "type": "string"
+                    }
+                }
+            }
         }
     },
     "values": {
