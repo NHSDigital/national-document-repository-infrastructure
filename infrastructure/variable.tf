@@ -92,7 +92,6 @@ variable "document_pending_review_bucket_name" {
   default     = "document-pending-review-store"
 }
 
-
 # DynamoDB Table Variables
 
 variable "pdm_dynamodb_table_name" {
