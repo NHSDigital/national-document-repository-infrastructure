@@ -5,7 +5,7 @@ module "transfer_kill_switch_lambda" {
   handler = "handlers.transfer_kill_switch_handler.lambda_handler"
 
   iam_role_policy_documents = [
-    aws_iam_policy.transfer_kill_switch_policy.policy,
+    aws_iam_policy.transfer_kill_switch.policy,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
   ]
 
@@ -32,7 +32,7 @@ module "transfer_kill_switch_lambda" {
   vpc_security_group_ids = length(data.aws_security_groups.virus_scanner_api.ids) == 1 ? [data.aws_security_groups.virus_scanner_api.ids[0]] : []
 
   depends_on = [
-    aws_iam_policy.transfer_kill_switch_policy,
+    aws_iam_policy.transfer_kill_switch,
     # aws_transfer_server.your_transfer_server,  # if transfer family is ever defined in terraform
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.ndr-bulk-staging-store,
