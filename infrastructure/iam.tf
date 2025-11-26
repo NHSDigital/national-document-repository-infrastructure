@@ -270,6 +270,44 @@ resource "aws_iam_role_policy_attachment" "update_put_presign_url" {
   policy_arn = aws_iam_policy.s3_document_data_policy_put_only.arn
 }
 
+data "aws_iam_policy_document" "assume_role_policy_get_document_review_lambda" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [module.get_document_review_lambda.lambda_execution_role_arn]
+    }
+  }
+}
+
+resource "aws_iam_role" "get_document_review_presign" {
+  name               = "${terraform.workspace}_get_review_presign_url_role"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy_get_document_review_lambda.json
+}
+
+resource "aws_iam_role_policy_attachment" "get_document_review" {
+  role       = aws_iam_role.get_document_review_presign.name
+  policy_arn = aws_iam_policy.s3_document_data_policy_get_document_review_lambda.arn
+}
+
+resource "aws_iam_policy" "s3_document_data_policy_get_document_review_lambda" {
+  name = "${terraform.workspace}_get_document_only_policy_for_get_document_review_lambda"
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:GetObject",
+        ],
+        "Resource" : ["${module.ndr-document-pending-review-store.bucket_arn}/*"]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role" "get_doc_ref_presign_url_role" {
   name               = "${terraform.workspace}_get_doc_ref_presign_url_role"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy_for_get_doc_ref_lambda.json
