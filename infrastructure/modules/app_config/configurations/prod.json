@@ -24,10 +24,10 @@
     },
     "values": {
         "uploadLloydGeorgeWorkflowEnabled": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "uploadLambdaEnabled": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "uploadArfWorkflowEnabled": {
             "enabled": "false"
