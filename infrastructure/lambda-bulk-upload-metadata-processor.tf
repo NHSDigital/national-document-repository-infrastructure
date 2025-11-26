@@ -11,6 +11,8 @@ module "bulk-upload-metadata-processor-lambda" {
     module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
+    module.lg-bulk-upload-expedite-metadata-queue.sqs_read_policy_document,
+    module.lg-bulk-upload-expedite-metadata-queue.sqs_write_policy_document,
     module.ndr-app-config.app_config_policy
   ]
 
