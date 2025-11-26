@@ -82,6 +82,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.document-status-check-gateway,
     module.document-status-check-lambda,
     module.post-document-references-fhir-lambda,
+    module.post_document_review_lambda,
     module.patch_document_review_lambda,
     module.virus_scan_result_gateway,
     module.virus_scan_result_lambda
