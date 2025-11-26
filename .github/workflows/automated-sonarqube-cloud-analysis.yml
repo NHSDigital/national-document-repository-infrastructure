@@ -28,7 +28,9 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   notify-slack:
+    name: Notify Slack on Failure
     runs-on: ubuntu-latest
+    environment: development
     needs: [sonarqube_cloud]
     if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
@@ -36,7 +38,9 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
           aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
 
       - name: Get slack bot token from SSM parameter store
         run: |
