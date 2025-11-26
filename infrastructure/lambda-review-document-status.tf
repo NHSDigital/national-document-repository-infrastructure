@@ -1,7 +1,7 @@
 module "review-document-status-check-lambda" {
   source  = "./modules/lambda"
   name    = "ReviewDocumentStatusCheck"
-  handler = "handlers.review_document_status_check.lambda_handler"
+  handler = "handlers.review_document_status_check_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
