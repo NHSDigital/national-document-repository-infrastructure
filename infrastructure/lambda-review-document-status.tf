@@ -16,7 +16,7 @@ module "review-document-status-check-lambda" {
     APPCONFIG_APPLICATION          = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT          = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION        = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_REVIEW_DYNAMODB_NAME  = local.is_production ? "" : module.document_reference_dynamodb_table[0].table_name
+    DOCUMENT_REVIEW_DYNAMODB_NAME  = local.is_production ? "" : module.document_review_dynamodb_table[0].table_name
     DOCUMENT_REVIEW_S3_BUCKET_NAME = module.ndr-document-pending-review-store.bucket_id
     WORKSPACE                      = terraform.workspace
   }
