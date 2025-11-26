@@ -198,7 +198,9 @@ jobs:
     secrets: inherit
 
   notify-slack:
+    name: Notify Slack on Failure
     runs-on: ubuntu-latest
+    environment: development
     needs: [terraform_plan_apply, run_lambda_unit_tests, run_ui_unit_tests, run_cypress_tests, publish_lambda_layers, deploy_lambdas, deploy_ui]
     if: failure()
     steps:
@@ -206,7 +208,9 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
           aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
 
       - name: Get slack bot token from SSM parameter store
         run: |
