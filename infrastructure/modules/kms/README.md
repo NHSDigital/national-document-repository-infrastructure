@@ -55,6 +55,7 @@ module "kms_key" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -65,6 +66,7 @@ module "kms_key" {
 | [aws_iam_policy_document.combined_policy_documents](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.kms_key_base](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.kms_key_generate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -79,6 +81,7 @@ module "kms_key" {
 | <a name="input_kms_key_rotation_enabled"></a> [kms\_key\_rotation\_enabled](#input\_kms\_key\_rotation\_enabled) | Enable automatic KMS key rotation. | `bool` | `true` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | Owner tag for identifying the resource owner. | `string` | n/a | yes |
 | <a name="input_service_identifiers"></a> [service\_identifiers](#input\_service\_identifiers) | List of AWS service principal identifiers allowed to use the key (e.g., 's3.amazonaws.com'). | `list(string)` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |

@@ -32,3 +32,15 @@ module "review_document_version_gateway" {
     "method.request.path.version" = true
   }
 }
+
+module "review_document_status_gateway" {
+  source              = "./modules/gateway"
+  api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  parent_id           = module.review_document_version_gateway.gateway_resource_id
+  gateway_path        = "Status"
+  http_methods        = ["GET"]
+  require_credentials = true
+  authorization       = "CUSTOM"
+  authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+}
