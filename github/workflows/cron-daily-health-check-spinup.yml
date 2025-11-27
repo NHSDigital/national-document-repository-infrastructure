@@ -1,0 +1,269 @@
+name: "Z-CRON: Daily health check - Spinup"
+
+on:
+  schedule:
+    - cron: 30 4 * * 1-5
+
+permissions:
+  actions: read # Required for anchore/sbom-action
+  contents: write # Required for anchore/sbom-action
+  pull-requests: write
+  id-token: write
+
+jobs:
+  set_workspace:
+    name: Set Workspace (ndrd)
+    runs-on: ubuntu-latest
+    outputs:
+      workspace: ${{ steps.set-output.outputs.workspace }}
+    steps:
+      - name: Set Output
+        id: set-output
+        run: echo 'workspace=ndrd' >> $GITHUB_OUTPUT
+
+  terraform_plan_apply:
+    name: Terraform Plan/Apply (ndrd)
+    runs-on: ubuntu-latest
+    environment: development
+    needs: ["set_workspace"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.3
+          terraform_wrapper: false
+
+      - name: Initialise Terraform
+        id: init
+        run: terraform init -backend-config=backend.conf
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Select Terraform Workspace
+        id: workspace
+        run: terraform workspace select -or-create ${{ needs.set_workspace.outputs.workspace }}
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Check Terraform Formatting
+        run: terraform fmt -check
+        working-directory: ./infrastructure
+
+      - name: Run Terraform Plan
+        id: plan
+        run: |
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Run Terraform Apply
+        run: terraform apply -auto-approve -input=false tf.plan
+        working-directory: ./infrastructure
+
+  run_lambda_unit_tests:
+    name: Run Lambda Unit Tests
+    uses: NHSDigital/national-document-repository/.github/workflows/base-lambdas-reusable-test.yml@main
+    with:
+      python_version: "3.11"
+      build_branch: main
+
+  run_ui_unit_tests:
+    name: Run UI Unit Tests
+    uses: NHSDigital/national-document-repository/.github/workflows/base-vitest-test.yml@main
+    with:
+      build_branch: main
+
+  run_cypress_tests:
+    name: Run Cypress Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          repository: NHSDigital/national-document-repository
+
+      - name: npm install
+        run: npm install --legacy-peer-deps
+        working-directory: ./app
+
+      - name: Configure React Environment Vars
+        env:
+          ENDPOINT_DOC_STORE_API: http://localhost:3000
+          AWS_REGION: test region
+          OIDC_PROVIDER_ID: not provided yet
+          IDENTITY_PROVIDER_POOL_ID: not provided yet
+          MONITOR_ACCOUNT_ID: not provided yet
+          BUILD_ENV: development
+          IMAGE_VERSION: "not-required"
+        run: |
+          ./react-environment-config.sh
+        working-directory: ./app
+
+      - name: Cypress Build
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          runTests: false
+          build: npm run build
+          working-directory: ./app
+
+      - name: npm install serve -g
+        run: npm install serve -g
+
+      - name: Run Cypress Tests (Chrome)
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          start: serve -s dist
+          browser: chrome
+          working-directory: ./app
+        env:
+          CYPRESS_BASE_URL: http://localhost:3000
+          CYPRESS_grepTags: "regression"
+
+      - name: Upload Artifacts (Screenshots)
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots-chrome
+          path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/screenshots
+          if-no-files-found: ignore
+
+      - name: Upload Artifacts (Videos)
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-videos-chrome
+          path: /home/runner/work/national-document-repository/national-document-repository/app/cypress/videos
+          if-no-files-found: ignore
+
+  publish_lambda_layers:
+    name: Publish Lambda Layers
+    needs: ["set_workspace", "terraform_plan_apply"]
+    uses: NHSDigital/national-document-repository/.github/workflows/base-lambda-layer-reusable-publish-all.yml@main
+    with:
+      build_branch: main
+      sandbox: ${{ needs.set_workspace.outputs.workspace }}
+      environment: development
+      python_version: "3.11"
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
+  deploy_lambdas:
+    name: Deploy Lambdas
+    uses: NHSDigital/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
+    needs: ["set_workspace", "publish_lambda_layers"]
+    with:
+      build_branch: main
+      sandbox: ${{ needs.set_workspace.outputs.workspace }}
+      environment: development
+      python_version: "3.11"
+      is_sandbox: true
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
+  deploy_ui:
+    name: Deploy UI
+    uses: NHSDigital/national-document-repository/.github/workflows/base-deploy-ui.yml@main
+    needs: ["terraform_plan_apply", "set_workspace"]
+    with:
+      build_branch: main
+      sandbox: ${{ needs.set_workspace.outputs.workspace }}
+      environment: development
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
+  notify-slack:
+    name: Notify Slack on Failure
+    runs-on: ubuntu-latest
+    environment: development
+    needs:
+      [
+        terraform_plan_apply,
+        run_lambda_unit_tests,
+        run_ui_unit_tests,
+        run_cypress_tests,
+        publish_lambda_layers,
+        deploy_lambdas,
+        deploy_ui,
+      ]
+    if: failure()
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Get slack bot token from SSM parameter store
+        run: |
+          slack_bot_token=$(aws ssm get-parameter --name "/ndr/alerting/slack/bot_token" --with-decryption --query "Parameter.Value" --output text)
+          echo "::add-mask::$slack_bot_token"
+          echo "SLACK_BOT_TOKEN=$slack_bot_token" >> $GITHUB_ENV
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          method: chat.postMessage
+          token: ${{ env.SLACK_BOT_TOKEN }}
+          payload: |
+            {
+              "channel": "${{ vars.ALERTS_SLACK_CHANNEL_ID }}",
+              "attachments": [
+                {
+                  "color": "#ff0000",
+                  "blocks": [
+                    {
+                      "type": "header",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "❌ Workflow `${{ github.workflow }}` failed"
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "*Triggered by:* `Scheduled Job`\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"
+                      }
+                    },
+                    {
+                      "type": "divider"
+                    },
+                    {
+                      "type": "section",
+                      "fields": [
+                        { "type": "mrkdwn", "text": "*terraform_plan_apply:* ${{ needs.terraform_plan_apply.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*run_lambda_unit_tests:* ${{ needs.run_lambda_unit_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*run_ui_unit_tests:* ${{ needs.run_ui_unit_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*run_cypress_tests:* ${{ needs.run_cypress_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*publish_lambda_layers:* ${{ needs.publish_lambda_layers.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*deploy_lambdas:* ${{ needs.deploy_lambdas.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*deploy_ui:* ${{ needs.deploy_ui.result == 'success' && ':white_check_mark:' || ':x:' }}" }
+                      ]
+                    },
+                    {
+                      "type": "context",
+                      "elements": [
+                        { "type": "mrkdwn", "text": "Environment: `development` | Sandbox: `${{ needs.set_workspace.outputs.workspace }}`" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
