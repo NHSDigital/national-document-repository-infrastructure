@@ -39,17 +39,17 @@ apply-bootstrap:	## Apply Bootstrap terraform
 # Pass in an aliases variable containing account IDs you need to mask.
 # e.g. make export-dev-github-role aliases="123456789012=account 555555555555=other_account"
 .PHONY: export-dev-github-role
-export-dev-github-role:
+export-dev-github-role: ## Export DEV github role permissions. Account IDs can be masked by passing in a list of aliases. E.g. make export-dev-github-role aliases="123456789012=account 555555555555=other_account"
 	python ./scripts/export_role_policies.py dev github-actions-dev-role ${aliases}
 
 .PHONY: export-pre-prod-github-role
-export-pre-prod-github-role:
+export-pre-prod-github-role: ## See above
 	python ./scripts/export_role_policies.py pre-prod Github-Actions-pre-prod-role ${aliases}
 
 .PHONY: export-prod-github-role
-export-prod-github-role:
+export-prod-github-role: ## See above
 	python ./scripts/export_role_policies.py prod github-access-role ${aliases}
 
 .PHONY: export-test-github-role
-export-test-github-role:
+export-test-github-role: ## See above
 	python ./scripts/export_role_policies.py test github-action-role ${aliases}
