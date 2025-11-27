@@ -7,6 +7,9 @@ to prevent committing sensitive information to a repo.
 Sensitive account IDs can be found/replaced with aliases using the command line arguments.
 The replaced values will be in the format ${alias}.
 
+Prerequisite:
+  You must be logged in to an active SSO session.
+
 Usage:
   scripts/python export_role_policies.py <environment> <role_name> [<find>=<replace> ...]
 
@@ -24,9 +27,16 @@ import boto3
 
 def list_role_policies(client, role_name: str) -> list:
     inline_policies = []
-    paginator = client.get_paginator('list_role_policies')
-    for page in paginator.paginate(RoleName=role_name):
-        inline_policies.extend(page['PolicyNames'])
+    try:
+        paginator = client.get_paginator('list_role_policies')
+        for page in paginator.paginate(RoleName=role_name):
+            inline_policies.extend(page['PolicyNames'])
+    except client.exceptions.UnauthorizedSSOTokenError as err:
+        print(f"A valid SSO session is required.\n{err}\n", file=sys.stderr)
+        sys.exit(2)
+    except client.exceptions.NoSuchEntityException as err:
+        print(f"{err}\nAre you using the correct AWS Profile?", file=sys.stderr)
+        sys.exit(2)
     return inline_policies
 
 
