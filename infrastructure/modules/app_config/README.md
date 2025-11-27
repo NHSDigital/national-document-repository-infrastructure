@@ -38,6 +38,7 @@ module "app_config" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -51,6 +52,7 @@ module "app_config" {
 | [aws_iam_policy.app_config_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [terraform_data.current_config_file_content](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [aws_iam_policy_document.app_config_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -60,6 +62,7 @@ module "app_config" {
 | <a name="input_dev_config_enabled"></a> [dev\_config\_enabled](#input\_dev\_config\_enabled) | n/a | `bool` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment tag used for naming and labeling (e.g., dev, prod) | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | Identifies the team or person responsible for the resource (used for tagging). | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |

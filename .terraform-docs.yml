@@ -14,8 +14,11 @@ sections:
 
 content: |-
   {{ .Requirements }}
+
   {{ .Resources }}
+
   {{ .Inputs }}
+
   {{ .Outputs }}
 
 output:
