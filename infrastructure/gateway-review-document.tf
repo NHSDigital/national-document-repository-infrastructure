@@ -2,7 +2,7 @@ module "review_document_gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
-  http_methods        = ["GET"]
+  http_methods        = ["GET", "POST"]
   authorization       = "CUSTOM"
   gateway_path        = "DocumentReview"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
