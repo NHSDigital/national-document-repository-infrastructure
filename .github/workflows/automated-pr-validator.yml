@@ -1,4 +1,4 @@
-name: "Z-AUTOMATED: PR Checks"
+name: "Z-AUTOMATED: PR Validator"
 
 on:
   pull_request:
