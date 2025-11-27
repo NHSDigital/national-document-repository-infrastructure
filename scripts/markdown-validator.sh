@@ -20,5 +20,5 @@ if [ -n "$files" ]; then
     -v $PWD:/workdir \
     $image \
       $files \
-      --disable MD013 MD033
+      --disable MD013 MD033 MD060 # MD060 disabled until VS Code support is available
 fi

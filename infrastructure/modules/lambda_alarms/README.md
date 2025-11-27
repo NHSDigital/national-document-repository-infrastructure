@@ -48,6 +48,7 @@ module "lambda_alarms" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -55,6 +56,7 @@ module "lambda_alarms" {
 | [aws_cloudwatch_metric_alarm.lambda_duration_alarm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.lambda_error](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.lambda_memory_alarm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -65,6 +67,7 @@ module "lambda_alarms" {
 | <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Timeout value of the Lambda function in seconds. | `number` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | CloudWatch metric namespace. Defaults to 'AWS/Lambda' if not specified. | `string` | `"AWS/Lambda"` | no |
 | <a name="input_ok_actions"></a> [ok\_actions](#input\_ok\_actions) | List of ARNs to notify when a CloudWatch alarm returns to the OK state. | `list(string)` | n/a | yes |
+
 ## Outputs
 
 No outputs.
