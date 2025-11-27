@@ -1,5 +1,3 @@
-````
-
 # VPC Networking Module with Subnets, Routing, and VPC Endpoints
 
 This Terraform module provisions a VPC with public and private subnets, internet/NAT gateways, route tables, and optional VPC interface and gateway endpoints. It is designed for reusable infrastructure in staging or production environments with support for shared or standalone deployments.
