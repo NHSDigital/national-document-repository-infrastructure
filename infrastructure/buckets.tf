@@ -281,6 +281,17 @@ resource "aws_s3_bucket_lifecycle_configuration" "ndr_document_pending_review_st
     }
     filter {}
   }
+  rule {
+    id     = "remove-delete-markers-after-42-days"
+    status = "Enabled"
+    expiration {
+      expired_object_delete_marker = true
+    }
+    noncurrent_version_expiration {
+      noncurrent_days = 42
+    }
+    filter {}
+  }
 }
 
 # Logging Buckets
