@@ -1,6 +1,5 @@
 locals {
   # required by USA-based CI pipeline runners to run smoke tests
-  is_production  = contains(["prod", "pre-prod", "production"], terraform.workspace)
   allow_us_comms = !local.is_production
 }
 
