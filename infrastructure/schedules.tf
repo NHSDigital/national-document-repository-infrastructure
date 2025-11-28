@@ -167,3 +167,34 @@ resource "aws_lambda_permission" "toggle_bulk_upload_disable_permission" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.bulk_upload_disable_rule.arn
 }
+
+# Transfer Key Manager Schedule - Daily SSH Key Expiry Check
+resource "aws_cloudwatch_event_rule" "transfer_key_manager_schedule" {
+  name                = "${terraform.workspace}_transfer_key_manager_schedule"
+  description         = "Daily schedule for SSH key expiry management in AWS Transfer Family"
+  schedule_expression = "cron(0 2 * * ? *)"  # 2 AM UTC daily
+}
+
+resource "aws_cloudwatch_event_target" "transfer_key_manager_schedule_event" {
+  rule      = aws_cloudwatch_event_rule.transfer_key_manager_schedule.name
+  target_id = "transfer_key_manager_schedule"
+  arn       = module.transfer-key-manager-lambda.lambda_arn
+
+  depends_on = [
+    module.transfer-key-manager-lambda,
+    aws_cloudwatch_event_rule.transfer_key_manager_schedule
+  ]
+}
+
+resource "aws_lambda_permission" "transfer_key_manager_schedule_permission" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = module.transfer-key-manager-lambda.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.transfer_key_manager_schedule.arn
+
+  depends_on = [
+    module.transfer-key-manager-lambda,
+    aws_cloudwatch_event_rule.transfer_key_manager_schedule
+  ]
+}

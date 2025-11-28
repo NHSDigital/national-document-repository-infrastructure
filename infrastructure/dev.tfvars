@@ -12,3 +12,7 @@ cloud_security_email_param_environment = "dev"
 apim_environment = "internal-dev."
 
 kms_deletion_window = 7
+
+# SSH Key Management
+prm_mailbox_email = "prm-notifications-dev@nhs.net"
+ssh_key_management_dry_run = "true"  # Enable dry-run for dev environment
