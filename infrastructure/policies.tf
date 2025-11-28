@@ -82,6 +82,18 @@ resource "aws_iam_policy" "transfer_kill_switch" {
           "transfer:StopServer",
         ]
         Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "cloudwatch:PutMetricData",
+        ]
+        Resource = "*"
+        Condition = {
+          StringEquals = {
+            "cloudwatch:namespace" = "Custom/TransferKillSwitch"
+          }
+        }
       }
     ]
   })
