@@ -67,3 +67,22 @@ resource "aws_iam_policy" "administrator_permission_restrictions" {
     Workspace = "core"
   }
 }
+
+resource "aws_iam_policy" "transfer_kill_switch" {
+  name        = "${terraform.workspace}-transfer-kill-switch"
+  description = "Permissions for Transfer kill switch Lambda"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "transfer:ListServers",
+          "transfer:DescribeServer",
+          "transfer:StopServer",
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
