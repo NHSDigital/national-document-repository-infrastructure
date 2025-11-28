@@ -47,7 +47,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     }
   }
 
-    origin {
+  origin {
     domain_name              = module.ndr-document-pending-review-store.bucket_regional_domain_name
     origin_id                = module.ndr-document-pending-review-store.bucket_id
     origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_oac.id
@@ -56,7 +56,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   ordered_cache_behavior {
     allowed_methods          = ["HEAD", "GET", "OPTIONS"]
     cached_methods           = ["HEAD", "GET", "OPTIONS"]
-    path_pattern             = "review/*"
+    path_pattern             = "/review/*"
     target_origin_id         = module.ndr-bulk-staging-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
@@ -75,9 +75,9 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 
   ordered_cache_behavior {
-    allowed_methods = ["HEAD", "GET", "OPTIONS"]
-    cached_methods = ["HEAD", "GET", "OPTIONS"]
-    path_pattern             = "upload/*"
+    allowed_methods          = ["HEAD", "GET", "OPTIONS"]
+    cached_methods           = ["HEAD", "GET", "OPTIONS"]
+    path_pattern             = "/upload/*"
     target_origin_id         = module.ndr-bulk-staging-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
