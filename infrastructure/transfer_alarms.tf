@@ -23,7 +23,7 @@ resource "aws_cloudwatch_metric_alarm" "transfer_kill_switch_stopped_server" {
   tags = {
     Name         = "${terraform.workspace}_transfer_family_kill_switch_stopped"
     severity     = "high"
-    alarm_group  = "transfer_kill_switch"
+    alarm_group  = "${terraform.workspace}-transfer-kill-switch"
     alarm_metric = "ServerStopped"
     is_kpi       = "false"
   }
