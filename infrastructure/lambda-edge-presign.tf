@@ -78,6 +78,6 @@ module "edge-presign-lambda" {
   providers = {
     aws = aws.us_east_1
   }
-  bucket_name = module.ndr-lloyd-george-store.bucket_id
-  table_name  = module.cloudfront_edge_dynamodb_table.table_name
+  bucket_names = [module.ndr-lloyd-george-store.bucket_id, module.ndr-document-pending-review-store.bucket_id]
+  table_name   = module.cloudfront_edge_dynamodb_table.table_name
 }

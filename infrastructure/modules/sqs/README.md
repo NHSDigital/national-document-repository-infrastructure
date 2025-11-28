@@ -55,6 +55,7 @@ module "sqs_queue" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -65,6 +66,7 @@ module "sqs_queue" {
 | [aws_sqs_queue_redrive_policy.dlq_redrive](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_redrive_policy) | resource |
 | [aws_iam_policy_document.sqs_read_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.sqs_write_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -85,6 +87,7 @@ module "sqs_queue" {
 | <a name="input_name"></a> [name](#input\_name) | Name of the SQS queue. | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | Owner tag used for identifying resource ownership. | `string` | n/a | yes |
 | <a name="input_receive_wait"></a> [receive\_wait](#input\_receive\_wait) | Number of seconds sqs will wait for a message when ReceiveMessage is received. | `number` | `2` | no |
+
 ## Outputs
 
 | Name | Description |

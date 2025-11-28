@@ -35,6 +35,7 @@ module "ecr_repository" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -43,6 +44,7 @@ module "ecr_repository" {
 | [aws_ecr_repository.ndr-ecr](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
 | [aws_ecr_repository_policy.ndr_ecr_repository_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository_policy) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -51,6 +53,7 @@ module "ecr_repository" {
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Name of the application (used in repository naming). | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment tag used for naming and labeling (e.g., dev, prod). | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | Identifies the team or person responsible for the resource (used for tagging). | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |
