@@ -5,7 +5,7 @@ resource "aws_cloudwatch_metric_alarm" "transfer_kill_switch_stopped_server" {
   namespace           = "Custom/TransferKillSwitch"
   metric_name         = "ServerStopped"
   statistic           = "Sum"
-  period              = 600 #check every 10 mins
+  period              = 60 #check every 10 mins
   evaluation_periods  = 1
   comparison_operator = "GreaterThanThreshold"
   threshold           = 0
