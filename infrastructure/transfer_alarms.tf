@@ -13,13 +13,10 @@ resource "aws_cloudwatch_metric_alarm" "transfer_kill_switch_stopped_server" {
 
   dimensions = {
     Workspace = terraform.workspace
-    # Optionally, also filter to a specific server if you want:
-    # ServerId = "s-xxxxxxxxxxxx"
   }
 
   alarm_description = "Alarm when the Transfer Family kill switch stops a server in workspace ${terraform.workspace}."
 
-  # Reuse the same topic that sends SQS alarms to IMAlertingLambda
   alarm_actions = [module.sqs_alarm_lambda_topic.arn]
   ok_actions    = [module.sqs_alarm_lambda_topic.arn]
 
