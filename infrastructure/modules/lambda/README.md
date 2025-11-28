@@ -73,6 +73,7 @@ module "lambda" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -94,6 +95,7 @@ module "lambda" {
 | [aws_iam_policy_document.lambda_kms_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.merged_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.root_kms_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -119,6 +121,7 @@ module "lambda" {
 | <a name="input_rest_api_id"></a> [rest\_api\_id](#input\_rest\_api\_id) | ID of the associated API Gateway REST API. | `string` | `""` | no |
 | <a name="input_vpc_security_group_ids"></a> [vpc\_security\_group\_ids](#input\_vpc\_security\_group\_ids) | List of security group IDs associated with the Lambda function, if it sits within a VPC. | `list(string)` | `[]` | no |
 | <a name="input_vpc_subnet_ids"></a> [vpc\_subnet\_ids](#input\_vpc\_subnet\_ids) | List of subnet IDs associated with the Lambda function, if it sits within a VPC. | `list(string)` | `[]` | no |
+
 ## Outputs
 
 | Name | Description |
