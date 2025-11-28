@@ -20,6 +20,11 @@ module "review-document-status-check-lambda" {
     DOCUMENT_REVIEW_S3_BUCKET_NAME = module.ndr-document-pending-review-store.bucket_id
     WORKSPACE                      = terraform.workspace
   }
+
+  depends_on = [
+    aws_api_gateway_rest_api.ndr_doc_store_api,
+    module.review_document_status_gateway
+  ]
 }
 
 module "review-document-status-check-lambda-alarm" {
