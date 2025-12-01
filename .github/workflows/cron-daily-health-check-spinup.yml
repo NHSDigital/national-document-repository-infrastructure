@@ -1,6 +1,9 @@
 name: "Z-CRON: Daily health check - Spinup"
 
 on:
+  push:
+    branches:
+      - PRMP-631
   schedule:
     - cron: 30 4 * * 1-5
 
