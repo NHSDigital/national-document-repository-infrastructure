@@ -172,7 +172,7 @@ resource "aws_lambda_permission" "toggle_bulk_upload_disable_permission" {
 resource "aws_cloudwatch_event_rule" "transfer_key_manager_schedule" {
   name                = "${terraform.workspace}_transfer_key_manager_schedule"
   description         = "Daily schedule for SSH key expiry management in AWS Transfer Family"
-  schedule_expression = "cron(0 2 * * ? *)"  # 2 AM UTC daily
+  schedule_expression = "cron(0 2 * * ? *)" # 2 AM UTC daily
 }
 
 resource "aws_cloudwatch_event_target" "transfer_key_manager_schedule_event" {
