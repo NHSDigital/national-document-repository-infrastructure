@@ -53,8 +53,8 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 
   ordered_cache_behavior {
-    allowed_methods          = ["HEAD", "GET", "OPTIONS"]
-    cached_methods           = ["HEAD", "GET", "OPTIONS"]
+    allowed_methods          = ["HEAD", "POST", "OPTIONS"]
+    cached_methods           = ["HEAD", "POST", "OPTIONS"]
     path_pattern             = "/review/*"
     target_origin_id         = module.ndr-bulk-staging-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
