@@ -1,5 +1,3 @@
-````
-
 # VPC Networking Module with Subnets, Routing, and VPC Endpoints
 
 This Terraform module provisions a VPC with public and private subnets, internet/NAT gateways, route tables, and optional VPC interface and gateway endpoints. It is designed for reusable infrastructure in staging or production environments with support for shared or standalone deployments.
@@ -65,6 +63,7 @@ module "vpc" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -89,6 +88,7 @@ module "vpc" {
 | [aws_subnet.private_subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_subnet.public_subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -110,6 +110,7 @@ module "vpc" {
 | <a name="input_standalone_vpc_ig_tag"></a> [standalone\_vpc\_ig\_tag](#input\_standalone\_vpc\_ig\_tag) | This is the tag assigned to the standalone VPC internet gateway that should be created manually before the first run of the infrastructure. | `string` | n/a | yes |
 | <a name="input_standalone_vpc_tag"></a> [standalone\_vpc\_tag](#input\_standalone\_vpc\_tag) | This is the tag assigned to the standalone VPC that should be created manaully before the first run of the infrastructure. | `string` | n/a | yes |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | This specifices the VPC CIDR block | `string` | `"10.0.0.0/16"` | no |
+
 ## Outputs
 
 | Name | Description |

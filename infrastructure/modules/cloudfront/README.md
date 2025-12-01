@@ -36,6 +36,7 @@ module "cloudfront" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -45,6 +46,7 @@ module "cloudfront" {
 | [aws_cloudfront_distribution.distribution_with_secondary_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
 | [aws_cloudfront_origin_access_control.cloudfront_s3_oac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control) | resource |
 | [aws_cloudfront_origin_request_policy.viewer_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_request_policy) | resource |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -58,6 +60,7 @@ module "cloudfront" {
 | <a name="input_secondary_bucket_id"></a> [secondary\_bucket\_id](#input\_secondary\_bucket\_id) | Secondary bucket ID | `string` | n/a | yes |
 | <a name="input_secondary_bucket_path_pattern"></a> [secondary\_bucket\_path\_pattern](#input\_secondary\_bucket\_path\_pattern) | Path pattern for secondary bucket | `string` | n/a | yes |
 | <a name="input_web_acl_id"></a> [web\_acl\_id](#input\_web\_acl\_id) | Web ACL to associate this CloudFront distribution with. | `string` | `""` | no |
+
 ## Outputs
 
 | Name | Description |

@@ -73,6 +73,7 @@ module "sns_topic" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -80,6 +81,7 @@ module "sns_topic" {
 | [aws_sns_topic.sns_topic](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
 | [aws_sns_topic_subscription.sns_subscription_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
 | [aws_sns_topic_subscription.sns_subscription_single](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -95,6 +97,7 @@ module "sns_topic" {
 | <a name="input_topic_endpoint_list"></a> [topic\_endpoint\_list](#input\_topic\_endpoint\_list) | A list of endpoints (e.g., SQS ARNs) to subscribe to the topic. | `any` | `[]` | no |
 | <a name="input_topic_name"></a> [topic\_name](#input\_topic\_name) | Name of the SNS topic. | `string` | n/a | yes |
 | <a name="input_topic_protocol"></a> [topic\_protocol](#input\_topic\_protocol) | The protocol to use for the subscription (e.g., 'sqs', 'lambda'). | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |
