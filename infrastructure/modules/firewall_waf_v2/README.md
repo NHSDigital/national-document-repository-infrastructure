@@ -41,6 +41,7 @@ module "waf_acl" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -49,6 +50,7 @@ module "waf_acl" {
 | [aws_wafv2_regex_pattern_set.large_body_uri](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_regex_pattern_set) | resource |
 | [aws_wafv2_regex_pattern_set.xss_body_uri](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_regex_pattern_set) | resource |
 | [aws_wafv2_web_acl.waf_v2_acl](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl) | resource |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -57,6 +59,7 @@ module "waf_acl" {
 | <a name="input_cloudfront_acl"></a> [cloudfront\_acl](#input\_cloudfront\_acl) | Set to true if this WAF ACL is for a CloudFront distribution. | `bool` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment name used for tagging and resource naming. | `string` | n/a | yes |
 | <a name="input_owner"></a> [owner](#input\_owner) | Name of the owner used for tagging. | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |

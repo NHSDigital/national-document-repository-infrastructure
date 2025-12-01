@@ -17,7 +17,7 @@ variable "hash_key" {
 }
 
 variable "sort_key" {
-  description = "Optional sort key for composite primary key."
+  description = "Optional range/sort key for composite primary key."
   type        = string
   default     = null
 }
