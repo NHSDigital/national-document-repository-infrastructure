@@ -56,7 +56,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     allowed_methods          = ["HEAD", "GET", "OPTIONS"]
     cached_methods           = ["HEAD", "GET", "OPTIONS"]
     path_pattern             = "/review/*"
-    target_origin_id         = module.ndr-bulk-staging-store.bucket_id
+    target_origin_id         = module.ndr-document-pending-review-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
     origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer_policy.id
