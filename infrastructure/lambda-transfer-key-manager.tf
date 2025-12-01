@@ -20,12 +20,17 @@ module "transfer-key-manager-lambda" {
     APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
-    PRM_MAILBOX_EMAIL       = var.prm_mailbox_email
+    PRM_MAILBOX_EMAIL       = data.aws_ssm_parameter.prm_mailbox_email.value
     DRY_RUN                 = var.ssh_key_management_dry_run
   }
 
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
+}
+
+# SSM Parameter for PRM Mailbox Email
+data "aws_ssm_parameter" "prm_mailbox_email" {
+  name = "/prs/${var.environment}/user-input/prm-mailbox-email"
 }
 
 # IAM Policy for Transfer Key Manager Lambda
@@ -55,7 +60,7 @@ data "aws_iam_policy_document" "transfer_key_manager_policy" {
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
-      values   = [var.prm_mailbox_email]
+      values   = [data.aws_ssm_parameter.prm_mailbox_email.value]
     }
   }
 

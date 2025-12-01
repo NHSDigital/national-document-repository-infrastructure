@@ -12,5 +12,4 @@ cloud_security_email_param_environment = "prod"
 apim_environment = ""
 
 # SSH Key Management
-prm_mailbox_email = "prm-notifications@nhs.net"
 ssh_key_management_dry_run = "false"  # Disable dry-run for production
