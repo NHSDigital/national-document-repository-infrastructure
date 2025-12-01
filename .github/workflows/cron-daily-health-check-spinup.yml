@@ -186,6 +186,17 @@ jobs:
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
+  bulk_upload:
+    name: Run Bulk Upload
+    uses: NHSDigital/national-document-repository/.github/workflows/daily-health-check-run-bulk-upload.yml@PRMP-631
+    needs: ["terraform_plan_apply", "set_workspace", "deploy_lambdas"]
+    with:
+      build_branch: PRMP-631
+      sandbox: ${{ needs.set_workspace.outputs.workspace }}
+      environment: development
+    secrets:
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+
   notify-slack:
     name: Notify Slack on Failure
     runs-on: ubuntu-latest
@@ -199,6 +210,7 @@ jobs:
         publish_lambda_layers,
         deploy_lambdas,
         deploy_ui,
+        bulk_upload,
       ]
     if: failure()
     steps:

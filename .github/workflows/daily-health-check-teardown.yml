@@ -1,8 +1,7 @@
-name: "Z-CRON: Daily health check - Teardown"
+name: "Z-AUTOMATED: Daily health check - Teardown"
 
 on:
-  schedule:
-    - cron: 30 6 * * 1-5
+  workflow_call:
 
 permissions:
   actions: read # Required for anchore/sbom-action
