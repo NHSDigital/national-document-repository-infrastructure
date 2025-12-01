@@ -49,14 +49,6 @@ resource "aws_cloudfront_distribution" "distribution" {
     }
   }
   web_acl_id = var.web_acl_id
-
-  dynamic "logging_config" {
-    for_each = var.log_bucket_id != "" ? [1] : []
-    content {
-      bucket = var.log_bucket_id
-      prefix = "cloudfront/"
-    }
-  }
 }
 
 resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
@@ -104,15 +96,6 @@ resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
       event_type = "origin-request"
       lambda_arn = var.qualifed_arn
     }
-
-  }
-
-  dynamic "logging_config" {
-    for_each = var.log_bucket_id != "" ? [1] : []
-    content {
-      bucket = var.log_bucket_id
-      prefix = "cloudfront/"
-    }
   }
 
   viewer_certificate {
@@ -126,7 +109,6 @@ resource "aws_cloudfront_distribution" "distribution_with_secondary_bucket" {
     }
   }
   web_acl_id = var.web_acl_id
-
 }
 
 
