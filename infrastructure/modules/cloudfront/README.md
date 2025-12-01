@@ -40,6 +40,7 @@ module "cloudfront" {
 ## Resources
 
 No resources.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -53,6 +54,7 @@ No resources.
 | <a name="input_secondary_bucket_id"></a> [secondary\_bucket\_id](#input\_secondary\_bucket\_id) | Secondary bucket ID | `string` | n/a | yes |
 | <a name="input_secondary_bucket_path_pattern"></a> [secondary\_bucket\_path\_pattern](#input\_secondary\_bucket\_path\_pattern) | Path pattern for secondary bucket | `string` | n/a | yes |
 | <a name="input_web_acl_id"></a> [web\_acl\_id](#input\_web\_acl\_id) | Web ACL to associate this CloudFront distribution with. | `string` | `""` | no |
+
 ## Outputs
 
 No outputs.
