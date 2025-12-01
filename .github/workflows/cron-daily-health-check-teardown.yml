@@ -26,7 +26,7 @@ jobs:
 
   destroy_test_environment:
     name: Destroy Sandbox (ndrd)
-    needs: ["set_workspace", "deploy_ui", "deploy_lambdas"]
+    needs: ["set_workspace"]
     uses: ./.github/workflows/tear-down-sandbox.yml
     with:
       git_ref: main
