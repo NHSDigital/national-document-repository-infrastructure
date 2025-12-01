@@ -5,6 +5,12 @@ moved {
 }
 
 moved {
+  from = module.cloudfront-distribution-lg.aws_cloudfront_distribution.distribution_with_secondary_bucket[0]
+  to   = aws_cloudfront_distribution.distribution
+}
+
+
+moved {
   from = module.cloudfront-distribution-lg.aws_cloudfront_origin_access_control.cloudfront_s3_oac
   to   = aws_cloudfront_origin_access_control.cloudfront_s3_oac
 }
