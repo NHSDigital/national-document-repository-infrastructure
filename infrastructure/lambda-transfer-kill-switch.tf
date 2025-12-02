@@ -18,7 +18,6 @@ module "transfer_kill_switch_lambda" {
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
 
-
   vpc_subnet_ids         = length(data.aws_security_groups.virus_scanner_api.ids) == 1 ? module.ndr-vpc-ui.private_subnets : []
   vpc_security_group_ids = length(data.aws_security_groups.virus_scanner_api.ids) == 1 ? [data.aws_security_groups.virus_scanner_api.ids[0]] : []
 
