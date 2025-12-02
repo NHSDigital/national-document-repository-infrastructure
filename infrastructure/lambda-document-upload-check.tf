@@ -12,6 +12,8 @@ module "document_upload_check_lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.pdm_dynamodb_table.dynamodb_read_policy_document,
     module.pdm_dynamodb_table.dynamodb_write_policy_document,
+    module.core_dynamodb_table.dynamodb_read_policy_document,
+    module.core_dynamodb_table.dynamodb_write_policy_document,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy
   ]
   kms_deletion_window = var.kms_deletion_window
