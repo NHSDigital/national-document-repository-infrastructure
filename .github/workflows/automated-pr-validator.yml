@@ -120,3 +120,27 @@ jobs:
           BRANCH_NAME=${{ github.event.repository.default_branch }}
           chmod +x scripts/markdown-validator.sh
           scripts/markdown-validator.sh
+
+  checkov:
+    name: Checkov Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Checkov Scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          quiet: true
+          output_format: cli,sarif
+          output_file_path: console,results.sarif
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: results.sarif
