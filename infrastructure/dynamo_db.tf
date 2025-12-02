@@ -2,7 +2,7 @@ module "document_reference_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.docstore_dynamodb_table_name
   hash_key                       = "ID"
-  deletion_protection_enabled    = local.is_production
+  deletion_protection_enabled    = var.deletion_protection_enabled
   stream_enabled                 = true
   stream_view_type               = "OLD_IMAGE"
   ttl_enabled                    = true
@@ -45,7 +45,7 @@ module "cloudfront_edge_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.cloudfront_edge_table_name
   hash_key                       = "ID"
-  deletion_protection_enabled    = local.is_production
+  deletion_protection_enabled    = var.deletion_protection_enabled
   stream_enabled                 = false
   ttl_enabled                    = true
   ttl_attribute_name             = "TTL"
@@ -66,7 +66,7 @@ module "lloyd_george_reference_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.lloyd_george_dynamodb_table_name
   hash_key                       = "ID"
-  deletion_protection_enabled    = local.is_production
+  deletion_protection_enabled    = var.deletion_protection_enabled
   stream_enabled                 = true
   stream_view_type               = "OLD_IMAGE"
   ttl_enabled                    = true
@@ -127,7 +127,7 @@ module "unstitched_lloyd_george_reference_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.unstitched_lloyd_george_dynamodb_table_name
   hash_key                       = "ID"
-  deletion_protection_enabled    = local.is_production
+  deletion_protection_enabled    = var.deletion_protection_enabled
   stream_enabled                 = true
   stream_view_type               = "OLD_IMAGE"
   ttl_enabled                    = true
@@ -170,7 +170,7 @@ module "zip_store_reference_dynamodb_table" {
   source                      = "./modules/dynamo_db"
   table_name                  = var.zip_store_dynamodb_table_name
   hash_key                    = "ID"
-  deletion_protection_enabled = local.is_production
+  deletion_protection_enabled = var.deletion_protection_enabled
   stream_enabled              = true
   ttl_enabled                 = false
 
@@ -201,7 +201,7 @@ module "stitch_metadata_reference_dynamodb_table" {
   source                      = "./modules/dynamo_db"
   table_name                  = var.stitch_metadata_dynamodb_table_name
   hash_key                    = "ID"
-  deletion_protection_enabled = local.is_production
+  deletion_protection_enabled = var.deletion_protection_enabled
   stream_enabled              = true
   ttl_enabled                 = true
   ttl_attribute_name          = "ExpireAt"
@@ -233,7 +233,7 @@ module "auth_state_dynamodb_table" {
   source                      = "./modules/dynamo_db"
   table_name                  = var.auth_state_dynamodb_table_name
   hash_key                    = "State"
-  deletion_protection_enabled = local.is_production
+  deletion_protection_enabled = var.deletion_protection_enabled
   stream_enabled              = false
   ttl_enabled                 = true
   ttl_attribute_name          = "TimeToExist"
@@ -260,7 +260,7 @@ module "auth_session_dynamodb_table" {
   source                      = "./modules/dynamo_db"
   table_name                  = var.auth_session_dynamodb_table_name
   hash_key                    = "NDRSessionId"
-  deletion_protection_enabled = local.is_production
+  deletion_protection_enabled = var.deletion_protection_enabled
   stream_enabled              = false
   ttl_enabled                 = true
   ttl_attribute_name          = "TimeToExist"
@@ -287,7 +287,7 @@ module "bulk_upload_report_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.bulk_upload_report_dynamodb_table_name
   hash_key                       = "ID"
-  deletion_protection_enabled    = local.is_production
+  deletion_protection_enabled    = var.deletion_protection_enabled
   stream_enabled                 = false
   ttl_enabled                    = false
   point_in_time_recovery_enabled = !local.is_sandbox
@@ -334,7 +334,7 @@ module "statistics_dynamodb_table" {
   table_name                     = var.statistics_dynamodb_table_name
   hash_key                       = "Date"
   sort_key                       = "StatisticID"
-  deletion_protection_enabled    = local.is_production
+  deletion_protection_enabled    = var.deletion_protection_enabled
   stream_enabled                 = false
   ttl_enabled                    = false
   point_in_time_recovery_enabled = !local.is_sandbox
@@ -372,7 +372,7 @@ module "access_audit_dynamodb_table" {
   table_name                     = var.access_audit_dynamodb_table_name
   hash_key                       = "Type"
   sort_key                       = "ID"
-  deletion_protection_enabled    = local.is_production
+  deletion_protection_enabled    = var.deletion_protection_enabled
   stream_enabled                 = false
   ttl_enabled                    = false
   point_in_time_recovery_enabled = !local.is_sandbox
@@ -426,7 +426,7 @@ module "pdm_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.pdm_dynamodb_table_name
   hash_key                       = "ID"
-  deletion_protection_enabled    = local.is_production
+  deletion_protection_enabled    = var.deletion_protection_enabled
   stream_enabled                 = true
   stream_view_type               = "OLD_IMAGE"
   ttl_enabled                    = true
@@ -494,12 +494,50 @@ module "pdm_dynamodb_table" {
 }
 
 
+module "core_dynamodb_table" {
+  source                         = "./modules/dynamo_db"
+  table_name                     = var.core_dynamodb_table_name
+  hash_key                       = "NhsNumber"
+  sort_key                       = "ID"
+  deletion_protection_enabled    = var.deletion_protection_enabled
+  stream_enabled                 = true
+  stream_view_type               = "OLD_IMAGE"
+  ttl_enabled                    = true
+  ttl_attribute_name             = "TTL"
+  point_in_time_recovery_enabled = !local.is_sandbox
+  attributes = [
+    {
+      name = "ID"
+      type = "S"
+    },
+    {
+      name = "NhsNumber"
+      type = "S"
+    },
+    {
+      name = "DocumentSnomedCodeType"
+      type = "S"
+    }
+  ]
+  global_secondary_indexes = [
+    {
+      name            = "idx_gsi_snomed_code"
+      hash_key        = "DocumentSnomedCodeType"
+      range_key       = "ID"
+      projection_type = "ALL"
+    }
+  ]
+  environment = var.environment
+  owner       = var.owner
+}
+
+
 module "alarm_state_history_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.alarm_state_history_table_name
   hash_key                       = "AlarmNameMetric"
   sort_key                       = "TimeCreated"
-  deletion_protection_enabled    = local.is_production
+  deletion_protection_enabled    = var.deletion_protection_enabled
   point_in_time_recovery_enabled = false
   stream_enabled                 = false
   ttl_enabled                    = true
