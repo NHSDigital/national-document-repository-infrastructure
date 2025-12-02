@@ -120,3 +120,21 @@ jobs:
           BRANCH_NAME=${{ github.event.repository.default_branch }}
           chmod +x scripts/markdown-validator.sh
           scripts/markdown-validator.sh
+
+  checklist_validator:
+    name: Checklist Validation
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v5
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v6
+      with:
+        python-version: 3.11
+
+    - name: Run checklist validator
+      run: |
+        python3 scripts/github/checklist_validator/main.py
+      env:
+        PR_BODY: ${{ github.event.pull_request.body }}
