@@ -98,15 +98,8 @@ resource "aws_cloudfront_distribution" "distribution" {
       locations        = local.allow_us_comms ? ["GB", "US"] : ["GB"]
     }
   }
-  web_acl_id = try(module.cloudfront_firewall_waf_v2[0].arn, "")
 
-  dynamic "logging_config" {
-    for_each = local.access_logs_bucket_id != "" ? [1] : []
-    content {
-      bucket = local.access_logs_bucket_id
-      prefix = "cloudfront/"
-    }
-  }
+  web_acl_id = try(module.cloudfront_firewall_waf_v2[0].arn, "")
 }
 
 resource "aws_cloudfront_origin_request_policy" "viewer_policy" {
