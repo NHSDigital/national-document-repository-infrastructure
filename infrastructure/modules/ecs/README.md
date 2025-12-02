@@ -55,6 +55,7 @@ module "ecs_service" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -85,6 +86,7 @@ module "ecs_service" {
 | [aws_vpc_security_group_ingress_rule.ndr_ecs_sg_ingress_http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_ingress_rule) | resource |
 | [aws_vpc_security_group_ingress_rule.ndr_ecs_sg_ingress_https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_ingress_rule) | resource |
 | [aws_acm_certificate.amazon_issued](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/acm_certificate) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -117,6 +119,7 @@ module "ecs_service" {
 | <a name="input_sg_name"></a> [sg\_name](#input\_sg\_name) | Name for the security group. | `string` | n/a | yes |
 | <a name="input_task_role"></a> [task\_role](#input\_task\_role) | IAM role ARN to associate with the ECS task. | `any` | `null` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC to deploy into. | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |
