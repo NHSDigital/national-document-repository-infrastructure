@@ -94,6 +94,12 @@ variable "document_pending_review_bucket_name" {
 
 # DynamoDB Table Variables
 
+variable "core_dynamodb_table_name" {
+  description = "The name of the DynamoDB table to be use for NHS Core metadata."
+  type        = string
+  default     = "COREDocumentMetadata"
+}
+
 variable "pdm_dynamodb_table_name" {
   description = "The name of the DynamoDB table to be use for PDM metadata."
   type        = string
@@ -177,6 +183,13 @@ variable "document_review_table_name" {
   type        = string
   default     = "DocumentUploadReview"
 }
+
+variable "deletion_protection_enabled" {
+  description = "Should dynamodb deletion protection be enabled?"
+  type        = bool
+  default     = false
+}
+
 # VPC Variables
 
 variable "standalone_vpc_tag" {
