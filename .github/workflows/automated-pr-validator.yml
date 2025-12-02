@@ -53,13 +53,13 @@ jobs:
             })
 
             const botComment = comments.find(comment => {
-              return comment.user.type === 'Bot' && comment.body.includes('Code security issues found')
+              return comment.user.type === 'Bot' && comment.body.includes('SBOM issues found')
             })
 
             // 2. Prepare format of the comment
-            const output = `### Code security issues found
+            const output = `### SBOM issues found
 
-            View full details [here](https://github.com/${{ github.repository }}/security/code-scanning?query=is%3Aopen+pr%3A${{ github.event.pull_request.number }}).`;
+            View full details [here](https://github.com/${{ github.repository }}/security/code-scanning?query=is%3Aopen+pr%3A${{ github.event.pull_request.number }}+tool%3AGrype).`;
 
             // 3. If we have a comment, update it, otherwise create a new one
             if (botComment) {
@@ -91,7 +91,7 @@ jobs:
             })
 
             const botComment = comments.find(comment => {
-              return comment.user.type === 'Bot' && comment.body.includes('Code security issues found')
+              return comment.user.type === 'Bot' && comment.body.includes('SBOM issues found')
             })
 
             // 2. If we have a comment, update it, otherwise create a new one
@@ -164,7 +164,7 @@ jobs:
 
             // 2. Prepare format of the comment
             const output = `### Checkov issues found
-            View full details [here](https://github.com/${{ github.repository }}/security/code-scanning?query=is%3Aopen+pr%3A${{ github.event.pull_request.number }}).`;
+            View full details [here](https://github.com/${{ github.repository }}/security/code-scanning?query=is%3Aopen+pr%3A${{ github.event.pull_request.number }}+tool%3Acheckov).`;
 
             // 3. If we have a comment, update it, otherwise create a new one
             if (botComment) {
