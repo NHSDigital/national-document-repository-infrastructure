@@ -92,6 +92,19 @@ resource "aws_iam_policy" "transfer_kill_switch" {
           "transfer:ListServers",
         ],
         Resource = "*"
+      },
+      {
+        Sid    = "PublishTransferKillSwitchMetrics",
+        Effect = "Allow",
+        Action = [
+          "cloudwatch:PutMetricData",
+        ],
+        Resource = "*",
+        Condition = {
+          StringEquals = {
+            "cloudwatch:namespace" = "Custom/TransferKillSwitch"
+          }
+        }
       }
     ]
   })
