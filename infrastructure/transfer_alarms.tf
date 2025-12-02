@@ -1,6 +1,4 @@
 resource "aws_cloudwatch_metric_alarm" "transfer_kill_switch_stopped_server" {
-  count = 1
-
   alarm_name          = "${terraform.workspace}_transfer_family_kill_switch_stopped"
   namespace           = "Custom/TransferKillSwitch"
   metric_name         = "ServerStopped"
