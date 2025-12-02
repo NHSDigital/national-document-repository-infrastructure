@@ -141,7 +141,7 @@ jobs:
           output_file_path: console,results.sarif
           skip_check: >
             CKV_AWS_144,
-            CKV_AZURE_1
+            CKV_AZURE_1 \
           # CKV_AWS_144 = Ensure that S3 bucket has cross-region replication enabled | Not required as we only use eu-west-2
           # CKV_AZURE_1 = Example check to skip - can be deleted once another check is skipped
 
