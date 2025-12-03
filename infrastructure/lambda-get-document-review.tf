@@ -24,7 +24,7 @@ module "get_document_review_lambda" {
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_REVIEW_DYNAMODB_NAME = local.is_production ? "" : module.document_review_dynamodb_table[0].table_name
     EDGE_REFERENCE_TABLE          = module.cloudfront_edge_dynamodb_table.table_name
-    CLOUDFRONT_URL                = aws_cloudfront_distribution.distribution.domain_name
+    CLOUDFRONT_URL                = aws_cloudfront_distribution.s3_presign_mask.domain_name
     PRESIGNED_ASSUME_ROLE         = aws_iam_role.get_document_review_presign.arn
     WORKSPACE                     = terraform.workspace
   }

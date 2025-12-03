@@ -3,7 +3,7 @@ locals {
   allow_us_comms = !local.is_production
 }
 
-resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
+resource "aws_cloudfront_origin_access_control" "s3" {
   name                              = "${terraform.workspace}_cloudfront_s3_oac_policy"
   description                       = "Cloud Front S3 OAC"
   origin_access_control_origin_type = "s3"
@@ -21,13 +21,13 @@ module "cloudfront_firewall_waf_v2" {
   providers   = { aws = aws.us_east_1 }
 }
 
-resource "aws_cloudfront_distribution" "distribution" {
+resource "aws_cloudfront_distribution" "s3_presign_mask" {
   price_class = "PriceClass_100"
 
   origin {
     domain_name              = module.ndr-lloyd-george-store.bucket_regional_domain_name
     origin_id                = module.ndr-lloyd-george-store.bucket_id
-    origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_oac.id
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
   }
   enabled         = true
   is_ipv6_enabled = true
@@ -38,7 +38,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     target_origin_id         = module.ndr-lloyd-george-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer_policy.id
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer.id
 
     lambda_function_association {
       event_type = "origin-request"
@@ -49,7 +49,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   origin {
     domain_name              = module.ndr-document-pending-review-store.bucket_regional_domain_name
     origin_id                = module.ndr-document-pending-review-store.bucket_id
-    origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_oac.id
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
   }
 
   ordered_cache_behavior {
@@ -59,7 +59,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     target_origin_id         = module.ndr-document-pending-review-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer_policy.id
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer.id
 
     lambda_function_association {
       event_type = "origin-request"
@@ -70,7 +70,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   origin {
     domain_name              = module.ndr-bulk-staging-store.bucket_regional_domain_name
     origin_id                = module.ndr-bulk-staging-store.bucket_id
-    origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_oac.id
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
   }
 
   ordered_cache_behavior {
@@ -80,7 +80,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     target_origin_id         = module.ndr-bulk-staging-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer_policy.id
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer.id
 
     lambda_function_association {
       event_type = "origin-request"
@@ -102,7 +102,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   web_acl_id = try(module.cloudfront_firewall_waf_v2[0].arn, "")
 }
 
-resource "aws_cloudfront_origin_request_policy" "viewer_policy" {
+resource "aws_cloudfront_origin_request_policy" "viewer" {
   name = "${terraform.workspace}_BlockQueriesAndAllowViewer"
 
   query_strings_config {
