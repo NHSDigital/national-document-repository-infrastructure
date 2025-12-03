@@ -52,6 +52,7 @@ module "s3_proxy_lambda" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -64,11 +65,12 @@ module "s3_proxy_lambda" {
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.lambda_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | The name of the S3 bucket the Lambda will proxy requests to. | `string` | n/a | yes |
+| <a name="input_bucket_names"></a> [bucket\_names](#input\_bucket\_names) | The name of the S3 buckets the Lambda will proxy requests to. | `list(string)` | n/a | yes |
 | <a name="input_handler"></a> [handler](#input\_handler) | Handler function in the code package (e.g., 'index.handler'). | `string` | n/a | yes |
 | <a name="input_iam_role_policies"></a> [iam\_role\_policies](#input\_iam\_role\_policies) | List of IAM policy ARNs or JSON documents to attach to the Lambda execution role. | `list(string)` | n/a | yes |
 | <a name="input_lambda_ephemeral_storage"></a> [lambda\_ephemeral\_storage](#input\_lambda\_ephemeral\_storage) | Amount of ephemeral storage (in MB) allocated to the Lambda function. | `number` | `512` | no |
@@ -76,6 +78,7 @@ module "s3_proxy_lambda" {
 | <a name="input_name"></a> [name](#input\_name) | Unique name for the Lambda function. | `string` | n/a | yes |
 | <a name="input_reserved_concurrent_executions"></a> [reserved\_concurrent\_executions](#input\_reserved\_concurrent\_executions) | The number of concurrent execution allowed for lambda. A value of 0 will stop lambda from running, and -1 removes any concurrency limitations. Default to -1. | `number` | `-1` | no |
 | <a name="input_table_name"></a> [table\_name](#input\_table\_name) | The name of the DynamoDB table used by the Lambda function. | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |

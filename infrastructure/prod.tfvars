@@ -13,3 +13,5 @@ apim_environment = ""
 
 # SSH Key Management
 ssh_key_management_dry_run = "false" # Disable dry-run for production
+
+deletion_protection_enabled = true

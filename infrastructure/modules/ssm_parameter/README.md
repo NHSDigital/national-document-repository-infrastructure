@@ -44,12 +44,14 @@ module "ssm_param" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
 |------|------|
 | [aws_ssm_parameter.secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.secret_ignore_value_changes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -63,6 +65,7 @@ module "ssm_param" {
 | <a name="input_resource_depends_on"></a> [resource\_depends\_on](#input\_resource\_depends\_on) | Optional resource to depend on before creating the SSM parameter. | `string` | `""` | no |
 | <a name="input_type"></a> [type](#input\_type) | Valid types are String, StringList and SecureString. | `string` | `"SecureString"` | no |
 | <a name="input_value"></a> [value](#input\_value) | Value of the parameter | `string` | `null` | no |
+
 ## Outputs
 
 No outputs.

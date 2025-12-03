@@ -86,7 +86,19 @@ variable "ca_pem_filename" {
   default     = "ndr-truststore.pem"
 }
 
+variable "document_pending_review_bucket_name" {
+  type        = string
+  description = "The S3 bucket name to store documents pending review"
+  default     = "document-pending-review-store"
+}
+
 # DynamoDB Table Variables
+
+variable "core_dynamodb_table_name" {
+  description = "The name of the DynamoDB table to be use for NHS Core metadata."
+  type        = string
+  default     = "COREDocumentMetadata"
+}
 
 variable "pdm_dynamodb_table_name" {
   description = "The name of the DynamoDB table to be use for PDM metadata."
@@ -171,6 +183,13 @@ variable "document_review_table_name" {
   type        = string
   default     = "DocumentReview"
 }
+
+variable "deletion_protection_enabled" {
+  description = "Should dynamodb deletion protection be enabled?"
+  type        = bool
+  default     = false
+}
+
 # VPC Variables
 
 variable "standalone_vpc_tag" {
@@ -242,7 +261,7 @@ locals {
   is_production    = contains(["pre-prod", "prod"], terraform.workspace)
   is_force_destroy = !local.is_production
 
-  bulk_upload_lambda_concurrent_limit = 5
+  bulk_upload_lambda_concurrent_limit = 3
 
   api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
   api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"

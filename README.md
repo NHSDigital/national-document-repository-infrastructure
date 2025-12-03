@@ -8,7 +8,8 @@ This repository is used to build the infrastructure the NDR. That is it's sole p
 - [Terraform docs](https://github.com/terraform-docs/terraform-docs)
 
 To install terraform-docs on WSL use the following commands (e.g. for v0.20.0):
-```
+
+```shell
 curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.20.0/terraform-docs-v0.20.0-$(uname)-amd64.tar.gz
 tar -xzf terraform-docs.tar.gz
 chmod +x terraform-docs
@@ -24,8 +25,8 @@ As this repository is a standalone infrastructure there is no python/node based 
 
 - Set this repository to get it's pre-commit hooks from .githooks
 
-```
+```shell
 git config core.hooksPath .githooks
 ```
 
-Pre-commits will run on any commit. This will build docs and format the terraform.
+Pre-commits will run on all commits. This will build docs and format the terraform.

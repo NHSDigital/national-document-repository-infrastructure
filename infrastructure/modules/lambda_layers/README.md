@@ -33,6 +33,7 @@ module "lambda_layer" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -41,11 +42,13 @@ module "lambda_layer" {
 | [aws_lambda_layer_version.lambda_layer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_layer_version) | resource |
 | [archive_file.lambda_layer_placeholder](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_layer_name"></a> [layer\_name](#input\_layer\_name) | Logical name assigned to the Lambda layer. | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |
