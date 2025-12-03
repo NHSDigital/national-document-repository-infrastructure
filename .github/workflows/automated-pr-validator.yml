@@ -2,7 +2,7 @@ name: "Z-AUTOMATED: PR Validator"
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, edited]
 
 permissions: {}
 
@@ -128,7 +128,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
     steps:
     - name: Checkout repository
       uses: actions/checkout@v5
