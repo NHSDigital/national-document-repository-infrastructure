@@ -40,6 +40,7 @@ module "get-doc-fhir-lambda" {
     module.ndr-app-config.app_config_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.pdm_dynamodb_table.dynamodb_read_policy_document,
+    module.core_dynamodb_table.dynamodb_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.pdm-document-store.s3_read_policy_document,
@@ -66,6 +67,7 @@ module "get-doc-fhir-lambda" {
     aws_api_gateway_method.get_document_reference,
     module.pdm_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
+    module.core_dynamodb_table,
   ]
 }
 

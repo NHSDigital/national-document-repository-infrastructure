@@ -29,4 +29,4 @@ As this repository is a standalone infrastructure there is no python/node based 
 git config core.hooksPath .githooks
 ```
 
-Pre-commits will run on any commit. This will build docs and format the terraform.
+Pre-commits will run on all commits. This will build docs and format the terraform.
