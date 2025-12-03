@@ -4,6 +4,8 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions: {}
+
 jobs:
   sbom_scan:
     name: SBOM Repo Scan
@@ -124,8 +126,6 @@ jobs:
   checklist_validator:
     name: Checklist Validation
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
     - name: Checkout repository
       uses: actions/checkout@v5
