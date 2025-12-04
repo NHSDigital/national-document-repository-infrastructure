@@ -121,7 +121,7 @@ jobs:
           working-directory: ./app
 
       - name: Copy main.html to index.html for serve compatibility
-        run: cp ./app/build/main.html ./app/build/index.html
+        run: cp ./dist/main.html ./dist/index.html
       
       - name: npm install serve -g
         run: npm install serve -g
