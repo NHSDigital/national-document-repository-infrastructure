@@ -1,12 +1,11 @@
-module "document_review_dynamodb_table" {
-  count                          = local.is_production ? 0 : 1
+module "document_upload_review_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.document_review_table_name
   hash_key                       = "ID"
+  sort_key                       = "Version"
   deletion_protection_enabled    = local.is_production
   stream_enabled                 = false
-  ttl_enabled                    = true
-  ttl_attribute_name             = "TTL"
+  ttl_enabled                    = false
   point_in_time_recovery_enabled = !local.is_sandbox
 
   attributes = [
@@ -36,10 +35,14 @@ module "document_review_dynamodb_table" {
     },
     {
       name = "ReviewDate"
-      type = "S"
+      type = "N"
     },
     {
       name = "UploadDate"
+      type = "N"
+    },
+    {
+      name = "Version"
       type = "N"
     }
 

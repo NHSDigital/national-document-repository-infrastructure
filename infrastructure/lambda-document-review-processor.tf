@@ -6,8 +6,8 @@ module "document_review_processor_lambda" {
     module.document_review_queue.sqs_read_policy_document,
     module.document_review_queue.sqs_write_policy_document,
     module.ndr-document-pending-review-store.s3_write_policy_document,
-    local.is_production ? "" : module.document_review_dynamodb_table[0].dynamodb_read_policy_document,
-    local.is_production ? "" : module.document_review_dynamodb_table[0].dynamodb_write_policy_document,
+    module.document_upload_review_dynamodb_table.dynamodb_read_policy_document,
+    module.document_upload_review_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
   ]
@@ -21,7 +21,7 @@ module "document_review_processor_lambda" {
   lambda_environment_variables = {
     PENDING_REVIEW_BUCKET_NAME    = module.ndr-document-pending-review-store.bucket_id
     STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
-    DOCUMENT_REVIEW_DYNAMODB_NAME = local.is_production ? "" : module.document_review_dynamodb_table[0].table_name
+    DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
     WORKSPACE                     = terraform.workspace
   }
 }

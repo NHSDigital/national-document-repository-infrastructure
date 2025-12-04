@@ -181,7 +181,7 @@ variable "alarm_state_history_table_name" {
 variable "document_review_table_name" {
   description = "The name of the DynamoDB table to store document review records."
   type        = string
-  default     = "DocumentReview"
+  default     = "DocumentUploadReview"
 }
 
 variable "deletion_protection_enabled" {
