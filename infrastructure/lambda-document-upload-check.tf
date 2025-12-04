@@ -16,6 +16,8 @@ module "document_upload_check_lambda" {
     local.is_production ? "" : module.document_review_dynamodb_table[0].dynamodb_read_policy_document,
     local.is_production ? "" : module.document_review_dynamodb_table[0].dynamodb_write_policy_document,
     module.ndr-document-pending-review-store.s3_write_policy_document
+    module.core_dynamodb_table.dynamodb_read_policy_document,
+    module.core_dynamodb_table.dynamodb_write_policy_document,
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = null

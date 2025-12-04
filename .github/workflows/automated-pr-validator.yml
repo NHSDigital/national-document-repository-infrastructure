@@ -1,23 +1,25 @@
-name: 'Z-AUTOMATED: SBOM Repo Scan'
+name: "Z-AUTOMATED: PR Validator"
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, edited]
 
-permissions:
-  actions: read   # Required for anchore/sbom-action
-  contents: write # Required for anchore/sbom-action
-  id-token: write # Required for requesting the JWT
-  pull-requests: write
+permissions: {}
 
 jobs:
   sbom_scan:
     name: SBOM Repo Scan
     runs-on: ubuntu-latest
+    permissions:
+      actions: read # Required for anchore/sbom-action
+      contents: write # Required for anchore/sbom-action
+      id-token: write # Required for requesting the JWT
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
 
       - uses: anchore/sbom-action@v0
         with:
@@ -51,14 +53,14 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number,
             })
-            
+
             const botComment = comments.find(comment => {
               return comment.user.type === 'Bot' && comment.body.includes('Code security issues found')
             })
 
             // 2. Prepare format of the comment
             const output = `### Code security issues found
-            
+
             View full details [here](https://github.com/${{ github.repository }}/security/code-scanning?query=is%3Aopen+pr%3A${{ github.event.pull_request.number }}).`;
 
             // 3. If we have a comment, update it, otherwise create a new one
@@ -70,7 +72,7 @@ jobs:
                 body: output
               })
             }
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -89,7 +91,7 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number,
             })
-            
+
             const botComment = comments.find(comment => {
               return comment.user.type === 'Bot' && comment.body.includes('Code security issues found')
             })
@@ -102,3 +104,41 @@ jobs:
                 comment_id: botComment.id
               })
             }
+
+  markdown-validation:
+    name: Markdown Validation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Run Markdown Validation Script
+        id: validate
+        run: |
+          BRANCH_NAME=${{ github.event.repository.default_branch }}
+          chmod +x scripts/markdown-validator.sh
+          scripts/markdown-validator.sh
+
+  checklist_validator:
+    name: Checklist Validation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v5
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v6
+      with:
+        python-version: 3.11
+
+    - name: Run checklist validator
+      run: |
+        python3 scripts/github/checklist_validator/main.py
+      env:
+        PR_BODY: ${{ github.event.pull_request.body }}

@@ -9,6 +9,8 @@ module "search-document-references-fhir-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.pdm_dynamodb_table.dynamodb_read_policy_document,
     module.pdm_dynamodb_table.dynamodb_write_policy_document,
+    module.core_dynamodb_table.dynamodb_read_policy_document,
+    module.core_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-document-store.s3_read_policy_document,
     module.ndr-app-config.app_config_policy
@@ -31,6 +33,7 @@ module "search-document-references-fhir-lambda" {
     module.search-document-references-gateway,
     module.ndr-app-config,
     module.pdm_dynamodb_table,
+    module.core_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
   ]
 }
