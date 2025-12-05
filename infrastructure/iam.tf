@@ -142,7 +142,8 @@ data "aws_iam_policy_document" "assume_role_policy_for_get_doc_ref_lambda" {
       type = "AWS"
       identifiers = [
         module.get-doc-fhir-lambda.lambda_execution_role_arn,
-        module.get-doc-ref-lambda.lambda_execution_role_arn
+        module.get-doc-ref-lambda.lambda_execution_role_arn,
+        module.post_document_review_lambda.lambda_execution_role_arn
       ]
     }
   }
