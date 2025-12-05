@@ -74,7 +74,7 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
   }
 
   ordered_cache_behavior {
-    allowed_methods          = ["HEAD", "GET", "OPTIONS"]
+    allowed_methods          = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods           = ["HEAD", "GET", "OPTIONS"]
     path_pattern             = "/upload/*"
     target_origin_id         = module.ndr-bulk-staging-store.bucket_id
