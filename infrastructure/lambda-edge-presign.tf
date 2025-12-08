@@ -96,7 +96,6 @@ resource "aws_iam_policy" "staging_bucket_put" {
           "s3:PutObject"
         ],
         Resource = [
-          module.ndr-bulk-staging-store.bucket_arn,
           "${module.ndr-bulk-staging-store.bucket_arn}/*",
         ]
       }

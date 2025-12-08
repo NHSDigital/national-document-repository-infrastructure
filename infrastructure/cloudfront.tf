@@ -5,7 +5,7 @@ locals {
 
 resource "aws_cloudfront_origin_access_control" "s3" {
   name                              = "${terraform.workspace}_cloudfront_s3_oac_policy"
-  description                       = "Cloud Front S3 OAC"
+  description                       = "CloudFront S3 OAC"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "never"
   signing_protocol                  = "sigv4"
