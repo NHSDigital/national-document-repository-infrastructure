@@ -36,3 +36,7 @@ tfplan
 .idea/
 .vscode/
 venv/
+
+#Ignore certificates
+scripts/csrs
+scripts/keys
