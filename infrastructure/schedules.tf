@@ -167,3 +167,6 @@ resource "aws_lambda_permission" "toggle_bulk_upload_disable_permission" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.bulk_upload_disable_rule.arn
 }
+
+
+
