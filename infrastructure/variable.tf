@@ -321,3 +321,21 @@ variable "ssh_key_management_dry_run" {
   type        = bool
   default     = false
 }
+
+# Concurrency Controller 
+
+variable "bulk_upload_lambda_name" {
+  type = string
+}
+
+variable "office_hours_start_concurrency" {
+  type    = number
+  default = 1
+}
+
+variable "office_hours_end_concurrency" {
+  type    = number
+  default = 3
+}
+
+
