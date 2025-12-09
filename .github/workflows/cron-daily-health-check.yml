@@ -28,7 +28,7 @@ jobs:
     needs: ['set_workspace']
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: NHSDigital/national-document-repository
 
@@ -139,7 +139,7 @@ jobs:
           CYPRESS_grepTags: 'regression'
   
       - name: Upload Artifacts (Screenshots)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: cypress-screenshots-chrome
@@ -147,7 +147,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Upload Artifacts (Videos)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: cypress-videos-chrome
