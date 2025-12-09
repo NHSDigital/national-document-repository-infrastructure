@@ -27,6 +27,7 @@ module "post_document_review_lambda" {
     WORKSPACE                     = terraform.workspace
     STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
     EDGE_REFERENCE_TABLE          = module.cloudfront_edge_dynamodb_table.table_name
+    CLOUDFRONT_URL                = aws_cloudfront_distribution.s3_presign_mask.domain_name
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
