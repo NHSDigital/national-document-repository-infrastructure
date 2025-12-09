@@ -323,7 +323,6 @@ variable "ssh_key_management_dry_run" {
 }
 
 # Concurrency Controller 
-
 variable "bulk_upload_lambda_name" {
   type = string
 }
