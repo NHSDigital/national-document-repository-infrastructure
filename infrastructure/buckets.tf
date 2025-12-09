@@ -236,6 +236,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     }
   }
   rule {
+    id     = "Delete objects in review folder that have existed for 24 hours"
+    status = "Enabled"
+
+    expiration {
+      days = 1
+    }
+
+    filter {
+      prefix = "review/"
+    }
+  }
+  rule {
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
     transition {
