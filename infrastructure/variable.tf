@@ -316,7 +316,6 @@ variable "kms_deletion_window" {
 }
 
 # Concurrency Controller 
-
 variable "bulk_upload_lambda_name" {
   type = string
 }
