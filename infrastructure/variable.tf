@@ -318,6 +318,6 @@ variable "kms_deletion_window" {
 # SSH Key Management Variables
 variable "ssh_key_management_dry_run" {
   description = "Enable dry-run mode for SSH key management (no keys will be deleted)"
-  type        = string
-  default     = "false"
+  type        = bool
+  default     = false
 }

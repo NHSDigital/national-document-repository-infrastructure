@@ -3,8 +3,7 @@ module "transfer-key-manager-lambda" {
   source         = "./modules/lambda"
   name           = "TransferKeyManagerLambda"
   handler        = "handlers.transfer_key_manager_handler.lambda_handler"
-  lambda_timeout = 300
-  memory_size    = 512
+  lambda_timeout = 300 # 5 minutes - needed for iterating through all Transfer Family servers/users
 
   iam_role_policy_documents = [
     data.aws_iam_policy_document.transfer_key_manager_policy.json,
@@ -21,7 +20,7 @@ module "transfer-key-manager-lambda" {
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
     PRM_MAILBOX_EMAIL       = data.aws_ssm_parameter.prm_mailbox_email.value
-    DRY_RUN                 = var.ssh_key_management_dry_run
+    DRY_RUN                 = tostring(var.ssh_key_management_dry_run)
   }
 
   is_gateway_integration_needed = false

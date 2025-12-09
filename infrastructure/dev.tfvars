@@ -14,4 +14,4 @@ apim_environment = "internal-dev."
 kms_deletion_window = 7
 
 # SSH Key Management
-ssh_key_management_dry_run = "true" # Enable dry-run for dev environment
+ssh_key_management_dry_run = true # Enable dry-run for dev environment

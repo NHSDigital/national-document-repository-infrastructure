@@ -12,6 +12,6 @@ cloud_security_email_param_environment = "pre-prod"
 apim_environment = "int."
 
 # SSH Key Management
-ssh_key_management_dry_run = "false" # Disable dry-run for preprod (test real deletion)
+ssh_key_management_dry_run = false # Disable dry-run for preprod (test real deletion)
 
 deletion_protection_enabled = true
