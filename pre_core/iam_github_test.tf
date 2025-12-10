@@ -29,8 +29,8 @@ resource "aws_iam_role" "github_role_test" {
   description           = "This role is for the deployment of infrastructure and code from GitHub"
   force_detach_policies = false
   managed_policy_arns = [
-    "arn:aws:iam::${var.aws_account_id}:policy/github-action-policy",
-    "arn:aws:iam::${var.aws_account_id}:policy/github-action-policy-2",
+    aws_iam_policy.github_action_policy_test[0].arn,
+    aws_iam_policy.github_action_policy_2_test[0].arn,
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
   ]
   max_session_duration = 3600
@@ -715,5 +715,3 @@ resource "aws_iam_policy" "github_action_policy_2_test" {
   tags     = {}
   tags_all = {}
 }
-
-

@@ -36,8 +36,8 @@ resource "aws_iam_role" "github_role_pre-prod" {
   description           = "This role is to provide access for GitHub actions to the pre-prod environment. "
   force_detach_policies = false
   managed_policy_arns = [
-    "arn:aws:iam::${var.aws_account_id}:policy/github-actions-policy",
-    "arn:aws:iam::${var.aws_account_id}:policy/github-extended-policy-1",
+    aws_iam_policy.github_actions_policy_pre-prod[0].arn,
+    aws_iam_policy.github_extended_policy_1_pre-prod[0].arn,
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
   ]
   max_session_duration = 3600
@@ -914,5 +914,3 @@ resource "aws_iam_policy" "github_extended_policy_1_pre-prod" {
   tags     = {}
   tags_all = {}
 }
-
-
