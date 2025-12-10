@@ -48,7 +48,7 @@ resource "aws_iam_role" "github_role_dev" {
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
   ]
   max_session_duration = 3600
-  name                 = "github-role-${var.environment}"
+  name                 = "github-actions-dev-role"
   name_prefix          = null
   path                 = "/"
   permissions_boundary = null
@@ -273,7 +273,7 @@ resource "aws_iam_role" "github_role_dev" {
 resource "aws_iam_policy" "config_policy_dev" {
   count       = var.environment == "dev" ? 1 : 0
   description = null
-  name        = "config-policy-${var.environment}"
+  name        = "config-policy"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -306,7 +306,7 @@ resource "aws_iam_policy" "config_policy_dev" {
 resource "aws_iam_policy" "ecr_github_access_policy_dev" {
   count       = var.environment == "dev" ? 1 : 0
   description = null
-  name        = "ecr-github-access-policy-${var.environment}"
+  name        = "ecr-github-access-policy"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -339,7 +339,7 @@ resource "aws_iam_policy" "ecr_github_access_policy_dev" {
 resource "aws_iam_policy" "github_actions_terraform_full_dev" {
   count       = var.environment == "dev" ? 1 : 0
   description = "All permissions required for Terraform to do its thing."
-  name        = "github_actions_terraform_full-${var.environment}"
+  name        = "github_actions_terraform_full"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -595,7 +595,7 @@ resource "aws_iam_policy" "github_actions_terraform_full_dev" {
 resource "aws_iam_policy" "github_mtls_gateway_dev" {
   count       = var.environment == "dev" ? 1 : 0
   description = null
-  name        = "github_mtls_gateway-${var.environment}"
+  name        = "github_mtls_gateway"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -669,7 +669,7 @@ resource "aws_iam_policy" "github_mtls_gateway_dev" {
 resource "aws_iam_policy" "github_terraform_tagging_policy_dev" {
   count       = var.environment == "dev" ? 1 : 0
   description = null
-  name        = "github_terraform_tagging_policy-${var.environment}"
+  name        = "github_terraform_tagging_policy"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -781,7 +781,7 @@ resource "aws_iam_policy" "github_terraform_tagging_policy_dev" {
 resource "aws_iam_policy" "lambda_github_access_policy_dev" {
   count       = var.environment == "dev" ? 1 : 0
   description = "These permissions allow GitHub to push to a Lambda function."
-  name        = "lambda-github-access-policy-${var.environment}"
+  name        = "lambda-github-access-policy"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -829,7 +829,7 @@ resource "aws_iam_policy" "lambda_github_access_policy_dev" {
 resource "aws_iam_policy" "repo_app_config_dev" {
   count       = var.environment == "dev" ? 1 : 0
   description = null
-  name        = "repo_app_config-${var.environment}"
+  name        = "repo_app_config"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -894,7 +894,7 @@ resource "aws_iam_policy" "repo_app_config_dev" {
 resource "aws_iam_policy" "terraform_github_dynamodb_access_policy_dev" {
   count       = var.environment == "dev" ? 1 : 0
   description = "Dynamo DB specific access policies required by terraform via GitHub"
-  name        = "terraform-github-dynamodb-access-policy-${var.environment}"
+  name        = "terraform-github-dynamodb-access-policy"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -924,7 +924,7 @@ resource "aws_iam_policy" "terraform_github_dynamodb_access_policy_dev" {
 resource "aws_iam_policy" "terraform_github_s3_access_policy_dev" {
   count       = var.environment == "dev" ? 1 : 0
   description = "S3 specific access policies required by terraform via GitHub"
-  name        = "terraform-github-s3-access-policy-${var.environment}"
+  name        = "terraform-github-s3-access-policy"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
