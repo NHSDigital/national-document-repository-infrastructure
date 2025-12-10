@@ -12,3 +12,5 @@ cloud_security_email_param_environment = "dev"
 apim_environment = "internal-dev."
 
 kms_deletion_window = 7
+
+ssh_key_management_dry_run = true
