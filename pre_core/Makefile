@@ -32,7 +32,7 @@ plan: guard-aws_account_id guard-env
 
 import-github-policies: guard-aws_account_id guard-env guard-role
 	python policy_tool.py import ${aws_account_id} ${env} ${role}
-	rm dummy_import_${env}.tf
+	rm -f dummy_import_${env}.tf
 
 generate-tf-file: guard-aws_account_id guard-env guard-role
 	python policy_tool.py generate-tf-file ${aws_account_id} ${env} ${role}

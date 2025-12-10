@@ -88,7 +88,8 @@ if command == "import":
     print("Importing policies...")
     policy_names = get_policy_names(env, role_name)
     print(policy_names)
-    create_dummy_resources(env, policy_names)
+    if not os.path.exists(f"dummy_import_{env}.tf") and not os.path.exists(f"iam_github_{env}.tf"):
+        create_dummy_resources(env, policy_names)
     import_resources(aws_account_id, env, role_name, policy_names)
 
 if command == "generate-tf-file":
