@@ -1,9 +1,8 @@
-# Transfer Key Manager Lambda for SSH Key Expiry Management
 module "transfer-key-manager-lambda" {
   source         = "./modules/lambda"
   name           = "TransferKeyManagerLambda"
   handler        = "handlers.transfer_key_manager_handler.lambda_handler"
-  lambda_timeout = 300 # 5 minutes - needed for iterating through all Transfer Family servers/users
+  lambda_timeout = 300
 
   iam_role_policy_documents = [
     data.aws_iam_policy_document.transfer_key_manager_policy.json,
@@ -27,14 +26,11 @@ module "transfer-key-manager-lambda" {
   is_invoked_from_gateway       = false
 }
 
-# SSM Parameter for PRM Mailbox Email
 data "aws_ssm_parameter" "prm_mailbox_email" {
   name = "/prs/${var.environment}/user-input/prm-mailbox-email"
 }
 
-# IAM Policy for Transfer Key Manager Lambda
 data "aws_iam_policy_document" "transfer_key_manager_policy" {
-  # AWS Transfer Family permissions
   statement {
     sid    = "TransferFamilyAccess"
     effect = "Allow"
@@ -47,7 +43,6 @@ data "aws_iam_policy_document" "transfer_key_manager_policy" {
     resources = ["*"]
   }
 
-  # SES permissions for sending notifications
   statement {
     sid    = "SESAccess"
     effect = "Allow"
@@ -63,7 +58,6 @@ data "aws_iam_policy_document" "transfer_key_manager_policy" {
     }
   }
 
-  # CloudWatch metrics permissions
   statement {
     sid    = "CloudWatchMetrics"
     effect = "Allow"
@@ -79,7 +73,6 @@ data "aws_iam_policy_document" "transfer_key_manager_policy" {
   }
 }
 
-# CloudWatch Alarms for Transfer Key Manager Lambda
 module "transfer-key-manager-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.transfer-key-manager-lambda.function_name
@@ -91,7 +84,6 @@ module "transfer-key-manager-alarm" {
   depends_on           = [module.transfer-key-manager-lambda, module.transfer-key-manager-alarm-topic]
 }
 
-# SNS Topic for Transfer Key Manager Alarms
 module "transfer-key-manager-alarm-topic" {
   source                = "./modules/sns"
   sns_encryption_key_id = module.sns_encryption_key.id
