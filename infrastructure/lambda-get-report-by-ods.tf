@@ -58,7 +58,7 @@ module "get-report-by-ods-lambda" {
     module.ndr-app-config.app_config_policy,
     module.statistical-reports-store.s3_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.ndr-document-pending-review-store.s3_read_policy_document
+    module.document_upload_review_dynamodb_table.dynamodb_read_policy_document
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
