@@ -36,15 +36,15 @@ resource "aws_iam_role" "github_role_dev" {
   description           = "This role is to provide access for GitHub actions to the development environment. "
   force_detach_policies = false
   managed_policy_arns = [
-    "arn:aws:iam::${var.aws_account_id}:policy/config-policy",
-    "arn:aws:iam::${var.aws_account_id}:policy/ecr-github-access-policy",
-    "arn:aws:iam::${var.aws_account_id}:policy/github_actions_terraform_full",
-    "arn:aws:iam::${var.aws_account_id}:policy/github_mtls_gateway",
-    "arn:aws:iam::${var.aws_account_id}:policy/github_terraform_tagging_policy",
-    "arn:aws:iam::${var.aws_account_id}:policy/lambda-github-access-policy",
-    "arn:aws:iam::${var.aws_account_id}:policy/repo_app_config",
-    "arn:aws:iam::${var.aws_account_id}:policy/terraform-github-dynamodb-access-policy",
-    "arn:aws:iam::${var.aws_account_id}:policy/terraform-github-s3-access-policy",
+    aws_iam_policy.config_policy_dev[0].arn,
+    aws_iam_policy.ecr_github_access_policy_dev[0].arn,
+    aws_iam_policy.github_actions_terraform_full_dev[0].arn,
+    aws_iam_policy.github_mtls_gateway_dev[0].arn,
+    aws_iam_policy.github_terraform_tagging_policy_dev[0].arn,
+    aws_iam_policy.lambda_github_access_policy_dev[0].arn,
+    aws_iam_policy.repo_app_config_dev[0].arn,
+    aws_iam_policy.terraform_github_dynamodb_access_policy_dev[0].arn,
+    aws_iam_policy.terraform_github_s3_access_policy_dev[0].arn,
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
   ]
   max_session_duration = 3600
@@ -953,5 +953,3 @@ resource "aws_iam_policy" "terraform_github_s3_access_policy_dev" {
   tags     = {}
   tags_all = {}
 }
-
-
