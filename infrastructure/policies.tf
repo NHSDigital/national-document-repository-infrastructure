@@ -68,8 +68,8 @@ resource "aws_iam_policy" "administrator_permission_restrictions" {
   }
 }
 
-resource "aws_iam_policy" "transfer_kill_switch" {
-  name        = "${terraform.workspace}-transfer-kill-switch"
+resource "aws_iam_policy" "transfer_family_kill_switch" {
+  name        = "${terraform.workspace}-transfer-family-kill-switch"
   description = "Permissions for Transfer kill switch Lambda"
   policy = jsonencode({
     Version = "2012-10-17",
@@ -94,7 +94,7 @@ resource "aws_iam_policy" "transfer_kill_switch" {
         Resource = "*"
       },
       {
-        Sid    = "PublishTransferKillSwitchMetrics",
+        Sid    = "PublishTransferFamilyKillSwitchMetrics",
         Effect = "Allow",
         Action = [
           "cloudwatch:PutMetricData",
@@ -102,7 +102,7 @@ resource "aws_iam_policy" "transfer_kill_switch" {
         Resource = "*",
         Condition = {
           StringEquals = {
-            "cloudwatch:namespace" = "Custom/TransferKillSwitch"
+            "cloudwatch:namespace" = "Custom/TransferFamilyKillSwitch"
           }
         }
       }
