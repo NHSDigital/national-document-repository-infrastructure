@@ -1,0 +1,138 @@
+name: "TEST Deploy - Sandbox"
+
+run-name: "${{ github.event.inputs.git_ref }} | ${{ github.event.inputs.sandbox_name }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: "Branch, tag or SHA to deploy"
+        required: true
+        type: "string"
+      sandbox_name:
+        description: "Sandbox name [a-z0-9]{1,8}"
+        required: true
+        type: "string"
+
+permissions:
+  pull-requests: write
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+jobs:
+  validate_inputs:
+    name: Validate Inputs
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Validate sandbox name
+        run: |
+          if ! [[ "$SANDBOX_NAME" =~ ^[a-z0-9]{1,8}$ ]]; then
+            echo "Sandbox name must match [a-z0-9]{1,8} (lowercase letters and digits only, 1-8 chars)."
+            exit 1
+          fi
+        env:
+          SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
+
+  terraform_plan_apply_main:
+    name: Terraform Plan/Apply (main)
+    runs-on: ubuntu-latest
+    needs: validate_inputs
+    environment: development
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.3
+          terraform_wrapper: false
+
+      - name: Initialise Terraform
+        id: main_init
+        run: terraform init -backend-config=backend.conf
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Select Terraform Workspace
+        id: main_workspace
+        run: terraform workspace select -or-create ${{ github.event.inputs.sandbox_name}}
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Run Terraform Plan
+        id: main_plan
+        run: |
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf-main.plan
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Run Terraform Apply
+        run: terraform apply -auto-approve -input=false tf-main.plan
+        working-directory: ./infrastructure
+
+  terraform_plan_apply_branch:
+    name: Terraform Plan/Apply (branch)
+    if: ${{ github.event.inputs.git_ref != 'main' }}
+    runs-on: ubuntu-latest
+    needs: terraform_plan_apply_main
+    environment: development
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.3
+          terraform_wrapper: false
+
+      - name: Checkout Branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.inputs.git_ref}}
+
+        # Checks that all Terraform configuration files adhere to a canonical format.
+      - name: Check Terraform Formatting
+        run: terraform fmt -check
+        working-directory: ./infrastructure
+
+      - name: Initialise Terraform
+        id: init
+        run: terraform init -backend-config=backend.conf
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Select Terraform Workspace
+        id: workspace
+        run: terraform workspace select ${{ github.event.inputs.sandbox_name}}
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Run Terraform Plan
+        id: plan
+        run: |
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
+        working-directory: ./infrastructure
+        shell: bash
+
+      - name: Run Terraform Apply (branch over main)
+        run: terraform apply -auto-approve -input=false tf.plan
+        working-directory: ./infrastructure
