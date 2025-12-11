@@ -34,6 +34,23 @@ jobs:
         env:
           SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
 
+  test_job:
+    name: Test Job
+    runs-on: ubuntu-latest
+    needs: validate_inputs
+    environment: development
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.inputs.git_ref}}
+
+      - name: TEST
+        id: test
+        run: echo "Hello"
+        working-directory: ./infrastructure
+        shell: bash
+
   terraform_plan_apply_main:
     name: Terraform Plan/Apply (main)
     runs-on: ubuntu-latest
