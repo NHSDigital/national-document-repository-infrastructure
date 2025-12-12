@@ -59,8 +59,7 @@ def tidy_resource_file(aws_account_id, env, source):
             output.append(f'    count = var.environment == "{env}" ? 1 : 0')
             continue
 
-        # line = line.replace(aws_account_id, "${var.aws_account_id}")
-        output.append(line.replace(aws_account_id, "${var.aws_account_id}"))
+        output.append(line.replace(aws_account_id, "${data.aws_caller_identity.current.account_id}"))
 
     return "\n".join(output)
 
