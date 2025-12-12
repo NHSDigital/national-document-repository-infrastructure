@@ -26,10 +26,11 @@ tf-format:
 
 init:
 # 	terraform init -var aws_account_id=${aws_account_id}
-	terraform init -backend-config=backend.conf
+# 	terraform init -backend-config=backend.conf
+	terraform init
 
-plan: guard-env guard-workspace
-	terraform workspace select -or-create ${workspace}
+plan: guard-env
+# 	terraform workspace select -or-create ${workspace}
 	terraform plan -out=tfplan -var environment=${env}
 
 apply: guard-workspace
