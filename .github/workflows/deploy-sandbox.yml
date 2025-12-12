@@ -72,15 +72,14 @@ jobs:
 
       - name: Select Terraform Workspace
         id: pre_core_workspace
-        run: terraform workspace select -or-create ${{ github.event.inputs.sandbox_name}}
+        run: terraform workspace select -or-create ${{ github.event.inputs.sandbox_name }}
         working-directory: ./pre_core
         shell: bash
 
       - name: Run Terraform Plan
         id: pre_core_plan
         run: |
-          # TODO: ADD CORRECT VAR-FILE HERE
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf-pre_core.plan
+          terraform plan -input=false -no-color -var-file="${{ vars.TF_VARS_FILE }}" -out tf-pre_core.plan
         working-directory: ./pre_core
         shell: bash
 
