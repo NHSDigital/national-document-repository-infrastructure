@@ -21,11 +21,20 @@ tf-format-check:
 tf-format:
 	terraform fmt --recursive
 
-init: guard-aws_account_id guard-env
-	terraform init -var environment=${env} -var aws_account_id=${aws_account_id}
+# init: guard-aws_account_id guard-env
+# 	terraform init -var environment=${env} -var aws_account_id=${aws_account_id}
 
-plan: guard-aws_account_id guard-env
-	terraform  plan -out=tfplan -var environment=${env} -var aws_account_id=${aws_account_id}
+init:
+# 	terraform init -var aws_account_id=${aws_account_id}
+	terraform init -backend-config=backend.conf
+
+plan: guard-env guard-workspace
+	terraform workspace select -or-create ${workspace}
+	terraform plan -out=tfplan -var environment=${env}
+
+apply: guard-workspace
+	terraform workspace select -or-create ${workspace}
+	terraform apply tfplan
 
 
 # TEMP FUNCTIONS
