@@ -34,10 +34,10 @@ def run_command(command):
 
 
 def import_resources(aws_account_id, env, role_name, policy_names):
-    run_command(f'terraform import -var environment={env} -var aws_account_id={aws_account_id} aws_iam_role.github_role_{env}[0] {role_name}')
+    run_command(f'terraform import -var environment={env} aws_iam_role.github_role_{env}[0] {role_name} ')
     for policy_name in policy_names:
         resource_name = policy_name.replace("-", "_")
-        run_command(f'terraform import -var environment={env} -var aws_account_id={aws_account_id} aws_iam_policy.{resource_name}_{env}[0] arn:aws:iam::{aws_account_id}:policy/{policy_name}')
+        run_command(f'terraform import -var environment={env} aws_iam_policy.{resource_name}_{env}[0] arn:aws:iam::{aws_account_id}:policy/{policy_name}')
 
 
 def tidy_resource_file(aws_account_id, env, source):
@@ -59,7 +59,7 @@ def tidy_resource_file(aws_account_id, env, source):
             output.append(f'    count = var.environment == "{env}" ? 1 : 0')
             continue
 
-        output.append(line.replace(aws_account_id, "${data.aws_caller_identity.current.account_id}"))
+        output.append(line.replace(aws_account_id, "${var.aws_account_id}"))
 
     return "\n".join(output)
 
