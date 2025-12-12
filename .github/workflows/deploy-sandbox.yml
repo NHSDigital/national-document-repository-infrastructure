@@ -34,27 +34,66 @@ jobs:
         env:
           SANDBOX_NAME: ${{ github.event.inputs.sandbox_name }}
 
-  test_job:
-    name: Test Job
+
+############################################
+# NEW
+
+  terraform_plan_apply_pre_core:
+    name: Terraform Plan/Apply (pre_core)
     runs-on: ubuntu-latest
     needs: validate_inputs
     environment: development
     steps:
-      - name: Checkout main
+      - name: Checkout branch
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.inputs.git_ref}}
 
-      - name: TEST
-        id: test
-        run: echo "Hello"
-        working-directory: ./infrastructure
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-skip-session-tagging: true
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.3
+          terraform_wrapper: false
+
+      - name: Initialise Terraform
+        id: pre_core_init
+        run: terraform init -backend-config=backend.conf
+        working-directory: ./pre_core
         shell: bash
+
+      - name: Select Terraform Workspace
+        id: pre_core_workspace
+        run: terraform workspace select -or-create ${{ github.event.inputs.sandbox_name}}
+        working-directory: ./pre_core
+        shell: bash
+
+      - name: Run Terraform Plan
+        id: pre_core_plan
+        run: |
+          # TODO: ADD CORRECT VAR-FILE HERE
+          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf-pre_core.plan
+        working-directory: ./pre_core
+        shell: bash
+
+      # - name: Run Terraform Apply
+      #   run: terraform apply -auto-approve -input=false tf-pre_core.plan
+      #   working-directory: ./pre_core
+
+############################################
 
   terraform_plan_apply_main:
     name: Terraform Plan/Apply (main)
     runs-on: ubuntu-latest
-    needs: validate_inputs
+    needs: terraform_plan_apply_pre_core
     environment: development
     steps:
       - name: Checkout main

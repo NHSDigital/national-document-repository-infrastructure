@@ -12,11 +12,11 @@ terraform {
   }
 
 
-  # backend "s3" {
-  #   use_lockfile = true
-  #   region       = "eu-west-2"
-  #   # key          = "ndr/terraform.tfstate"
-  #   key          = "ndr_pre_core/terraform.tfstate"
-  #   encrypt      = true
-  # }
+  backend "s3" {
+    use_lockfile = true
+    region       = "eu-west-2"
+    # key          = "ndr/terraform.tfstate"
+    key     = "ndr_pre_core/terraform.tfstate"
+    encrypt = true
+  }
 }
