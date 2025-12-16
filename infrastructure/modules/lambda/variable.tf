@@ -109,7 +109,7 @@ variable "default_lambda_layers" {
 
 variable "extra_lambda_layers" {
   type    = list(string)
-  default = ["arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:60"]
+  default = ["arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:64"]
 }
 
 variable "kms_deletion_window" {
