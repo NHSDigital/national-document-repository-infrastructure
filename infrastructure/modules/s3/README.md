@@ -60,6 +60,7 @@ module "s3_bucket" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -79,6 +80,7 @@ module "s3_bucket" {
 | [aws_iam_policy_document.s3_default_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.s3_read_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.s3_write_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -94,6 +96,7 @@ module "s3_bucket" {
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment label used for tagging (e.g., 'dev', 'prod'). | `string` | n/a | yes |
 | <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | (Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable. | `bool` | `false` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | Owner label used for resource tagging. | `string` | n/a | yes |
+
 ## Outputs
 
 | Name | Description |

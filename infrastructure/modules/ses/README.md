@@ -37,6 +37,7 @@ module "ses_identity" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
 ## Resources
 
 | Name | Type |
@@ -45,6 +46,7 @@ module "ses_identity" {
 | [aws_ses_domain_dkim.ndr_dkim](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ses_domain_dkim) | resource |
 | [aws_ses_domain_identity.ndr_ses](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ses_domain_identity) | resource |
 | [aws_ses_domain_identity_verification.ndr_ses_domain_verification](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ses_domain_identity_verification) | resource |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -53,6 +55,7 @@ module "ses_identity" {
 | <a name="input_domain_prefix"></a> [domain\_prefix](#input\_domain\_prefix) | The subdomain or prefix used to construct the full SES identity domain. | `string` | n/a | yes |
 | <a name="input_enable"></a> [enable](#input\_enable) | Whether to enable the creation of SES identity, DKIM, and DNS records. | `bool` | n/a | yes |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | The Route53 hosted zone ID where DNS verification records will be created. | `string` | n/a | yes |
+
 ## Outputs
 
 No outputs.
