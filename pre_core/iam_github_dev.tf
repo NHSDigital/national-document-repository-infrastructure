@@ -36,19 +36,20 @@ resource "aws_iam_role" "github_role_dev" {
   description           = "This role is to provide access for GitHub actions to the development environment. "
   force_detach_policies = false
   managed_policy_arns = [
-    aws_iam_policy.config_policy_dev[0].arn,
-    aws_iam_policy.ecr_github_access_policy_dev[0].arn,
-    aws_iam_policy.github_actions_terraform_full_dev[0].arn,
-    aws_iam_policy.github_mtls_gateway_dev[0].arn,
-    aws_iam_policy.github_terraform_tagging_policy_dev[0].arn,
-    aws_iam_policy.lambda_github_access_policy_dev[0].arn,
-    aws_iam_policy.repo_app_config_dev[0].arn,
-    aws_iam_policy.terraform_github_dynamodb_access_policy_dev[0].arn,
-    aws_iam_policy.terraform_github_s3_access_policy_dev[0].arn,
+    # aws_iam_policy.config_policy_dev[0].arn,
+    # aws_iam_policy.ecr_github_access_policy_dev[0].arn,
+    # aws_iam_policy.github_actions_terraform_full_dev[0].arn,
+    # aws_iam_policy.github_mtls_gateway_dev[0].arn,
+    # aws_iam_policy.github_terraform_tagging_policy_dev[0].arn,
+    # aws_iam_policy.lambda_github_access_policy_dev[0].arn,
+    # aws_iam_policy.repo_app_config_dev[0].arn,
+    # aws_iam_policy.terraform_github_dynamodb_access_policy_dev[0].arn,
+    # aws_iam_policy.terraform_github_s3_access_policy_dev[0].arn,
+    aws_iam_policy.github_actions_extended[0].arn,
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
   ]
   max_session_duration = 3600
-  name                 = "${terraform.workspace}-github-role"
+  name                 = "${terraform.workspace}-github-actions-role"
   name_prefix          = null
   path                 = "/"
   permissions_boundary = null
@@ -266,72 +267,6 @@ resource "aws_iam_role" "github_role_dev" {
       }
     )
   }
-}
-
-
-# aws_iam_policy.config_policy_dev[0]:
-resource "aws_iam_policy" "config_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  description = null
-  name        = "${terraform.workspace}-config-policy"
-  name_prefix = null
-  path        = "/"
-  policy = jsonencode(
-    {
-      Statement = [
-        {
-          Action = [
-            "config:DeleteDeliveryChannel",
-            "config:PutConfigurationRecorder",
-            "config:StopConfigurationRecorder",
-            "config:StartConfigurationRecorder",
-            "config:PutDeliveryChannel",
-            "config:DeleteConfigurationRecorder",
-            "config:DescribeConfigurationRecorderStatus",
-          ]
-          Effect   = "Allow"
-          Resource = "*"
-          Sid      = "VisualEditor0"
-        },
-      ]
-      Version = "2012-10-17"
-    }
-  )
-  tags     = {}
-  tags_all = {}
-}
-
-
-# aws_iam_policy.ecr_github_access_policy_dev[0]:
-resource "aws_iam_policy" "ecr_github_access_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  description = null
-  name        = "${terraform.workspace}-ecr-github-access-policy"
-  name_prefix = null
-  path        = "/"
-  policy = jsonencode(
-    {
-      Statement = [
-        {
-          Action = [
-            "ecr:GetDownloadUrlForLayer",
-            "ecr:BatchGetImage",
-            "ecr:CompleteLayerUpload",
-            "ecr:UploadLayerPart",
-            "ecr:InitiateLayerUpload",
-            "ecr:BatchCheckLayerAvailability",
-            "ecr:PutImage",
-          ]
-          Effect   = "Allow"
-          Resource = "arn:aws:ecr:eu-west-2:*:repository/*"
-          Sid      = "VisualEditor0"
-        },
-      ]
-      Version = "2012-10-17"
-    }
-  )
-  tags     = {}
-  tags_all = {}
 }
 
 
@@ -591,16 +526,58 @@ resource "aws_iam_policy" "github_actions_terraform_full_dev" {
 }
 
 
-# aws_iam_policy.github_mtls_gateway_dev[0]:
-resource "aws_iam_policy" "github_mtls_gateway_dev" {
+
+# aws_iam_policy.
+# Incorporates permissions from:
+# config_policy
+# ecr_github_access_policy
+# github_mtls_gateway
+# github_terraform_tagging_policy
+# lambda_github_access_policy
+# repo_app_config
+# terraform_github_dynamodb_access_policy
+# terraform_github_s3_access_policy
+resource "aws_iam_policy" "github_actions_extended" {
   count       = local.is_sandbox_or_dev ? 1 : 0
   description = null
-  name        = "${terraform.workspace}-github_mtls_gateway"
+  name        = "${terraform.workspace}-github_actions_extended"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
     {
       Statement = [
+        {
+          Action = [
+            "config:DeleteDeliveryChannel",
+            "config:PutConfigurationRecorder",
+            "config:StopConfigurationRecorder",
+            "config:StartConfigurationRecorder",
+            "config:PutDeliveryChannel",
+            "config:DeleteConfigurationRecorder",
+            "config:DescribeConfigurationRecorderStatus",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "VisualEditor0"
+        },
+
+
+        {
+          Action = [
+            "ecr:GetDownloadUrlForLayer",
+            "ecr:BatchGetImage",
+            "ecr:CompleteLayerUpload",
+            "ecr:UploadLayerPart",
+            "ecr:InitiateLayerUpload",
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:PutImage",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:ecr:eu-west-2:*:repository/*"
+          Sid      = "VisualEditor0"
+        },
+
+
         {
           Action = [
             "acm:RequestCertificate",
@@ -656,25 +633,8 @@ resource "aws_iam_policy" "github_mtls_gateway_dev" {
           Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
           Sid      = "VisualEditor4"
         },
-      ]
-      Version = "2012-10-17"
-    }
-  )
-  tags     = {}
-  tags_all = {}
-}
 
 
-# aws_iam_policy.github_terraform_tagging_policy_dev[0]:
-resource "aws_iam_policy" "github_terraform_tagging_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  description = null
-  name        = "${terraform.workspace}-github_terraform_tagging_policy"
-  name_prefix = null
-  path        = "/"
-  policy = jsonencode(
-    {
-      Statement = [
         {
           Action = [
             "sns:TagResource",
@@ -768,25 +728,8 @@ resource "aws_iam_policy" "github_terraform_tagging_policy_dev" {
           Resource = "*"
           Sid      = "VisualEditor2"
         },
-      ]
-      Version = "2012-10-17"
-    }
-  )
-  tags     = {}
-  tags_all = {}
-}
 
 
-# aws_iam_policy.lambda_github_access_policy_dev[0]:
-resource "aws_iam_policy" "lambda_github_access_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  description = "These permissions allow GitHub to push to a Lambda function."
-  name        = "${terraform.workspace}-lambda-github-access-policy"
-  name_prefix = null
-  path        = "/"
-  policy = jsonencode(
-    {
-      Statement = [
         {
           Action = [
             "lambda:CreateFunction",
@@ -816,25 +759,8 @@ resource "aws_iam_policy" "lambda_github_access_policy_dev" {
           Resource = "arn:aws:lambda:eu-west-2:*:function:*"
           Sid      = "VisualEditor1"
         },
-      ]
-      Version = "2012-10-17"
-    }
-  )
-  tags     = {}
-  tags_all = {}
-}
 
 
-# aws_iam_policy.repo_app_config_dev[0]:
-resource "aws_iam_policy" "repo_app_config_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  description = null
-  name        = "${terraform.workspace}-repo_app_config"
-  name_prefix = null
-  path        = "/"
-  policy = jsonencode(
-    {
-      Statement = [
         {
           Action = [
             "appconfig:ListTagsForResource",
@@ -881,25 +807,8 @@ resource "aws_iam_policy" "repo_app_config_dev" {
           Resource = "*"
           Sid      = "VisualEditor0"
         },
-      ]
-      Version = "2012-10-17"
-    }
-  )
-  tags     = {}
-  tags_all = {}
-}
 
 
-# aws_iam_policy.terraform_github_dynamodb_access_policy_dev[0]:
-resource "aws_iam_policy" "terraform_github_dynamodb_access_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  description = "Dynamo DB specific access policies required by terraform via GitHub"
-  name        = "${terraform.workspace}-terraform-github-dynamodb-access-policy"
-  name_prefix = null
-  path        = "/"
-  policy = jsonencode(
-    {
-      Statement = [
         {
           Action = [
             "dynamodb:DescribeTable",
@@ -911,26 +820,9 @@ resource "aws_iam_policy" "terraform_github_dynamodb_access_policy_dev" {
           Effect   = "Allow"
           Resource = "arn:aws:dynamodb:*:*:table/ndr-terraform-locks"
         },
-      ]
-      Version = "2012-10-17"
-    }
-  )
-  tags     = {}
-  tags_all = {}
-}
 
 
-# aws_iam_policy.terraform_github_s3_access_policy_dev[0]:
-resource "aws_iam_policy" "terraform_github_s3_access_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  description = "S3 specific access policies required by terraform via GitHub"
-  name        = "${terraform.workspace}-terraform-github-s3-access-policy"
-  name_prefix = null
-  path        = "/"
-  policy = jsonencode(
-    {
-      Statement = [
-        {
+      {
           Action   = "s3:ListBucket"
           Effect   = "Allow"
           Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}"
@@ -946,6 +838,8 @@ resource "aws_iam_policy" "terraform_github_s3_access_policy_dev" {
           Effect   = "Allow"
           Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}/ndr/terraform.tfstate"
         },
+
+
       ]
       Version = "2012-10-17"
     }

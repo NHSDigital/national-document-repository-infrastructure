@@ -57,7 +57,6 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
 
-      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -148,7 +147,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}  # TODO: Needs to be new rule
           role-skip-session-tagging: true
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
