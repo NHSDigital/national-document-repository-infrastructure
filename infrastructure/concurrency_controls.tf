@@ -8,7 +8,7 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_start
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_start" {
   rule      = aws_cloudwatch_event_rule.bulk_upload_concurrency_office_hours_start.name
   target_id = "office-hours-start"
-  arn       = module.concurrency-controller-lambda.arn
+  arn       = module.concurrency-controller-lambda.lambda_arn
 
   input = jsonencode({
     targetFunction      = module.bulk-upload-lambda.function_name
@@ -23,9 +23,9 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_stop"
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_stop" {
-  rule      = aws_cloudwatch_event_rule.bulk_upload_office_hours_stop.name
+  rule      = aws_cloudwatch_event_rule.bulk_upload_concurrency_office_hours_stop.name
   target_id = "office-hours-stop"
-  arn       = module.concurrency-controller-lambda.arn
+  arn       = module.concurrency-controller-lambda.lambda_arn
 
   input = jsonencode({
     targetFunction      = module.bulk-upload-lambda.function_name
@@ -46,7 +46,7 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_deploy" {
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_deploy" {
   rule      = aws_cloudwatch_event_rule.bulk_upload_concurrency_deploy.name
   target_id = "freeze-concurrency"
-  arn       = module.concurrency-controller-lambda.arn
+  arn       = module.concurrency-controller-lambda.lambda_arn
 
   input = jsonencode({
     targetFunction      = module.bulk-upload-lambda.function_name
@@ -66,7 +66,7 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_release_restore" {
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_release_restore" {
   rule      = aws_cloudwatch_event_rule.bulk_upload_concurrency_release_restore.name
   target_id = "restore-bulk-upload-concurrency"
-  arn       = module.concurrency-controller-lambda.arn
+  arn       = module.concurrency-controller-lambda.lambda_arn
 
   input = jsonencode({
     targetFunction      = module.bulk-upload-lambda.function_name
