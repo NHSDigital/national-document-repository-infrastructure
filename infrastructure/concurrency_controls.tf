@@ -8,10 +8,10 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_start
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_start" {
   rule      = aws_cloudwatch_event_rule.bulk_upload_concurrency_office_hours_start.name
   target_id = "office-hours-start"
-  arn       = module.concurrency_controller.arn
+  arn       = module.concurrency-controller-lambda.arn
 
   input = jsonencode({
-    targetFunction      = var.bulk_upload_lambda_name
+    targetFunction      = module.bulk-upload-lambda.function_name
     reservedConcurrency = var.office_hours_start_concurrency
   })
 }
@@ -25,10 +25,10 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_stop"
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_stop" {
   rule      = aws_cloudwatch_event_rule.bulk_upload_office_hours_stop.name
   target_id = "office-hours-stop"
-  arn       = module.concurrency_controller.arn
+  arn       = module.concurrency-controller-lambda.arn
 
   input = jsonencode({
-    targetFunction      = var.bulk_upload_lambda_name
+    targetFunction      = module.bulk-upload-lambda.function_name
     reservedConcurrency = var.office_hours_end_concurrency
   })
 }
@@ -46,10 +46,10 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_deploy" {
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_deploy" {
   rule      = aws_cloudwatch_event_rule.bulk_upload_concurrency_deploy.name
   target_id = "freeze-concurrency"
-  arn       = module.concurrency_controller.arn
+  arn       = module.concurrency-controller-lambda.arn
 
   input = jsonencode({
-    targetFunction      = var.bulk_upload_lambda_name
+    targetFunction      = module.bulk-upload-lambda.function_name
     reservedConcurrency = 0
   })
 }
@@ -66,10 +66,10 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_release_restore" {
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_release_restore" {
   rule      = aws_cloudwatch_event_rule.bulk_upload_concurrency_release_restore.name
   target_id = "restore-bulk-upload-concurrency"
-  arn       = module.concurrency_controller.arn
+  arn       = module.concurrency-controller-lambda.arn
 
   input = jsonencode({
-    targetFunction      = var.bulk_upload_lambda_name
+    targetFunction      = module.bulk-upload-lambda.function_name
     reservedConcurrency = local.bulk_upload_lambda_concurrent_limit
   })
 }
