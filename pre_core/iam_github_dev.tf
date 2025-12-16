@@ -38,7 +38,7 @@ resource "aws_iam_role" "github_role_dev" {
   managed_policy_arns = [
     # aws_iam_policy.config_policy_dev[0].arn,
     # aws_iam_policy.ecr_github_access_policy_dev[0].arn,
-    # aws_iam_policy.github_actions_terraform_full_dev[0].arn,
+    aws_iam_policy.github_actions_terraform_full_dev[0].arn,
     # aws_iam_policy.github_mtls_gateway_dev[0].arn,
     # aws_iam_policy.github_terraform_tagging_policy_dev[0].arn,
     # aws_iam_policy.lambda_github_access_policy_dev[0].arn,
@@ -267,6 +267,117 @@ resource "aws_iam_role" "github_role_dev" {
       }
     )
   }
+
+
+
+
+
+  inline_policy {
+    name = "github_terraform_tagging_policy"
+    policy = jsonencode(
+      {
+        Statement = [
+          {
+            Action = [
+              "sns:TagResource",
+              "backup:TagResource",
+              "resource-groups:GetGroupQuery",
+              "lambda:TagResource",
+              "resource-groups:UpdateGroup",
+              "iam:UntagRole",
+              "iam:TagRole",
+              "resource-groups:GetTags",
+              "sns:UntagResource",
+              "resource-groups:Untag",
+              "lambda:UntagResource",
+              "elasticloadbalancing:RemoveTags",
+              "cognito-identity:UntagResource",
+              "resource-groups:GetGroup",
+              "resource-groups:GetGroupConfiguration",
+              "backup:UntagResource",
+              "cognito-identity:TagResource",
+              "resource-groups:Tag",
+              "resource-groups:UpdateGroupQuery",
+              "iam:TagPolicy",
+              "resource-groups:DeleteGroup",
+              "events:TagResource",
+              "elasticloadbalancing:AddTags",
+              "iam:UntagPolicy",
+              "resource-groups:ListGroupResources",
+              "events:UntagResource",
+            ]
+            Effect = "Allow"
+            Resource = [
+              "arn:aws:lambda:*:${data.aws_caller_identity.current.account_id}:event-source-mapping:*",
+              "arn:aws:lambda:*:${data.aws_caller_identity.current.account_id}:function:*",
+              "arn:aws:lambda:*:${data.aws_caller_identity.current.account_id}:code-signing-config:*",
+              "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*",
+              "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/*",
+              "arn:aws:sns:*:${data.aws_caller_identity.current.account_id}:*",
+              "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:legal-hold:*",
+              "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:framework:*-*",
+              "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:backup-vault:*",
+              "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:report-plan:*-*",
+              "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:backup-plan:*",
+              "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:restore-testing-plan:*-*",
+              "arn:aws:cognito-identity:*:${data.aws_caller_identity.current.account_id}:identitypool/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/gwy/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/net/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/app/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/app/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/gwy/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/net/*/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/net/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/app/*/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
+              "arn:aws:resource-groups:*:${data.aws_caller_identity.current.account_id}:group/*",
+              "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:event-bus/*",
+              "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*/*",
+            ]
+            Sid = "VisualEditor0"
+          },
+          {
+            Action = [
+              "events:TagResource",
+              "elasticloadbalancing:RemoveTags",
+              "elasticloadbalancing:AddTags",
+              "events:UntagResource",
+            ]
+            Effect = "Allow"
+            Resource = [
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/gwy/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/app/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/gwy/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/net/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/net/*/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/app/*/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/net/*/*",
+              "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/app/*/*",
+              "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*",
+            ]
+            Sid = "VisualEditor1"
+          },
+          {
+            Action = [
+              "resource-groups:SearchResources",
+              "resource-groups:CreateGroup",
+              "resource-groups:ListGroups",
+            ]
+            Effect   = "Allow"
+            Resource = "*"
+            Sid      = "VisualEditor2"
+          },
+        ]
+        Version = "2012-10-17"
+      }
+    )
+  }
+
+
+
 }
 
 
@@ -532,7 +643,7 @@ resource "aws_iam_policy" "github_actions_terraform_full_dev" {
 # config_policy
 # ecr_github_access_policy
 # github_mtls_gateway
-# github_terraform_tagging_policy
+# github_terraform_tagging_policy - Moved to inline
 # lambda_github_access_policy
 # repo_app_config
 # terraform_github_dynamodb_access_policy
@@ -635,99 +746,6 @@ resource "aws_iam_policy" "github_actions_extended" {
         },
 
 
-        {
-          Action = [
-            "sns:TagResource",
-            "backup:TagResource",
-            "resource-groups:GetGroupQuery",
-            "lambda:TagResource",
-            "resource-groups:UpdateGroup",
-            "iam:UntagRole",
-            "iam:TagRole",
-            "resource-groups:GetTags",
-            "sns:UntagResource",
-            "resource-groups:Untag",
-            "lambda:UntagResource",
-            "elasticloadbalancing:RemoveTags",
-            "cognito-identity:UntagResource",
-            "resource-groups:GetGroup",
-            "resource-groups:GetGroupConfiguration",
-            "backup:UntagResource",
-            "cognito-identity:TagResource",
-            "resource-groups:Tag",
-            "resource-groups:UpdateGroupQuery",
-            "iam:TagPolicy",
-            "resource-groups:DeleteGroup",
-            "events:TagResource",
-            "elasticloadbalancing:AddTags",
-            "iam:UntagPolicy",
-            "resource-groups:ListGroupResources",
-            "events:UntagResource",
-          ]
-          Effect = "Allow"
-          Resource = [
-            "arn:aws:lambda:*:${data.aws_caller_identity.current.account_id}:event-source-mapping:*",
-            "arn:aws:lambda:*:${data.aws_caller_identity.current.account_id}:function:*",
-            "arn:aws:lambda:*:${data.aws_caller_identity.current.account_id}:code-signing-config:*",
-            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*",
-            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/*",
-            "arn:aws:sns:*:${data.aws_caller_identity.current.account_id}:*",
-            "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:legal-hold:*",
-            "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:framework:*-*",
-            "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:backup-vault:*",
-            "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:report-plan:*-*",
-            "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:backup-plan:*",
-            "arn:aws:backup:*:${data.aws_caller_identity.current.account_id}:restore-testing-plan:*-*",
-            "arn:aws:cognito-identity:*:${data.aws_caller_identity.current.account_id}:identitypool/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/gwy/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/net/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/app/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/app/*/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/gwy/*/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/net/*/*/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/net/*/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/app/*/*/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
-            "arn:aws:resource-groups:*:${data.aws_caller_identity.current.account_id}:group/*",
-            "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:event-bus/*",
-            "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*/*",
-          ]
-          Sid = "VisualEditor0"
-        },
-        {
-          Action = [
-            "events:TagResource",
-            "elasticloadbalancing:RemoveTags",
-            "elasticloadbalancing:AddTags",
-            "events:UntagResource",
-          ]
-          Effect = "Allow"
-          Resource = [
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/gwy/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/app/*/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/gwy/*/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/net/*/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/net/*/*/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/app/*/*/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/net/*/*",
-            "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/app/*/*",
-            "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*",
-          ]
-          Sid = "VisualEditor1"
-        },
-        {
-          Action = [
-            "resource-groups:SearchResources",
-            "resource-groups:CreateGroup",
-            "resource-groups:ListGroups",
-          ]
-          Effect   = "Allow"
-          Resource = "*"
-          Sid      = "VisualEditor2"
-        },
 
 
         {
@@ -822,7 +840,7 @@ resource "aws_iam_policy" "github_actions_extended" {
         },
 
 
-      {
+        {
           Action   = "s3:ListBucket"
           Effect   = "Allow"
           Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}"
