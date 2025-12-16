@@ -669,7 +669,7 @@ resource "aws_iam_policy" "github_actions_extended" {
           ]
           Effect   = "Allow"
           Resource = "*"
-          Sid      = "VisualEditor0"
+          Sid      = "config_policy_1"
         },
 
 
@@ -685,7 +685,7 @@ resource "aws_iam_policy" "github_actions_extended" {
           ]
           Effect   = "Allow"
           Resource = "arn:aws:ecr:eu-west-2:*:repository/*"
-          Sid      = "VisualEditor0"
+          Sid      = "ecr_github_access_policy_1"
         },
 
 
@@ -697,13 +697,13 @@ resource "aws_iam_policy" "github_actions_extended" {
           ]
           Effect   = "Allow"
           Resource = "*"
-          Sid      = "VisualEditor0"
+          Sid      = "github_mtls_gateway_1"
         },
         {
           Action   = "apigateway:AddCertificateToDomain"
           Effect   = "Allow"
           Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
-          Sid      = "VisualEditor1"
+          Sid      = "github_mtls_gateway_2"
         },
         {
           Action = [
@@ -724,7 +724,7 @@ resource "aws_iam_policy" "github_actions_extended" {
             "arn:aws:route53:::hostedzone/*",
             "arn:aws:acm:eu-west-2:${data.aws_caller_identity.current.account_id}:certificate/*",
           ]
-          Sid = "VisualEditor2"
+          Sid = "github_mtls_gateway_3"
         },
         {
           Action = [
@@ -736,13 +736,13 @@ resource "aws_iam_policy" "github_actions_extended" {
             "arn:aws:apigateway:eu-west-2::/domainnames/*",
             "arn:aws:apigateway:eu-west-2::/domainnames",
           ]
-          Sid = "VisualEditor3"
+          Sid = "github_mtls_gateway_4"
         },
         {
           Action   = "apigateway:AddCertificateToDomain"
           Effect   = "Allow"
           Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
-          Sid      = "VisualEditor4"
+          Sid      = "github_mtls_gateway_5"
         },
 
 
@@ -769,13 +769,13 @@ resource "aws_iam_policy" "github_actions_extended" {
             "arn:aws:kms:*:${data.aws_caller_identity.current.account_id}:key/*",
             "arn:aws:lambda:eu-west-2:*:function:*",
           ]
-          Sid = "VisualEditor0"
+          Sid = "lambda_github_access_policy_1"
         },
         {
           Action   = "iam:ListRoles"
           Effect   = "Allow"
           Resource = "arn:aws:lambda:eu-west-2:*:function:*"
-          Sid      = "VisualEditor1"
+          Sid      = "lambda_github_access_policy_2"
         },
 
 
@@ -823,7 +823,7 @@ resource "aws_iam_policy" "github_actions_extended" {
           ]
           Effect   = "Allow"
           Resource = "*"
-          Sid      = "VisualEditor0"
+          Sid      = "repo_app_config_1"
         },
 
 
@@ -837,6 +837,7 @@ resource "aws_iam_policy" "github_actions_extended" {
           ]
           Effect   = "Allow"
           Resource = "arn:aws:dynamodb:*:*:table/ndr-terraform-locks"
+          Sid      = "terraform_github_dynamodb_access_policy_1"
         },
 
 
@@ -844,6 +845,7 @@ resource "aws_iam_policy" "github_actions_extended" {
           Action   = "s3:ListBucket"
           Effect   = "Allow"
           Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}"
+          Sid      = "terraform_github_s3_access_policy_1"
         },
         {
           Action = [
@@ -855,6 +857,7 @@ resource "aws_iam_policy" "github_actions_extended" {
           ]
           Effect   = "Allow"
           Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}/ndr/terraform.tfstate"
+          Sid      = "terraform_github_s3_access_policy_2"
         },
 
 
