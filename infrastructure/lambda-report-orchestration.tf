@@ -12,10 +12,10 @@ module "report-orchestration-lambda" {
   ]
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE                  = terraform.workspace
+    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE               = terraform.workspace
 
     BULK_UPLOAD_REPORT_TABLE_NAME = "${terraform.workspace}_BulkUploadReport"
   }
