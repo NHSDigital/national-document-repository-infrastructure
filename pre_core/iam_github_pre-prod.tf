@@ -517,7 +517,7 @@ resource "aws_iam_role" "github_role_pre-prod" {
 
 # aws_iam_policy.github_actions_policy_pre-prod[0]:
 resource "aws_iam_policy" "github_actions_policy_pre-prod" {
-  count = local.is_pre_production ? 1 : 0
+  count       = local.is_pre_production ? 1 : 0
   description = null
   name        = "github-actions-policy"
   name_prefix = null
@@ -775,7 +775,7 @@ resource "aws_iam_policy" "github_actions_policy_pre-prod" {
 
 # aws_iam_policy.github_extended_policy_1_pre-prod[0]:
 resource "aws_iam_policy" "github_extended_policy_1_pre-prod" {
-  count = local.is_pre_production ? 1 : 0
+  count       = local.is_pre_production ? 1 : 0
   description = "more required items for GitHub access"
   name        = "github-extended-policy-1"
   name_prefix = null

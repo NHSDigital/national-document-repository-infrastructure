@@ -356,7 +356,7 @@ resource "aws_iam_role" "github_role_test" {
 
 # aws_iam_policy.github_action_policy_test[0]:
 resource "aws_iam_policy" "github_action_policy_test" {
-  count = local.is_testing ? 1 : 0
+  count       = local.is_testing ? 1 : 0
   description = null
   name        = "github-action-policy"
   name_prefix = null
@@ -615,7 +615,7 @@ resource "aws_iam_policy" "github_action_policy_test" {
 
 # aws_iam_policy.github_action_policy_2_test[0]:
 resource "aws_iam_policy" "github_action_policy_2_test" {
-  count = local.is_testing ? 1 : 0
+  count       = local.is_testing ? 1 : 0
   description = null
   name        = "github-action-policy-2"
   name_prefix = null
