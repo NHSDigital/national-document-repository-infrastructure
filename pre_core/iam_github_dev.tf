@@ -1,5 +1,6 @@
 # aws_iam_role.github_role_dev[0]:
 resource "aws_iam_role" "github_role_dev" {
+  # TODO: Remove empty tags and null entries?
   count = local.is_sandbox_or_dev ? 1 : 0
   assume_role_policy = jsonencode(
     {
@@ -638,12 +639,12 @@ resource "aws_iam_policy" "github_actions_terraform_full_dev" {
 
 
 
-# aws_iam_policy.
+# aws_iam_policy github_actions_extended
 # Incorporates permissions from:
 # config_policy
 # ecr_github_access_policy
 # github_mtls_gateway
-# github_terraform_tagging_policy - Moved to inline
+# (github_terraform_tagging_policy - Moved to inline)
 # lambda_github_access_policy
 # repo_app_config
 # terraform_github_dynamodb_access_policy

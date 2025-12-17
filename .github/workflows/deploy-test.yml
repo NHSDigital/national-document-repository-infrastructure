@@ -16,6 +16,10 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
+  # TODO: Add pre-core plan/apply
+  # TODO: Remember to pass in:-var=pre_prod_account_id=${{ secrets.PRE_PROD_AWS_ACCOUNT_ID }}
+  # TODO: Change existing apply to use new pre_core role
+  
   terraform_plan_apply:
     name: Terraform Plan/Apply (ndr-test)
     runs-on: ubuntu-latest

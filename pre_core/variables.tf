@@ -9,10 +9,11 @@ variable "region" {
   description = "The region to be used for bootstrapping"
 }
 
-# variable "aws_account_id" {
-#   type        = string
-#   description = "The AWS Account ID (numeric)"
-# }
+variable "pre_prod_account_id" {
+  type        = string
+  description = "The Pre-Prod AWS Account ID (required by Test environment GitHub IAM Role)"
+  default     = ""
+}
 
 variable "owner" {
   description = "Identifies the team or person responsible for the resource (used for tagging)."

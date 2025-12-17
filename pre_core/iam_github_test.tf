@@ -1,6 +1,6 @@
 # aws_iam_role.github_role_test[0]:
 resource "aws_iam_role" "github_role_test" {
-  count = var.environment == "test" ? 1 : 0
+  count = local.is_testing ? 1 : 0
   assume_role_policy = jsonencode(
     {
       Statement = [
@@ -19,7 +19,7 @@ resource "aws_iam_role" "github_role_test" {
           }
           Effect = "Allow"
           Principal = {
-            Federated = "arn:aws:iam::${var.aws_account_id}:oidc-provider/token.actions.githubusercontent.com"
+            Federated = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
           }
         },
       ]
@@ -93,7 +93,7 @@ resource "aws_iam_role" "github_role_test" {
               "logs:DisassociateKmsKey",
             ]
             Effect   = "Allow"
-            Resource = "arn:aws:logs:eu-west-2:${var.aws_account_id}:log-group:*"
+            Resource = "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*"
             Sid      = "Statement1"
           },
         ]
@@ -141,39 +141,39 @@ resource "aws_iam_role" "github_role_test" {
             ]
             Effect = "Allow"
             Resource = [
-              "arn:aws:events:*:694282683086:event-bus/*",
-              "arn:aws:events:*:694282683086:rule/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/gwy/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/net/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/app/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:truststore/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener/app/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener/gwy/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/net/*/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener/net/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/app/*/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:targetgroup/*/*",
-              "arn:aws:lambda:*:694282683086:event-source-mapping:*",
-              "arn:aws:lambda:*:694282683086:code-signing-config:*",
-              "arn:aws:lambda:*:694282683086:function:*",
-              "arn:aws:cognito-identity:*:694282683086:identitypool/*",
-              "arn:aws:resource-groups:*:694282683086:group/*",
-              "arn:aws:backup:*:694282683086:backup-plan:*",
-              "arn:aws:backup:*:694282683086:report-plan:*-*",
-              "arn:aws:backup:*:694282683086:restore-testing-plan:*-*",
-              "arn:aws:backup:*:694282683086:backup-vault:*",
-              "arn:aws:backup:*:694282683086:legal-hold:*",
-              "arn:aws:backup:*:694282683086:framework:*-*",
-              "arn:aws:iam::694282683086:policy/*",
-              "arn:aws:iam::694282683086:instance-profile/*",
-              "arn:aws:iam::694282683086:role/*",
-              "arn:aws:sns:*:694282683086:*",
-              "arn:aws:logs:*:694282683086:log-group:*",
-              "arn:aws:logs:*:694282683086:delivery-source:*",
-              "arn:aws:logs:*:694282683086:delivery:*",
-              "arn:aws:logs:*:694282683086:destination:*",
-              "arn:aws:logs:*:694282683086:delivery-destination:*",
-              "arn:aws:logs:*:694282683086:anomaly-detector:*",
+              "arn:aws:events:*:${var.pre_prod_account_id}:event-bus/*",
+              "arn:aws:events:*:${var.pre_prod_account_id}:rule/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:loadbalancer/gwy/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:loadbalancer/net/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:loadbalancer/app/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:truststore/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener/app/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener/gwy/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener-rule/net/*/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener/net/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener-rule/app/*/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:targetgroup/*/*",
+              "arn:aws:lambda:*:${var.pre_prod_account_id}:event-source-mapping:*",
+              "arn:aws:lambda:*:${var.pre_prod_account_id}:code-signing-config:*",
+              "arn:aws:lambda:*:${var.pre_prod_account_id}:function:*",
+              "arn:aws:cognito-identity:*:${var.pre_prod_account_id}:identitypool/*",
+              "arn:aws:resource-groups:*:${var.pre_prod_account_id}:group/*",
+              "arn:aws:backup:*:${var.pre_prod_account_id}:backup-plan:*",
+              "arn:aws:backup:*:${var.pre_prod_account_id}:report-plan:*-*",
+              "arn:aws:backup:*:${var.pre_prod_account_id}:restore-testing-plan:*-*",
+              "arn:aws:backup:*:${var.pre_prod_account_id}:backup-vault:*",
+              "arn:aws:backup:*:${var.pre_prod_account_id}:legal-hold:*",
+              "arn:aws:backup:*:${var.pre_prod_account_id}:framework:*-*",
+              "arn:aws:iam::${var.pre_prod_account_id}:policy/*",
+              "arn:aws:iam::${var.pre_prod_account_id}:instance-profile/*",
+              "arn:aws:iam::${var.pre_prod_account_id}:role/*",
+              "arn:aws:sns:*:${var.pre_prod_account_id}:*",
+              "arn:aws:logs:*:${var.pre_prod_account_id}:log-group:*",
+              "arn:aws:logs:*:${var.pre_prod_account_id}:delivery-source:*",
+              "arn:aws:logs:*:${var.pre_prod_account_id}:delivery:*",
+              "arn:aws:logs:*:${var.pre_prod_account_id}:destination:*",
+              "arn:aws:logs:*:${var.pre_prod_account_id}:delivery-destination:*",
+              "arn:aws:logs:*:${var.pre_prod_account_id}:anomaly-detector:*",
               "*",
             ]
             Sid = "VisualEditor0"
@@ -187,17 +187,17 @@ resource "aws_iam_role" "github_role_test" {
             ]
             Effect = "Allow"
             Resource = [
-              "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/app/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/net/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:targetgroup/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:truststore/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/gwy/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener/gwy/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener/app/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener/net/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/app/*/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/net/*/*/*/*",
-              "arn:aws:events:*:694282683086:rule/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:loadbalancer/app/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:loadbalancer/net/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:targetgroup/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:truststore/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:loadbalancer/gwy/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener/gwy/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener/app/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener/net/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener-rule/app/*/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener-rule/net/*/*/*/*",
+              "arn:aws:events:*:${var.pre_prod_account_id}:rule/*",
             ]
             Sid = "VisualEditor1"
           },
@@ -208,16 +208,16 @@ resource "aws_iam_role" "github_role_test" {
             ]
             Effect = "Allow"
             Resource = [
-              "arn:aws:elasticloadbalancing:*:694282683086:truststore/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener/app/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener/gwy/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener/net/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/net/*/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/app/*/*/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:targetgroup/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/gwy/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/net/*/*",
-              "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/app/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:truststore/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener/app/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener/gwy/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener/net/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener-rule/net/*/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:listener-rule/app/*/*/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:targetgroup/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:loadbalancer/gwy/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:loadbalancer/net/*/*",
+              "arn:aws:elasticloadbalancing:*:${var.pre_prod_account_id}:loadbalancer/app/*/*",
             ]
             Sid = "VisualEditor2"
           },
@@ -249,7 +249,7 @@ resource "aws_iam_role" "github_role_test" {
               "cognito-identity:UpdateIdentityPool",
             ]
             Effect   = "Allow"
-            Resource = "arn:aws:cognito-identity:eu-west-2:${var.aws_account_id}:identitypool/*"
+            Resource = "arn:aws:cognito-identity:eu-west-2:${data.aws_caller_identity.current.account_id}:identitypool/*"
             Sid      = "VisualEditor0"
           },
           {
@@ -264,7 +264,7 @@ resource "aws_iam_role" "github_role_test" {
               "rum:DeleteAppMonitor",
             ]
             Effect   = "Allow"
-            Resource = "arn:aws:rum:eu-west-2:${var.aws_account_id}:appmonitor/*"
+            Resource = "arn:aws:rum:eu-west-2:${data.aws_caller_identity.current.account_id}:appmonitor/*"
             Sid      = "VisualEditor1"
           },
           {
@@ -274,7 +274,7 @@ resource "aws_iam_role" "github_role_test" {
               "logs:DescribeLogGroups",
             ]
             Effect   = "Allow"
-            Resource = "arn:aws:logs:eu-west-2:${var.aws_account_id}:log-group:*RUMService*"
+            Resource = "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*RUMService*"
             Sid      = "VisualEditor2"
           },
           {
@@ -356,7 +356,7 @@ resource "aws_iam_role" "github_role_test" {
 
 # aws_iam_policy.github_action_policy_test[0]:
 resource "aws_iam_policy" "github_action_policy_test" {
-  count       = var.environment == "test" ? 1 : 0
+  count = local.is_testing ? 1 : 0
   description = null
   name        = "github-action-policy"
   name_prefix = null
@@ -615,7 +615,7 @@ resource "aws_iam_policy" "github_action_policy_test" {
 
 # aws_iam_policy.github_action_policy_2_test[0]:
 resource "aws_iam_policy" "github_action_policy_2_test" {
-  count       = var.environment == "test" ? 1 : 0
+  count = local.is_testing ? 1 : 0
   description = null
   name        = "github-action-policy-2"
   name_prefix = null
