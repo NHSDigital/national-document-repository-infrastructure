@@ -11,6 +11,6 @@ cloud_security_email_param_environment = "pre-prod"
 
 apim_environment = "int."
 
-ssh_key_management_dry_run = false
+ssh_key_management_dry_run = true
 
 deletion_protection_enabled = true
