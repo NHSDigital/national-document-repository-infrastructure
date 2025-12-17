@@ -234,6 +234,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     }
   }
   rule {
+    id     = "Delete objects in review folder that have existed for 24 hours"
+    status = "Enabled"
+
+    expiration {
+      days = 1
+    }
+
+    filter {
+      prefix = "review/"
+    }
+  }
+  rule {
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
     transition {
@@ -278,6 +290,17 @@ resource "aws_s3_bucket_lifecycle_configuration" "ndr_document_pending_review_st
     transition {
       storage_class = "INTELLIGENT_TIERING"
       days          = 0
+    }
+    filter {}
+  }
+  rule {
+    id     = "remove-delete-markers-after-42-days"
+    status = "Enabled"
+    expiration {
+      expired_object_delete_marker = true
+    }
+    noncurrent_version_expiration {
+      noncurrent_days = 42
     }
     filter {}
   }
