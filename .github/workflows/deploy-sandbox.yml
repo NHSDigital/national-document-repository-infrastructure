@@ -51,11 +51,10 @@ jobs:
       - name: Apply pre_core
         uses: ./.github/actions/tf-plan-apply
         with:
-          git_ref: ${{ github.event.inputs.git_ref}}
           aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
           aws_region: ${{ vars.AWS_REGION }}
           backend_conf: "backend.conf"
-          working_directory: "./pre_core"
+          working_directory: "./pre_core"  # Use separate pre_core directory
           env_or_sandbox_name: ${{ github.event.inputs.sandbox_name }}
           tf_vars_file: ${{ vars.TF_VARS_FILE }}
 
@@ -121,42 +120,51 @@ jobs:
         with:
           ref: main
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v5
+      - name: Apply Main
+        uses: ./.github/actions/tf-plan-apply
         with:
-          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          role-skip-session-tagging: true
-          aws-region: ${{ vars.AWS_REGION }}
-          mask-aws-account-id: true
+          aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
+          aws_region: ${{ vars.AWS_REGION }}
+          backend_conf: "backend.conf"
+          env_or_sandbox_name: ${{ github.event.inputs.sandbox_name }}
+          tf_vars_file: ${{ vars.TF_VARS_FILE }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.13.3
-          terraform_wrapper: false
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v5
+      #   with:
+      #     role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+      #     role-skip-session-tagging: true
+      #     aws-region: ${{ vars.AWS_REGION }}
+      #     mask-aws-account-id: true
 
-      - name: Initialise Terraform
-        id: main_init
-        run: terraform init -backend-config=backend.conf
-        working-directory: ./infrastructure
-        shell: bash
+      # - name: Setup Terraform
+      #   uses: hashicorp/setup-terraform@v3
+      #   with:
+      #     terraform_version: 1.13.3
+      #     terraform_wrapper: false
 
-      - name: Select Terraform Workspace
-        id: main_workspace
-        run: terraform workspace select -or-create ${{ github.event.inputs.sandbox_name}}
-        working-directory: ./infrastructure
-        shell: bash
+      # - name: Initialise Terraform
+      #   id: main_init
+      #   run: terraform init -backend-config=backend.conf
+      #   working-directory: ./infrastructure
+      #   shell: bash
 
-      - name: Run Terraform Plan
-        id: main_plan
-        run: |
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf-main.plan
-        working-directory: ./infrastructure
-        shell: bash
+      # - name: Select Terraform Workspace
+      #   id: main_workspace
+      #   run: terraform workspace select -or-create ${{ github.event.inputs.sandbox_name}}
+      #   working-directory: ./infrastructure
+      #   shell: bash
 
-      - name: Run Terraform Apply
-        run: terraform apply -auto-approve -input=false tf-main.plan
-        working-directory: ./infrastructure
+      # - name: Run Terraform Plan
+      #   id: main_plan
+      #   run: |
+      #     terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf-main.plan
+      #   working-directory: ./infrastructure
+      #   shell: bash
+
+      # - name: Run Terraform Apply
+      #   run: terraform apply -auto-approve -input=false tf-main.plan
+      #   working-directory: ./infrastructure
 
   terraform_plan_apply_branch:
     name: Terraform Plan/Apply (branch)
@@ -165,50 +173,60 @@ jobs:
     needs: terraform_plan_apply_main
     environment: development
     steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v5
-        with:
-          # Use role that we've just created in pre_core
-          role-to-assume: arn:aws:iam::${{ secrets.DEV_AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
-          role-skip-session-tagging: true
-          aws-region: ${{ vars.AWS_REGION }}
-          mask-aws-account-id: true
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v5
+      #   with:
+      #     # Use role that we've just created in pre_core
+      #     role-to-assume: arn:aws:iam::${{ secrets.DEV_AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+      #     role-skip-session-tagging: true
+      #     aws-region: ${{ vars.AWS_REGION }}
+      #     mask-aws-account-id: true
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.13.3
-          terraform_wrapper: false
+      # - name: Setup Terraform
+      #   uses: hashicorp/setup-terraform@v3
+      #   with:
+      #     terraform_version: 1.13.3
+      #     terraform_wrapper: false
 
       - name: Checkout Branch
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.inputs.git_ref}}
 
-        # Checks that all Terraform configuration files adhere to a canonical format.
-      - name: Check Terraform Formatting
-        run: terraform fmt -check
-        working-directory: ./infrastructure
+      - name: Apply Branch
+        uses: ./.github/actions/tf-plan-apply
+        with:
+          aws_assume_role: arn:aws:iam::${{ secrets.DEV_AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+          aws_region: ${{ vars.AWS_REGION }}
+          backend_conf: "backend.conf"
+          env_or_sandbox_name: ${{ github.event.inputs.sandbox_name }}
+          tf_vars_file: ${{ vars.TF_VARS_FILE }}
 
-      - name: Initialise Terraform
-        id: init
-        run: terraform init -backend-config=backend.conf
-        working-directory: ./infrastructure
-        shell: bash
 
-      - name: Select Terraform Workspace
-        id: workspace
-        run: terraform workspace select ${{ github.event.inputs.sandbox_name}}
-        working-directory: ./infrastructure
-        shell: bash
+      #   # Checks that all Terraform configuration files adhere to a canonical format.
+      # - name: Check Terraform Formatting
+      #   run: terraform fmt -check
+      #   working-directory: ./infrastructure
 
-      - name: Run Terraform Plan
-        id: plan
-        run: |
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
-        working-directory: ./infrastructure
-        shell: bash
+      # - name: Initialise Terraform
+      #   id: init
+      #   run: terraform init -backend-config=backend.conf
+      #   working-directory: ./infrastructure
+      #   shell: bash
 
-      - name: Run Terraform Apply (branch over main)
-        run: terraform apply -auto-approve -input=false tf.plan
-        working-directory: ./infrastructure
+      # - name: Select Terraform Workspace
+      #   id: workspace
+      #   run: terraform workspace select ${{ github.event.inputs.sandbox_name}}
+      #   working-directory: ./infrastructure
+      #   shell: bash
+
+      # - name: Run Terraform Plan
+      #   id: plan
+      #   run: |
+      #     terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
+      #   working-directory: ./infrastructure
+      #   shell: bash
+
+      # - name: Run Terraform Apply (branch over main)
+      #   run: terraform apply -auto-approve -input=false tf.plan
+      #   working-directory: ./infrastructure

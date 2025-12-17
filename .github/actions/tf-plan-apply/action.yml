@@ -1,12 +1,7 @@
 name: "Terraform Plan & Apply"
-
 description: "Run Terraform plan & Apply for a given component"
 
 inputs:
-  git_ref:
-    description: "Branch, tag or SHA to deploy"
-    required: true
-
   aws_assume_role:
     description: "AWS IAM Role to assume"
     required: true
@@ -41,11 +36,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    # - name: Checkout Branch
-    #   uses: actions/checkout@v5
-    #   with:
-    #     ref: ${{ inputs.git_ref }}
-
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v5
       with:
@@ -61,19 +51,16 @@ runs:
         terraform_wrapper: false
 
     - name: Initialise Terraform
-      # id: init
       run: terraform init -backend-config=${{ inputs.backend_conf }}
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 
     - name: Select Terraform Workspace
-      # id: workspace
       run: terraform workspace select -or-create ${{ inputs.env_or_sandbox_name }}
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 
     - name: Run Terraform Plan
-      # id: plan
       run: |
         terraform plan -input=false -no-color -var-file="${{ inputs.tf_vars_file }}" -out tf.plan
       working-directory: ${{ inputs.working_directory }}
