@@ -119,6 +119,7 @@ jobs:
 
 
   # APPLY CHOSEN BRANCH
+  # USING THE NEWLY CREATED ROLE
   terraform_plan_apply_branch:
     name: Terraform Plan/Apply (branch)
     if: ${{ github.event.inputs.git_ref != 'main' }}
@@ -134,7 +135,7 @@ jobs:
       - name: Apply Branch
         uses: ./.github/actions/tf-plan-apply
         with:
-          aws_assume_role: arn:aws:iam::${{ secrets.DEV_AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+          aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
           aws_region: ${{ vars.AWS_REGION }}
           backend_conf: "backend.conf"
           workspace: ${{ github.event.inputs.sandbox_name }}
