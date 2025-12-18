@@ -104,7 +104,8 @@ jobs:
 
   terraform_destroy_pre_core:
     name: Terraform Destroy (Pre-Core)
-    # TODO: Should we allow 'test' to be destroyed?
+    # Only destroy pre-core in development (sandbox) environment. Don't tear down in Test environment.
+    # TODO: TEST THAT BRANCH ISN'T NDR-DEV!
     if: ${{ github.event.inputs.environment == 'development' }}
     runs-on: ubuntu-latest
     needs: [terraform_destroy]

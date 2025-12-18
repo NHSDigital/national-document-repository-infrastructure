@@ -54,7 +54,7 @@ jobs:
           aws_region: ${{ vars.AWS_REGION }}
           backend_conf: "backend.conf"
           working_directory: "./pre_core"  # Use separate pre_core directory
-          env_or_sandbox_name: ${{ github.event.inputs.sandbox_name }}
+          workspace: ${{ github.event.inputs.sandbox_name }}
           tf_vars_file: ${{ vars.TF_VARS_FILE }}
 
 
@@ -77,7 +77,7 @@ jobs:
       #     aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
       #     aws_region: ${{ vars.AWS_REGION }}
       #     backend_conf: "backend.conf"
-      #     env_or_sandbox_name: ${{ github.event.inputs.sandbox_name }}
+      #     workspace: ${{ github.event.inputs.sandbox_name }}
       #     tf_vars_file: ${{ vars.TF_VARS_FILE }}
 
       - name: Configure AWS Credentials
@@ -137,5 +137,5 @@ jobs:
           aws_assume_role: arn:aws:iam::${{ secrets.DEV_AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
           aws_region: ${{ vars.AWS_REGION }}
           backend_conf: "backend.conf"
-          env_or_sandbox_name: ${{ github.event.inputs.sandbox_name }}
+          workspace: ${{ github.event.inputs.sandbox_name }}
           tf_vars_file: ${{ vars.TF_VARS_FILE }}
