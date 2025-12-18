@@ -168,7 +168,6 @@ resource "aws_lambda_permission" "toggle_bulk_upload_disable_permission" {
   source_arn    = aws_cloudwatch_event_rule.bulk_upload_disable_rule.arn
 }
 
-<<<<<<< HEAD
 # Transfer Key Manager Schedule - Daily SSH Key Expiry Check
 resource "aws_cloudwatch_event_rule" "transfer_key_manager_schedule" {
   name                = "${terraform.workspace}_transfer_key_manager_schedule"
@@ -199,7 +198,5 @@ resource "aws_lambda_permission" "transfer_key_manager_schedule_permission" {
     aws_cloudwatch_event_rule.transfer_key_manager_schedule
   ]
 }
-=======
 
 
->>>>>>> aead3e6 ([PRMP-1048] the infrastructure)
