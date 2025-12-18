@@ -43,19 +43,3 @@ resource "aws_lambda_permission" "office_hours_stop_permission" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.bulk_upload_concurrency_office_hours_stop.arn
 }
-
-resource "aws_lambda_permission" "deploy_permission" {
-  statement_id  = "AllowEventBridgeDeploy"
-  action        = "lambda:InvokeFunction"
-  function_name = module.concurrency-controller-lambda.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.bulk_upload_concurrency_deploy.arn
-}
-
-resource "aws_lambda_permission" "release_restore_permission" {
-  statement_id  = "AllowEventBridgeReleaseRestore"
-  action        = "lambda:InvokeFunction"
-  function_name = module.concurrency-controller-lambda.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.bulk_upload_concurrency_release_restore.arn
-}
