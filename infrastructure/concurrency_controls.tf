@@ -1,10 +1,13 @@
-# Concurrency control schedules 
-# Office hour start 
-# Original office hours schedule (9 AM daily)
-# schedule_expression = "cron(0 9 * * ? *)"
+# Concurrency control schedules
+# These times are set to ensure 9 AM - 7 PM UK local time is always covered regardless of GMT/BST:
+# - During GMT (winter): 8 AM UTC = 8 AM local, 7 PM UTC = 7 PM local (covers 9 AM - 7 PM with buffer)
+# - During BST (summer): 8 AM UTC = 9 AM local, 7 PM UTC = 8 PM local (covers 9 AM - 7 PM with buffer)
+# This guarantees the core working hours (9 AM - 7 PM UK time) always have reduced concurrency.
+
+# Office hours start (8 AM UTC)
 resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_start" {
   name                = "bulk-upload-office-hours-start"
-  schedule_expression = "cron(0/2 * * * ? *)"
+  schedule_expression = "cron(0 8 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_start" {
@@ -18,12 +21,10 @@ resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_sta
   })
 }
 
-# Office hours stop 
-# Original office hours schedule (5 PM daily)
-# schedule_expression = "cron(0 17 * * ? *)"
+# Office hours stop (7 PM UTC / 19:00 UTC)
 resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_stop" {
   name                = "bulk-upload-office-hours-stop"
-  schedule_expression = "cron(1/2 * * * ? *)"
+  schedule_expression = "cron(0 19 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_stop" {
