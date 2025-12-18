@@ -1,7 +1,7 @@
 module "report-orchestration-lambda" {
-  source  = "./modules/lambda"
-  name    = "reportOrchestration"
-  handler = "handlers.report_orchestration_handler.lambda_handler"
+  source         = "./modules/lambda"
+  name           = "reportOrchestration"
+  handler        = "handlers.report_orchestration_handler.lambda_handler"
   lambda_timeout = 900
   memory_size    = 1769
 
@@ -12,10 +12,10 @@ module "report-orchestration-lambda" {
   ]
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE               = terraform.workspace
+    APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE                     = terraform.workspace
     BULK_UPLOAD_REPORT_TABLE_NAME = "${terraform.workspace}_BulkUploadReport"
   }
 
