@@ -103,13 +103,13 @@ variable "persistent_workspaces" {
 variable "default_lambda_layers" {
   type = list(string)
   default = [
-    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:120"
+    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:207"
   ]
 }
 
 variable "extra_lambda_layers" {
   type    = list(string)
-  default = ["arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:53"]
+  default = ["arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:64"]
 }
 
 variable "kms_deletion_window" {

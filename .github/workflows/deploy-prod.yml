@@ -22,7 +22,7 @@ jobs:
     environment: prod
     steps:
       - name: Checkout Tag
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: refs/tags/${{ github.event.inputs.git_tag}}
           fetch-depth: "0"
