@@ -1,5 +1,5 @@
 data "aws_lambda_function" "_" {
-  function_name = "${terraform.workspace}_${var.lambda_function_name}"
+  function_name = var.lambda_function_name
 }
 
 locals {
