@@ -19,8 +19,6 @@ module "report-orchestration-lambda" {
     BULK_UPLOAD_REPORT_TABLE_NAME = "${terraform.workspace}_BulkUploadReport"
   }
 
-  rest_api_id                   = null
-  api_execution_arn             = null
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
 
