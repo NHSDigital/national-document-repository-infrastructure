@@ -32,7 +32,6 @@ module "bulk-upload-metadata-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.bulk-upload-metadata-lambda.function_name
   lambda_timeout       = module.bulk-upload-metadata-lambda.timeout
-  lambda_name          = "bulk_upload_metadata_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.bulk-upload-metadata-alarm-topic.arn]
   ok_actions           = [module.bulk-upload-metadata-alarm-topic.arn]

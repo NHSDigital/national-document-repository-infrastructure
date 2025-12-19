@@ -10,10 +10,6 @@ variable "lambda_function_name" {
   type        = string
 }
 
-variable "lambda_name" {
-  description = "Short identifier used in CloudWatch alarm naming."
-  type        = string
-}
 variable "alarm_actions" {
   description = "List of ARNs (e.g., SNS topics) to notify when a CloudWatch alarm is triggered."
   type        = list(string)

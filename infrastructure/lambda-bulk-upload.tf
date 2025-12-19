@@ -90,7 +90,6 @@ module "bulk-upload-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.bulk-upload-lambda.function_name
   lambda_timeout       = module.bulk-upload-lambda.timeout
-  lambda_name          = "bulk_upload_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.bulk-upload-alarm-topic.arn]
   ok_actions           = [module.bulk-upload-alarm-topic.arn]

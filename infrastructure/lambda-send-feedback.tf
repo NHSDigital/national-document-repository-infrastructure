@@ -37,7 +37,6 @@ module "send-feedback-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.send-feedback-lambda.function_name
   lambda_timeout       = module.send-feedback-lambda.timeout
-  lambda_name          = "send_feedback_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.send-feedback-alarm-topic.arn]
   ok_actions           = [module.send-feedback-alarm-topic.arn]

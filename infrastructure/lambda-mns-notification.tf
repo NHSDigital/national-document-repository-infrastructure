@@ -41,7 +41,6 @@ module "mns-notification-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.mns-notification-lambda[0].function_name
   lambda_timeout       = module.mns-notification-lambda[0].timeout
-  lambda_name          = "mns_notification_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.mns-notification-alarm-topic[0].arn]
   ok_actions           = [module.mns-notification-alarm-topic[0].arn]

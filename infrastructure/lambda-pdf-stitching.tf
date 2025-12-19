@@ -40,7 +40,6 @@ module "pdf-stitching-lambda-alarms" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.pdf-stitching-lambda.function_name
   lambda_timeout       = module.pdf-stitching-lambda.timeout
-  lambda_name          = "PdfStitchingLambda"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.pdf-stitching-alarm-topic.arn]
   ok_actions           = [module.pdf-stitching-alarm-topic.arn]

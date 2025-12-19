@@ -2,7 +2,6 @@ module "update-doc-ref-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.update-doc-ref-lambda.function_name
   lambda_timeout       = module.update-doc-ref-lambda.timeout
-  lambda_name          = "update_document_reference_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.update-doc-ref-alarm-topic.arn]
   ok_actions           = [module.update-doc-ref-alarm-topic.arn]

@@ -14,7 +14,6 @@ module "document-status-check-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.document-status-check-lambda.function_name
   lambda_timeout       = module.document-status-check-lambda.timeout
-  lambda_name          = "document_status_check_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.document-status-check-alarm-topic.arn]
   ok_actions           = [module.document-status-check-alarm-topic.arn]
