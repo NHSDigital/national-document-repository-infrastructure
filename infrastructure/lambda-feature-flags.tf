@@ -14,7 +14,6 @@ module "feature_flags_alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.feature-flags-lambda.function_name
   lambda_timeout       = module.feature-flags-lambda.timeout
-  lambda_name          = "feature_flags_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.feature_flags_alarm_topic.arn]
   ok_actions           = [module.feature_flags_alarm_topic.arn]

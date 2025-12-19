@@ -44,7 +44,6 @@ module "bulk-upload-metadata-processor-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.bulk-upload-metadata-processor-lambda.function_name
   lambda_timeout       = module.bulk-upload-metadata-processor-lambda.timeout
-  lambda_name          = "bulk_upload_metadata_processor_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.bulk-upload-metadata-processor-alarm-topic.arn]
   ok_actions           = [module.bulk-upload-metadata-processor-alarm-topic.arn]

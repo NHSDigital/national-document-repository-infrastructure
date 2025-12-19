@@ -32,7 +32,6 @@ module "manage-nrl-pointer-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.manage-nrl-pointer-lambda.function_name
   lambda_timeout       = module.manage-nrl-pointer-lambda.timeout
-  lambda_name          = "manage_nrl_pointer_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.manage-nrl-pointer-alarm-topic.arn]
   ok_actions           = [module.manage-nrl-pointer-alarm-topic.arn]

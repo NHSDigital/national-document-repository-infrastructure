@@ -77,7 +77,6 @@ module "transfer-key-manager-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.transfer-key-manager-lambda.function_name
   lambda_timeout       = module.transfer-key-manager-lambda.timeout
-  lambda_name          = "transfer_key_manager_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.transfer-key-manager-alarm-topic.arn]
   ok_actions           = [module.transfer-key-manager-alarm-topic.arn]

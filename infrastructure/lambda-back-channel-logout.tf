@@ -47,7 +47,6 @@ module "back_channel_logout_alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.back_channel_logout_lambda.function_name
   lambda_timeout       = module.back_channel_logout_lambda.timeout
-  lambda_name          = "back_channel_logout_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.back_channel_logout_alarm_topic.arn]
   ok_actions           = [module.back_channel_logout_alarm_topic.arn]

@@ -2,7 +2,6 @@ module "edge_presign_alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.edge-presign-lambda.function_name
   lambda_timeout       = module.edge-presign-lambda.timeout
-  lambda_name          = "edge_presign_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.edge_presign_alarm_topic.arn]
   ok_actions           = [module.edge_presign_alarm_topic.arn]

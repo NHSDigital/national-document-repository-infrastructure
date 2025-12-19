@@ -1,5 +1,13 @@
+data "aws_lambda_function" "_" {
+  function_name = "${terraform.workspace}_${var.lambda_function_name}"
+}
+
+locals {
+  lambda_handler_component = split(".", data.aws_lambda_function._.handler)[1]
+}
+
 resource "aws_cloudwatch_metric_alarm" "lambda_error" {
-  alarm_name        = "${terraform.workspace}-alarm_${var.lambda_name}_error"
+  alarm_name        = "${terraform.workspace}-alarm_${local.lambda_handler_component}_error"
   alarm_description = "Triggers when an error has occurred in ${var.lambda_function_name}."
   dimensions = {
     FunctionName = var.lambda_function_name
@@ -17,7 +25,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_error" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_alarm" {
-  alarm_name        = "${terraform.workspace}-alarm_${var.lambda_name}_duration"
+  alarm_name        = "${terraform.workspace}-alarm_${local.lambda_handler_component}_duration"
   alarm_description = "Triggers when duration of ${var.lambda_function_name} exceeds 80% of timeout."
   dimensions = {
     FunctionName = var.lambda_function_name
@@ -32,7 +40,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_alarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_memory_alarm" {
-  alarm_name        = "${terraform.workspace}-alarm_${var.lambda_name}_memory"
+  alarm_name        = "${terraform.workspace}-alarm_${local.lambda_handler_component}_memory"
   alarm_description = "Triggers when max memory usage of ${var.lambda_function_name} exceeds 80% of provisioned memory."
   dimensions = {
     function_name = var.lambda_function_name
