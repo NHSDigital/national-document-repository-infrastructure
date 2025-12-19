@@ -28,7 +28,3 @@ module "report-orchestration-lambda" {
     module.bulk_upload_report_dynamodb_table
   ]
 }
-
-data "aws_iam_policy" "aws_lambda_vpc_access_execution_role" {
-  arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
-}
