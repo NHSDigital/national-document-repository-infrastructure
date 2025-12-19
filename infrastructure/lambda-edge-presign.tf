@@ -6,6 +6,10 @@ module "edge_presign_alarm" {
   alarm_actions        = [module.edge_presign_alarm_topic.arn]
   ok_actions           = [module.edge_presign_alarm_topic.arn]
   depends_on           = [module.edge-presign-lambda, module.edge_presign_alarm_topic]
+
+  providers = {
+    aws = aws.us_east_1
+  }
 }
 
 resource "aws_cloudwatch_log_metric_filter" "edge_presign_error" {
