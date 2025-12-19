@@ -47,9 +47,9 @@ resource "aws_iam_role" "github_role_dev" {
 # INLINE POLICIES
 
 resource "aws_iam_role_policy" "cloudtrail_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  role = aws_iam_role.github_role_dev[0].id
-  name = "cloudtrail"
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.github_role_dev[0].id
+  name  = "cloudtrail"
   policy = jsonencode(
     {
       Statement = [
@@ -81,9 +81,9 @@ resource "aws_iam_role_policy" "cloudtrail_dev" {
 }
 
 resource "aws_iam_role_policy" "cloudwatch_logs_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  role = aws_iam_role.github_role_dev[0].id
-  name = "cloudwatch_logs_policy"
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.github_role_dev[0].id
+  name  = "cloudwatch_logs_policy"
   policy = jsonencode(
     {
       Statement = [
@@ -123,9 +123,9 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy_dev" {
 }
 
 resource "aws_iam_role_policy" "ecs_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  role = aws_iam_role.github_role_dev[0].id
-  name = "ecs_policy"
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.github_role_dev[0].id
+  name  = "ecs_policy"
   policy = jsonencode(
     {
       Statement = [
@@ -145,9 +145,9 @@ resource "aws_iam_role_policy" "ecs_policy_dev" {
 }
 
 resource "aws_iam_role_policy" "github_actions_waf_override_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  role = aws_iam_role.github_role_dev[0].id
-  name = "github_actions_waf_override"
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.github_role_dev[0].id
+  name  = "github_actions_waf_override"
   policy = jsonencode(
     {
       Statement = [
@@ -163,9 +163,9 @@ resource "aws_iam_role_policy" "github_actions_waf_override_dev" {
 }
 
 resource "aws_iam_role_policy" "lambda_layer_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  role = aws_iam_role.github_role_dev[0].id
-  name = "lambda_layer_policy"
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.github_role_dev[0].id
+  name  = "lambda_layer_policy"
   policy = jsonencode(
     {
       Statement = [
@@ -191,9 +191,9 @@ resource "aws_iam_role_policy" "lambda_layer_policy_dev" {
 }
 
 resource "aws_iam_role_policy" "rum_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  role = aws_iam_role.github_role_dev[0].id
-  name = "rum_policy"
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.github_role_dev[0].id
+  name  = "rum_policy"
   policy = jsonencode(
     {
       Statement = [
@@ -253,9 +253,9 @@ resource "aws_iam_role_policy" "rum_policy_dev" {
 }
 
 resource "aws_iam_role_policy" "step_functions_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  role = aws_iam_role.github_role_dev[0].id
-  name = "step_functions"
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.github_role_dev[0].id
+  name  = "step_functions"
   policy = jsonencode(
     {
       Statement = [
@@ -279,9 +279,9 @@ resource "aws_iam_role_policy" "step_functions_dev" {
 }
 
 resource "aws_iam_role_policy" "github_terraform_tagging_policy_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
-  role = aws_iam_role.github_role_dev[0].id
-  name = "github_terraform_tagging_policy"
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.github_role_dev[0].id
+  name  = "github_terraform_tagging_policy"
   policy = jsonencode(
     {
       Statement = [
@@ -388,13 +388,13 @@ resource "aws_iam_role_policy" "github_terraform_tagging_policy_dev" {
 # ATTACHED POLICIES
 
 resource "aws_iam_role_policy_attachment" "ReadOnlyAccess_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
+  count      = local.is_sandbox_or_dev ? 1 : 0
   role       = aws_iam_role.github_role_dev[0].name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
 
 resource "aws_iam_role_policy_attachment" "github_actions_terraform_full_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
+  count      = local.is_sandbox_or_dev ? 1 : 0
   role       = aws_iam_role.github_role_dev[0].name
   policy_arn = aws_iam_policy.github_actions_terraform_full_dev[0].arn
 }
@@ -656,7 +656,7 @@ resource "aws_iam_policy" "github_actions_terraform_full_dev" {
 
 
 resource "aws_iam_role_policy_attachment" "github_actions_extended_dev" {
-  count       = local.is_sandbox_or_dev ? 1 : 0
+  count      = local.is_sandbox_or_dev ? 1 : 0
   role       = aws_iam_role.github_role_dev[0].name
   policy_arn = aws_iam_policy.github_actions_extended_dev[0].arn
 }
