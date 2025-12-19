@@ -73,11 +73,34 @@ module "edge-presign-lambda" {
   iam_role_policies = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     aws_iam_policy.ssm_access_policy.arn,
-    module.ndr-app-config.app_config_policy_arn
+    module.ndr-app-config.app_config_policy_arn,
+    aws_iam_policy.staging_bucket_put.arn
   ]
   providers = {
     aws = aws.us_east_1
   }
-  bucket_names = [module.ndr-lloyd-george-store.bucket_id, module.ndr-document-pending-review-store.bucket_id]
-  table_name   = module.cloudfront_edge_dynamodb_table.table_name
+  bucket_names = [
+    module.ndr-lloyd-george-store.bucket_id,
+    module.ndr-document-pending-review-store.bucket_id,
+    module.ndr-bulk-staging-store.bucket_id
+  ]
+  table_name = module.cloudfront_edge_dynamodb_table.table_name
+}
+
+resource "aws_iam_policy" "staging_bucket_put" {
+  name = "${terraform.workspace}_staging_bucket_put"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:PutObject"
+        ],
+        Resource = [
+          "${module.ndr-bulk-staging-store.bucket_arn}/*",
+        ]
+      }
+    ]
+  })
 }
