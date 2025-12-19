@@ -13,11 +13,35 @@ permissions:
   actions: read   # This is required for Plan comment
   id-token: write # This is required for requesting the JWT
   contents: write # This is required for SBOM action
-    
+
 jobs:
+
+  # Terraform apply of pre-core will only occur on a push (merge request completion)
+  terraform_plan_apply_pre_core:
+    if: github.ref == 'refs/heads/main'
+    name: Terraform Plan/Apply (pre_core)
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v5
+
+      - name: Apply pre_core
+        uses: ./.github/actions/tf-plan-apply
+        with:
+          aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
+          aws_region: ${{ vars.AWS_REGION }}
+          backend_conf: "backend.conf"
+          working_directory: "./pre_core"  # Use separate pre_core directory
+          workspace: ${{ secrets.AWS_WORKSPACE }}
+          tf_vars_file: ${{ vars.TF_VARS_FILE }}
+
+  # Will run when terraform_plan_apply_pre_core completes or is skipped
   terraform_plan_apply:
     name: Terraform Plan/Apply (ndr-dev)
     runs-on: ubuntu-latest
+    needs: terraform_plan_apply_pre_core
+    if: always() && (needs.terraform_plan_apply_pre_core.result == 'skipped' || needs.terraform_plan_apply_pre_core.result == 'success')
     environment: development
     steps:
       - name: Checkout
@@ -73,7 +97,7 @@ jobs:
               echo "::add-mask::$cert_block"
             fi
           done || echo "No certificate blocks found to mask."
-          
+
           # Mask sensitive URLs in the Terraform Plan output
           grep -Eo 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' tfplan.txt | while read -r api_url; do
             if [ -n "$api_url" ]; then
@@ -153,7 +177,7 @@ jobs:
 
             // 2. Prepare format of the comment
             const output = `### Report for environment: ndr-dev
-            
+
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             <details><summary>Initialization Output</summary>
 
@@ -191,7 +215,7 @@ jobs:
                 body: output
               })
             }
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
