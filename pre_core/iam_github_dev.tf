@@ -9,7 +9,7 @@ resource "aws_iam_role" "github_role_dev" {
   path                  = "/"
   permissions_boundary  = null
   tags                  = {}
-  assume_role_policy    = jsonencode(
+  assume_role_policy = jsonencode(
     {
       Statement = [
         {
@@ -640,7 +640,7 @@ resource "aws_iam_policy" "github_actions_terraform_full_dev" {
       Version = "2012-10-17"
     }
   )
-  tags     = {}
+  tags = {}
 }
 
 
@@ -877,5 +877,5 @@ resource "aws_iam_policy" "github_actions_extended_dev" {
       Version = "2012-10-17"
     }
   )
-  tags     = {}
+  tags = {}
 }
