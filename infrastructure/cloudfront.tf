@@ -17,7 +17,7 @@ module "cloudfront_firewall_waf_v2" {
 
   environment = var.environment
   owner       = var.owner
-  count       = local.is_sandbox ? 1 : 1
+  count       = local.is_sandbox ? 0 : 1
   providers   = { aws = aws.us_east_1 }
 }
 
