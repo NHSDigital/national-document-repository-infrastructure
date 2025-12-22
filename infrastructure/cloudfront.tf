@@ -14,7 +14,7 @@ resource "aws_cloudfront_origin_access_control" "s3" {
 module "cloudfront_firewall_waf_v2" {
   source         = "./modules/firewall_waf_v2"
   cloudfront_acl = true
-  api            = true
+
   environment    = var.environment
   owner          = var.owner
   count          = local.is_sandbox ? 1 : 1
