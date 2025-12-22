@@ -15,10 +15,10 @@ module "cloudfront_firewall_waf_v2" {
   source         = "./modules/firewall_waf_v2"
   cloudfront_acl = true
 
-  environment    = var.environment
-  owner          = var.owner
-  count          = local.is_sandbox ? 1 : 1
-  providers      = { aws = aws.us_east_1 }
+  environment = var.environment
+  owner       = var.owner
+  count       = local.is_sandbox ? 1 : 1
+  providers   = { aws = aws.us_east_1 }
 }
 
 resource "aws_cloudfront_distribution" "s3_presign_mask" {
