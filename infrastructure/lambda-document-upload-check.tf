@@ -10,8 +10,6 @@ module "document_upload_check_lambda" {
     aws_iam_policy.ssm_access_policy.policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
-    module.pdm_dynamodb_table.dynamodb_read_policy_document,
-    module.pdm_dynamodb_table.dynamodb_write_policy_document,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
     module.document_upload_review_dynamodb_table.dynamodb_read_policy_document,
     module.document_upload_review_dynamodb_table.dynamodb_write_policy_document,
@@ -24,9 +22,7 @@ module "document_upload_check_lambda" {
   http_methods        = null
   api_execution_arn   = null
   lambda_environment_variables = {
-    LLOYD_GEORGE_DYNAMODB_NAME    = module.lloyd_george_reference_dynamodb_table.table_name
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
-    PDM_DYNAMODB_NAME             = module.pdm_dynamodb_table.table_name
     STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
     LLOYD_GEORGE_BUCKET_NAME      = module.ndr-lloyd-george-store.bucket_id
     PDM_BUCKET_NAME               = module.pdm-document-store.bucket_id
@@ -45,6 +41,7 @@ module "document_upload_check_lambda" {
     module.ndr-bulk-staging-store,
     module.ndr-lloyd-george-store,
     module.lloyd_george_reference_dynamodb_table,
+    module.core_dynamodb_table,
   ]
 }
 
