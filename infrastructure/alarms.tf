@@ -69,7 +69,7 @@ resource "aws_sns_topic" "alarm_notifications_topic" {
       }
     ]
   })
-  count = local.is_sandbox ? 0 : 1
+  count = local.is_sandbox ? 1 : 1
 }
 
 resource "aws_sns_topic_subscription" "alarm_notifications_sns_topic_subscription" {
