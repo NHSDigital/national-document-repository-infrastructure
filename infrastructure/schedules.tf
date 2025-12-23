@@ -198,3 +198,5 @@ resource "aws_lambda_permission" "transfer_key_manager_schedule_permission" {
     aws_cloudwatch_event_rule.transfer_key_manager_schedule
   ]
 }
+
+
