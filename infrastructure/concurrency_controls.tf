@@ -6,9 +6,8 @@
 
 # Office hours start (8 AM UTC)
 resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_start" {
-  name = "bulk-upload-office-hours-start"
-  # schedule_expression = "cron(0 8 * * ? *)"
-  schedule_expression = "cron(0/1 * * * ? *)"
+  name                = "bulk-upload-office-hours-start"
+  schedule_expression = "cron(0 8 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_start" {
@@ -24,9 +23,8 @@ resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_sta
 
 # Office hours stop (7 PM UTC / 19:00 UTC)
 resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_stop" {
-  name = "bulk-upload-office-hours-stop"
-  # schedule_expression = "cron(0 19 * * ? *)"
-  schedule_expression = "cron(0/1 * * * ? *)"
+  name                = "bulk-upload-office-hours-stop"
+  schedule_expression = "cron(0 19 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_stop" {
