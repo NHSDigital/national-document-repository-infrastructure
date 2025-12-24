@@ -86,7 +86,7 @@ resource "aws_cloudwatch_metric_alarm" "review_patch_failed_to_delete_from_s3" {
   count               = local.is_sandbox ? 1 : 1
   alarm_name          = "${module.patch_document_review_lambda.function_name}_failed_to_delete_from_s3"
   metric_name         = "S3DeleteFailures"
-  namespace           = "App/Review"
+  namespace           = "PatchReview"
   threshold           = 0
   statistic           = "Sum"
   period              = "300"
