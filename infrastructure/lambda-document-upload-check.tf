@@ -22,6 +22,7 @@ module "document_upload_check_lambda" {
   http_methods        = null
   api_execution_arn   = null
   lambda_environment_variables = {
+    LLOYD_GEORGE_DYNAMODB_NAME    = module.lloyd_george_reference_dynamodb_table.table_name
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
     STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
     LLOYD_GEORGE_BUCKET_NAME      = module.ndr-lloyd-george-store.bucket_id
