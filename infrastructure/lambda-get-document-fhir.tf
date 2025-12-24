@@ -40,6 +40,7 @@ module "get-doc-fhir-lambda" {
     module.ndr-app-config.app_config_policy,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.pdm_dynamodb_table.dynamodb_read_policy_document,
+    module.core_dynamodb_table.dynamodb_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.pdm-document-store.s3_read_policy_document,
@@ -59,13 +60,14 @@ module "get-doc-fhir-lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME = module.lloyd_george_reference_dynamodb_table.table_name
     PDM_DYNAMODB_NAME          = module.pdm_dynamodb_table.table_name
     OIDC_CALLBACK_URL          = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
-    CLOUDFRONT_URL             = module.cloudfront-distribution-lg.cloudfront_url
+    CLOUDFRONT_URL             = aws_cloudfront_distribution.s3_presign_mask.domain_name
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
   }
   depends_on = [
     aws_api_gateway_method.get_document_reference,
     module.pdm_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
+    module.core_dynamodb_table,
   ]
 }
 

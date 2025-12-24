@@ -12,20 +12,27 @@ module "document_upload_check_lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.pdm_dynamodb_table.dynamodb_read_policy_document,
     module.pdm_dynamodb_table.dynamodb_write_policy_document,
-    data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy
+    data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
+    module.document_upload_review_dynamodb_table.dynamodb_read_policy_document,
+    module.document_upload_review_dynamodb_table.dynamodb_write_policy_document,
+    module.ndr-document-pending-review-store.s3_write_policy_document,
+    module.core_dynamodb_table.dynamodb_read_policy_document,
+    module.core_dynamodb_table.dynamodb_write_policy_document,
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = null
   http_methods        = null
   api_execution_arn   = null
   lambda_environment_variables = {
-    LLOYD_GEORGE_DYNAMODB_NAME = module.lloyd_george_reference_dynamodb_table.table_name
-    PDM_DYNAMODB_NAME          = module.pdm_dynamodb_table.table_name
-    STAGING_STORE_BUCKET_NAME  = module.ndr-bulk-staging-store.bucket_id
-    LLOYD_GEORGE_BUCKET_NAME   = module.ndr-lloyd-george-store.bucket_id
-    PDM_BUCKET_NAME            = module.pdm-document-store.bucket_id
-    WORKSPACE                  = terraform.workspace
-    VIRUS_SCAN_STUB            = !local.is_production
+    LLOYD_GEORGE_DYNAMODB_NAME    = module.lloyd_george_reference_dynamodb_table.table_name
+    DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
+    PDM_DYNAMODB_NAME             = module.pdm_dynamodb_table.table_name
+    STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
+    LLOYD_GEORGE_BUCKET_NAME      = module.ndr-lloyd-george-store.bucket_id
+    PDM_BUCKET_NAME               = module.pdm-document-store.bucket_id
+    PENDING_REVIEW_BUCKET_NAME    = module.ndr-document-pending-review-store.bucket_id
+    WORKSPACE                     = terraform.workspace
+    VIRUS_SCAN_STUB               = !local.is_production
 
   }
   lambda_timeout                = 900
@@ -65,6 +72,11 @@ resource "aws_s3_bucket_notification" "document_upload_check_lambda_trigger" {
     lambda_function_arn = module.document_upload_check_lambda.lambda_arn
     events              = ["s3:ObjectCreated:*"]
     filter_prefix       = "fhir_upload"
+  }
+  lambda_function {
+    lambda_function_arn = module.document_upload_check_lambda.lambda_arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = "review"
   }
 }
 

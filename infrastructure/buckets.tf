@@ -51,7 +51,7 @@ module "ndr-lloyd-george-store" {
   access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
   cloudfront_enabled        = true
-  cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
+  cloudfront_arn            = aws_cloudfront_distribution.s3_presign_mask.arn
   bucket_name               = var.lloyd_george_bucket_name
   enable_bucket_versioning  = true
   environment               = var.environment
@@ -122,6 +122,8 @@ module "ndr-bulk-staging-store" {
   bucket_name               = var.staging_store_bucket_name
   enable_cors_configuration = true
   enable_bucket_versioning  = true
+  cloudfront_arn            = aws_cloudfront_distribution.s3_presign_mask.arn
+  cloudfront_enabled        = true
   environment               = var.environment
   owner                     = var.owner
   force_destroy             = local.is_force_destroy
@@ -167,7 +169,7 @@ module "ndr-document-pending-review-store" {
   enable_bucket_versioning  = true
   force_destroy             = local.is_force_destroy
   cloudfront_enabled        = true
-  cloudfront_arn            = module.cloudfront-distribution-lg.cloudfront_arn
+  cloudfront_arn            = aws_cloudfront_distribution.s3_presign_mask.arn
   enable_cors_configuration = true
   cors_rules = [
     {
@@ -234,6 +236,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     }
   }
   rule {
+    id     = "Delete objects in review folder that have existed for 24 hours"
+    status = "Enabled"
+
+    expiration {
+      days = 1
+    }
+
+    filter {
+      prefix = "review/"
+    }
+  }
+  rule {
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
     transition {
@@ -278,6 +292,17 @@ resource "aws_s3_bucket_lifecycle_configuration" "ndr_document_pending_review_st
     transition {
       storage_class = "INTELLIGENT_TIERING"
       days          = 0
+    }
+    filter {}
+  }
+  rule {
+    id     = "remove-delete-markers-after-42-days"
+    status = "Enabled"
+    expiration {
+      expired_object_delete_marker = true
+    }
+    noncurrent_version_expiration {
+      noncurrent_days = 42
     }
     filter {}
   }

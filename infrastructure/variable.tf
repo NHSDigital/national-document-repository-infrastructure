@@ -181,7 +181,7 @@ variable "alarm_state_history_table_name" {
 variable "document_review_table_name" {
   description = "The name of the DynamoDB table to store document review records."
   type        = string
-  default     = "DocumentReview"
+  default     = "DocumentUploadReview"
 }
 
 variable "deletion_protection_enabled" {
@@ -313,4 +313,11 @@ variable "kms_deletion_window" {
   description = "KMS time to deletion in days"
   type        = number
   default     = 30
+}
+
+# SSH Key Management Variables
+variable "ssh_key_management_dry_run" {
+  description = "Enable dry-run mode for SSH key management (no keys will be deleted)"
+  type        = bool
+  default     = false
 }
