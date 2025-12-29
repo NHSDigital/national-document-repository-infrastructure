@@ -123,7 +123,7 @@ resource "aws_iam_policy" "mtls_access_ssm_policy" {
           "kms:GenerateDataKey"
         ],
         Resource = [
-          module.pdm_encryption_key.id
+          module.pdm_encryption_key.kms_arn
         ]
       }
     ]
