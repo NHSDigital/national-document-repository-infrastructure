@@ -84,7 +84,7 @@ data "terraform_remote_state" "shared" {
 
   config = {
     bucket = local.shared_terraform_state_bucket
-    key    = "${var.shared_infra_workspace}/terraform.tfstate"
+    key    = "env:/${var.shared_infra_workspace}/ndr/terraform.tfstate"
     region = "eu-west-2"
   }
 }
