@@ -42,6 +42,7 @@ module "get-doc-fhir-lambda" {
     module.pdm_dynamodb_table.dynamodb_read_policy_document,
     module.core_dynamodb_table.dynamodb_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
+    aws_iam_policy.mtls_access_ssm_policy.policy,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.pdm-document-store.s3_read_policy_document,
   ]

@@ -109,3 +109,21 @@ resource "aws_iam_policy" "transfer_family_kill_switch" {
     ]
   })
 }
+
+resource "aws_iam_policy" "mtls_access_ssm_policy" {
+  name = "${terraform.workspace}_mtls_ssm_parameters"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:Decrypt",
+        ],
+        Resource = [
+          module.pdm_encryption_key.kms_arn
+        ]
+      }
+    ]
+  })
+}
