@@ -274,8 +274,10 @@ locals {
 
   apim_api_url = "https://${var.apim_environment}api.service.nhs.uk/national-document-repository/FHIR/R4"
 
-  truststore_bucket_id = local.is_sandbox ? "ndr-dev-${var.truststore_bucket_name}" : module.ndr-truststore[0].bucket_id
-  truststore_uri       = "s3://${local.truststore_bucket_id}/${var.ca_pem_filename}"
+  truststore_bucket_id          = local.is_sandbox ? "ndr-dev-${var.truststore_bucket_name}" : module.ndr-truststore[0].bucket_id
+  truststore_uri                = "s3://${local.truststore_bucket_id}/${var.ca_pem_filename}"
+  shared_terraform_state_bucket = "ndr-${var.environment}-terraform-state-${data.aws_caller_identity.current.account_id}"
+  common_name_kms_key_arn       = !local.is_sandbox ? module.pdm_encryption_key.kms_arn : data.terraform_remote_state.shared.outputs.pdm_kms_key_arn
 }
 
 variable "nrl_api_endpoint_suffix" {
@@ -320,4 +322,10 @@ variable "ssh_key_management_dry_run" {
   description = "Enable dry-run mode for SSH key management (no keys will be deleted)"
   type        = bool
   default     = false
+}
+
+variable "shared_infra_workspace" {
+  description = "Workspace that owns shared infra like SSM and KMS"
+  type        = string
+  default     = "ndr-dev"
 }

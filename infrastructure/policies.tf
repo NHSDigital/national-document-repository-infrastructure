@@ -121,7 +121,7 @@ resource "aws_iam_policy" "mtls_access_ssm_policy" {
           "kms:Decrypt",
         ],
         Resource = [
-          module.pdm_encryption_key.kms_arn
+          local.common_name_kms_key_arn
         ]
       }
     ]
