@@ -118,9 +118,7 @@ resource "aws_iam_policy" "mtls_access_ssm_policy" {
       {
         Effect = "Allow",
         Action = [
-          "kms:Encrypt",
           "kms:Decrypt",
-          "kms:GenerateDataKey"
         ],
         Resource = [
           module.pdm_encryption_key.kms_arn
