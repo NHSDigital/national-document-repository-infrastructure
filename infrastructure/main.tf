@@ -79,3 +79,12 @@ data "aws_ssm_parameter" "apim_url" {
   name = "/repo/${var.environment}/user-input/apim-api-url"
 }
 
+data "terraform_remote_state" "shared" {
+  backend = "s3"
+
+  config = {
+    bucket = local.shared_terraform_state_bucket
+    key    = "env:/${var.shared_infra_workspace}/ndr/terraform.tfstate"
+    region = "eu-west-2"
+  }
+}

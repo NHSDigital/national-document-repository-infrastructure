@@ -1,4 +1,5 @@
 environment                       = "pre-prod"
+shared_infra_workspace            = "pre-prod"
 owner                             = "nhse/ndr-team"
 domain                            = "national-document-repository.nhs.uk"
 certificate_domain                = "pre-prod.national-document-repository.nhs.uk"
