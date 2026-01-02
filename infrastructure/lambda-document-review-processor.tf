@@ -23,6 +23,7 @@ module "document_review_processor_lambda" {
     STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
     WORKSPACE                     = terraform.workspace
+    PDS_FHIR_IS_STUBBED           = local.is_sandbox
   }
 }
 
