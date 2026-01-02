@@ -1,4 +1,5 @@
 environment                       = "test"
+shared_infra_workspace            = "ndr-test"
 owner                             = "nhse/ndr-team"
 domain                            = "access-request-fulfilment.patient-deductions.nhs.uk"
 certificate_domain                = "ndr-test.access-request-fulfilment.patient-deductions.nhs.uk"

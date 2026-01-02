@@ -7,7 +7,7 @@ locals {
       name                    = "AWSCoreRuleSet"
       managed_rule_name       = "AWSManagedRulesCommonRuleSet"
       cloudwatch_metrics_name = "AWS-core-ruleset"
-      excluded_rules          = var.api ? ["SizeRestrictions_BODY"] : []
+      excluded_rules          = ["SizeRestrictions_BODY"]
       bypass                  = ["Yes"]
     },
     {
