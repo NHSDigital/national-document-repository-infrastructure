@@ -76,7 +76,7 @@ resource "aws_cloudwatch_log_metric_filter" "review_patch_failed_to_delete_from_
   log_group_name = "/aws/lambda/${module.patch_document_review_lambda.function_name}"
   metric_transformation {
     name      = "S3DeleteFailures"
-    namespace = "PatchReview"
+    namespace = "App/Review"
     value     = "1"
   }
 }
@@ -84,7 +84,7 @@ resource "aws_cloudwatch_log_metric_filter" "review_patch_failed_to_delete_from_
 resource "aws_cloudwatch_metric_alarm" "review_patch_failed_to_delete_from_s3" {
   alarm_name          = "${module.patch_document_review_lambda.function_name}_failed_to_delete_from_s3"
   metric_name         = "S3DeleteFailures"
-  namespace           = "PatchReview"
+  namespace           = "App/Review"
   threshold           = 0
   statistic           = "Sum"
   period              = "300"
