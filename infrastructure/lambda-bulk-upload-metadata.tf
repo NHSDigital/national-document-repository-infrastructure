@@ -1,9 +1,10 @@
 module "bulk-upload-metadata-lambda" {
-  source         = "./modules/lambda"
-  name           = "BulkUploadMetadataLambda"
-  handler        = "handlers.bulk_upload_metadata_handler.lambda_handler"
-  lambda_timeout = 900
-  memory_size    = 1769
+  source                      = "./modules/lambda"
+  name                        = "BulkUploadMetadataLambda"
+  handler                     = "handlers.bulk_upload_metadata_handler.lambda_handler"
+  lambda_timeout              = 900
+  memory_size                 = 1769
+  manage_reserved_concurrency = false
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
