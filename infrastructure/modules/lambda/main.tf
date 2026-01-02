@@ -28,11 +28,14 @@ resource "aws_lambda_function" "lambda" {
   layers = local.lambda_layers
 
   lifecycle {
-    ignore_changes = [
-      # These are required as Lambdas are deployed via the CI/CD pipelines
-      source_code_hash,
-      layers
-    ]
+    ignore_changes = concat(
+      [
+        # These are required as Lambdas are deployed via the CI/CD pipelines
+        source_code_hash,
+        layers
+      ],
+      var.manage_reserved_concurrency ? [] : [reserved_concurrent_executions]
+    )
   }
 
   depends_on = [
