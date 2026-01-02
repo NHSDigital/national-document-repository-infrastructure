@@ -71,19 +71,17 @@ module "patch_document_review_lambda_alarm_topic" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "review_patch_failed_to_delete_from_s3" {
-  count          = local.is_sandbox ? 1 : 1
   name           = "ReviewPatchFailedToDeleteFromS3"
-  pattern        = "%Failed to delete file%"
+  pattern        = "%Unable to delete file%"
   log_group_name = "/aws/lambda/${module.patch_document_review_lambda.function_name}"
   metric_transformation {
     name      = "S3DeleteFailures"
-    namespace = "App/Review"
+    namespace = "PatchReview"
     value     = "1"
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "review_patch_failed_to_delete_from_s3" {
-  count               = local.is_sandbox ? 1 : 1
   alarm_name          = "${module.patch_document_review_lambda.function_name}_failed_to_delete_from_s3"
   metric_name         = "S3DeleteFailures"
   namespace           = "PatchReview"
