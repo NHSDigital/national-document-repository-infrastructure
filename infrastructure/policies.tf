@@ -67,3 +67,63 @@ resource "aws_iam_policy" "administrator_permission_restrictions" {
     Workspace = "core"
   }
 }
+
+resource "aws_iam_policy" "transfer_family_kill_switch" {
+  name        = "${terraform.workspace}-transfer-family-kill-switch"
+  description = "Permissions for Transfer kill switch Lambda"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "DescribeAndStopTransferServers",
+        Effect = "Allow",
+        Action = [
+          "transfer:DescribeServer",
+          "transfer:StopServer",
+        ],
+        Resource = [
+          "arn:aws:transfer:${var.region}:${data.aws_caller_identity.current.account_id}:server/*",
+        ]
+      },
+      {
+        Sid    = "ListTransferServers",
+        Effect = "Allow",
+        Action = [
+          "transfer:ListServers",
+        ],
+        Resource = "*"
+      },
+      {
+        Sid    = "PublishTransferFamilyKillSwitchMetrics",
+        Effect = "Allow",
+        Action = [
+          "cloudwatch:PutMetricData",
+        ],
+        Resource = "*",
+        Condition = {
+          StringEquals = {
+            "cloudwatch:namespace" = "Custom/TransferFamilyKillSwitch"
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "mtls_access_ssm_policy" {
+  name = "${terraform.workspace}_mtls_ssm_parameters"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:Decrypt",
+        ],
+        Resource = [
+          local.common_name_kms_key_arn
+        ]
+      }
+    ]
+  })
+}
