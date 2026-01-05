@@ -46,6 +46,7 @@ module "bulk-upload-lambda" {
   is_invoked_from_gateway        = false
   lambda_timeout                 = 900
   reserved_concurrent_executions = local.bulk_upload_lambda_concurrent_limit
+  manage_reserved_concurrency    = false
 
   depends_on = [
     module.ndr-bulk-staging-store,
