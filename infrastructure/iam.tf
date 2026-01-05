@@ -356,3 +356,33 @@ resource "aws_iam_policy" "s3_document_data_policy_post_document_review_lambda" 
     ]
   })
 }
+
+data "aws_iam_policy_document" "reporting_ses_policy" {
+  statement {
+    sid    = "SESAccess"
+    effect = "Allow"
+    actions = [
+      "ses:SendEmail",
+      "ses:SendRawEmail"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "ses:FromAddress"
+      values   = [data.aws_ssm_parameter.prm_mailbox_email.value]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "invoke_report_distribution_lambda" {
+  statement {
+    sid    = "InvokeReportDistribution"
+    effect = "Allow"
+    actions = [
+      "lambda:InvokeFunction"
+    ]
+    resources = [
+      module.report-distribution-lambda.lambda_arn
+    ]
+  }
+}
