@@ -9,7 +9,7 @@ resource "aws_lambda_function" "lambda" {
   runtime                        = "python3.11"
   timeout                        = var.lambda_timeout
   memory_size                    = var.memory_size
-  reserved_concurrent_executions = var.reserved_concurrent_executions
+  reserved_concurrent_executions = var.manage_reserved_concurrency ? var.reserved_concurrent_executions : null
   kms_key_arn                    = aws_kms_key.lambda.arn
 
   ephemeral_storage {
@@ -32,8 +32,8 @@ resource "aws_lambda_function" "lambda" {
       # These are required as Lambdas are deployed via the CI/CD pipelines
       source_code_hash,
       layers,
-      # Conditionally ignore reserved_concurrent_executions when managed externally
-      var.manage_reserved_concurrency ? null : reserved_concurrent_executions
+      # Always ignore to allow external management when manage_reserved_concurrency = false
+      reserved_concurrent_executions
     ]
   }
 
