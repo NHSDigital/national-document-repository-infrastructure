@@ -10,6 +10,8 @@ module "report-distribution-lambda" {
 
     # To be added on ticket 1128
     # module.report_contact_lookup.dynamodb_read_policy_document,
+    # Until the real module exists
+    data.aws_iam_policy_document.report_contact_lookup_read_policy.json,
 
     data.aws_iam_policy_document.reporting_ses_policy.json,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,

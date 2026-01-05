@@ -386,3 +386,19 @@ data "aws_iam_policy_document" "invoke_report_distribution_lambda" {
     ]
   }
 }
+
+data "aws_iam_policy_document" "report_contact_lookup_read_policy" {
+  statement {
+    sid    = "ReportContactLookupRead"
+    effect = "Allow"
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:Query",
+      "dynamodb:Scan",
+      "dynamodb:DescribeTable"
+    ]
+    resources = [
+      "arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.current.account_id}:table/${terraform.workspace}_ReportContactLookup"
+    ]
+  }
+}
