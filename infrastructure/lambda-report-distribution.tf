@@ -21,11 +21,11 @@ module "report-distribution-lambda" {
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
 
-    REPORT_BUCKET_NAME      = module.report-orchestration-store.bucket_id
-    CONTACT_TABLE_NAME      = "${terraform.workspace}_ReportContactLookup"
+    REPORT_BUCKET_NAME = module.report-orchestration-store.bucket_id
+    CONTACT_TABLE_NAME = "${terraform.workspace}_ReportContactLookup"
 
-    PRM_MAILBOX_EMAIL       = data.aws_ssm_parameter.prm_mailbox_email.value
-    SES_FROM_ADDRESS        = data.aws_ssm_parameter.prm_mailbox_email.value
+    PRM_MAILBOX_EMAIL = data.aws_ssm_parameter.prm_mailbox_email.value
+    SES_FROM_ADDRESS  = data.aws_ssm_parameter.prm_mailbox_email.value
   }
 
   is_gateway_integration_needed = false

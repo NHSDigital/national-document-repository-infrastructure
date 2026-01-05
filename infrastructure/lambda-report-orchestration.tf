@@ -20,8 +20,8 @@ module "report-orchestration-lambda" {
     WORKSPACE                     = terraform.workspace
     BULK_UPLOAD_REPORT_TABLE_NAME = "${terraform.workspace}_BulkUploadReport"
 
-    REPORT_BUCKET_NAME            = module.report-orchestration-store.bucket_id
-    REPORT_DISTRIBUTION_LAMBDA    = module.report-distribution-lambda.function_name
+    REPORT_BUCKET_NAME         = module.report-orchestration-store.bucket_id
+    REPORT_DISTRIBUTION_LAMBDA = module.report-distribution-lambda.function_name
   }
 
   is_gateway_integration_needed = false
