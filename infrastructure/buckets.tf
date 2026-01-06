@@ -4,31 +4,6 @@ locals {
 }
 
 # Bucket Modules
-module "ndr-document-store" {
-  source                    = "./modules/s3/"
-  access_logs_enabled       = local.is_production
-  access_logs_bucket_id     = local.access_logs_bucket_id
-  bucket_name               = var.docstore_bucket_name
-  enable_cors_configuration = true
-  enable_bucket_versioning  = true
-  environment               = var.environment
-  owner                     = var.owner
-  force_destroy             = local.is_force_destroy
-  cors_rules = [
-    {
-      allowed_headers = ["*"]
-      allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
-      expose_headers  = ["ETag"]
-      max_age_seconds = 3000
-    },
-    {
-      allowed_methods = ["GET"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
-    }
-  ]
-}
-
 module "ndr-zip-request-store" {
   source                    = "./modules/s3/"
   access_logs_enabled       = local.is_production
@@ -197,19 +172,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
       }
     }
   }
-  rule {
-    id     = "default-to-intelligent-tiering"
-    status = "Enabled"
-    transition {
-      storage_class = "INTELLIGENT_TIERING"
-      days          = 0
-    }
-    filter {}
-  }
-}
-
-resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
-  bucket = module.ndr-document-store.bucket_id
   rule {
     id     = "default-to-intelligent-tiering"
     status = "Enabled"

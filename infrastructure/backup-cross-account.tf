@@ -53,7 +53,6 @@ resource "aws_backup_selection" "cross_account_backup_selection" {
   plan_id      = aws_backup_plan.cross_account_backup_schedule[0].id
 
   resources = [
-    module.ndr-document-store.bucket_arn,
     module.ndr-lloyd-george-store.bucket_arn,
     module.lloyd_george_reference_dynamodb_table.dynamodb_table_arn,
     module.bulk_upload_report_dynamodb_table.dynamodb_table_arn,

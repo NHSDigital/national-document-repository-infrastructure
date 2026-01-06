@@ -42,8 +42,6 @@ module "delete-document-object-lambda" {
   handler        = "handlers.delete_document_object_handler.lambda_handler"
   lambda_timeout = 900
   iam_role_policy_documents = [
-    module.ndr-document-store.s3_read_policy_document,
-    module.ndr-document-store.s3_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,

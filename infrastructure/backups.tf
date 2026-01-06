@@ -24,7 +24,6 @@ resource "aws_backup_selection" "s3_continuous_backup" {
   plan_id      = aws_backup_plan.s3_continuous_backup.id
 
   resources = [
-    module.ndr-document-store.bucket_arn,
     module.ndr-lloyd-george-store.bucket_arn,
     module.statistical-reports-store.bucket_arn,
     module.ndr-document-pending-review-store.bucket_arn
