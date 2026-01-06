@@ -79,9 +79,9 @@ jobs:
         working-directory: ./infrastructure
         shell: bash
 
-      - name: Run Terraform Apply
-        run: terraform apply -auto-approve -input=false tf-main.plan
-        working-directory: ./infrastructure
+      # - name: Run Terraform Apply
+      #   run: terraform apply -auto-approve -input=false tf-main.plan
+      #   working-directory: ./infrastructure
 
   terraform_plan_apply_branch:
     name: Terraform Plan/Apply (branch)
