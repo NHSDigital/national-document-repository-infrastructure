@@ -31,9 +31,7 @@ resource "aws_lambda_function" "lambda" {
     ignore_changes = [
       # These are required as Lambdas are deployed via the CI/CD pipelines
       source_code_hash,
-      layers,
-      # Always ignore to allow external management when manage_reserved_concurrency = false
-      reserved_concurrent_executions
+      layers
     ]
   }
 
