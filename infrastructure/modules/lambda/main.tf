@@ -9,7 +9,7 @@ resource "aws_lambda_function" "lambda" {
   runtime                        = "python3.11"
   timeout                        = var.lambda_timeout
   memory_size                    = var.memory_size
-  reserved_concurrent_executions = var.manage_reserved_concurrency ? var.reserved_concurrent_executions : null
+  reserved_concurrent_executions = var.reserved_concurrent_executions
   kms_key_arn                    = aws_kms_key.lambda.arn
 
   ephemeral_storage {
