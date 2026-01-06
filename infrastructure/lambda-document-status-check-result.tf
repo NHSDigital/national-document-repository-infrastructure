@@ -58,8 +58,6 @@ module "document-status-check-lambda" {
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
   ]
@@ -72,7 +70,6 @@ module "document-status-check-lambda" {
     APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     WORKSPACE                    = terraform.workspace
   }
@@ -82,6 +79,5 @@ module "document-status-check-lambda" {
     module.document-status-check-gateway,
     module.ndr-app-config,
     module.lloyd_george_reference_dynamodb_table,
-    module.document_reference_dynamodb_table,
   ]
 }

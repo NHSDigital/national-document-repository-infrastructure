@@ -3,8 +3,6 @@ module "search-document-references-fhir-lambda" {
   name    = "SearchDocumentReferencesFHIR"
   handler = "handlers.fhir_document_reference_search_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.pdm_dynamodb_table.dynamodb_read_policy_document,

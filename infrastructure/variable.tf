@@ -106,12 +106,6 @@ variable "pdm_dynamodb_table_name" {
   default     = "PDMDocumentMetadata"
 }
 
-variable "docstore_dynamodb_table_name" {
-  description = "The name of the DynamoDB table to store the metadata of ARF documents."
-  type        = string
-  default     = "DocumentReferenceMetadata"
-}
-
 variable "lloyd_george_dynamodb_table_name" {
   description = "The name of the DynamoDB table to store the metadata of Lloyd George documents."
   type        = string
