@@ -44,7 +44,7 @@ resource "aws_sfn_state_machine" "reporting_daily_reports" {
         Resource = "arn:aws:states:::lambda:invoke",
         Parameters = {
           FunctionName = module.report-orchestration-lambda.lambda_arn,
-          Payload = {}
+          Payload      = {}
         },
         ResultSelector = {
           "report_date.$" = "$.Payload.report_date",
@@ -78,9 +78,9 @@ resource "aws_sfn_state_machine" "reporting_daily_reports" {
               Parameters = {
                 FunctionName = module.report-distribution-lambda.lambda_arn,
                 Payload = {
-                  "action"    = "process_one",
-                  "bucket.$"  = "$.bucket",
-                  "key.$"     = "$.key"
+                  "action"   = "process_one",
+                  "bucket.$" = "$.bucket",
+                  "key.$"    = "$.key"
                 }
               },
               Retry = [
