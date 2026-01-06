@@ -69,13 +69,13 @@ module "virus_scan_result_lambda" {
   http_methods        = ["POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
-    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    STAGING_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    WORKSPACE                    = terraform.workspace
-    VIRUS_SCAN_STUB              = !local.is_production
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    STAGING_STORE_BUCKET_NAME  = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    WORKSPACE                  = terraform.workspace
+    VIRUS_SCAN_STUB            = !local.is_production
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

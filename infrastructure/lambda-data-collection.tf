@@ -63,14 +63,14 @@ module "data-collection-lambda" {
   api_execution_arn   = null
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
-    LLOYD_GEORGE_BUCKET_NAME     = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
-    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    DOCUMENT_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.docstore_bucket_name}"
-    WORKSPACE                    = terraform.workspace
-    STATISTICS_TABLE             = "${terraform.workspace}_${var.statistics_dynamodb_table_name}"
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
+    LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    DOCUMENT_STORE_BUCKET_NAME = "${terraform.workspace}-${var.docstore_bucket_name}"
+    WORKSPACE                  = terraform.workspace
+    STATISTICS_TABLE           = "${terraform.workspace}_${var.statistics_dynamodb_table_name}"
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
