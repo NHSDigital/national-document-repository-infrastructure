@@ -9,7 +9,6 @@ module "report-orchestration-lambda" {
     module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
     module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
     module.report-orchestration-store.s3_write_policy_document,
-    data.aws_iam_policy_document.invoke_report_distribution_lambda.json,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
   ]
 
@@ -19,9 +18,7 @@ module "report-orchestration-lambda" {
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                     = terraform.workspace
     BULK_UPLOAD_REPORT_TABLE_NAME = "${terraform.workspace}_BulkUploadReport"
-
-    REPORT_BUCKET_NAME         = module.report-orchestration-store.bucket_id
-    REPORT_DISTRIBUTION_LAMBDA = module.report-distribution-lambda.function_name
+    REPORT_BUCKET_NAME            = module.report-orchestration-store.bucket_id
   }
 
   is_gateway_integration_needed = false
@@ -30,6 +27,5 @@ module "report-orchestration-lambda" {
   depends_on = [
     module.bulk_upload_report_dynamodb_table,
     module.report-orchestration-store,
-    module.report-distribution-lambda
   ]
 }

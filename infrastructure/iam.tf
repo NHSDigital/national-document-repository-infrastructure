@@ -366,6 +366,7 @@ data "aws_iam_policy_document" "reporting_ses_policy" {
       "ses:SendRawEmail"
     ]
     resources = ["*"]
+
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
@@ -374,18 +375,19 @@ data "aws_iam_policy_document" "reporting_ses_policy" {
   }
 }
 
-data "aws_iam_policy_document" "invoke_report_distribution_lambda" {
-  statement {
-    sid    = "InvokeReportDistribution"
-    effect = "Allow"
-    actions = [
-      "lambda:InvokeFunction"
-    ]
-    resources = [
-      module.report-distribution-lambda.lambda_arn
-    ]
-  }
-}
+
+# data "aws_iam_policy_document" "invoke_report_distribution_lambda" {
+#   statement {
+#     sid    = "InvokeReportDistribution"
+#     effect = "Allow"
+#     actions = [
+#       "lambda:InvokeFunction"
+#     ]
+#     resources = [
+#       module.report-distribution-lambda.lambda_arn
+#     ]
+#   }
+# }
 
 data "aws_iam_policy_document" "report_contact_lookup_read_policy" {
   statement {
