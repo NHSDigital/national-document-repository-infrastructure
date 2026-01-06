@@ -88,10 +88,10 @@ variable "reserved_concurrent_executions" {
 variable "manage_reserved_concurrency" {
   description = <<-EOT
     Whether Terraform should manage reserved_concurrent_executions. 
-    - true (default): Terraform resets concurrency to reserved_concurrent_executions on each deploy.
-    - false: Terraform ignores concurrency changes, allowing external management (EventBridge, controller lambdas).
+    - true (default): Terraform enforces concurrency value on every deploy. Any external changes will be reset.
+    - false: Terraform ignores concurrency after creation, allowing external management (EventBridge, controller lambdas).
     
-    When false: New lambdas are created with reserved_concurrent_executions value, then ignored. Existing lambdas preserve current value.
+    Note: When false, reserved_concurrent_executions is set initially but then ignored. External systems can freely modify it.
   EOT
   type        = bool
   default     = true

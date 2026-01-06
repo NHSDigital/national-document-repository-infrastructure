@@ -1,4 +1,7 @@
-resource "aws_lambda_function" "lambda" {
+# Lambda with Terraform-managed concurrency (default)
+resource "aws_lambda_function" "lambda_managed" {
+  count = var.manage_reserved_concurrency ? 1 : 0
+
   # If the file is not in the current working directory you will need to include a
   # path.module in the filename.
   filename                       = data.archive_file.lambda.output_path
@@ -39,6 +42,59 @@ resource "aws_lambda_function" "lambda" {
     aws_iam_role_policy_attachment.default_policies,
     aws_iam_role_policy_attachment.lambda_execution_policy
   ]
+}
+
+# Lambda with externally-managed concurrency
+resource "aws_lambda_function" "lambda_unmanaged" {
+  count = var.manage_reserved_concurrency ? 0 : 1
+
+  # If the file is not in the current working directory you will need to include a
+  # path.module in the filename.
+  filename                       = data.archive_file.lambda.output_path
+  function_name                  = "${terraform.workspace}_${var.name}"
+  role                           = aws_iam_role.lambda_execution_role.arn
+  handler                        = var.handler
+  source_code_hash               = data.archive_file.lambda.output_base64sha256
+  runtime                        = "python3.11"
+  timeout                        = var.lambda_timeout
+  memory_size                    = var.memory_size
+  reserved_concurrent_executions = var.reserved_concurrent_executions
+  kms_key_arn                    = aws_kms_key.lambda.arn
+
+  ephemeral_storage {
+    size = var.lambda_ephemeral_storage
+  }
+
+  environment {
+    variables = var.lambda_environment_variables
+  }
+
+  vpc_config {
+    subnet_ids         = var.vpc_subnet_ids
+    security_group_ids = var.vpc_security_group_ids
+  }
+
+  layers = local.lambda_layers
+
+  lifecycle {
+    ignore_changes = [
+      # These are required as Lambdas are deployed via the CI/CD pipelines
+      source_code_hash,
+      layers,
+      # Allow external management of concurrency
+      reserved_concurrent_executions
+    ]
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.default_policies,
+    aws_iam_role_policy_attachment.lambda_execution_policy
+  ]
+}
+
+# Local value to reference the active lambda resource
+locals {
+  lambda = var.manage_reserved_concurrency ? aws_lambda_function.lambda_managed[0] : aws_lambda_function.lambda_unmanaged[0]
 }
 
 resource "aws_cloudwatch_log_group" "lambda_logs" {
@@ -128,14 +184,14 @@ resource "aws_api_gateway_integration" "lambda_integration" {
   http_method             = each.value
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.lambda.invoke_arn
+  uri                     = local.lambda.invoke_arn
 }
 
 resource "aws_lambda_permission" "lambda_permission" {
   count         = var.is_invoked_from_gateway ? 1 : 0
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lambda.arn
+  function_name = local.lambda.arn
   principal     = "apigateway.amazonaws.com"
   # The "/*/*" portion grants access from any method on any resource
   # within the API Gateway REST API.
