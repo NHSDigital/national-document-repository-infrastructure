@@ -370,24 +370,10 @@ data "aws_iam_policy_document" "reporting_ses_policy" {
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
-      values   = [data.aws_ssm_parameter.prm_mailbox_email.value]
+      values   = [aws_ssm_parameter.reporting_ses_from_address.value]
     }
   }
 }
-
-
-# data "aws_iam_policy_document" "invoke_report_distribution_lambda" {
-#   statement {
-#     sid    = "InvokeReportDistribution"
-#     effect = "Allow"
-#     actions = [
-#       "lambda:InvokeFunction"
-#     ]
-#     resources = [
-#       module.report-distribution-lambda.lambda_arn
-#     ]
-#   }
-# }
 
 data "aws_iam_policy_document" "report_contact_lookup_read_policy" {
   statement {

@@ -27,7 +27,7 @@ module "report-distribution-lambda" {
     CONTACT_TABLE_NAME = "${terraform.workspace}_ReportContactLookup"
 
     PRM_MAILBOX_EMAIL = data.aws_ssm_parameter.prm_mailbox_email.value
-    SES_FROM_ADDRESS  = data.aws_ssm_parameter.prm_mailbox_email.value
+    SES_FROM_ADDRESS = aws_ssm_parameter.reporting_ses_from_address.value
   }
 
   is_gateway_integration_needed = false
