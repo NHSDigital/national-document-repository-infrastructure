@@ -7,3 +7,7 @@ module "pdm_encryption_key" {
   service_identifiers = ["ssm.amazonaws.com"]
   kms_deletion_window = var.kms_deletion_window
 }
+
+output "pdm_kms_key_arn" {
+  value = module.pdm_encryption_key.kms_arn
+}

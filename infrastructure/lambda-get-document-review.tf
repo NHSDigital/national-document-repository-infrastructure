@@ -27,6 +27,7 @@ module "get_document_review_lambda" {
     CLOUDFRONT_URL                = aws_cloudfront_distribution.s3_presign_mask.domain_name
     PRESIGNED_ASSUME_ROLE         = aws_iam_role.get_document_review_presign.arn
     WORKSPACE                     = terraform.workspace
+    PDS_FHIR_IS_STUBBED           = local.is_sandbox
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

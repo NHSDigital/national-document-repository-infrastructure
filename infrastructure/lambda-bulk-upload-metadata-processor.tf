@@ -12,6 +12,8 @@ module "bulk-upload-metadata-processor-lambda" {
     module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
+    module.lg-bulk-upload-expedite-metadata-queue.sqs_read_policy_document,
+    module.lg-bulk-upload-expedite-metadata-queue.sqs_write_policy_document,
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
@@ -27,6 +29,7 @@ module "bulk-upload-metadata-processor-lambda" {
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
+    EXPEDITE_SQS_QUEUE_URL     = module.lg-bulk-upload-expedite-metadata-queue.sqs_url
 
     VIRUS_SCAN_STUB = !local.is_production
   }

@@ -18,6 +18,7 @@ module "review-document-status-check-lambda" {
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
     WORKSPACE                     = terraform.workspace
+    PDS_FHIR_IS_STUBBED           = local.is_sandbox
   }
 
   depends_on = [
