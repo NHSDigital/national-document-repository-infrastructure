@@ -5,5 +5,5 @@ resource "aws_route53_record" "dmarc" {
   ttl     = 300
 
   records = ["v=DMARC1; p=none; adkim=s; aspf=s"]
-#   if we add rua=mailto:very_cool_email@${var.domain} we will receive reports in that email
+  #   if we add rua=mailto:very_cool_email@${var.domain} we will receive reports in that email
 }
