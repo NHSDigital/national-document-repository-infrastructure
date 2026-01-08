@@ -1,5 +1,5 @@
 name: "Terraform Plan & Apply"
-description: "Run Terraform plan & Apply for a given component"
+description: "Run Terraform Plan & Apply for a given component"
 
 inputs:
   aws_assume_role:
