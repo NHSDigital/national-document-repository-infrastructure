@@ -80,7 +80,7 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     target_origin_id         = module.ndr-bulk-staging-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer.id
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.uploader.id
 
     lambda_function_association {
       event_type = "origin-request"
@@ -124,9 +124,44 @@ resource "aws_cloudfront_origin_request_policy" "viewer" {
     header_behavior = "whitelist"
     headers {
       items = [
-        "Host",
         "CloudFront-Viewer-Country",
-        "X-Forwarded-For"
+        "X-Forwarded-For",
+      ]
+    }
+  }
+
+  cookies_config {
+    cookie_behavior = "none"
+  }
+}
+
+resource "aws_cloudfront_origin_request_policy" "uploader" {
+  name = "${terraform.workspace}_BlockQueriesAndAllowUploader"
+
+  query_strings_config {
+    query_string_behavior = "whitelist"
+    query_strings {
+      items = [
+        "X-Amz-Algorithm",
+        "X-Amz-Credential",
+        "X-Amz-Date",
+        "X-Amz-Expires",
+        "X-Amz-SignedHeaders",
+        "X-Amz-Signature",
+        "X-Amz-Security-Token"
+      ]
+    }
+  }
+
+  headers_config {
+    header_behavior = "whitelist"
+    headers {
+      items = [
+        "CloudFront-Viewer-Country",
+        "X-Forwarded-For",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers",
+        "Origin"
       ]
     }
   }
