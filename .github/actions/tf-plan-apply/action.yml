@@ -9,6 +9,7 @@ inputs:
   aws_region:
     description: "AWS Region to use"
     required: true
+    default: "eu-west-2"
 
   terraform_version:
     description: "Terraform version to use"
@@ -25,7 +26,7 @@ inputs:
     default: "./infrastructure"
 
   workspace:
-    description: "Environment (ndr-dev, test, etc) or Sandbox name [a-z0-9]{1,8}"
+    description: "Workspace (ndr-dev, ndr-test, pre-prod, prod) or Sandbox name [a-z0-9]{1,8}"
     required: true
 
   tf_vars_file:
@@ -36,6 +37,11 @@ inputs:
     description: "Additional Terraform arguments to pass in"
     required: false
     default: ""
+
+  do_apply:
+    description: "Whether to run 'terraform apply' after 'terraform plan'"
+    required: false
+    default: "true"
 
 runs:
   using: "composite"
@@ -76,6 +82,7 @@ runs:
       shell: bash
 
     - name: Run Terraform Apply
+      if: ${{ inputs.do_apply == 'true' }}
       run: terraform apply -auto-approve -input=false tf.plan
       working-directory: ${{ inputs.working_directory }}
       shell: bash
