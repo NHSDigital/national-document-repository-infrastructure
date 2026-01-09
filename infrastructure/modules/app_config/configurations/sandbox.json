@@ -36,7 +36,7 @@
             "enabled": "false"
         },
         "lloydGeorgeValidationStrictModeEnabled": {
-            "enabled": "true"
+            "enabled": "false"
         },
         "uploadDocumentIteration2Enabled": {
             "enabled": "false"
