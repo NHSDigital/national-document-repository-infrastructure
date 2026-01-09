@@ -557,3 +557,34 @@ module "alarm_state_history_table" {
   environment = var.environment
   owner       = var.owner
 }
+
+module "bulk_upload_contact_lookup_table" {
+  source                         = "./modules/dynamo_db"
+  table_name                     = var.bulk_upload_contact_lookup_table_name
+  hash_key                       = "OdsCode"
+  deletion_protection_enabled    = var.deletion_protection_enabled
+  point_in_time_recovery_enabled = !local.is_sandbox
+  stream_enabled                 = false
+  ttl_enabled                    = false
+
+  attributes = [
+    {
+      name = "OdsCode",
+      type = "S"
+    },
+    {
+      name = "Email"
+      type = "S"
+    }
+  ]
+  global_secondary_indexes = [
+    {
+      name            = "EmailIndex"
+      hash_key        = "Email"
+      projection_type = "ALL"
+    },
+  ]
+
+  environment = var.environment
+  owner       = var.owner
+}
