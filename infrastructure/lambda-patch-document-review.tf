@@ -23,6 +23,7 @@ module "patch_document_review_lambda" {
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
     WORKSPACE                     = terraform.workspace
+    PDS_FHIR_IS_STUBBED           = local.is_sandbox
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
@@ -70,3 +71,30 @@ module "patch_document_review_lambda_alarm_topic" {
   })
 }
 
+resource "aws_cloudwatch_log_metric_filter" "review_patch_failed_to_delete_from_s3" {
+  count          = local.is_sandbox ? 0 : 1
+  name           = "ReviewPatchFailedToDeleteFromS3"
+  pattern        = "%Unable to delete file%"
+  log_group_name = "/aws/lambda/${module.patch_document_review_lambda.function_name}"
+  metric_transformation {
+    name      = "S3DeleteFailures"
+    namespace = "App/Review"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "review_patch_failed_to_delete_from_s3" {
+  count               = local.is_sandbox ? 0 : 1
+  alarm_name          = "${module.patch_document_review_lambda.function_name}_failed_to_delete_from_s3"
+  metric_name         = "S3DeleteFailures"
+  namespace           = "App/Review"
+  threshold           = 0
+  statistic           = "Sum"
+  period              = "300"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  alarm_actions       = [aws_sns_topic.alarm_notifications_topic[0].arn]
+  ok_actions          = [module.patch_document_review_lambda_alarm_topic.arn]
+  depends_on          = [module.patch_document_review_lambda, aws_sns_topic.alarm_notifications_topic[0]]
+  alarm_description   = "Triggers when the PatchDocumentReview fails to delete an object from S3."
+}
