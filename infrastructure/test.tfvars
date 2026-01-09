@@ -1,8 +1,8 @@
 environment                       = "test"
 shared_infra_workspace            = "ndr-test"
 owner                             = "nhse/ndr-team"
-domain                            = "national-document-repository.nhs.uk"
-certificate_domain                = "test.national-document-repository.nhs.uk"
+domain                            = "access-request-fulfilment.patient-deductions.nhs.uk"
+certificate_domain                = "ndr-test.access-request-fulfilment.patient-deductions.nhs.uk"
 certificate_subdomain_name_prefix = "api."
 
 standalone_vpc_tag    = "ndr-test"
