@@ -7,12 +7,7 @@ module "report-distribution-lambda" {
 
   iam_role_policy_documents = [
     module.report-orchestration-store.s3_read_policy_document,
-
-    # To be added on ticket 1128
-    # module.report_contact_lookup.dynamodb_read_policy_document,
-    # Until the real module exists
-    data.aws_iam_policy_document.report_contact_lookup_read_policy.json,
-
+    module.bulk_upload_contact_lookup_table.dynamodb_read_policy_document,
     data.aws_iam_policy_document.reporting_ses_policy.json,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
   ]
@@ -24,7 +19,7 @@ module "report-distribution-lambda" {
     WORKSPACE               = terraform.workspace
 
     REPORT_BUCKET_NAME = module.report-orchestration-store.bucket_id
-    CONTACT_TABLE_NAME = "${terraform.workspace}_ReportContactLookup"
+    CONTACT_TABLE_NAME = module.bulk_upload_contact_lookup_table.table_name
 
     PRM_MAILBOX_EMAIL = data.aws_ssm_parameter.prm_mailbox_email.value
     SES_FROM_ADDRESS  = aws_ssm_parameter.reporting_ses_from_address.value
