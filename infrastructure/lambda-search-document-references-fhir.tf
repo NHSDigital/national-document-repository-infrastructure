@@ -3,8 +3,6 @@ module "search-document-references-fhir-lambda" {
   name    = "SearchDocumentReferencesFHIR"
   handler = "handlers.fhir_document_reference_search_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.pdm_dynamodb_table.dynamodb_read_policy_document,
@@ -12,7 +10,6 @@ module "search-document-references-fhir-lambda" {
     module.core_dynamodb_table.dynamodb_read_policy_document,
     module.core_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
-    module.ndr-document-store.s3_read_policy_document,
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.mtls_access_ssm_policy.policy,
     aws_iam_policy.ssm_access_policy.policy
@@ -26,7 +23,7 @@ module "search-document-references-fhir-lambda" {
     APPCONFIG_APPLICATION           = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT           = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION         = module.ndr-app-config.app_config_configuration_profile_id
-    DYNAMODB_TABLE_LIST             = "[\u0022${module.pdm_dynamodb_table.table_name}\u0022, \u0022${module.lloyd_george_reference_dynamodb_table.table_name}\u0022]"
+    DYNAMODB_TABLE_LIST             = "[\u0022${module.lloyd_george_reference_dynamodb_table.table_name}\u0022]"
     DOCUMENT_RETRIEVE_ENDPOINT_APIM = "${local.apim_api_url}/DocumentReference"
     WORKSPACE                       = terraform.workspace
   }

@@ -66,14 +66,6 @@ module "ndr-ecs-fargate-data-collection" {
       "value" : "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     },
     {
-      "name" : "DOCUMENT_STORE_BUCKET_NAME",
-      "value" : "${terraform.workspace}-${var.docstore_bucket_name}"
-    },
-    {
-      "name" : "DOCUMENT_STORE_DYNAMODB_NAME",
-      "value" : "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
-    },
-    {
       "name" : "STATISTICAL_REPORTS_BUCKET",
       "value" : "${terraform.workspace}-${var.statistical_reports_bucket_name}"
     },
@@ -148,18 +140,6 @@ resource "aws_iam_role_policy_attachment" "data_collection_lloyd_george_store" {
   count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.data_collection_task_role[0].name
   policy_arn = module.ndr-lloyd-george-store.s3_list_object_policy
-}
-
-resource "aws_iam_role_policy_attachment" "data_collection_document_store" {
-  count      = local.is_sandbox ? 0 : 1
-  role       = aws_iam_role.data_collection_task_role[0].name
-  policy_arn = module.ndr-document-store.s3_list_object_policy
-}
-
-resource "aws_iam_role_policy_attachment" "data_collection_document_reference_dynamodb_table" {
-  count      = local.is_sandbox ? 0 : 1
-  role       = aws_iam_role.data_collection_task_role[0].name
-  policy_arn = module.document_reference_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_cloudwatch_log_query_policy" {

@@ -48,10 +48,6 @@ module "create-doc-ref-lambda" {
     module.ndr-bulk-staging-store.s3_write_policy_document,
     module.ndr-lloyd-george-store.s3_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
-    module.ndr-document-store.s3_read_policy_document,
-    module.ndr-document-store.s3_write_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
     module.stitch_metadata_reference_dynamodb_table.dynamodb_read_policy_document,
     module.stitch_metadata_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
@@ -71,8 +67,6 @@ module "create-doc-ref-lambda" {
     APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.docstore_bucket_name}"
-    DOCUMENT_STORE_DYNAMODB_NAME  = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     LLOYD_GEORGE_DYNAMODB_NAME    = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     STITCH_METADATA_DYNAMODB_NAME = "${terraform.workspace}_${var.stitch_metadata_dynamodb_table_name}"
     PDS_FHIR_IS_STUBBED           = local.is_sandbox,
@@ -82,12 +76,10 @@ module "create-doc-ref-lambda" {
   depends_on = [
     module.document_reference_gateway,
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.document_reference_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
     module.ndr-bulk-staging-store,
     module.ndr-app-config,
     module.lloyd_george_reference_dynamodb_table,
-    module.document_reference_dynamodb_table,
     module.stitch_metadata_reference_dynamodb_table
   ]
 }

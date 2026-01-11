@@ -3,7 +3,6 @@ module "post-document-references-fhir-lambda" {
   name    = "PostDocumentReferencesFHIR"
   handler = "handlers.post_fhir_document_reference_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.pdm_dynamodb_table.dynamodb_write_policy_document,
     module.core_dynamodb_table.dynamodb_write_policy_document,

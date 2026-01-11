@@ -56,8 +56,6 @@ module "update-upload-state-lambda" {
   name    = "UpdateUploadStateLambda"
   handler = "handlers.update_upload_state_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-app-config.app_config_policy,
@@ -68,18 +66,16 @@ module "update-upload-state-lambda" {
   http_methods        = ["POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION        = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT        = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION      = module.ndr-app-config.app_config_configuration_profile_id
-    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
-    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    WORKSPACE                    = terraform.workspace,
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    WORKSPACE                  = terraform.workspace,
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.update-upload-state-gateway,
     module.ndr-app-config,
-    module.document_reference_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
   ]
 }

@@ -57,12 +57,9 @@ module "search-document-references-lambda" {
   name    = "SearchDocumentReferencesLambda"
   handler = "handlers.document_reference_search_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
-    module.ndr-document-store.s3_read_policy_document,
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy
   ]
@@ -75,7 +72,7 @@ module "search-document-references-lambda" {
     APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    DYNAMODB_TABLE_LIST     = "[\u0022${terraform.workspace}_${var.docstore_dynamodb_table_name}\u0022, \u0022${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}\u0022]"
+    DYNAMODB_TABLE_LIST     = "[\u0022${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}\u0022]"
     WORKSPACE               = terraform.workspace
   }
   depends_on = [
