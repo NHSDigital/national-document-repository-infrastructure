@@ -107,7 +107,19 @@ jobs:
       - name: Checkout Branch
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.inputs.git_ref}}
+          ref: ${{ github.event.inputs.git_ref }}
+
+      - name: Replace versionNumber in app config
+        run: |
+          git_ref="${{ github.event.inputs.git_ref }}"
+          config_file="./modules/app_config/configurations/sandbox.json"
+          if [[ -f "$config_file" ]]; then
+            sed -i "s/##GITREF##/${git_ref}/" "$config_file"
+          else
+            echo "Configuration file not found: $config_file"
+            exit 1
+          fi
+        working-directory: ./infrastructure
 
         # Checks that all Terraform configuration files adhere to a canonical format.
       - name: Check Terraform Formatting
