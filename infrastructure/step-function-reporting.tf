@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "reporting_sfn_assume" {
   }
 }
 
-resource "aws_iam_role" "reporting_sfn_role" {
+resource "aws_iam_role" "reporting_sfn" {
   name               = "${terraform.workspace}_reporting_sfn_role"
   assume_role_policy = data.aws_iam_policy_document.reporting_sfn_assume.json
 }
@@ -26,15 +26,15 @@ data "aws_iam_policy_document" "reporting_sfn_permissions" {
   }
 }
 
-resource "aws_iam_role_policy" "reporting_sfn_policy" {
+resource "aws_iam_role_policy" "reporting_sfn" {
   name   = "${terraform.workspace}_reporting_sfn_policy"
-  role   = aws_iam_role.reporting_sfn_role.id
+  role   = aws_iam_role.reporting_sfn.id
   policy = data.aws_iam_policy_document.reporting_sfn_permissions.json
 }
 
 resource "aws_sfn_state_machine" "reporting_daily_reports" {
   name     = "${terraform.workspace}_reporting_daily_reports"
-  role_arn = aws_iam_role.reporting_sfn_role.arn
+  role_arn = aws_iam_role.reporting_sfn.arn
 
   definition = jsonencode({
     StartAt = "Generate and Upload Reports",

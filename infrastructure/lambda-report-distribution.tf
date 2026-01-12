@@ -3,12 +3,12 @@ module "report-distribution-lambda" {
   name           = "reportDistribution"
   handler        = "handlers.report_distribution_handler.lambda_handler"
   lambda_timeout = 300
-  memory_size    = 2048
+  memory_size    = 1024
 
   iam_role_policy_documents = [
     module.report-orchestration-store.s3_read_policy_document,
     module.bulk_upload_contact_lookup_table.dynamodb_read_policy_document,
-    data.aws_iam_policy_document.reporting_ses_policy.json,
+    data.aws_iam_policy_document.reporting_ses.json,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
   ]
 
@@ -28,8 +28,4 @@ module "report-distribution-lambda" {
 
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
-
-  depends_on = [
-    module.report-orchestration-store
-  ]
 }
