@@ -21,7 +21,7 @@ module "ses-feedback-monitor-lambda" {
     SES_FEEDBACK_PREFIX      = "ses-feedback/"
     PRM_MAILBOX_EMAIL        = data.aws_ssm_parameter.prm_mailbox_email.value
     SES_FROM_ADDRESS         = aws_ssm_parameter.reporting_ses_from_address.value
-    ALERT_ON_EVENT_TYPES = "BOUNCE,REJECT"
+    ALERT_ON_EVENT_TYPES     = "BOUNCE,REJECT"
   }
 
   is_gateway_integration_needed = false
