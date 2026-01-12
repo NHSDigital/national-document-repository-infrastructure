@@ -89,6 +89,7 @@ resource "aws_sfn_state_machine" "reporting_daily_reports" {
                   IntervalSeconds = 2,
                   MaxAttempts     = 3,
                   BackoffRate     = 2.0
+                  JitterStrategy  = "FULL"
                 }
               ],
               End = true
