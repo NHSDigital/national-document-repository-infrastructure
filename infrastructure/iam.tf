@@ -367,18 +367,20 @@ data "aws_iam_policy_document" "reporting_ses" {
       "ses:SendRawEmail"
     ]
 
-    resources = ["*"]
+     resources = [
+      "arn:aws:ses:eu-west-2:${data.aws_caller_identity.current.account_id}:identity/${var.domain}",
+    ]
 
-    condition {
-      test     = "StringEquals"
-      variable = "ses:FromAddress"
-      values   = [aws_ssm_parameter.reporting_ses_from_address.value]
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:SourceAccount"
-      values   = [data.aws_caller_identity.current.account_id]
-    }
+    # condition {
+    #   test     = "StringEquals"
+    #   variable = "ses:FromAddress"
+    #   values   = [aws_ssm_parameter.reporting_ses_from_address.value]
+    # }
+    #
+    # condition {
+    #   test     = "StringEquals"
+    #   variable = "aws:SourceAccount"
+    #   values   = [data.aws_caller_identity.current.account_id]
+    # }
   }
 }
