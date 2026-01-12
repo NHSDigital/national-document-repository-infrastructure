@@ -19,7 +19,7 @@ resource "aws_ses_domain_dkim" "reporting" {
   domain = aws_ses_domain_identity.reporting.domain
 }
 
-resource "aws_route53_record" "ses_dkim_records" {
+resource "aws_route53_record" "ses_dkim" {
   count   = 3
   zone_id = module.route53_fargate_ui.zone_id
   name    = "${element(aws_ses_domain_dkim.reporting.dkim_tokens, count.index)}._domainkey.${var.domain}"

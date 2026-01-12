@@ -357,7 +357,7 @@ resource "aws_iam_policy" "s3_document_data_policy_post_document_review_lambda" 
   })
 }
 
-data "aws_iam_policy_document" "reporting_ses_policy" {
+data "aws_iam_policy_document" "reporting_ses" {
   statement {
     sid    = "SESAccess"
     effect = "Allow"
