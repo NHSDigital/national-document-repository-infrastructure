@@ -1,0 +1,88 @@
+name: "Terraform Plan & Apply"
+description: "Run Terraform Plan & Apply for a given component"
+
+inputs:
+  aws_assume_role:
+    description: "AWS IAM Role to assume"
+    required: true
+
+  aws_region:
+    description: "AWS Region to use"
+    required: true
+    default: "eu-west-2"
+
+  terraform_version:
+    description: "Terraform version to use"
+    required: false
+    default: "1.13.3"
+
+  backend_conf:
+    description: "Terraform backend config file"
+    required: true
+
+  working_directory:
+    description: "Terraform working directory"
+    required: false
+    default: "./infrastructure"
+
+  workspace:
+    description: "Workspace (ndr-dev, ndr-test, pre-prod, prod) or Sandbox name [a-z0-9]{1,8}"
+    required: true
+
+  tf_vars_file:
+    description: "Terraform variables file"
+    required: true
+
+  tf_extra_args:
+    description: "Additional Terraform arguments to pass in"
+    required: false
+    default: ""
+
+  do_apply:
+    description: "Whether to run 'terraform apply' after 'terraform plan'"
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v5
+      with:
+        role-to-assume: ${{ inputs.aws_assume_role }}
+        role-skip-session-tagging: true
+        aws-region: ${{ inputs.aws_region }}
+        mask-aws-account-id: true
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ inputs.terraform_version }}
+        terraform_wrapper: false
+
+    - name: Initialise Terraform
+      run: terraform init -backend-config=${{ inputs.backend_conf }}
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
+    - name: Select Terraform Workspace
+      run: terraform workspace select -or-create ${{ inputs.workspace }}
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
+    - name: Check Terraform Formatting
+      run: terraform fmt -check
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
+    - name: Run Terraform Plan
+      run: |
+        terraform plan -input=false -no-color -var-file="${{ inputs.tf_vars_file }}" ${{ inputs.tf_extra_args }} -out tf.plan
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
+    - name: Run Terraform Apply
+      if: ${{ inputs.do_apply == 'true' }}
+      run: terraform apply -auto-approve -input=false tf.plan
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
