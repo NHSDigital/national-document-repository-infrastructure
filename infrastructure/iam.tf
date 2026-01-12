@@ -361,16 +361,24 @@ data "aws_iam_policy_document" "reporting_ses_policy" {
   statement {
     sid    = "SESAccess"
     effect = "Allow"
+
     actions = [
       "ses:SendEmail",
       "ses:SendRawEmail"
     ]
+
     resources = ["*"]
 
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
       values   = [aws_ssm_parameter.reporting_ses_from_address.value]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
     }
   }
 }
