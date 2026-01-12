@@ -23,6 +23,7 @@ module "report-distribution-lambda" {
 
     PRM_MAILBOX_EMAIL = data.aws_ssm_parameter.prm_mailbox_email.value
     SES_FROM_ADDRESS  = aws_ssm_parameter.reporting_ses_from_address.value
+    SES_CONFIGURATION_SET = aws_ses_configuration_set.reporting.name
   }
 
   is_gateway_integration_needed = false

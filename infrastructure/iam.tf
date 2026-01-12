@@ -382,3 +382,16 @@ data "aws_iam_policy_document" "reporting_ses_policy" {
     }
   }
 }
+
+data "aws_iam_policy_document" "ses_feedback_s3_put" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:PutObject"
+    ]
+    resources = [
+      "${module.ses-feedback-store.bucket_arn}/ses-feedback/*"
+    ]
+  }
+}
+
