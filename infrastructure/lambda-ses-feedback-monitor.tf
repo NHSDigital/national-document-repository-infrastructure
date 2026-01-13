@@ -7,7 +7,7 @@ module "ses-feedback-monitor-lambda" {
 
   iam_role_policy_documents = [
     data.aws_iam_policy_document.ses_feedback_s3_put.json,
-    data.aws_iam_policy_document.reporting_ses_policy.json,
+    data.aws_iam_policy_document.reporting_ses.json,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
   ]
 
