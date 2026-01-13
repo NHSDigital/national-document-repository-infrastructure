@@ -23,7 +23,6 @@ module "nhs-oauth-token-generator-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.nhs-oauth-token-generator-lambda.function_name
   lambda_timeout       = module.nhs-oauth-token-generator-lambda.timeout
-  lambda_name          = "nhs_oauth_token_generator_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.nhs-oauth-token-generator-alarm-topic.arn]
   ok_actions           = [module.nhs-oauth-token-generator-alarm-topic.arn]

@@ -14,7 +14,6 @@ module "document_manifest_alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.document-manifest-job-lambda.function_name
   lambda_timeout       = module.document-manifest-job-lambda.timeout
-  lambda_name          = "create_document_manifest_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.document_manifest_alarm_topic.arn]
   ok_actions           = [module.document_manifest_alarm_topic.arn]

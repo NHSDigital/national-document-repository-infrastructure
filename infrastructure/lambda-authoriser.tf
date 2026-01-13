@@ -35,7 +35,6 @@ module "authoriser-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.authoriser-lambda.function_name
   lambda_timeout       = module.authoriser-lambda.timeout
-  lambda_name          = "authoriser_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.authoriser-alarm-topic.arn]
   ok_actions           = [module.authoriser-alarm-topic.arn]

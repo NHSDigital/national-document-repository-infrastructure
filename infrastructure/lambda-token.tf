@@ -53,7 +53,6 @@ module "create_token-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.create-token-lambda.function_name
   lambda_timeout       = module.create-token-lambda.timeout
-  lambda_name          = "token_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.create_token-alarm_topic.arn]
   ok_actions           = [module.create_token-alarm_topic.arn]

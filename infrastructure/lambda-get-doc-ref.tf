@@ -2,7 +2,6 @@ module "get-doc-ref-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.get-doc-ref-lambda.function_name
   lambda_timeout       = module.get-doc-ref-lambda.timeout
-  lambda_name          = "get_document_reference_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.get-doc-ref-alarm-topic.arn]
   ok_actions           = [module.get-doc-ref-alarm-topic.arn]

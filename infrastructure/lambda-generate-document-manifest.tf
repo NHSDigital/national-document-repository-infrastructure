@@ -2,7 +2,6 @@ module "generate-document-manifest-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.generate-document-manifest-lambda.function_name
   lambda_timeout       = module.generate-document-manifest-lambda.timeout
-  lambda_name          = "generate_document_manifest_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.generate-document-manifest-alarm-topic.arn]
   ok_actions           = [module.generate-document-manifest-alarm-topic.arn]

@@ -14,7 +14,6 @@ module "access-audit-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.access-audit-lambda.function_name
   lambda_timeout       = module.access-audit-lambda.timeout
-  lambda_name          = "access_audit_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.access-audit-alarm-topic.arn]
   ok_actions           = [module.access-audit-alarm-topic.arn]

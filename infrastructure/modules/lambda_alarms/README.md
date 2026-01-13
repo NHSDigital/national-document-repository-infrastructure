@@ -56,6 +56,7 @@ module "lambda_alarms" {
 | [aws_cloudwatch_metric_alarm.lambda_duration_alarm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.lambda_error](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.lambda_memory_alarm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_lambda_function._](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lambda_function) | data source |
 
 ## Inputs
 
@@ -63,7 +64,6 @@ module "lambda_alarms" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_alarm_actions"></a> [alarm\_actions](#input\_alarm\_actions) | List of ARNs (e.g., SNS topics) to notify when a CloudWatch alarm is triggered. | `list(string)` | n/a | yes |
 | <a name="input_lambda_function_name"></a> [lambda\_function\_name](#input\_lambda\_function\_name) | The name of the Lambda function to monitor. | `string` | n/a | yes |
-| <a name="input_lambda_name"></a> [lambda\_name](#input\_lambda\_name) | Short identifier used in CloudWatch alarm naming. | `string` | n/a | yes |
 | <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Timeout value of the Lambda function in seconds. | `number` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | CloudWatch metric namespace. Defaults to 'AWS/Lambda' if not specified. | `string` | `"AWS/Lambda"` | no |
 | <a name="input_ok_actions"></a> [ok\_actions](#input\_ok\_actions) | List of ARNs to notify when a CloudWatch alarm returns to the OK state. | `list(string)` | n/a | yes |

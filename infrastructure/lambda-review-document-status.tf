@@ -31,7 +31,6 @@ module "review-document-status-check-lambda-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.review-document-status-check-lambda.function_name
   lambda_timeout       = module.review-document-status-check-lambda.timeout
-  lambda_name          = "review_document_status_check_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.review-document-status-check-alarm-topic.arn]
   ok_actions           = [module.review-document-status-check-alarm-topic.arn]
