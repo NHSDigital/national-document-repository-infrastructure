@@ -1,4 +1,41 @@
-data "aws_iam_policy_document" "ses_publish_to_sns" {
+module "ses_feedback_topic" {
+  source                = "./modules/sns"
+  topic_name            = "ses-feedback-events"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.ses-feedback-monitor-lambda.lambda_arn
+  raw_message_delivery  = true
+  sns_encryption_key_id = module.sns_encryption_key.kms_arn
+
+  delivery_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "DefaultOwnerPermissions"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "SNS:*"
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+data "aws_iam_policy_document" "ses_feedback_topic_policy" {
+  statement {
+    sid     = "DefaultOwnerPermissions"
+    effect  = "Allow"
+    actions = ["SNS:*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+
+    resources = [module.ses_feedback_topic.arn]
+  }
+
   statement {
     sid     = "AllowSESPublish"
     effect  = "Allow"
@@ -19,26 +56,9 @@ data "aws_iam_policy_document" "ses_publish_to_sns" {
   }
 }
 
-module "ses_feedback_topic" {
-  source     = "./modules/sns"
-  topic_name = "ses-feedback-events"
-
-  delivery_policy = jsonencode({
-    Version   = "2012-10-17"
-    Statement = []
-  })
-
-  enable_fifo           = false
-  enable_deduplication  = false
-  raw_message_delivery  = true
-  sns_encryption_key_id = module.sns_encryption_key.kms_arn
-  topic_protocol        = "lambda"
-  topic_endpoint        = module.ses-feedback-monitor-lambda.lambda_arn
-}
-
-resource "aws_sns_topic_policy" "ses_feedback_allow_ses_publish" {
+resource "aws_sns_topic_policy" "ses_feedback_topic_policy" {
   arn    = module.ses_feedback_topic.arn
-  policy = data.aws_iam_policy_document.ses_publish_to_sns.json
+  policy = data.aws_iam_policy_document.ses_feedback_topic_policy.json
 }
 
 resource "aws_lambda_permission" "allow_sns_invoke_ses_feedback_monitor" {

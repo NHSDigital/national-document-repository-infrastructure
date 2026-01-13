@@ -7,6 +7,7 @@ variable "delivery_policy" {
   description = "Attach delivery or IAM policy."
   type        = string
 }
+
 variable "enable_fifo" {
   description = "Attach first in first out policy to notification queue."
   type        = bool
@@ -57,4 +58,10 @@ variable "is_topic_endpoint_list" {
   description = "Whether to use the topic_endpoint_list instead of a single topic_endpoint."
   type        = bool
   default     = false
+}
+
+variable "topic_policy_json" {
+  description = "Optional SNS topic access policy JSON. If set, it overrides delivery_policy."
+  type        = string
+  default     = null
 }
