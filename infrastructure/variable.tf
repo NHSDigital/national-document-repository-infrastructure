@@ -184,6 +184,12 @@ variable "document_review_table_name" {
   default     = "DocumentUploadReview"
 }
 
+variable "bulk_upload_contact_lookup_table_name" {
+  description = "The name of the DynamoDB table to store bulk upload practice contacts."
+  type        = string
+  default     = "BulkUploadContactLookup"
+}
+
 variable "deletion_protection_enabled" {
   description = "Should dynamodb deletion protection be enabled?"
   type        = bool
