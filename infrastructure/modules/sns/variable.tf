@@ -58,9 +58,3 @@ variable "is_topic_endpoint_list" {
   type        = bool
   default     = false
 }
-
-variable "topic_policy_json" {
-  description = "Optional SNS topic access policy JSON. If set, takes precedence over delivery_policy."
-  type        = string
-  default     = null
-}

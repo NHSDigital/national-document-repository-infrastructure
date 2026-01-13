@@ -1,3 +1,4 @@
+# Allow SES to publish to the SES feedback SNS topic (topic policy is attached after topic creation)
 data "aws_iam_policy_document" "ses_publish_to_sns" {
   statement {
     sid     = "AllowSESPublish"
@@ -9,7 +10,7 @@ data "aws_iam_policy_document" "ses_publish_to_sns" {
       identifiers = ["ses.amazonaws.com"]
     }
 
-    resources = ["*"]
+    resources = [module.ses_feedback_topic.arn]
 
     condition {
       test     = "StringEquals"
@@ -22,14 +23,23 @@ data "aws_iam_policy_document" "ses_publish_to_sns" {
 module "ses_feedback_topic" {
   source                = "./modules/sns"
   topic_name            = "ses-feedback-events"
-  delivery_policy       = jsonencode({ "Version" : "2012-10-17", "Statement" : [] })
-  topic_policy_json     = data.aws_iam_policy_document.ses_publish_to_sns.json
+
+  delivery_policy = jsonencode({
+    Version   = "2012-10-17"
+    Statement = []
+  })
+
   enable_fifo           = false
   enable_deduplication  = false
   raw_message_delivery  = true
   sns_encryption_key_id = module.sns_encryption_key.kms_arn
   topic_protocol        = "lambda"
   topic_endpoint        = module.ses-feedback-monitor-lambda.lambda_arn
+}
+
+resource "aws_sns_topic_policy" "ses_feedback_allow_ses_publish" {
+  arn    = module.ses_feedback_topic.arn
+  policy = data.aws_iam_policy_document.ses_publish_to_sns.json
 }
 
 resource "aws_lambda_permission" "allow_sns_invoke_ses_feedback_monitor" {
