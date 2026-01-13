@@ -53,6 +53,15 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
 
+      - name: Debug AWS identity (assumed role)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "AWS_ASSUME_ROLE (masked by GitHub): ${{ secrets.AWS_ASSUME_ROLE }}"
+          aws sts get-caller-identity
+          echo "Caller ARN:"
+          aws sts get-caller-identity --query Arn --output text
+
       # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -97,6 +106,15 @@ jobs:
           role-skip-session-tagging: true
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
+
+      - name: Debug AWS identity (assumed role)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "AWS_ASSUME_ROLE (masked by GitHub): ${{ secrets.AWS_ASSUME_ROLE }}"
+          aws sts get-caller-identity
+          echo "Caller ARN:"
+          aws sts get-caller-identity --query Arn --output text
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
