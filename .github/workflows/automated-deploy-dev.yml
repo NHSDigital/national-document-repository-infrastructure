@@ -32,14 +32,30 @@ jobs:
           mask-aws-account-id: true
 
       # ---- DEBUG: identify the actual assumed role + prove SES permissions ----
-      - name: Debug AWS identity (assumed role)
+      - name: Debug AWS identity + role details
         shell: bash
         run: |
           set -euo pipefail
-          ARN=$(aws sts get-caller-identity --query Arn --output text)
-          echo "Caller ARN (masked by GH): $ARN"
-          ROLE_NAME=$(echo "$ARN" | sed -n 's#.*:assumed-role/\([^/]*\)/.*#\1#p')
-          echo "Assumed ROLE NAME: $ROLE_NAME"
+
+          echo "== Caller identity =="
+          aws sts get-caller-identity
+
+          echo ""
+          echo "== Parsed role name from caller ARN =="
+          CALLER_ARN="$(aws sts get-caller-identity --query Arn --output text)"
+          echo "Caller ARN: ${CALLER_ARN}"
+
+          # If it's an assumed-role ARN, it looks like:
+          # arn:aws:sts::<acct>:assumed-role/<ROLE_NAME>/<SESSION_NAME>
+          ROLE_NAME="$(echo "${CALLER_ARN}" | awk -F'/' '{print $2}')"
+          echo "Role name (parsed): ${ROLE_NAME}"
+
+          echo ""
+          echo "== IAM role boundary / attached policies (if allowed) =="
+          aws iam get-role --role-name "${ROLE_NAME}" --query 'Role.PermissionsBoundary' --output json || true
+          aws iam list-attached-role-policies --role-name "${ROLE_NAME}" --output table || true
+          aws iam list-role-policies --role-name "${ROLE_NAME}" --output table || true
+      
 
       - name: Check if role can call ses:CreateConfigurationSet
         shell: bash
