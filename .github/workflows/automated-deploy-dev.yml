@@ -13,7 +13,7 @@ permissions:
   actions: read   # This is required for Plan comment
   id-token: write # This is required for requesting the JWT
   contents: write # This is required for SBOM action
-    
+
 jobs:
   terraform_plan_apply:
     name: Terraform Plan/Apply (ndr-dev)
@@ -31,14 +31,30 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
 
+      # ---- DEBUG: identify the actual assumed role + prove SES permissions ----
       - name: Debug AWS identity (assumed role)
         shell: bash
         run: |
           set -euo pipefail
-          echo "AWS_ASSUME_ROLE (masked by GitHub): ${{ secrets.AWS_ASSUME_ROLE }}"
-          aws sts get-caller-identity
-          echo "Caller ARN:"
-          aws sts get-caller-identity --query Arn --output text
+          ARN=$(aws sts get-caller-identity --query Arn --output text)
+          echo "Caller ARN (masked by GH): $ARN"
+          ROLE_NAME=$(echo "$ARN" | sed -n 's#.*:assumed-role/\([^/]*\)/.*#\1#p')
+          echo "Assumed ROLE NAME: $ROLE_NAME"
+
+      - name: Check if role can call ses:CreateConfigurationSet
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Trying SES list-configuration-sets (read) ..."
+          aws ses list-configuration-sets --max-items 1 >/dev/null
+          echo "OK: can list configuration sets"
+
+          echo "Attempting create+delete temporary SES configuration set to validate permission..."
+          TMP_NAME="perm-check-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          aws ses create-configuration-set --configuration-set Name="$TMP_NAME"
+          aws ses delete-configuration-set --configuration-set-name "$TMP_NAME"
+          echo "OK: create/delete configuration set permitted"
+      # ---- END DEBUG ----
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -54,7 +70,7 @@ jobs:
 
       - name: Select Terraform Workspace
         id: workspace
-        run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
+        run: terraform workspace select ${{ secrets.AWS_WORKSPACE }}
         working-directory: ./infrastructure
         shell: bash
 
@@ -66,6 +82,7 @@ jobs:
       - name: Check Terraform Validation
         id: validate
         run: terraform validate -no-color
+        working-directory: ./infrastructure
 
       - name: Run Terraform Plan
         id: plan
@@ -82,7 +99,7 @@ jobs:
               echo "::add-mask::$cert_block"
             fi
           done || echo "No certificate blocks found to mask."
-          
+
           # Mask sensitive URLs in the Terraform Plan output
           grep -Eo 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' tfplan.txt | while read -r api_url; do
             if [ -n "$api_url" ]; then
@@ -162,7 +179,7 @@ jobs:
 
             // 2. Prepare format of the comment
             const output = `### Report for environment: ndr-dev
-            
+
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             <details><summary>Initialization Output</summary>
 
@@ -200,7 +217,7 @@ jobs:
                 body: output
               })
             }
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
