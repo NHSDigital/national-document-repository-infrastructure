@@ -15,7 +15,17 @@ module "ses_feedback_topic" {
         Principal = {
           AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
         }
-        Action   = "SNS:*"
+        Action = [
+          "SNS:GetTopicAttributes",
+          "SNS:SetTopicAttributes",
+          "SNS:AddPermission",
+          "SNS:RemovePermission",
+          "SNS:DeleteTopic",
+          "SNS:Subscribe",
+          "SNS:ListSubscriptionsByTopic",
+          "SNS:Publish",
+          "SNS:Receive"
+        ]
         Resource = "*"
       }
     ]
@@ -26,7 +36,17 @@ data "aws_iam_policy_document" "ses_feedback_topic_policy" {
   statement {
     sid     = "DefaultOwnerPermissions"
     effect  = "Allow"
-    actions = ["SNS:*"]
+    actions = [
+      "SNS:GetTopicAttributes",
+      "SNS:SetTopicAttributes",
+      "SNS:AddPermission",
+      "SNS:RemovePermission",
+      "SNS:DeleteTopic",
+      "SNS:Subscribe",
+      "SNS:ListSubscriptionsByTopic",
+      "SNS:Publish",
+      "SNS:Receive"
+    ]
 
     principals {
       type        = "AWS"
