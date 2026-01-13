@@ -9,9 +9,7 @@ data "aws_iam_policy_document" "ses_publish_to_sns" {
       identifiers = ["ses.amazonaws.com"]
     }
 
-    resources = [
-      module.ses_feedback_topic.arn
-    ]
+    resources = ["*"]
 
     condition {
       test     = "StringEquals"
@@ -24,7 +22,8 @@ data "aws_iam_policy_document" "ses_publish_to_sns" {
 module "ses_feedback_topic" {
   source                = "./modules/sns"
   topic_name            = "ses-feedback-events"
-  delivery_policy       = data.aws_iam_policy_document.ses_publish_to_sns.json
+  delivery_policy       = jsonencode({ "Version" : "2012-10-17", "Statement" : [] })
+  topic_policy_json     = data.aws_iam_policy_document.ses_publish_to_sns.json
   enable_fifo           = false
   enable_deduplication  = false
   raw_message_delivery  = true
