@@ -1,4 +1,3 @@
-# Allow SES to publish to the SES feedback SNS topic (topic policy is attached after topic creation)
 data "aws_iam_policy_document" "ses_publish_to_sns" {
   statement {
     sid     = "AllowSESPublish"
