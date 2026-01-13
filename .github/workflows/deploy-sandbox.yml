@@ -53,19 +53,29 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
 
-      - name: Debug AWS identity + role details
+      - name: Debug AWS identity (assumed role)
         shell: bash
         run: |
           set -euo pipefail
+
+          echo "== Caller identity =="
           aws sts get-caller-identity
+
+          echo ""
+          echo "== Caller ARN (masked account id may still show as ***) =="
           CALLER_ARN="$(aws sts get-caller-identity --query Arn --output text)"
           echo "Caller ARN: ${CALLER_ARN}"
-          ROLE_NAME="$(echo "${CALLER_ARN}" | awk -F'/' '{print $2}')"
-          echo "Role name (parsed): ${ROLE_NAME}"
-          aws iam get-role --role-name "${ROLE_NAME}" --query 'Role.PermissionsBoundary' --output json || true
-          aws iam list-attached-role-policies --role-name "${ROLE_NAME}" --output table || true
-          aws iam list-role-policies --role-name "${ROLE_NAME}" --output table || true
 
+          echo ""
+          echo "== Parsed role name from assumed-role ARN =="
+          # arn:aws:sts::<acct>:assumed-role/<ROLE_NAME>/<SESSION_NAME>
+          ROLE_NAME="$(echo "${CALLER_ARN}" | awk -F'/' '{print $2}')"
+          echo "Role name: ${ROLE_NAME}"
+
+          echo ""
+          echo "== Quick SES sanity check (list config sets) =="
+          # This will fail if SES is blocked at IAM/SCP/boundary level
+          aws ses list-configuration-sets --max-items 1 >/dev/null && echo "SES list-configuration-sets: OK"
 
       # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
@@ -112,19 +122,29 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
 
-      - name: Debug AWS identity + role details
+      - name: Debug AWS identity (assumed role)
         shell: bash
         run: |
           set -euo pipefail
+
+          echo "== Caller identity =="
           aws sts get-caller-identity
+
+          echo ""
+          echo "== Caller ARN (masked account id may still show as ***) =="
           CALLER_ARN="$(aws sts get-caller-identity --query Arn --output text)"
           echo "Caller ARN: ${CALLER_ARN}"
-          ROLE_NAME="$(echo "${CALLER_ARN}" | awk -F'/' '{print $2}')"
-          echo "Role name (parsed): ${ROLE_NAME}"
-          aws iam get-role --role-name "${ROLE_NAME}" --query 'Role.PermissionsBoundary' --output json || true
-          aws iam list-attached-role-policies --role-name "${ROLE_NAME}" --output table || true
-          aws iam list-role-policies --role-name "${ROLE_NAME}" --output table || true
 
+          echo ""
+          echo "== Parsed role name from assumed-role ARN =="
+          # arn:aws:sts::<acct>:assumed-role/<ROLE_NAME>/<SESSION_NAME>
+          ROLE_NAME="$(echo "${CALLER_ARN}" | awk -F'/' '{print $2}')"
+          echo "Role name: ${ROLE_NAME}"
+
+          echo ""
+          echo "== Quick SES sanity check (list config sets) =="
+          # This will fail if SES is blocked at IAM/SCP/boundary level
+          aws ses list-configuration-sets --max-items 1 >/dev/null && echo "SES list-configuration-sets: OK"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -137,7 +157,7 @@ jobs:
         with:
           ref: ${{ github.event.inputs.git_ref}}
 
-        # Checks that all Terraform configuration files adhere to a canonical format.
+      # Checks that all Terraform configuration files adhere to a canonical format.
       - name: Check Terraform Formatting
         run: terraform fmt -check
         working-directory: ./infrastructure
