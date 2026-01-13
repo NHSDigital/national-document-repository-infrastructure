@@ -34,8 +34,8 @@ module "ses_feedback_topic" {
 
 data "aws_iam_policy_document" "ses_feedback_topic_policy" {
   statement {
-    sid     = "DefaultOwnerPermissions"
-    effect  = "Allow"
+    sid    = "DefaultOwnerPermissions"
+    effect = "Allow"
     actions = [
       "SNS:GetTopicAttributes",
       "SNS:SetTopicAttributes",
