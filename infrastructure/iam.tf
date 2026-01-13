@@ -374,12 +374,6 @@ data "aws_iam_policy_document" "reporting_ses" {
       variable = "ses:FromAddress"
       values   = [aws_ssm_parameter.reporting_ses_from_address.value]
     }
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:SourceAccount"
-      values   = [data.aws_caller_identity.current.account_id]
-    }
   }
 }
 
