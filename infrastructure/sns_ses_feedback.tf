@@ -21,8 +21,8 @@ data "aws_iam_policy_document" "ses_publish_to_sns" {
 }
 
 module "ses_feedback_topic" {
-  source                = "./modules/sns"
-  topic_name            = "ses-feedback-events"
+  source     = "./modules/sns"
+  topic_name = "ses-feedback-events"
 
   delivery_policy = jsonencode({
     Version   = "2012-10-17"

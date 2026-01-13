@@ -96,7 +96,6 @@ module "sns_topic" {
 | <a name="input_topic_endpoint"></a> [topic\_endpoint](#input\_topic\_endpoint) | A single endpoint (e.g., SQS queue or Lambda function ARN) to subscribe to the topic. | `any` | `null` | no |
 | <a name="input_topic_endpoint_list"></a> [topic\_endpoint\_list](#input\_topic\_endpoint\_list) | A list of endpoints (e.g., SQS ARNs) to subscribe to the topic. | `any` | `[]` | no |
 | <a name="input_topic_name"></a> [topic\_name](#input\_topic\_name) | Name of the SNS topic. | `string` | n/a | yes |
-| <a name="input_topic_policy_json"></a> [topic\_policy\_json](#input\_topic\_policy\_json) | Optional SNS topic access policy JSON. If set, takes precedence over delivery\_policy. | `string` | `null` | no |
 | <a name="input_topic_protocol"></a> [topic\_protocol](#input\_topic\_protocol) | The protocol to use for the subscription (e.g., 'sqs', 'lambda'). | `string` | n/a | yes |
 
 ## Outputs
