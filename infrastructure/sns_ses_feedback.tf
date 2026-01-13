@@ -3,7 +3,6 @@ module "ses_feedback_topic" {
   topic_name            = "ses-feedback-events"
   topic_protocol        = "lambda"
   topic_endpoint        = module.ses-feedback-monitor-lambda.lambda_arn
-  raw_message_delivery  = true
   sns_encryption_key_id = module.sns_encryption_key.kms_arn
 
   delivery_policy = jsonencode({
