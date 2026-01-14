@@ -15,4 +15,7 @@ resource "aws_ses_event_destination" "reporting_to_sns" {
   sns_destination {
     topic_arn = module.ses_feedback_topic.arn
   }
+  depends_on = [
+    module.ses_feedback_topic
+  ]
 }
