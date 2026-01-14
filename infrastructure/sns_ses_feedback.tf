@@ -1,8 +1,18 @@
 data "aws_iam_policy_document" "ses_feedback_topic_policy" {
   statement {
-    sid     = "DefaultOwnerPermissions"
-    effect  = "Allow"
-    actions = ["sns:*"]
+    sid    = "DefaultOwnerTopicPermissions"
+    effect = "Allow"
+
+    actions = [
+      "sns:GetTopicAttributes",
+      "sns:SetTopicAttributes",
+      "sns:AddPermission",
+      "sns:RemovePermission",
+      "sns:DeleteTopic",
+      "sns:Subscribe",
+      "sns:ListSubscriptionsByTopic",
+      "sns:Publish",
+    ]
     principals {
       type        = "AWS"
       identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
@@ -34,8 +44,8 @@ module "ses_feedback_topic" {
   topic_protocol        = "lambda"
   topic_endpoint        = module.ses-feedback-monitor-lambda.lambda_arn
   sns_encryption_key_id = module.sns_encryption_key.kms_arn
-  raw_message_delivery  = false
-  topic_policy_json     = data.aws_iam_policy_document.ses_feedback_topic_policy.json
+  raw_message_delivery = false
+  topic_policy_json = data.aws_iam_policy_document.ses_feedback_topic_policy.json
   delivery_policy = jsonencode({
     Version   = "2012-10-17"
     Statement = []
