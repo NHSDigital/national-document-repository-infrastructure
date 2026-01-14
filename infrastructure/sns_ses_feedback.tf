@@ -33,3 +33,11 @@ module "ses_feedback_topic" {
   enable_ses_publish    = true
   ses_source_account_id = data.aws_caller_identity.current.account_id
 }
+
+resource "aws_lambda_permission" "allow_sns_invoke_ses_feedback_monitor" {
+  statement_id  = "AllowSNSInvokeSesFeedbackMonitor"
+  action        = "lambda:InvokeFunction"
+  function_name = module.ses-feedback-monitor-lambda.lambda_arn
+  principal     = "sns.amazonaws.com"
+  source_arn    = module.ses_feedback_topic.arn
+}
