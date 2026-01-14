@@ -4,7 +4,7 @@ module "ses_feedback_topic" {
   topic_protocol        = "lambda"
   topic_endpoint        = module.ses-feedback-monitor-lambda.lambda_arn
   sns_encryption_key_id = module.sns_encryption_key.kms_arn
-  raw_message_delivery = false
+  raw_message_delivery  = false
   delivery_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -19,6 +19,6 @@ module "ses_feedback_topic" {
       }
     ]
   })
-  enable_ses_publish      = true
-  ses_source_account_id   = data.aws_caller_identity.current.account_id
+  enable_ses_publish    = true
+  ses_source_account_id = data.aws_caller_identity.current.account_id
 }

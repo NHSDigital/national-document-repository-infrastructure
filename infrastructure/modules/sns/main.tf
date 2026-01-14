@@ -19,14 +19,14 @@ locals {
   effective_topic_policy = (
     var.enable_ses_publish
     ? jsonencode(merge(
-        jsondecode(local.base_topic_policy),
-        {
-          Statement = concat(
-            try(jsondecode(local.base_topic_policy).Statement, []),
-            [local.ses_publish_statement]
-          )
-        }
-      ))
+      jsondecode(local.base_topic_policy),
+      {
+        Statement = concat(
+          try(jsondecode(local.base_topic_policy).Statement, []),
+          [local.ses_publish_statement]
+        )
+      }
+    ))
     : local.base_topic_policy
   )
 }
@@ -53,7 +53,7 @@ resource "aws_sns_topic_subscription" "sns_subscription_single" {
   protocol             = var.topic_protocol
   endpoint             = var.topic_endpoint
   raw_message_delivery = var.raw_message_delivery
-  depends_on = [aws_sns_topic_policy.this]
+  depends_on           = [aws_sns_topic_policy.this]
 }
 
 resource "aws_sns_topic_subscription" "sns_subscription_list" {
@@ -62,7 +62,7 @@ resource "aws_sns_topic_subscription" "sns_subscription_list" {
   protocol             = var.topic_protocol
   endpoint             = each.value
   raw_message_delivery = var.raw_message_delivery
-  depends_on = [aws_sns_topic_policy.this]
+  depends_on           = [aws_sns_topic_policy.this]
 }
 
 output "arn" {
