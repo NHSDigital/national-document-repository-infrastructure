@@ -44,8 +44,8 @@ module "ses_feedback_topic" {
   topic_protocol        = "lambda"
   topic_endpoint        = module.ses-feedback-monitor-lambda.lambda_arn
   sns_encryption_key_id = module.sns_encryption_key.kms_arn
-  raw_message_delivery = false
-  topic_policy_json = data.aws_iam_policy_document.ses_feedback_topic_policy.json
+  raw_message_delivery  = false
+  topic_policy_json     = data.aws_iam_policy_document.ses_feedback_topic_policy.json
   delivery_policy = jsonencode({
     Version   = "2012-10-17"
     Statement = []
