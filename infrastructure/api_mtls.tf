@@ -131,6 +131,29 @@ resource "aws_api_gateway_gateway_response" "bad_gateway_response_mtls" {
   }
 }
 
+# Override the misleading "Missing Authentication Token" message for unknown path/method/stage/base-path mismatches
+resource "aws_api_gateway_gateway_response" "missing_auth_token_custom_mtls" {
+  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
+  response_type = "MISSING_AUTHENTICATION_TOKEN"
+  status_code   = "403"
+
+
+  response_templates = {
+    "application/json" = <<EOF
+    {
+      "message": "Resource not valid: Resource $context.path not allowed"
+    }
+    EOF
+  }
+
+  response_parameters = {
+    "gatewayresponse.header.Access-Control-Allow-Origin"      = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+    "gatewayresponse.header.Access-Control-Allow-Methods"     = "'*'"
+    "gatewayresponse.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Auth,X-Api-Key,X-Amz-Security-Token,X-Auth-Cookie,Accept'"
+    "gatewayresponse.header.Access-Control-Allow-Credentials" = "'true'"
+  }
+}
+
 module "mtls_api_endpoint_url_ssm_parameter" {
   source              = "./modules/ssm_parameter"
   name                = "${terraform.workspace}_ApiEndpointMtls"
