@@ -1,5 +1,18 @@
 locals {
-  base_topic_policy = var.topic_policy_json != null ? var.topic_policy_json : var.delivery_policy
+  base_topic_policy_json = var.topic_policy_json != null ? var.topic_policy_json : var.delivery_policy
+  base_topic_policy_obj = jsondecode(local.base_topic_policy_json)
+  normalized_statements = [
+  for s in try(local.base_topic_policy_obj["Statement"], []) : merge(
+    s,
+    {
+      Resource = (
+        try(s["Resource"], null) == "*" || try(s["Resource"], null) == null
+        ? aws_sns_topic.sns_topic.arn
+        : s["Resource"]
+      )
+    }
+  )
+]
 
   ses_publish_statement = var.enable_ses_publish ? {
     Sid    = "AllowSESPublish"
@@ -11,24 +24,21 @@ locals {
     Resource = aws_sns_topic.sns_topic.arn
     Condition = {
       StringEquals = {
-        "aws:SourceAccount" = var.ses_source_account_id
+        "AWS:SourceAccount" = var.ses_source_account_id
       }
     }
   } : null
 
-  effective_topic_policy = (
-    var.enable_ses_publish
-    ? jsonencode(merge(
-      jsondecode(local.base_topic_policy),
-      {
-        Statement = concat(
-          try(jsondecode(local.base_topic_policy).Statement, []),
-          [local.ses_publish_statement]
-        )
-      }
-    ))
-    : local.base_topic_policy
+  effective_topic_policy_obj = merge(
+    local.base_topic_policy_obj,
+    {
+      Statement = concat(
+        local.normalized_statements,
+        var.enable_ses_publish ? [local.ses_publish_statement] : []
+      )
+    }
   )
+  effective_topic_policy_json = jsonencode(local.effective_topic_policy_obj)
 }
 
 resource "aws_sns_topic" "sns_topic" {
@@ -44,7 +54,7 @@ resource "aws_sns_topic" "sns_topic" {
 
 resource "aws_sns_topic_policy" "this" {
   arn    = aws_sns_topic.sns_topic.arn
-  policy = local.effective_topic_policy
+  policy = local.effective_topic_policy_json
 }
 
 resource "aws_sns_topic_subscription" "sns_subscription_single" {
@@ -53,7 +63,8 @@ resource "aws_sns_topic_subscription" "sns_subscription_single" {
   protocol             = var.topic_protocol
   endpoint             = var.topic_endpoint
   raw_message_delivery = var.raw_message_delivery
-  depends_on           = [aws_sns_topic_policy.this]
+
+  depends_on = [aws_sns_topic_policy.this]
 }
 
 resource "aws_sns_topic_subscription" "sns_subscription_list" {
@@ -62,7 +73,8 @@ resource "aws_sns_topic_subscription" "sns_subscription_list" {
   protocol             = var.topic_protocol
   endpoint             = each.value
   raw_message_delivery = var.raw_message_delivery
-  depends_on           = [aws_sns_topic_policy.this]
+
+  depends_on = [aws_sns_topic_policy.this]
 }
 
 output "arn" {

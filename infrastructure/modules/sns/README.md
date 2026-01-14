@@ -79,6 +79,7 @@ module "sns_topic" {
 | Name | Type |
 |------|------|
 | [aws_sns_topic.sns_topic](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
+| [aws_sns_topic_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_policy) | resource |
 | [aws_sns_topic_subscription.sns_subscription_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
 | [aws_sns_topic_subscription.sns_subscription_single](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
 
@@ -86,12 +87,14 @@ module "sns_topic" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_delivery_policy"></a> [delivery\_policy](#input\_delivery\_policy) | Attach delivery or IAM policy. | `string` | n/a | yes |
+| <a name="input_delivery_policy"></a> [delivery\_policy](#input\_delivery\_policy) | Attach delivery or IAM policy. (Legacy name; used as topic policy JSON in this module.) | `string` | n/a | yes |
 | <a name="input_enable_deduplication"></a> [enable\_deduplication](#input\_enable\_deduplication) | Prevent content based duplication in notification queue. | `bool` | `false` | no |
 | <a name="input_enable_fifo"></a> [enable\_fifo](#input\_enable\_fifo) | Attach first in first out policy to notification queue. | `bool` | `false` | no |
+| <a name="input_enable_ses_publish"></a> [enable\_ses\_publish](#input\_enable\_ses\_publish) | If true, module appends a statement allowing ses.amazonaws.com to SNS:Publish to this topic. | `bool` | `false` | no |
 | <a name="input_is_topic_endpoint_list"></a> [is\_topic\_endpoint\_list](#input\_is\_topic\_endpoint\_list) | Whether to use the topic\_endpoint\_list instead of a single topic\_endpoint. | `bool` | `false` | no |
 | <a name="input_raw_message_delivery"></a> [raw\_message\_delivery](#input\_raw\_message\_delivery) | Whether to enable raw message delivery for the SNS subscription. | `bool` | `false` | no |
-| <a name="input_sns_encryption_key_id"></a> [sns\_encryption\_key\_id](#input\_sns\_encryption\_key\_id) | The ARN of the KMS key used for encrypting the SNS topic. | `string` | n/a | yes |
+| <a name="input_ses_source_account_id"></a> [ses\_source\_account\_id](#input\_ses\_source\_account\_id) | AWS account ID used in the AWS:SourceAccount condition for SES publishing. | `string` | `""` | no |
+| <a name="input_sns_encryption_key_id"></a> [sns\_encryption\_key\_id](#input\_sns\_encryption\_key\_id) | The ARN (or ID) of the KMS key used for encrypting the SNS topic. | `string` | n/a | yes |
 | <a name="input_sqs_feedback"></a> [sqs\_feedback](#input\_sqs\_feedback) | Map of IAM role ARNs and sample rate for success and failure feedback. | `map(string)` | `{}` | no |
 | <a name="input_topic_endpoint"></a> [topic\_endpoint](#input\_topic\_endpoint) | A single endpoint (e.g., SQS queue or Lambda function ARN) to subscribe to the topic. | `any` | `null` | no |
 | <a name="input_topic_endpoint_list"></a> [topic\_endpoint\_list](#input\_topic\_endpoint\_list) | A list of endpoints (e.g., SQS ARNs) to subscribe to the topic. | `any` | `[]` | no |
