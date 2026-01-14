@@ -72,11 +72,11 @@ module "search-document-references-lambda" {
   http_methods        = ["GET"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    DYNAMODB_TABLE_LIST     = "[\u0022${terraform.workspace}_${var.docstore_dynamodb_table_name}\u0022, \u0022${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}\u0022]"
-    WORKSPACE               = terraform.workspace
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
+    LLOYD_GEORGE_DYNAMODB_NAME = module.lloyd_george_reference_dynamodb_table.table_name
+    WORKSPACE                  = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
