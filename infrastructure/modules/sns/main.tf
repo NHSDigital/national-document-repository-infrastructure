@@ -1,18 +1,18 @@
 locals {
   base_topic_policy_json = var.topic_policy_json != null ? var.topic_policy_json : var.delivery_policy
-  base_topic_policy_obj = jsondecode(local.base_topic_policy_json)
+  base_topic_policy_obj  = jsondecode(local.base_topic_policy_json)
   normalized_statements = [
-  for s in try(local.base_topic_policy_obj["Statement"], []) : merge(
-    s,
-    {
-      Resource = (
-        try(s["Resource"], null) == "*" || try(s["Resource"], null) == null
-        ? aws_sns_topic.sns_topic.arn
-        : s["Resource"]
-      )
-    }
-  )
-]
+    for s in try(local.base_topic_policy_obj["Statement"], []) : merge(
+      s,
+      {
+        Resource = (
+          try(s["Resource"], null) == "*" || try(s["Resource"], null) == null
+          ? aws_sns_topic.sns_topic.arn
+          : s["Resource"]
+        )
+      }
+    )
+  ]
 
   ses_publish_statement = var.enable_ses_publish ? {
     Sid    = "AllowSESPublish"
