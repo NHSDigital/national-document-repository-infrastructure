@@ -113,7 +113,7 @@ module "lambda" {
 | <a name="input_lambda_environment_variables"></a> [lambda\_environment\_variables](#input\_lambda\_environment\_variables) | Map of environment variables to set in the Lambda function. | `map(string)` | `{}` | no |
 | <a name="input_lambda_ephemeral_storage"></a> [lambda\_ephemeral\_storage](#input\_lambda\_ephemeral\_storage) | Amount of ephemeral storage (in MB) to allocate to the Lambda function. | `number` | `512` | no |
 | <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Function timeout in seconds. | `number` | `30` | no |
-| <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Amount of memory to allocate to the Lambda function (in MB). | `number` | `512` | no |
+| <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Amount of memory to allocate to the Lambda function (in MB). | `number` | `1769` | no |
 | <a name="input_name"></a> [name](#input\_name) | Unique name for the Lambda function. | `string` | n/a | yes |
 | <a name="input_persistent_workspaces"></a> [persistent\_workspaces](#input\_persistent\_workspaces) | A list of workspaces that require persistent logs | `list(string)` | <pre>[<br/>  "ndr-dev",<br/>  "ndr-test",<br/>  "pre-prod",<br/>  "prod"<br/>]</pre> | no |
 | <a name="input_reserved_concurrent_executions"></a> [reserved\_concurrent\_executions](#input\_reserved\_concurrent\_executions) | The number of concurrent execution allowed for lambda. A value of 0 will stop lambda from running, and -1 removes any concurrency limitations. Default to -1. | `number` | `-1` | no |
