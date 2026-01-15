@@ -38,6 +38,7 @@ resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
               "description": "Keep last 5 tagged images",
               "selection": {
                   "tagStatus": "tagged",
+                  "tagPrefixList": [""],
                   "countType": "imageCountMoreThan",
                   "countNumber": 5
               },
