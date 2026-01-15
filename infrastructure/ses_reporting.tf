@@ -42,7 +42,7 @@ resource "aws_route53_record" "ses_mail_from_mx" {
   ttl     = 600
 
   records = [
-    "10 feedback-smtp.eu-west-2.amazonses.com"
+    "10 feedback-smtp.${var.region}.amazonses.com"
   ]
 }
 

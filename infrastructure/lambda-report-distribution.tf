@@ -3,7 +3,7 @@ module "report-distribution-lambda" {
   name           = "reportDistribution"
   handler        = "handlers.report_distribution_handler.lambda_handler"
   lambda_timeout = 300
-  memory_size    = 1024
+  memory_size    = 1769
 
   iam_role_policy_documents = [
     module.report-orchestration-store.s3_read_policy_document,
