@@ -46,7 +46,6 @@ module "create-token-lambda" {
     module.create-token-gateway,
     module.ndr-app-config
   ]
-  memory_size = 1769
 }
 
 module "create_token-alarm" {

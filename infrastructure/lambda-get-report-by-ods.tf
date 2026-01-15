@@ -64,7 +64,6 @@ module "get-report-by-ods-lambda" {
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id         = module.get-report-by-ods-gateway.gateway_resource_id
   http_methods        = ["GET"]
-  memory_size         = 1769
   lambda_timeout      = 900
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
