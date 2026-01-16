@@ -48,7 +48,9 @@ resource "aws_lb_listener" "https" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  certificate_arn   = data.aws_acm_certificate.amazon_issued[0].arn
+  # TODO: Revert to data source lookup once account mismatch is resolved
+  # certificate_arn   = data.aws_acm_certificate.amazon_issued[0].arn
+  certificate_arn = "arn:aws:acm:eu-west-2:211125386286:certificate/622b4995-90dd-4a20-a9fe-4ad2380199ef"
 
   default_action {
     type             = "forward"
