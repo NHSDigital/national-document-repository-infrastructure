@@ -269,7 +269,7 @@ variable "cloud_only_service_instances" {
 variable "apim_environment" {}
 
 locals {
-  is_sandbox       = !contains(["ndr-dev", "ndr-test", "pre-prod", "prod"], terraform.workspace)
+  is_sandbox       = !contains(["ndr-dev", "ndr-test", "test", "pre-prod", "prod"], terraform.workspace)
   is_production    = contains(["pre-prod", "prod"], terraform.workspace)
   is_force_destroy = !local.is_production
 
