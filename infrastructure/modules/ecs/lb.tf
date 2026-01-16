@@ -59,7 +59,8 @@ resource "aws_lb_listener" "https" {
 }
 
 data "aws_acm_certificate" "amazon_issued" {
-  count = var.is_lb_needed ? 1 : 0
+  # TODO: Change count back to: var.is_lb_needed ? 1 : 0 once account mismatch is resolved
+  count = 0
 
   domain      = var.certificate_domain
   types       = ["AMAZON_ISSUED"]
