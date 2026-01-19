@@ -1,5 +1,11 @@
-# Lambda with Terraform-managed concurrency (default)
-resource "aws_lambda_function" "lambda_managed" {
+# Migrate existing resources to indexed form
+moved {
+  from = aws_lambda_function.lambda
+  to   = aws_lambda_function.lambda[0]
+}
+
+# Lambda with Terraform-managed concurrency (default - keeps existing resource name)
+resource "aws_lambda_function" "lambda" {
   count = var.manage_reserved_concurrency ? 1 : 0
 
   # If the file is not in the current working directory you will need to include a
@@ -44,7 +50,7 @@ resource "aws_lambda_function" "lambda_managed" {
   ]
 }
 
-# Lambda with externally-managed concurrency
+# Lambda with externally-managed concurrency (opt-in with new resource name)
 resource "aws_lambda_function" "lambda_unmanaged" {
   count = var.manage_reserved_concurrency ? 0 : 1
 
@@ -94,7 +100,7 @@ resource "aws_lambda_function" "lambda_unmanaged" {
 
 # Local value to reference the active lambda resource
 locals {
-  lambda = var.manage_reserved_concurrency ? aws_lambda_function.lambda_managed[0] : aws_lambda_function.lambda_unmanaged[0]
+  lambda = var.manage_reserved_concurrency ? aws_lambda_function.lambda[0] : aws_lambda_function.lambda_unmanaged[0]
 }
 
 resource "aws_cloudwatch_log_group" "lambda_logs" {
