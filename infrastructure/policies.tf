@@ -59,6 +59,15 @@ resource "aws_iam_policy" "administrator_permission_restrictions" {
         Resource = [
           "arn:aws:s3:::*/*.tfstate"
         ]
+      },
+      {
+        Effect = "Deny",
+        Action = [
+          "ssm:PutParameter"
+        ],
+        Resource = [
+          "arn:aws:ssm:*:*:parameter/*",
+        ]
       }
     ]
   })
