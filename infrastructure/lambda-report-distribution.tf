@@ -1,6 +1,6 @@
 module "report-distribution-lambda" {
   source         = "./modules/lambda"
-  name           = "reportDistribution"
+  name           = "ReportDistribution"
   handler        = "handlers.report_distribution_handler.lambda_handler"
   lambda_timeout = 300
   memory_size    = 1769

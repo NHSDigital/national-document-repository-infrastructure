@@ -1,6 +1,6 @@
 module "report-orchestration-lambda" {
   source         = "./modules/lambda"
-  name           = "reportOrchestration"
+  name           = "ReportOrchestration"
   handler        = "handlers.report_orchestration_handler.lambda_handler"
   lambda_timeout = 900
   memory_size    = 1769
