@@ -85,6 +85,18 @@ variable "reserved_concurrent_executions" {
   default     = -1
 }
 
+variable "manage_reserved_concurrency" {
+  description = <<-EOT
+    Whether Terraform should manage reserved_concurrent_executions. 
+    - true (default): Terraform enforces concurrency value on every deploy. Any external changes will be reset.
+    - false: Terraform ignores concurrency after creation, allowing external management (EventBridge, controller lambdas).
+    
+    Note: When false, reserved_concurrent_executions is set initially but then ignored. External systems can freely modify it.
+  EOT
+  type        = bool
+  default     = true
+}
+
 variable "default_policies" {
   description = "List of default IAM policy ARNs to attach to the Lambda execution role."
   type        = list(string)

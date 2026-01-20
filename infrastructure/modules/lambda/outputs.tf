@@ -1,21 +1,21 @@
 output "invoke_arn" {
-  value = aws_lambda_function.lambda.invoke_arn
+  value = local.lambda.invoke_arn
 }
 
 output "qualified_arn" {
-  value = aws_lambda_function.lambda.qualified_arn
+  value = local.lambda.qualified_arn
 }
 
 output "function_name" {
-  value = aws_lambda_function.lambda.function_name
+  value = local.lambda.function_name
 }
 
 output "timeout" {
-  value = aws_lambda_function.lambda.timeout
+  value = local.lambda.timeout
 }
 
 output "lambda_arn" {
-  value = aws_lambda_function.lambda.arn
+  value = local.lambda.arn
 }
 
 output "lambda_execution_role_name" {
