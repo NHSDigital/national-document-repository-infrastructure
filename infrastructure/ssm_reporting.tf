@@ -4,6 +4,6 @@ resource "aws_ssm_parameter" "reporting_ses_from_address" {
   value = "ndr-reports@${var.domain}"
 
   tags = {
-    Name = "${terraform.workspace}-ssm"
+    Name = "/prs/${var.environment}/user-input/reporting-ses-from-address"
   }
 }
