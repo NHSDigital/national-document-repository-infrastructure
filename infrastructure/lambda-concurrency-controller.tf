@@ -26,6 +26,10 @@ module "concurrency-controller-lambda" {
   iam_role_policy_documents = [
     data.aws_iam_policy_document.concurrency_controller_policy.json
   ]
+
+  lambda_environment_variables = {
+    WORKSPACE = terraform.workspace
+  }
 }
 
 resource "aws_lambda_permission" "office_hours_start_permission" {
