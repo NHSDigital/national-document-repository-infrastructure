@@ -182,13 +182,10 @@ module "ndr-document-pending-review-store" {
 # Lifecycle Rules
 resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   bucket = module.ndr-lloyd-george-store.bucket_id
+
   rule {
     id     = "Delete stitched LG records"
     status = "Enabled"
-
-    expiration {
-      days = 1
-    }
 
     filter {
       tag {
@@ -196,7 +193,20 @@ resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
         value = "true"
       }
     }
+
+    # Current objects: expire after 1 day
+    # Delete markers: remove (only when they're the only remaining version)
+    expiration {
+      days                         = 1
+      expired_object_delete_marker = true
+    }
+
+    # Non-current (older) versions: delete after 1 day
+    noncurrent_version_expiration {
+      noncurrent_days = 1
+    }
   }
+
   rule {
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
@@ -223,30 +233,62 @@ resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules" {
   bucket = module.ndr-bulk-staging-store.bucket_id
+
   rule {
     id     = "Delete objects in user_upload folder that have existed for 24 hours"
     status = "Enabled"
 
-    expiration {
-      days = 1
-    }
-
     filter {
       prefix = "user_upload/"
     }
+
+    expiration {
+      days                         = 1
+      expired_object_delete_marker = true
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 1
+    }
   }
+
   rule {
     id     = "Delete objects in review folder that have existed for 24 hours"
     status = "Enabled"
 
-    expiration {
-      days = 1
-    }
-
     filter {
       prefix = "review/"
     }
+
+    expiration {
+      days                         = 1
+      expired_object_delete_marker = true
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 1
+    }
   }
+
+  # Added because some flows write fhir_upload/<...>/...
+  rule {
+    id     = "Delete objects in fhir_upload folder that have existed for 24 hours"
+    status = "Enabled"
+
+    filter {
+      prefix = "fhir_upload/"
+    }
+
+    expiration {
+      days                         = 1
+      expired_object_delete_marker = true
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 1
+    }
+  }
+
   rule {
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
