@@ -113,7 +113,7 @@ jobs:
         working-directory: ./app
 
       - name: Cypress Build
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           install: false
           runTests: false
@@ -128,7 +128,7 @@ jobs:
         run: npm install serve -g
 
       - name: Run Cypress Tests (Chrome)
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           install: false
           start: serve -s dist
