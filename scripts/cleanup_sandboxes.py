@@ -57,7 +57,7 @@ if __name__ == "__main__":
         sys.exit("GIT_WORKFLOW_PAT not set")
 
     #Add persisting environments here
-    excluded = ["ndr-dev"]
+    excluded = ["ndr-dev","risk"]
 
     workspaces = get_workspaces()
     for workspace in workspaces:
