@@ -1,4 +1,4 @@
-default: helpw
+default: help
 
 help: ## This help message
 	@grep -E --no-filename '^[a-zA-Z-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-42s\033[0m %s\n", $$1, $$2}'
@@ -33,7 +33,6 @@ init-bootstrap: ## Run Bootstrap terraform
 .PHONY: apply-bootstrap
 apply-bootstrap:	## Apply Bootstrap terraform
 	cd ./bootstrap && terraform apply
-
 
 # Export current github role permissions
 # Pass in an aliases variable containing account IDs you need to mask.
