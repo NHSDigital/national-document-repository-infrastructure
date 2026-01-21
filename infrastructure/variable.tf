@@ -269,11 +269,11 @@ locals {
 
   bulk_upload_lambda_concurrent_limit = 3
 
-  api_gateway_subdomain_name   = contains(["prod", "test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
-  api_gateway_full_domain_name = contains(["prod", "test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
+  api_gateway_subdomain_name   = contains(["prod", "test", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
+  api_gateway_full_domain_name = contains(["prod", "test", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
 
-  mtls_api_gateway_subdomain_name   = contains(["prod", "test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}." : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}"
-  mtls_api_gateway_full_domain_name = contains(["prod", "test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}.${var.domain}" : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}.${var.domain}"
+  mtls_api_gateway_subdomain_name   = contains(["prod", "test", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}." : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}"
+  mtls_api_gateway_full_domain_name = contains(["prod", "test", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}.${var.domain}" : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}.${var.domain}"
 
   current_region     = data.aws_region.current.name
   current_account_id = data.aws_caller_identity.current.account_id
