@@ -25,7 +25,6 @@ build-sandbox: ## Build a sandbox using either the branch as the workspace name,
 
 # Testing
 
-
 # Bootstrap
 .PHONY: init-bootstrap
 init-bootstrap: ## Run Bootstrap terraform
