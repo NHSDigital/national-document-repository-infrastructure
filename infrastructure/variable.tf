@@ -335,3 +335,15 @@ variable "shared_infra_workspace" {
   type        = string
   default     = "ndr-dev"
 }
+
+variable "report-orchestration_bucket_name" {
+  description = "The name of the S3 bucket to store Report Orchestrations."
+  type        = string
+  default     = "report-orchestration"
+}
+
+variable "ses-feedback_bucket_name" {
+  description = "The name of the S3 bucket to store Simple Email Service feedback Json."
+  type        = string
+  default     = "ses-feedback"
+}
