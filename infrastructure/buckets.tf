@@ -30,14 +30,14 @@ module "ndr-document-store" {
 }
 
 module "ndr-zip-request-store" {
-  source                    = "./modules/s3/"
-  access_logs_enabled       = local.is_production
-  access_logs_bucket_id     = local.access_logs_bucket_id
-  bucket_name               = var.zip_store_bucket_name
+  source                = "./modules/s3/"
+  access_logs_enabled   = local.is_production
+  access_logs_bucket_id = local.access_logs_bucket_id
+  bucket_name           = var.zip_store_bucket_name
   enable_cors_configuration = true
-  environment               = var.environment
-  owner                     = var.owner
-  force_destroy             = local.is_force_destroy
+  environment           = var.environment
+  owner                 = var.owner
+  force_destroy         = local.is_force_destroy
   cors_rules = [
     {
       allowed_methods = ["GET"]
@@ -194,16 +194,28 @@ resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
       }
     }
 
-    # Current objects: expire after 1 day
-    # Delete markers: remove (only when they're the only remaining version)
     expiration {
-      days                         = 1
-      expired_object_delete_marker = true
+      days = 1
     }
 
-    # Non-current (older) versions: delete after 1 day
     noncurrent_version_expiration {
       noncurrent_days = 1
+    }
+  }
+
+  rule {
+    id     = "Remove delete markers for stitched LG records"
+    status = "Enabled"
+
+    filter {
+      tag {
+        key   = "autodelete"
+        value = "true"
+      }
+    }
+
+    expiration {
+      expired_object_delete_marker = true
     }
   }
 
@@ -243,12 +255,24 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     }
 
     expiration {
-      days                         = 1
-      expired_object_delete_marker = true
+      days = 1
     }
 
     noncurrent_version_expiration {
       noncurrent_days = 1
+    }
+  }
+
+  rule {
+    id     = "Remove delete markers in user_upload folder"
+    status = "Enabled"
+
+    filter {
+      prefix = "user_upload/"
+    }
+
+    expiration {
+      expired_object_delete_marker = true
     }
   }
 
@@ -261,8 +285,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     }
 
     expiration {
-      days                         = 1
-      expired_object_delete_marker = true
+      days = 1
     }
 
     noncurrent_version_expiration {
@@ -270,7 +293,19 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     }
   }
 
-  # Added because some flows write fhir_upload/<...>/...
+  rule {
+    id     = "Remove delete markers in review folder"
+    status = "Enabled"
+
+    filter {
+      prefix = "review/"
+    }
+
+    expiration {
+      expired_object_delete_marker = true
+    }
+  }
+
   rule {
     id     = "Delete objects in fhir_upload folder that have existed for 24 hours"
     status = "Enabled"
@@ -280,12 +315,24 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     }
 
     expiration {
-      days                         = 1
-      expired_object_delete_marker = true
+      days = 1
     }
 
     noncurrent_version_expiration {
       noncurrent_days = 1
+    }
+  }
+
+  rule {
+    id     = "Remove delete markers in fhir_upload folder"
+    status = "Enabled"
+
+    filter {
+      prefix = "fhir_upload/"
+    }
+
+    expiration {
+      expired_object_delete_marker = true
     }
   }
 
