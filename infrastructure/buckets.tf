@@ -204,15 +204,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   }
 
   rule {
-    id     = "Remove delete markers for stitched LG records"
+    id     = "Remove orphan delete markers (bucket-wide)"
     status = "Enabled"
 
-    filter {
-      tag {
-        key   = "autodelete"
-        value = "true"
-      }
-    }
+    filter {}
 
     expiration {
       expired_object_delete_marker = true
