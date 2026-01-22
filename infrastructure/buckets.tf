@@ -30,14 +30,14 @@ module "ndr-document-store" {
 }
 
 module "ndr-zip-request-store" {
-  source                = "./modules/s3/"
-  access_logs_enabled   = local.is_production
-  access_logs_bucket_id = local.access_logs_bucket_id
-  bucket_name           = var.zip_store_bucket_name
+  source                    = "./modules/s3/"
+  access_logs_enabled       = local.is_production
+  access_logs_bucket_id     = local.access_logs_bucket_id
+  bucket_name               = var.zip_store_bucket_name
   enable_cors_configuration = true
-  environment           = var.environment
-  owner                 = var.owner
-  force_destroy         = local.is_force_destroy
+  environment               = var.environment
+  owner                     = var.owner
+  force_destroy             = local.is_force_destroy
   cors_rules = [
     {
       allowed_methods = ["GET"]
