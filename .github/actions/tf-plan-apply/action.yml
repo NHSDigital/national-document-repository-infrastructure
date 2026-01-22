@@ -14,7 +14,7 @@ inputs:
   terraform_version:
     description: "Terraform version to use"
     required: false
-    default: "1.13.3"
+    default: "1.14.3"
 
   backend_conf:
     description: "Terraform backend config file"
