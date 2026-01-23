@@ -356,23 +356,3 @@ resource "aws_iam_policy" "s3_document_data_policy_post_document_review_lambda" 
     ]
   })
 }
-
-data "aws_iam_policy_document" "reporting_ses" {
-  statement {
-    sid    = "SESAccess"
-    effect = "Allow"
-
-    actions = [
-      "ses:SendEmail",
-      "ses:SendRawEmail"
-    ]
-
-    resources = ["*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "ses:FromAddress"
-      values   = [aws_ssm_parameter.reporting_ses_from_address.value]
-    }
-  }
-}
