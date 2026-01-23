@@ -26,10 +26,10 @@ variable "certificate_subdomain_name_prefix_mtls" {
   default     = "mtls"
 }
 
-variable "cloudfront_subdomain_name_prefix" {
+variable "cloudfront_subdomain_prefix" {
   description = "Prefix to add to CloudFront custom domain subdomain."
   type        = string
-  default     = "files"
+  default     = "files-"
 }
 
 # Bucket Variables
@@ -280,7 +280,7 @@ locals {
 
   mtls_api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}.${var.domain}" : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}.${var.domain}"
 
-  cloudfront_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.cloudfront_subdomain_name_prefix}.${var.domain}" : "${var.cloudfront_subdomain_name_prefix}-${terraform.workspace}.${var.domain}"
+  cloudfront_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.cloudfront_subdomain_prefix}${var.domain}" : "${var.cloudfront_subdomain_prefix}${terraform.workspace}.${var.domain}"
 
   current_region     = data.aws_region.current.name
   current_account_id = data.aws_caller_identity.current.account_id

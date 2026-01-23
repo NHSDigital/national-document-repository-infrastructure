@@ -29,8 +29,8 @@ variable "api_gateway_subdomain_name" {
   type        = string
 }
 
-variable "api_cloudfront_subdomain_name" {
-  description = "Subdomain name for cloudfront custom domain. Example: file"
+variable "cloudfront_alias_full_domain_name" {
+  description = "CloudFront alias domain name"
   type        = string
 }
 

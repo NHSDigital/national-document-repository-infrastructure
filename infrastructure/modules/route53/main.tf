@@ -32,8 +32,8 @@ resource "aws_route53_record" "ndr_gateway_api_record" {
 }
 
 
-resource "aws_route53_record" "ndr_cloudfront_cloudfront_record" {
-  name    = var.api_cloudfront_subdomain_name
+resource "aws_route53_record" "ndr_cloudfront_alias" {
+  name    = var.cloudfront_alias_full_domain_name
   type    = "A"
   zone_id = local.zone_id
 

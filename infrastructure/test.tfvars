@@ -4,7 +4,7 @@ owner                             = "nhse/ndr-team"
 domain                            = "access-request-fulfilment.patient-deductions.nhs.uk"
 certificate_domain                = "ndr-test.access-request-fulfilment.patient-deductions.nhs.uk"
 certificate_subdomain_name_prefix = "api."
-cloudfront_subdomain_name_prefix  = "files"
+cloudfront_subdomain_prefix       = "files-"
 
 standalone_vpc_tag    = "ndr-test"
 standalone_vpc_ig_tag = "ndr-test"
