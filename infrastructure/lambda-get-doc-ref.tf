@@ -64,7 +64,7 @@ module "get-doc-ref-lambda" {
     WORKSPACE                  = terraform.workspace
     PRESIGNED_ASSUME_ROLE      = aws_iam_role.get_doc_ref_presign_url_role.arn
     EDGE_REFERENCE_TABLE       = module.cloudfront_edge_dynamodb_table.table_name
-    CLOUDFRONT_URL             = aws_cloudfront_distribution.s3_presign_mask.aliases[0]
+    CLOUDFRONT_URL             = one(aws_cloudfront_distribution.s3_presign_mask.aliases)
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
