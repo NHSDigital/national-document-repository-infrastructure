@@ -201,9 +201,10 @@ resource "aws_lambda_permission" "transfer_key_manager_schedule_permission" {
 
 # Report Orchestration Schedule - Daily Report Generation
 resource "aws_cloudwatch_event_rule" "report_orchestration_schedule" {
-  name                = "${terraform.workspace}_report_orchestration_schedule"
-  description         = "Schedule for Report Orchestration Lambda"
-  schedule_expression = "cron(1 7 * * ? *)"
+  name        = "${terraform.workspace}_report_orchestration_schedule"
+  description = "Schedule for Report Orchestration Lambda"
+  # schedule_expression = "cron(1 7 * * ? *)"
+  schedule_expression = "rate(1 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "report_orchestration_schedule_event" {
