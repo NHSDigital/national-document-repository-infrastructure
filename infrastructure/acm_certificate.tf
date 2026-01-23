@@ -35,6 +35,7 @@ resource "aws_acm_certificate" "cloudfront_cert" {
   provider          = aws.us_east_1
   domain_name       = local.cloudfront_full_domain_name
   validation_method = "DNS"
+  tags              = {}
 
   lifecycle {
     create_before_destroy = true
