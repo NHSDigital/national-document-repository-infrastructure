@@ -33,7 +33,7 @@ resource "aws_route53_record" "ndr_gateway_api_record" {
 
 
 resource "aws_route53_record" "ndr_cloudfront_cloudfront_record" {
-  name    = "${terraform.workspace}-${var.api_cloudfront_subdomain_name}"
+  name    = var.api_cloudfront_subdomain_name
   type    = "A"
   zone_id = local.zone_id
 
