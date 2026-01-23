@@ -10,7 +10,7 @@ resource "aws_servicequotas_service_quota" "customer_managed_policies_per_accoun
 }
 
 resource "aws_servicequotas_service_quota" "lambda_concurrent_executions_increase" {
-  count = local.is_sandbox || local.is_production ? 0 : 1   # The service code for AWS Lambda
+  count = local.is_sandbox || local.is_production ? 0 : 1 # The service code for AWS Lambda
 
   service_code = "lambda"
   quota_code   = "L-B99A9384"
