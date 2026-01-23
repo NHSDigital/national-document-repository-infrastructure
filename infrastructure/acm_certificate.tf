@@ -39,11 +39,6 @@ resource "aws_acm_certificate" "cloudfront_cert" {
   lifecycle {
     create_before_destroy = true
   }
-
-  tags = {
-    Name        = "${terraform.workspace}-cloudfront-certificate"
-    Environment = var.environment
-  }
 }
 
 resource "aws_route53_record" "cloudfront_cert_validation" {
