@@ -7,7 +7,7 @@ module "search-document-references-gateway" {
   gateway_path        = "SearchDocumentReferences"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = contains(["prod", "ndr-test"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
 module "search_doc_alarm" {
