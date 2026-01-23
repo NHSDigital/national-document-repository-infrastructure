@@ -35,7 +35,7 @@ module "login_redirect_lambda" {
     APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
-    OIDC_CALLBACK_URL       = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
+    OIDC_CALLBACK_URL       = contains(["prod", "ndr-test"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
     AUTH_DYNAMODB_NAME      = "${terraform.workspace}_${var.auth_state_dynamodb_table_name}"
   }
   depends_on = [
