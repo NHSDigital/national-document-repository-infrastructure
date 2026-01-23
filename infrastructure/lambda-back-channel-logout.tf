@@ -6,7 +6,7 @@ module "back-channel-logout-gateway" {
   authorization       = "NONE"
   gateway_path        = "BackChannelLogout"
   require_credentials = false
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = contains(["prod", "ndr-test"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
 module "back_channel_logout_lambda" {
@@ -32,7 +32,7 @@ module "back_channel_logout_lambda" {
     ENVIRONMENT                    = var.environment
     AUTH_DYNAMODB_NAME             = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
-    OIDC_CALLBACK_URL              = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
+    OIDC_CALLBACK_URL              = contains(["prod", "ndr-test"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
