@@ -14,9 +14,9 @@ resource "aws_route53_record" "ses_domain_verification" {
 }
 
 resource "aws_ses_domain_identity_verification" "reporting" {
-  count      = local.is_shared_infra_workspace ? 1 : 0
-  domain     = aws_ses_domain_identity.reporting[0].domain
-  depends_on = [aws_route53_record.ses_domain_verification]
+  count  = local.is_shared_infra_workspace ? 1 : 0
+  domain = aws_ses_domain_identity.reporting[0].domain
+  depends_on = [aws_route53_record.ses_domain_verification[0]]
 }
 
 resource "aws_ses_domain_dkim" "reporting" {
@@ -28,10 +28,11 @@ resource "aws_route53_record" "ses_dkim" {
   count   = local.is_shared_infra_workspace ? 3 : 0
   zone_id = module.route53_fargate_ui.zone_id
 
-  name    = "${element(aws_ses_domain_dkim.reporting[0].dkim_tokens, count.index)}._domainkey.${var.domain}"
+  name    = "${aws_ses_domain_dkim.reporting[0].dkim_tokens[count.index]}._domainkey.${var.domain}"
   type    = "CNAME"
   ttl     = 600
-  records = ["${element(aws_ses_domain_dkim.reporting[0].dkim_tokens, count.index)}.dkim.amazonses.com"]
+  records = ["${aws_ses_domain_dkim.reporting[0].dkim_tokens[count.index]}.dkim.amazonses.com"]
+  depends_on = [aws_ses_domain_dkim.reporting[0]]
 }
 
 resource "aws_ses_domain_mail_from" "reporting" {
@@ -49,9 +50,7 @@ resource "aws_route53_record" "ses_mail_from_mx" {
   type    = "MX"
   ttl     = 600
 
-  records = [
-    "10 feedback-smtp.${var.region}.amazonses.com"
-  ]
+  records = ["10 feedback-smtp.${var.region}.amazonses.com"]
 }
 
 resource "aws_route53_record" "ses_mail_from_spf" {
@@ -61,9 +60,7 @@ resource "aws_route53_record" "ses_mail_from_spf" {
   type    = "TXT"
   ttl     = 600
 
-  records = [
-    "v=spf1 include:amazonses.com -all"
-  ]
+  records = ["v=spf1 include:amazonses.com -all"]
 }
 
 resource "aws_route53_record" "spf_root" {
@@ -73,7 +70,5 @@ resource "aws_route53_record" "spf_root" {
   type    = "TXT"
   ttl     = 300
 
-  records = [
-    "v=spf1 include:amazonses.com -all"
-  ]
+  records = ["v=spf1 include:amazonses.com -all"]
 }

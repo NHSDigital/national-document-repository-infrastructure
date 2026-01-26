@@ -1,5 +1,5 @@
 locals {
-  ses_feedback_sender_email_address = local.reporting_ses_from_address_value
+  ses_feedback_sender_email_address = "ndr-reports@${var.domain}"
 
   feedback_recipient_list_ssm_param_key = (local.is_sandbox
     ? "/prs/dev/user-input/feedback-recipient-email-list"
