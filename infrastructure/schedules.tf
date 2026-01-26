@@ -84,7 +84,7 @@ resource "aws_scheduler_schedule" "data_collection_ecs" {
 }
 
 resource "aws_iam_role" "data_collection_ecs_execution" {
-  name  = "${terraform.workspace}_data_collection_scheduler_role"
+  name = "${terraform.workspace}_data_collection_scheduler_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
