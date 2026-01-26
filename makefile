@@ -34,7 +34,6 @@ init-bootstrap: ## Run Bootstrap terraform
 apply-bootstrap:	## Apply Bootstrap terraform
 	cd ./bootstrap && terraform apply
 
-
 # Export current github role permissions
 # Pass in an aliases variable containing account IDs you need to mask.
 # e.g. make export-dev-github-role aliases="123456789012=account 555555555555=other_account"
