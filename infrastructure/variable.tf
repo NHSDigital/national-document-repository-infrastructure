@@ -266,6 +266,8 @@ locals {
   is_sandbox       = !contains(["ndr-dev", "ndr-test", "pre-prod", "prod"], terraform.workspace)
   is_production    = contains(["pre-prod", "prod"], terraform.workspace)
   is_force_destroy = !local.is_production
+  is_shared_infra_workspace = terraform.workspace == var.shared_infra_workspace
+  reporting_ses_from_address_parameter_name  = "/prs/${var.environment}/user-input/reporting-ses-from-address"
 
   bulk_upload_lambda_concurrent_limit = 3
 

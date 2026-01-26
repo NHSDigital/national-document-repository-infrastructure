@@ -1,7 +1,3 @@
-locals {
-  is_shared_infra_workspace = terraform.workspace == var.shared_infra_workspace
-}
-
 resource "aws_ses_domain_identity" "reporting" {
   count  = local.is_shared_infra_workspace ? 1 : 0
   domain = var.domain

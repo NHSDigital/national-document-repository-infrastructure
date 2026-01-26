@@ -1,7 +1,3 @@
-locals {
-  is_shared_infra_workspace = terraform.workspace == var.shared_infra_workspace
-}
-
 resource "aws_route53_record" "dmarc" {
   count   = local.is_shared_infra_workspace ? 1 : 0
   zone_id = module.route53_fargate_ui.zone_id
