@@ -90,7 +90,7 @@ module "send-feedback-lambda" {
     APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE                     = terraform.workspace,
+    WORKSPACE                     = terraform.workspace
     FROM_EMAIL_ADDRESS            = local.ses_feedback_sender_email_address
     EMAIL_SUBJECT                 = "Digitised Lloyd George feedback"
     EMAIL_RECIPIENT_SSM_PARAM_KEY = local.feedback_recipient_list_ssm_param_key
