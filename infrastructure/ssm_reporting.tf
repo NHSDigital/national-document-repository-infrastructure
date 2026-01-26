@@ -10,11 +10,15 @@ resource "aws_ssm_parameter" "reporting_ses_from_address" {
   }
 }
 
-data "aws_ssm_parameter" "reporting_ses_from_address" {
-  count = local.is_shared_infra_workspace ? 0 : 1
-  name  = local.reporting_ses_from_address_parameter_name
+locals {
+  reporting_ses_from_address_value = (
+    local.is_shared_infra_workspace
+    ? aws_ssm_parameter.reporting_ses_from_address[0].value
+    : data.terraform_remote_state.shared.outputs.reporting_ses_from_address_value
+  )
 }
 
-locals {
-  reporting_ses_from_address_value = local.is_shared_infra_workspace ? aws_ssm_parameter.reporting_ses_from_address[0].value : data.aws_ssm_parameter.reporting_ses_from_address[0].value
+output "reporting_ses_from_address_value" {
+  description = "SES From address used by reporting (shared output consumed by other workspaces)."
+  value       = local.reporting_ses_from_address_value
 }
