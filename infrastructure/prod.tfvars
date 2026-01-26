@@ -4,6 +4,7 @@ owner                             = "nhse/ndr-team"
 domain                            = "national-document-repository.nhs.uk"
 certificate_domain                = "national-document-repository.nhs.uk"
 certificate_subdomain_name_prefix = "api."
+cloudfront_subdomain_prefix       = "files."
 
 standalone_vpc_tag    = "ndr-prod"
 standalone_vpc_ig_tag = "ndr-prod"
