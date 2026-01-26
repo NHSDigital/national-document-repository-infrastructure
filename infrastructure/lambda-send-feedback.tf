@@ -104,6 +104,7 @@ module "send-feedback-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.send-feedback-gateway,
+    module.ndr-feedback-mailbox,
     module.ndr-app-config
   ]
 }
