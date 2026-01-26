@@ -1,8 +1,6 @@
 locals {
-  ses_feedback_sender_email_address = (
-    local.is_sandbox ? "feedback@ndr-dev.${var.domain}" :
-    "feedback@${terraform.workspace}.${var.domain}"
-  )
+  ses_feedback_sender_email_address = local.reporting_ses_from_address_value
+
   feedback_recipient_list_ssm_param_key = (local.is_sandbox
     ? "/prs/dev/user-input/feedback-recipient-email-list"
     : "/prs/${var.environment}/user-input/feedback-recipient-email-list"
@@ -104,7 +102,6 @@ module "send-feedback-lambda" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.send-feedback-gateway,
-    module.ndr-feedback-mailbox,
     module.ndr-app-config
   ]
 }
@@ -118,6 +115,7 @@ resource "aws_iam_policy" "ses_send_email_policy" {
         Effect = "Allow",
         Action = [
           "ses:SendEmail",
+          "ses:SendRawEmail"
         ],
         Resource = [
           "arn:aws:ses:${local.current_region}:${local.current_account_id}:identity/*",
