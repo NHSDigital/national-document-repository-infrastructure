@@ -30,16 +30,3 @@ resource "aws_route53_record" "ndr_gateway_api_record" {
     evaluate_target_health = true
   }
 }
-
-
-resource "aws_route53_record" "ndr_cloudfront_alias" {
-  name    = var.cloudfront_alias_full_domain_name
-  type    = "A"
-  zone_id = local.zone_id
-
-  alias {
-    name                   = var.cloudfront_domain_name
-    zone_id                = var.cloudfront_zone_id
-    evaluate_target_health = false
-  }
-}

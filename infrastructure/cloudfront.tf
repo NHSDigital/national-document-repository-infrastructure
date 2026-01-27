@@ -102,7 +102,6 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
       locations        = local.allow_us_comms ? ["GB", "US"] : ["GB"]
     }
   }
-
   web_acl_id = try(module.cloudfront_firewall_waf_v2[0].arn, "")
 }
 
