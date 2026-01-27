@@ -267,8 +267,14 @@ locals {
   is_production             = contains(["pre-prod", "prod"], terraform.workspace)
   is_force_destroy          = !local.is_production
   is_shared_infra_workspace = terraform.workspace == var.shared_infra_workspace
-  ses_sending_domain        = local.is_production ? var.domain : "ndr-${terraform.workspace}.${var.domain}"
-  ses_sender_email_address  = "ndr-reports@${local.ses_sending_domain}"
+  is_dev_workspace  = terraform.workspace == "dev"
+  is_test_workspace = terraform.workspace == "test"
+  is_sandbox_workspace = !local.is_production && !local.is_dev_workspace && !local.is_test_workspace
+
+  ses_sending_domain = local.is_production ? var.domain : (
+    local.is_test_workspace ? "ndr-test.${var.domain}" : "ndr-dev.${var.domain}"
+  )
+  ses_sender_email_address = "ndr-reports@${local.ses_sending_domain}"
 
   # reporting_ses_from_address_parameter_name = "/prs/${var.environment}/user-input/reporting-ses-from-address"
   # reporting_ses_from_address_value          = "ndr-reports@${var.domain}"
