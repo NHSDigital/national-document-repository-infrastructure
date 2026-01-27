@@ -270,6 +270,8 @@ locals {
   reporting_ses_from_address_value          = "ndr-reports@${var.domain}"
   is_shared_infra_workspace                 = terraform.workspace == var.shared_infra_workspace
   bulk_upload_lambda_concurrent_limit       = 3
+  reporting_from_domain = local.is_production ? var.domain : "${var.shared_infra_workspace}.${var.domain}"
+  reporting_from_email  = "ndr-reports@${local.reporting_from_domain}"
 
   api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
   api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
