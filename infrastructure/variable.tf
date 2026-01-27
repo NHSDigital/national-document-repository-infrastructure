@@ -269,10 +269,10 @@ variable "cloud_only_service_instances" {
 variable "apim_environment" {}
 
 locals {
-  is_sandbox       = !contains(["ndr-dev", "ndr-test", "pre-prod", "prod"], terraform.workspace)
-  is_production    = contains(["pre-prod", "prod"], terraform.workspace)
-  is_force_destroy = !local.is_production
-  is_shared_workspace = terraform.workspace == var.shared_infra_workspace
+  is_sandbox                          = !contains(["ndr-dev", "ndr-test", "pre-prod", "prod"], terraform.workspace)
+  is_production                       = contains(["pre-prod", "prod"], terraform.workspace)
+  is_force_destroy                    = !local.is_production
+  is_shared_workspace                 = terraform.workspace == var.shared_infra_workspace
   bulk_upload_lambda_concurrent_limit = 3
 
   api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"

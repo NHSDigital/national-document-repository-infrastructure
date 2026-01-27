@@ -33,7 +33,7 @@ resource "aws_route53_record" "ses_dkim" {
 }
 
 resource "aws_ses_domain_mail_from" "reporting" {
-  count           = local.is_shared_workspace ? 1 : 0
+  count            = local.is_shared_workspace ? 1 : 0
   domain           = aws_ses_domain_identity.reporting[0].domain
   mail_from_domain = "mail.${var.domain}"
 
