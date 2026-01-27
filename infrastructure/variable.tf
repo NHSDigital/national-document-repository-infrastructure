@@ -26,6 +26,12 @@ variable "certificate_subdomain_name_prefix_mtls" {
   default     = "mtls"
 }
 
+variable "cloudfront_subdomain" {
+  description = "CloudFront custom subdomain."
+  type        = string
+  default     = "file."
+}
+
 # Bucket Variables
 variable "docstore_bucket_name" {
   description = "The name of the S3 bucket to store ARF documents."
@@ -283,8 +289,9 @@ locals {
   api_gateway_subdomain_name          = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
   api_gateway_full_domain_name        = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
 
-  mtls_api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}." : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}"
   mtls_api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}.${var.domain}" : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}.${var.domain}"
+
+  cloudfront_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.cloudfront_subdomain}${var.domain}" : "${var.cloudfront_subdomain}${terraform.workspace}.${var.domain}"
 
   current_region     = data.aws_region.current.name
   current_account_id = data.aws_caller_identity.current.account_id
@@ -295,6 +302,18 @@ locals {
   truststore_uri                = "s3://${local.truststore_bucket_id}/${var.ca_pem_filename}"
   shared_terraform_state_bucket = "ndr-${var.environment}-terraform-state-${data.aws_caller_identity.current.account_id}"
   common_name_kms_key_arn       = local.is_sandbox ? data.terraform_remote_state.shared.outputs.pdm_kms_key_arn : module.pdm_encryption_key.kms_arn
+
+  cloudfront_viewer_policy_id = local.is_sandbox ? (
+    data.aws_cloudfront_origin_request_policy.environment_viewer[0].id
+  ) : aws_cloudfront_origin_request_policy.viewer[0].id
+
+  cloudfront_uploader_policy_id = local.is_sandbox ? (
+    data.aws_cloudfront_origin_request_policy.environment_uploader[0].id
+  ) : aws_cloudfront_origin_request_policy.uploader[0].id
+
+  cloudfront_cache_policy_id = local.is_sandbox ? (
+    data.aws_cloudfront_cache_policy.environment_nocache[0].id
+  ) : aws_cloudfront_cache_policy.nocache[0].id
 }
 
 variable "nrl_api_endpoint_suffix" {

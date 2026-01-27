@@ -27,7 +27,7 @@ module "post_document_review_lambda" {
     WORKSPACE                     = terraform.workspace
     STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
     EDGE_REFERENCE_TABLE          = module.cloudfront_edge_dynamodb_table.table_name
-    CLOUDFRONT_URL                = aws_cloudfront_distribution.s3_presign_mask.domain_name
+    CLOUDFRONT_URL                = one(aws_cloudfront_distribution.s3_presign_mask.aliases)
     PDS_FHIR_IS_STUBBED           = local.is_sandbox
   }
   depends_on = [
