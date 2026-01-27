@@ -22,6 +22,7 @@ module "cloudfront_firewall_waf_v2" {
 
 resource "aws_cloudfront_distribution" "s3_presign_mask" {
   price_class = "PriceClass_100"
+  aliases = []
 
   origin {
     domain_name              = module.ndr-lloyd-george-store.bucket_regional_domain_name
