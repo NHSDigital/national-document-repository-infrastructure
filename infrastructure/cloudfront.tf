@@ -1,5 +1,4 @@
 locals {
-  # required by USA-based CI pipeline runners to run smoke tests
   allow_us_comms = !local.is_production
 }
 
@@ -88,9 +87,9 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     }
   }
 
-  viewer_certificate {
-    cloudfront_default_certificate = true
-  }
+  # viewer_certificate {
+  #   cloudfront_default_certificate = true
+  # }
 
   restrictions {
     geo_restriction {
