@@ -92,7 +92,7 @@ module "ndr-ecs-fargate-data-collection" {
 }
 
 resource "aws_iam_role" "data_collection_task_role" {
-  name  = "${terraform.workspace}_data_collection_task_role"
+  name = "${terraform.workspace}_data_collection_task_role"
   assume_role_policy = jsonencode(
     {
       "Version" : "2012-10-17",
