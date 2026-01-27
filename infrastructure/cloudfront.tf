@@ -87,9 +87,11 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     }
   }
 
-  # viewer_certificate {
-  #   cloudfront_default_certificate = true
-  # }
+  viewer_certificate {
+    cloudfront_default_certificate = true
+    minimum_protocol_version       = "TLSv1.2_2021"
+  }
+
 
   restrictions {
     geo_restriction {
