@@ -267,8 +267,11 @@ locals {
   is_production                             = contains(["pre-prod", "prod"], terraform.workspace)
   is_force_destroy                          = !local.is_production
   is_shared_infra_workspace                 = terraform.workspace == var.shared_infra_workspace
-  reporting_ses_from_address_parameter_name = "/prs/${var.environment}/user-input/reporting-ses-from-address"
-  reporting_ses_from_address_value          = "ndr-reports@${var.domain}"
+  ses_sending_domain                        = local.is_production ? var.domain : "ndr-${terraform.workspace}.${var.domain}"
+  ses_sender_email_address                  = "ndr-reports@${local.ses_sending_domain}"
+
+  # reporting_ses_from_address_parameter_name = "/prs/${var.environment}/user-input/reporting-ses-from-address"
+  # reporting_ses_from_address_value          = "ndr-reports@${var.domain}"
 
   bulk_upload_lambda_concurrent_limit = 3
   api_gateway_subdomain_name          = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
