@@ -13,6 +13,11 @@ on:
         description: "Sandbox name [a-z0-9]{1,7}"
         required: true
         type: "string"
+      skip_main_deployment:
+        description: "Skip main deployment"
+        required: true
+        type: "boolean"
+        default: false
 
 permissions:
   pull-requests: write
@@ -36,6 +41,7 @@ jobs:
 
   terraform_plan_apply_main:
     name: Terraform Plan/Apply (main)
+    if: ${{ !inputs.skip_main_deployment }}
     runs-on: ubuntu-latest
     needs: validate_inputs
     environment: development
@@ -85,9 +91,9 @@ jobs:
 
   terraform_plan_apply_branch:
     name: Terraform Plan/Apply (branch)
-    if: ${{ github.event.inputs.git_ref != 'main' }}
+    if: ${{ github.event.inputs.git_ref != 'main' && needs.validate_inputs.result == 'success' && (needs.terraform_plan_apply_main.result == 'success' || needs.terraform_plan_apply_main.result == 'skipped') }}
     runs-on: ubuntu-latest
-    needs: terraform_plan_apply_main
+    needs: [validate_inputs, terraform_plan_apply_main]
     environment: development
     steps:
       - name: Configure AWS Credentials
