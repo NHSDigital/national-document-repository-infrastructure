@@ -79,6 +79,10 @@ data "aws_ssm_parameter" "apim_url" {
   name = "/repo/${var.environment}/user-input/apim-api-url"
 }
 
+data "aws_ssm_parameter" "cloud_security_notification_email_list" {
+  name = "/prs/${var.environment}/user-input/cloud-security-notification-email-list"
+}
+
 data "terraform_remote_state" "shared" {
   backend = "s3"
 
