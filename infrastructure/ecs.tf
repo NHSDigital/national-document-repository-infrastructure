@@ -41,7 +41,7 @@ module "ndr-ecs-fargate-data-collection" {
   sg_name                  = "${terraform.workspace}-data-collection-sg"
   ecs_launch_type          = "FARGATE"
   ecs_cluster_service_name = "${terraform.workspace}-data-collection"
-  ecr_repository_url       = module.ndr-docker-ecr-data-collection[0].ecr_repository_url
+  ecr_repository_url       = module.ndr-docker-ecr-data-collection.ecr_repository_url
   environment              = var.environment
   owner                    = var.owner
   container_port           = 80
@@ -50,7 +50,7 @@ module "ndr-ecs-fargate-data-collection" {
   is_service_needed        = false
   alarm_actions_arn_list   = []
   logs_bucket              = aws_s3_bucket.logs_bucket.bucket
-  task_role                = aws_iam_role.data_collection_task_role[0].arn
+  task_role                = aws_iam_role.data_collection_task_role.arn
   environment_vars = [
     {
       "name" : "table_name",
@@ -113,46 +113,46 @@ resource "aws_iam_role" "data_collection_task_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_lloyd_george_reference_dynamodb_table" {
-  role       = aws_iam_role.data_collection_task_role[0].name
+  role       = aws_iam_role.data_collection_task_role.name
   policy_arn = module.lloyd_george_reference_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_ssm_access_policy" {
-  role       = aws_iam_role.data_collection_task_role[0].name
+  role       = aws_iam_role.data_collection_task_role.name
   policy_arn = aws_iam_policy.ssm_access_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_statistics_dynamodb_table" {
-  role       = aws_iam_role.data_collection_task_role[0].name
+  role       = aws_iam_role.data_collection_task_role.name
   policy_arn = module.statistics_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_statistical_reports_store" {
-  role       = aws_iam_role.data_collection_task_role[0].name
+  role       = aws_iam_role.data_collection_task_role.name
   policy_arn = module.statistical-reports-store.s3_object_access_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_app_config" {
-  role       = aws_iam_role.data_collection_task_role[0].name
+  role       = aws_iam_role.data_collection_task_role.name
   policy_arn = module.ndr-app-config.app_config_policy_arn
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_lloyd_george_store" {
-  role       = aws_iam_role.data_collection_task_role[0].name
+  role       = aws_iam_role.data_collection_task_role.name
   policy_arn = module.ndr-lloyd-george-store.s3_list_object_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_document_store" {
-  role       = aws_iam_role.data_collection_task_role[0].name
+  role       = aws_iam_role.data_collection_task_role.name
   policy_arn = module.ndr-document-store.s3_list_object_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_document_reference_dynamodb_table" {
-  role       = aws_iam_role.data_collection_task_role[0].name
+  role       = aws_iam_role.data_collection_task_role.name
   policy_arn = module.document_reference_dynamodb_table.dynamodb_policy
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_cloudwatch_log_query_policy" {
-  role       = aws_iam_role.data_collection_task_role[0].name
+  role       = aws_iam_role.data_collection_task_role.name
   policy_arn = aws_iam_policy.cloudwatch_log_query_policy.arn
 }
