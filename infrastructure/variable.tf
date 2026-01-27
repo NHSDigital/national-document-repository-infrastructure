@@ -291,6 +291,18 @@ locals {
   truststore_uri                = "s3://${local.truststore_bucket_id}/${var.ca_pem_filename}"
   shared_terraform_state_bucket = "ndr-${var.environment}-terraform-state-${data.aws_caller_identity.current.account_id}"
   common_name_kms_key_arn       = local.is_sandbox ? data.terraform_remote_state.shared.outputs.pdm_kms_key_arn : module.pdm_encryption_key.kms_arn
+
+  cloudfront_viewer_policy_id = local.is_sandbox ? (
+    data.aws_cloudfront_origin_request_policy.dev_environment_viewer[0].id
+  ) : aws_cloudfront_origin_request_policy.viewer[0].id
+
+  cloudfront_uploader_policy_id = local.is_sandbox ? (
+    data.aws_cloudfront_origin_request_policy.dev_environment_uploader[0].id
+  ) : aws_cloudfront_origin_request_policy.uploader[0].id
+
+  cloudfront_cache_policy_id = local.is_sandbox ? (
+    data.aws_cloudfront_cache_policy.dev_environment_nocache[0].id
+  ) : aws_cloudfront_cache_policy.nocache[0].id
 }
 
 variable "nrl_api_endpoint_suffix" {
