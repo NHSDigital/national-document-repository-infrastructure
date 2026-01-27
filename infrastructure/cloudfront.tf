@@ -25,7 +25,7 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
   price_class = "PriceClass_100"
 
   aliases = [local.cloudfront_full_domain_name]
-
+  wait_for_deployment = false
   origin {
     domain_name              = module.ndr-lloyd-george-store.bucket_regional_domain_name
     origin_id                = module.ndr-lloyd-george-store.bucket_id
