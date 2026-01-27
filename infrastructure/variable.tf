@@ -263,12 +263,12 @@ variable "cloud_only_service_instances" {
 variable "apim_environment" {}
 
 locals {
-  is_sandbox                                = !contains(["ndr-dev", "ndr-test", "pre-prod", "prod"], terraform.workspace)
-  is_production                             = contains(["pre-prod", "prod"], terraform.workspace)
-  is_force_destroy                          = !local.is_production
-  is_shared_infra_workspace                 = terraform.workspace == var.shared_infra_workspace
-  ses_sending_domain                        = local.is_production ? var.domain : "ndr-${terraform.workspace}.${var.domain}"
-  ses_sender_email_address                  = "ndr-reports@${local.ses_sending_domain}"
+  is_sandbox                = !contains(["ndr-dev", "ndr-test", "pre-prod", "prod"], terraform.workspace)
+  is_production             = contains(["pre-prod", "prod"], terraform.workspace)
+  is_force_destroy          = !local.is_production
+  is_shared_infra_workspace = terraform.workspace == var.shared_infra_workspace
+  ses_sending_domain        = local.is_production ? var.domain : "ndr-${terraform.workspace}.${var.domain}"
+  ses_sender_email_address  = "ndr-reports@${local.ses_sending_domain}"
 
   # reporting_ses_from_address_parameter_name = "/prs/${var.environment}/user-input/reporting-ses-from-address"
   # reporting_ses_from_address_value          = "ndr-reports@${var.domain}"
