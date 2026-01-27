@@ -68,15 +68,15 @@ resource "aws_scheduler_schedule" "data_collection_ecs" {
   schedule_expression = "cron(0 4 ? * SAT *)"
 
   target {
-    arn      = module.ndr-ecs-fargate-data-collection[0].ecs_cluster_arn
-    role_arn = aws_iam_role.data_collection_ecs_execution[0].arn
+    arn      = module.ndr-ecs-fargate-data-collection.ecs_cluster_arn
+    role_arn = aws_iam_role.data_collection_ecs_execution.arn
     ecs_parameters {
-      task_definition_arn = replace(module.ndr-ecs-fargate-data-collection[0].task_definition_arn, "/:[0-9]+$/", "")
+      task_definition_arn = replace(module.ndr-ecs-fargate-data-collection.task_definition_arn, "/:[0-9]+$/", "")
       task_count          = 1
       launch_type         = "FARGATE"
       network_configuration {
         assign_public_ip = false
-        security_groups  = [module.ndr-ecs-fargate-data-collection[0].security_group_id]
+        security_groups  = [module.ndr-ecs-fargate-data-collection.security_group_id]
         subnets          = [for subnet in module.ndr-vpc-ui.private_subnets : subnet]
       }
     }
@@ -100,7 +100,7 @@ resource "aws_iam_role" "data_collection_ecs_execution" {
 }
 
 resource "aws_iam_role_policy_attachment" "data_collection_ecs_execution" {
-  role       = aws_iam_role.data_collection_ecs_execution[0].name
+  role       = aws_iam_role.data_collection_ecs_execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
 }
 
