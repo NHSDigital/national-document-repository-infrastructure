@@ -39,8 +39,8 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     cached_methods           = ["HEAD", "GET", "OPTIONS"]
     target_origin_id         = module.ndr-lloyd-george-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
-    cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer.id
+    cache_policy_id          = local.cloudfront_cache_policy_id
+    origin_request_policy_id = local.cloudfront_viewer_policy_id
 
     lambda_function_association {
       event_type = "origin-request"
@@ -60,8 +60,8 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     path_pattern             = "/review/*"
     target_origin_id         = module.ndr-document-pending-review-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
-    cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.viewer.id
+    cache_policy_id          = local.cloudfront_cache_policy_id
+    origin_request_policy_id = local.cloudfront_viewer_policy_id
 
     lambda_function_association {
       event_type = "origin-request"
@@ -81,8 +81,8 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     path_pattern             = "/upload/*"
     target_origin_id         = module.ndr-bulk-staging-store.bucket_id
     viewer_protocol_policy   = "redirect-to-https"
-    cache_policy_id          = aws_cloudfront_cache_policy.nocache.id
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.uploader.id
+    cache_policy_id          = local.cloudfront_cache_policy_id
+    origin_request_policy_id = local.cloudfront_uploader_policy_id
 
     lambda_function_association {
       event_type = "origin-request"
@@ -108,7 +108,8 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
 }
 
 resource "aws_cloudfront_origin_request_policy" "viewer" {
-  name = "${terraform.workspace}_BlockQueriesAndAllowViewer"
+  count = local.is_sandbox ? 0 : 1
+  name  = "${terraform.workspace}_BlockQueriesAndAllowViewer"
 
   query_strings_config {
     query_string_behavior = "whitelist"
@@ -141,7 +142,8 @@ resource "aws_cloudfront_origin_request_policy" "viewer" {
 }
 
 resource "aws_cloudfront_origin_request_policy" "uploader" {
-  name = "${terraform.workspace}_BlockQueriesAndAllowUploader"
+  count = local.is_sandbox ? 0 : 1
+  name  = "${terraform.workspace}_BlockQueriesAndAllowUploader"
 
   query_strings_config {
     query_string_behavior = "whitelist"
@@ -177,6 +179,7 @@ resource "aws_cloudfront_origin_request_policy" "uploader" {
 }
 
 resource "aws_cloudfront_cache_policy" "nocache" {
+  count       = local.is_sandbox ? 0 : 1
   name        = "${terraform.workspace}_nocache_policy"
   default_ttl = 0
   max_ttl     = 0
@@ -193,4 +196,19 @@ resource "aws_cloudfront_cache_policy" "nocache" {
       query_string_behavior = "none"
     }
   }
+}
+
+data "aws_cloudfront_origin_request_policy" "environment_viewer" {
+  count = local.is_sandbox ? 1 : 0
+  name  = "${var.shared_infra_workspace}_BlockQueriesAndAllowViewer"
+}
+
+data "aws_cloudfront_origin_request_policy" "environment_uploader" {
+  count = local.is_sandbox ? 1 : 0
+  name  = "${var.shared_infra_workspace}_BlockQueriesAndAllowUploader"
+}
+
+data "aws_cloudfront_cache_policy" "environment_nocache" {
+  count = local.is_sandbox ? 1 : 0
+  name  = "${var.shared_infra_workspace}_nocache_policy"
 }
