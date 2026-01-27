@@ -8,7 +8,7 @@
 resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_start" {
   name = "bulk-upload-office-hours-start"
   # schedule_expression = "cron(0 8 * * ? *)"  # Original schedule - commented for testing
-  schedule_expression = "cron(0/1 * * * ? *)" # TEMP: Testing every minute at :00 seconds
+  schedule_expression = "rate(1 minutes)" # TEMP: Testing every 1 minutes
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_start" {
@@ -26,7 +26,7 @@ resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_sta
 resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_stop" {
   name = "bulk-upload-office-hours-stop"
   # schedule_expression = "cron(0 19 * * ? *)"  # Original schedule - commented for testing
-  schedule_expression = "rate(1 minute)" # TEMP: Testing every minute (alternates with start)
+  schedule_expression = "rate(2 minutes)" # TEMP: Testing every 2 minutes
 }
 
 resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_stop" {
