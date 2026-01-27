@@ -364,12 +364,15 @@ data "aws_iam_policy_document" "reporting_ses" {
       "ses:SendRawEmail"
     ]
 
-    resources = ["*"]
+    resources = [
+      "arn:aws:ses:${local.current_region}:${local.current_account_id}:identity/${local.ses_sending_domain}",
+    ]
 
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
-      values   = [local.reporting_ses_from_address_value]
+      values   = [local.ses_sender_email_address]
     }
   }
 }
+

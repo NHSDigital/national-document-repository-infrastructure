@@ -1,5 +1,5 @@
 locals {
-  ses_feedback_sender_email_address = local.reporting_from_email
+  ses_sender_email_address = "ndr-reports@${local.ses_sending_domain}"
 
   feedback_recipient_list_ssm_param_key = (local.is_sandbox
     ? "/prs/dev/user-input/feedback-recipient-email-list"
@@ -91,7 +91,7 @@ module "send-feedback-lambda" {
     APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                     = terraform.workspace
-    FROM_EMAIL_ADDRESS            = local.ses_feedback_sender_email_address
+    FROM_EMAIL_ADDRESS            = local.ses_sender_email_address
     EMAIL_SUBJECT                 = "Digitised Lloyd George feedback"
     EMAIL_RECIPIENT_SSM_PARAM_KEY = local.feedback_recipient_list_ssm_param_key
     ITOC_TESTING_TEAMS_WEBHOOK    = data.aws_ssm_parameter.itoc_feedback_testing_teams_webhook.value

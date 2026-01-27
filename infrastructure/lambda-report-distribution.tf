@@ -22,7 +22,7 @@ module "report-distribution-lambda" {
     CONTACT_TABLE_NAME = module.bulk_upload_contact_lookup_table.table_name
 
     PRM_MAILBOX_EMAIL = data.aws_ssm_parameter.prm_mailbox_email.value
-    SES_FROM_ADDRESS  = local.reporting_from_email
+    SES_FROM_ADDRESS  = local.ses_sender_email_address
   }
 
   is_gateway_integration_needed = false
