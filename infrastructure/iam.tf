@@ -372,7 +372,7 @@ data "aws_iam_policy_document" "reporting_ses" {
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
-      values   = [aws_ssm_parameter.reporting_ses_from_address.value]
+      values   = [data.aws_ssm_parameter.reporting_ses_from_address.value]
     }
   }
 }
