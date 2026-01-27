@@ -270,9 +270,9 @@ locals {
   reporting_ses_from_address_parameter_name = "/prs/${var.environment}/user-input/reporting-ses-from-address"
   reporting_ses_from_address_value          = "ndr-reports@${var.domain}"
 
-  bulk_upload_lambda_concurrent_limit       = 3
-  api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
-  api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
+  bulk_upload_lambda_concurrent_limit = 3
+  api_gateway_subdomain_name          = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
+  api_gateway_full_domain_name        = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
 
   mtls_api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}." : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}"
   mtls_api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}.${var.domain}" : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}.${var.domain}"
