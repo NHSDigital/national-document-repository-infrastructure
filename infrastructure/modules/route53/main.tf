@@ -11,12 +11,28 @@ data "aws_route53_zone" "ndr_zone" {
   count = var.using_arf_hosted_zone ? 1 : 0
 }
 
-resource "aws_route53_record" "ndr_fargate_record" {
+# CNAME record for non-test workspaces (e.g., ndr-dev, pre-prod)
+resource "aws_route53_record" "ndr_fargate_record_cname" {
+  count   = terraform.workspace == "ndr-test" ? 0 : 1
   name    = terraform.workspace
   type    = "CNAME"
   records = [var.dns_name]
   zone_id = local.zone_id
   ttl     = 300
+}
+
+# Alias A record for ndr-test workspace (zone apex)
+resource "aws_route53_record" "ndr_fargate_record_alias" {
+  count   = terraform.workspace == "ndr-test" ? 1 : 0
+  name    = ""
+  type    = "A"
+  zone_id = local.zone_id
+
+  alias {
+    name                   = var.dns_name
+    zone_id                = var.dns_zone_id
+    evaluate_target_health = true
+  }
 }
 
 resource "aws_route53_record" "ndr_gateway_api_record" {

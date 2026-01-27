@@ -3,6 +3,12 @@ variable "dns_name" {
   type        = string
 }
 
+variable "dns_zone_id" {
+  description = "The Route53 zone ID of the load balancer."
+  type        = string
+  default     = ""
+}
+
 variable "domain" {
   description = "The root domain name used to find or create the Route53 hosted zone."
   type        = string
