@@ -128,7 +128,7 @@ jobs:
 
       - name: Select Terraform Workspace
         id: workspace
-        run: terraform workspace select ${{ github.event.inputs.sandbox_name}}
+        run: terraform workspace select -or-create ${{ github.event.inputs.sandbox_name}}
         working-directory: ./infrastructure
         shell: bash
 
