@@ -197,17 +197,17 @@ resource "aws_cloudfront_cache_policy" "nocache" {
   }
 }
 
-data "aws_cloudfront_origin_request_policy" "dev_environment_viewer" {
+data "aws_cloudfront_origin_request_policy" "environment_viewer" {
   count = local.is_sandbox ? 1 : 0
   name  = "${var.shared_infra_workspace}_BlockQueriesAndAllowViewer"
 }
 
-data "aws_cloudfront_origin_request_policy" "dev_environment_uploader" {
+data "aws_cloudfront_origin_request_policy" "environment_uploader" {
   count = local.is_sandbox ? 1 : 0
   name  = "${var.shared_infra_workspace}_BlockQueriesAndAllowUploader"
 }
 
-data "aws_cloudfront_cache_policy" "dev_environment_nocache" {
+data "aws_cloudfront_cache_policy" "environment_nocache" {
   count = local.is_sandbox ? 1 : 0
   name  = "${var.shared_infra_workspace}_nocache_policy"
 }
