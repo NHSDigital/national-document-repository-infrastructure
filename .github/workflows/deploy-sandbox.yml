@@ -1,6 +1,6 @@
 name: "Deploy - Sandbox"
 
-run-name: "${{ github.event.inputs.git_ref }} | ${{ github.event.inputs.sandbox_name }}"
+run-name: "${{ github.event.inputs.git_ref }} | ${{ github.event.inputs.sandbox_name }} | skip_main_deployment = ${{ github.event.inputs.skip_main_deployment }}"
 
 on:
   workflow_dispatch:
