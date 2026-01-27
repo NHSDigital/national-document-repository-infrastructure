@@ -29,3 +29,13 @@ resource "aws_servicequotas_service_quota" "lambda_concurrent_executions_increas
 
   provider = aws.us_east_1
 }
+
+resource "aws_servicequotas_service_quota" "customer_managed_origin_request_policies_per_account" {
+  count = local.is_sandbox || local.is_production ? 0 : 1
+
+  service_code = "cloudfront"
+  quota_code   = "L-C3659C43"
+  value        = 40
+
+  provider = aws.us_east_1
+}
