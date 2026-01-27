@@ -26,10 +26,11 @@ resource "aws_ses_domain_dkim" "reporting" {
 resource "aws_route53_record" "ses_dkim" {
   count   = local.is_shared_workspace ? 3 : 0
   zone_id = module.route53_fargate_ui.zone_id
-  name    = "${element(aws_ses_domain_dkim.reporting[0].dkim_tokens, count.index)}._domainkey.${var.domain}"
+  name    = "${aws_ses_domain_dkim.reporting[0].dkim_tokens[count.index]}._domainkey.${var.domain}"
   type    = "CNAME"
   ttl     = 600
-  records = ["${element(aws_ses_domain_dkim.reporting[0].dkim_tokens, count.index)}.dkim.amazonses.com"]
+
+  records = ["${aws_ses_domain_dkim.reporting[0].dkim_tokens[count.index]}.dkim.amazonses.com"]
 }
 
 resource "aws_ses_domain_mail_from" "reporting" {
