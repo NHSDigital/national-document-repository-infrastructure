@@ -1,13 +1,3 @@
-variable "environment" {
-  description = "Environment tag used for context and identification (e.g., 'dev', 'prod')."
-  type        = string
-}
-
-variable "owner" {
-  description = "Owner tag used for resource tagging and identification."
-  type        = string
-}
-
 variable "dns_name" {
   description = "The target DNS name for the record, typically the Fargate or Load Balancer endpoint."
   type        = string
@@ -29,11 +19,6 @@ variable "api_gateway_subdomain_name" {
   type        = string
 }
 
-variable "cloudfront_alias_full_domain_name" {
-  description = "CloudFront alias domain name"
-  type        = string
-}
-
 variable "api_gateway_full_domain_name" {
   description = "Full domain name for api gateway custom domain. Example: api-dev.access-request-fulfilment.patient-deductions.nhs.uk"
   type        = string
@@ -42,17 +27,6 @@ variable "api_gateway_full_domain_name" {
 variable "api_gateway_zone_id" {
   description = "The Route53 zone ID associated with the API Gateway custom domain."
   type        = string
-}
-
-variable "cloudfront_domain_name" {
-  description = "The CloudFront distribution domain name to point the custom domain to."
-  type        = string
-}
-
-variable "cloudfront_zone_id" {
-  description = "The CloudFront hosted zone ID (always Z2FDTNDATAQYW2 for all CloudFront distributions)."
-  type        = string
-  default     = "Z2FDTNDATAQYW2"
 }
 
 locals {

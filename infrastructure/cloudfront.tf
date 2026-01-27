@@ -24,8 +24,8 @@ module "cloudfront_firewall_waf_v2" {
 resource "aws_cloudfront_distribution" "s3_presign_mask" {
   price_class = "PriceClass_100"
 
-  aliases = [local.cloudfront_full_domain_name]
-
+  aliases             = [local.cloudfront_full_domain_name]
+  wait_for_deployment = false
   origin {
     domain_name              = module.ndr-lloyd-george-store.bucket_regional_domain_name
     origin_id                = module.ndr-lloyd-george-store.bucket_id
@@ -102,8 +102,9 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
       locations        = local.allow_us_comms ? ["GB", "US"] : ["GB"]
     }
   }
-
   web_acl_id = try(module.cloudfront_firewall_waf_v2[0].arn, "")
+
+  depends_on = [aws_acm_certificate_validation.cloudfront]
 }
 
 resource "aws_cloudfront_origin_request_policy" "viewer" {
