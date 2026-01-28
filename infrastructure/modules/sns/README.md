@@ -88,7 +88,7 @@ module "sns_topic" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_delivery_policy"></a> [delivery\_policy](#input\_delivery\_policy) | Attach delivery or IAM policy. | `string` | n/a | yes |
-| <a name="input_email_notification_list"></a> [email\_notification\_list](#input\_email\_notification\_list) | List of emails addresses that are notified when an alarm goes off. | `list(string)` | `[]` | no |
+| <a name="input_email_notification_list"></a> [email\_notification\_list](#input\_email\_notification\_list) | List of emails addresses that are notified when an alarm goes off. | `string` | `""` | no |
 | <a name="input_enable_deduplication"></a> [enable\_deduplication](#input\_enable\_deduplication) | Prevent content based duplication in notification queue. | `bool` | `false` | no |
 | <a name="input_enable_fifo"></a> [enable\_fifo](#input\_enable\_fifo) | Attach first in first out policy to notification queue. | `bool` | `false` | no |
 | <a name="input_is_topic_endpoint_list"></a> [is\_topic\_endpoint\_list](#input\_is\_topic\_endpoint\_list) | Whether to use the topic\_endpoint\_list instead of a single topic\_endpoint. | `bool` | `false` | no |
