@@ -56,7 +56,7 @@ resource "aws_route53_record" "cloudfront_cert_validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = module.route53_fargate_ui.zone_id
+  zone_id         = data.aws_route53_zone.ndr.zone_id
 }
 
 resource "aws_acm_certificate_validation" "cloudfront" {
