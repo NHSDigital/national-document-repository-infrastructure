@@ -1,6 +1,6 @@
 module "ses-feedback-monitor-lambda" {
   source         = "./modules/lambda"
-  name           = "sesFeedbackMonitor"
+  name           = "SesFeedbackMonitor"
   handler        = "handlers.ses_feedback_monitor_handler.lambda_handler"
   lambda_timeout = 60
   memory_size    = 512

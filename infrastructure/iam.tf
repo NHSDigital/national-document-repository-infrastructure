@@ -366,12 +366,19 @@ data "aws_iam_policy_document" "reporting_ses" {
 
     resources = [
       "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/${local.reporting_from_domain}",
+      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:configuration-set/${aws_ses_configuration_set.reporting.name}",
     ]
 
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
       values   = [local.reporting_ses_from_address_value]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "ses:ConfigurationSet"
+      values   = [aws_ses_configuration_set.reporting.name]
     }
   }
 
@@ -388,6 +395,7 @@ data "aws_iam_policy_document" "reporting_ses" {
 
       resources = [
         "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/*",
+        "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:configuration-set/${aws_ses_configuration_set.reporting.name}",
       ]
 
       condition {
@@ -395,9 +403,16 @@ data "aws_iam_policy_document" "reporting_ses" {
         variable = "ses:FromAddress"
         values   = [local.reporting_ses_from_address_value]
       }
+
+      condition {
+        test     = "StringEquals"
+        variable = "ses:ConfigurationSet"
+        values   = [aws_ses_configuration_set.reporting.name]
+      }
     }
   }
 }
+
 
 resource "aws_iam_policy" "reporting_ses_send" {
   count  = local.is_sandbox ? 1 : 0
