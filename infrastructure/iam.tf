@@ -367,7 +367,10 @@ data "aws_iam_policy_document" "reporting_ses" {
       "ses:SendRawEmail"
     ]
 
-    resources = ["*"]
+    resources = [
+      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/${local.reporting_from_domain}",
+      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/${local.reporting_ses_from_address_value}",
+    ]
 
     condition {
       test     = "StringEquals"
