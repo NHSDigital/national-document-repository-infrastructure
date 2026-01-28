@@ -269,17 +269,17 @@ variable "cloud_only_service_instances" {
 variable "apim_environment" {}
 
 locals {
-  is_sandbox       = !contains(["ndr-dev", "ndr-test", "test", "pre-prod", "prod"], terraform.workspace)
+  is_sandbox       = !contains(["ndr-dev", "ndr-test", "pre-prod", "prod"], terraform.workspace)
   is_production    = contains(["pre-prod", "prod"], terraform.workspace)
   is_force_destroy = !local.is_production
 
   bulk_upload_lambda_concurrent_limit = 3
 
-  api_gateway_subdomain_name   = contains(["prod", "test", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
+  api_gateway_subdomain_name   = contains(["prod", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
   api_gateway_full_domain_name = contains(["prod", "test", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
 
-  mtls_api_gateway_subdomain_name   = contains(["prod", "test", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}." : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}"
-  mtls_api_gateway_full_domain_name = contains(["prod", "test", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}.${var.domain}" : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}.${var.domain}"
+  mtls_api_gateway_subdomain_name   = contains(["prod", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}." : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}"
+  mtls_api_gateway_full_domain_name = contains(["prod", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}.${var.domain}" : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}.${var.domain}"
 
   cloudfront_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.cloudfront_subdomain}${var.domain}" : "${var.cloudfront_subdomain}${terraform.workspace}.${var.domain}"
 
