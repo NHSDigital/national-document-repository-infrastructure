@@ -6,7 +6,7 @@ module "create-token-gateway" {
   authorization       = "NONE"
   gateway_path        = "TokenRequest"
   require_credentials = false
-  origin              = contains(["prod", "ndr-test"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = local.base_url_with_quotes
 }
 
 module "create-token-lambda" {
@@ -33,7 +33,7 @@ module "create-token-lambda" {
     WORKSPACE                       = terraform.workspace
     SSM_PARAM_JWT_TOKEN_PRIVATE_KEY = "jwt_token_private_key"
 
-    OIDC_CALLBACK_URL       = contains(["prod", "ndr-test"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
+    OIDC_CALLBACK_URL       = local.oidc_callback_url
     AUTH_STATE_TABLE_NAME   = "${terraform.workspace}_${var.auth_state_dynamodb_table_name}"
     AUTH_SESSION_TABLE_NAME = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     ENVIRONMENT             = var.environment

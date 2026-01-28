@@ -1,7 +1,6 @@
 locals {
   access_logs_bucket_id = local.is_production ? aws_s3_bucket.access_logs[0].id : ""
   access_logs_count     = local.is_production ? 1 : 0
-  cors_allowed_origin   = contains(["prod", "ndr-test"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"
 }
 
 # Bucket Modules
@@ -19,13 +18,13 @@ module "ndr-document-store" {
     {
       allowed_headers = ["*"]
       allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = [local.cors_allowed_origin]
+      allowed_origins = [local.base_url]
       expose_headers  = ["ETag"]
       max_age_seconds = 3000
     },
     {
       allowed_methods = ["GET"]
-      allowed_origins = [local.cors_allowed_origin]
+      allowed_origins = [local.base_url]
     }
   ]
 }
@@ -42,7 +41,7 @@ module "ndr-zip-request-store" {
   cors_rules = [
     {
       allowed_methods = ["GET"]
-      allowed_origins = [local.cors_allowed_origin]
+      allowed_origins = [local.base_url]
     }
   ]
 }
@@ -63,13 +62,13 @@ module "ndr-lloyd-george-store" {
     {
       allowed_headers = ["*"]
       allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = [local.cors_allowed_origin]
+      allowed_origins = [local.base_url]
       expose_headers  = ["ETag"]
       max_age_seconds = 3000
     },
     {
       allowed_methods = ["GET"]
-      allowed_origins = [local.cors_allowed_origin]
+      allowed_origins = [local.base_url]
     }
   ]
 }
@@ -111,7 +110,7 @@ module "statistical-reports-store" {
   cors_rules = [
     {
       allowed_methods = ["GET"]
-      allowed_origins = [local.cors_allowed_origin]
+      allowed_origins = [local.base_url]
     }
   ]
 }
@@ -132,13 +131,13 @@ module "ndr-bulk-staging-store" {
     {
       allowed_headers = ["*"]
       allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = [local.cors_allowed_origin]
+      allowed_origins = [local.base_url]
       expose_headers  = ["ETag"]
       max_age_seconds = 3000
     },
     {
       allowed_methods = ["GET"]
-      allowed_origins = [local.cors_allowed_origin]
+      allowed_origins = [local.base_url]
     }
   ]
 }
@@ -175,7 +174,7 @@ module "ndr-document-pending-review-store" {
   cors_rules = [
     {
       allowed_methods = ["GET"]
-      allowed_origins = [local.cors_allowed_origin]
+      allowed_origins = [local.base_url]
     }
   ]
 }
