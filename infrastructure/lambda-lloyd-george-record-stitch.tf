@@ -78,7 +78,7 @@ module "lloyd-george-stitch-lambda" {
     LLOYD_GEORGE_BUCKET_NAME      = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME    = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     STITCH_METADATA_DYNAMODB_NAME = "${terraform.workspace}_${var.stitch_metadata_dynamodb_table_name}"
-    CLOUDFRONT_URL                = aws_cloudfront_distribution.s3_presign_mask.domain_name
+    CLOUDFRONT_URL                = one(aws_cloudfront_distribution.s3_presign_mask.aliases)
     WORKSPACE                     = terraform.workspace
     PRESIGNED_ASSUME_ROLE         = aws_iam_role.stitch_presign_url_role.arn
     EDGE_REFERENCE_TABLE          = module.cloudfront_edge_dynamodb_table.table_name

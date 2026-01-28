@@ -116,7 +116,6 @@ resource "aws_iam_role_policy_attachment" "manifest_presign_url" {
   policy_arn = aws_iam_policy.s3_document_data_policy_for_manifest_lambda.arn
 }
 
-
 resource "aws_iam_policy" "s3_document_data_policy_for_get_doc_ref_lambda" {
   name = "${terraform.workspace}_get_document_only_policy_for_get_doc_lambda"
 
@@ -153,7 +152,6 @@ resource "aws_iam_role" "get_fhir_doc_presign_url_role" {
   name               = "${terraform.workspace}_get_fhir_doc_presign_url_role"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy_for_get_doc_ref_lambda.json
 }
-
 
 resource "aws_iam_role_policy_attachment" "get_doc_presign_url" {
   role       = aws_iam_role.get_fhir_doc_presign_url_role.name
@@ -196,7 +194,6 @@ resource "aws_iam_policy" "lambda_toggle_bulk_upload_policy" {
   name   = "${terraform.workspace}_lambda_toggle_bulk_upload_policy"
   policy = data.aws_iam_policy_document.lambda_toggle_bulk_upload_document.json
 }
-
 
 data "aws_iam_policy_document" "assume_role_policy_for_ods_report_lambda" {
   statement {
@@ -359,7 +356,7 @@ resource "aws_iam_policy" "s3_document_data_policy_post_document_review_lambda" 
 
 data "aws_iam_policy_document" "reporting_ses" {
   statement {
-    sid    = "SESAccess"
+    sid    = "SESAccessFromDomain"
     effect = "Allow"
 
     actions = [
@@ -367,14 +364,48 @@ data "aws_iam_policy_document" "reporting_ses" {
       "ses:SendRawEmail"
     ]
 
-    resources = ["*"]
+    resources = [
+      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/${local.reporting_from_domain}",
+    ]
 
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
-      values   = [aws_ssm_parameter.reporting_ses_from_address.value]
+      values   = [local.reporting_ses_from_address_value]
     }
   }
+
+  statement {
+    sid    = "SESAccessRecipientIdentitySandbox"
+    effect = "Allow"
+
+    actions = [
+      "ses:SendEmail",
+      "ses:SendRawEmail"
+    ]
+
+    resources = [
+      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/*",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "ses:FromAddress"
+      values   = [local.reporting_ses_from_address_value]
+    }
+  }
+}
+
+resource "aws_iam_policy" "reporting_ses_send" {
+  count  = local.is_sandbox ? 1 : 0
+  name   = "${terraform.workspace}_reporting_ses_send"
+  policy = data.aws_iam_policy_document.reporting_ses.json
+}
+
+resource "aws_iam_role_policy_attachment" "report_distribution_reporting_ses_send" {
+  count      = local.is_sandbox ? 1 : 0
+  role       = module.report-distribution-lambda.lambda_execution_role_name
+  policy_arn = aws_iam_policy.reporting_ses_send[0].arn
 }
 
 data "aws_iam_policy_document" "ses_feedback_s3_put" {

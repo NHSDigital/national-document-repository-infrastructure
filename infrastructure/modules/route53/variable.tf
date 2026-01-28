@@ -1,13 +1,3 @@
-variable "environment" {
-  description = "Environment tag used for context and identification (e.g., 'dev', 'prod')."
-  type        = string
-}
-
-variable "owner" {
-  description = "Owner tag used for resource tagging and identification."
-  type        = string
-}
-
 variable "dns_name" {
   description = "The target DNS name for the record, typically the Fargate or Load Balancer endpoint."
   type        = string
