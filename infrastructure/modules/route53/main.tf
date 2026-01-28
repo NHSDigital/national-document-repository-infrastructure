@@ -11,7 +11,7 @@ data "aws_route53_zone" "ndr_zone" {
   count = var.using_arf_hosted_zone ? 1 : 0
 }
 
-# CNAME record for non-test workspaces (e.g., ndr-dev, pre-prod)
+# CNAME record for non-test workspaces (e.g., ndr-dev, pre-prod, prod)
 resource "aws_route53_record" "ndr_fargate_record_cname" {
   count   = terraform.workspace == "ndr-test" ? 0 : 1
   name    = terraform.workspace
@@ -21,8 +21,14 @@ resource "aws_route53_record" "ndr_fargate_record_cname" {
   ttl     = 300
 }
 
+# Automatically migrate existing records to the indexed version
+moved {
+  from = aws_route53_record.ndr_fargate_record_cname
+  to   = aws_route53_record.ndr_fargate_record_cname[0]
+}
+
 # Alias A record for ndr-test workspace (zone apex)
-resource "aws_route53_record" "ndr_fargate_record_alias" {
+resource "aws_route53_record" "ndr_test_fargate_record_alias" {
   count   = terraform.workspace == "ndr-test" ? 1 : 0
   name    = ""
   type    = "A"
