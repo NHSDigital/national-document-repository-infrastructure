@@ -13,6 +13,7 @@ module "bulk-upload-metadata-processor-lambda" {
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
     module.lg-bulk-upload-expedite-metadata-queue.sqs_read_policy_document,
     module.lg-bulk-upload-expedite-metadata-queue.sqs_write_policy_document,
+    module.document_review_queue.sqs_write_policy_document,
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
@@ -29,8 +30,8 @@ module "bulk-upload-metadata-processor-lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
     EXPEDITE_SQS_QUEUE_URL     = module.lg-bulk-upload-expedite-metadata-queue.sqs_url
-
-    VIRUS_SCAN_STUB = !local.is_production
+    REVIEW_SQS_QUEUE_URL       = module.document_review_queue.sqs_url
+    VIRUS_SCAN_STUB            = !local.is_production
   }
 
   vpc_subnet_ids         = length(data.aws_security_groups.virus_scanner_api.ids) == 1 ? module.ndr-vpc-ui.private_subnets : []
