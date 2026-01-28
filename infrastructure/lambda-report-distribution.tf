@@ -21,8 +21,8 @@ module "report-distribution-lambda" {
     REPORT_BUCKET_NAME = module.report-orchestration-store.bucket_id
     CONTACT_TABLE_NAME = module.bulk_upload_contact_lookup_table.table_name
 
-    PRM_MAILBOX_EMAIL = data.aws_ssm_parameter.prm_mailbox_email.value
-    SES_FROM_ADDRESS  = local.reporting_ses_from_address_value
+    PRM_MAILBOX_EMAIL     = data.aws_ssm_parameter.prm_mailbox_email.value
+    SES_FROM_ADDRESS      = local.reporting_ses_from_address_value
     SES_CONFIGURATION_SET = aws_ses_configuration_set.reporting.name
   }
 
