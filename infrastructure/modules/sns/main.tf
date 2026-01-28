@@ -26,10 +26,10 @@ resource "aws_sns_topic_subscription" "sns_subscription_list" {
 }
 
 resource "aws_sns_topic_subscription" "alarm_email_notification" {
-  for_each  = local.is_sandbox ? [] : toset(nonsensitive(split(",", var.email_notification_list)))
+  for_each  = local.is_sandbox ? toset(nonsensitive(split(",", var.email_notification_list))) : toset(nonsensitive(split(",", var.email_notification_list)))
   endpoint  = each.value
   protocol  = "email"
-  topic_arn = local.is_sandbox ? "" : aws_sns_topic.sns_topic.arn
+  topic_arn = local.is_sandbox ? aws_sns_topic.sns_topic.arn : aws_sns_topic.sns_topic.arn
 }
 
 locals {
