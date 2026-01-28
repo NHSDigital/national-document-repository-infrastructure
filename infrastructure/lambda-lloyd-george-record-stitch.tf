@@ -23,12 +23,13 @@ module "lloyd-george-stitch_alarm" {
 
 
 module "lloyd-george-stitch_topic" {
-  source                = "./modules/sns"
-  sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "lloyd-george-stitch-topic"
-  topic_protocol        = "lambda"
-  topic_endpoint        = module.lloyd-george-stitch-lambda.lambda_arn
-  depends_on            = [module.sns_encryption_key]
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
+  topic_name             = "lloyd-george-stitch-topic"
+  topic_protocol         = "email"
+  is_topic_endpoint_list = true
+  topic_endpoint_list    = nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  depends_on             = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

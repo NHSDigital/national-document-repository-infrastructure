@@ -58,9 +58,3 @@ variable "is_topic_endpoint_list" {
   type        = bool
   default     = false
 }
-
-variable "email_notification_list" {
-  description = "List of emails addresses that are notified when an alarm goes off."
-  type        = string
-  default     = ""
-}

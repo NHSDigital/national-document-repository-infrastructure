@@ -44,12 +44,14 @@ module "authoriser-alarm" {
 
 
 module "authoriser-alarm-topic" {
-  source                  = "./modules/sns"
-  sns_encryption_key_id   = module.sns_encryption_key.id
-  topic_name              = "authoriser-alarms-topic"
-  topic_protocol          = "lambda"
-  topic_endpoint          = module.authoriser-lambda.lambda_arn
-  email_notification_list = data.aws_ssm_parameter.cloud_security_notification_email_list.value
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
+  topic_name             = "authoriser-alarms-topic"
+  topic_endpoint         = module.authoriser-lambda.lambda_arn
+  topic_protocol         = "email"
+  is_topic_endpoint_list = true
+  topic_endpoint_list    = nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

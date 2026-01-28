@@ -79,6 +79,6 @@ resource "aws_sns_topic_subscription" "alarm_notifications_sns_topic_subscriptio
   topic_arn = local.is_sandbox ? "" : aws_sns_topic.alarm_notifications_topic[0].arn
 }
 
-# data "aws_ssm_parameter" "cloud_security_notification_email_list" {
-#   name = "/prs/${var.environment}/user-input/cloud-security-notification-email-list"
-# }
+data "aws_ssm_parameter" "cloud_security_notification_email_list" {
+  name = "/prs/${var.environment}/user-input/cloud-security-notification-email-list"
+}
