@@ -356,7 +356,7 @@ resource "aws_iam_policy" "s3_document_data_policy_post_document_review_lambda" 
 
 data "aws_iam_policy_document" "reporting_ses" {
   statement {
-    sid    = "SESAccessFromDomain"
+    sid    = "SESAccess"
     effect = "Allow"
 
     actions = [
@@ -365,7 +365,7 @@ data "aws_iam_policy_document" "reporting_ses" {
     ]
 
     resources = [
-      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/${local.reporting_from_domain}",
+      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/*",
       "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:configuration-set/${aws_ses_configuration_set.reporting.name}",
     ]
 
@@ -381,38 +381,7 @@ data "aws_iam_policy_document" "reporting_ses" {
       values   = [aws_ses_configuration_set.reporting.name]
     }
   }
-
-  dynamic "statement" {
-    for_each = local.is_sandbox ? [1] : []
-    content {
-      sid    = "SESAccessRecipientIdentitySandbox"
-      effect = "Allow"
-
-      actions = [
-        "ses:SendEmail",
-        "ses:SendRawEmail"
-      ]
-
-      resources = [
-        "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/*",
-        "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:configuration-set/${aws_ses_configuration_set.reporting.name}",
-      ]
-
-      condition {
-        test     = "StringEquals"
-        variable = "ses:FromAddress"
-        values   = [local.reporting_ses_from_address_value]
-      }
-
-      condition {
-        test     = "StringEquals"
-        variable = "ses:ConfigurationSet"
-        values   = [aws_ses_configuration_set.reporting.name]
-      }
-    }
-  }
 }
-
 
 resource "aws_iam_policy" "reporting_ses_send" {
   count  = local.is_sandbox ? 1 : 0
