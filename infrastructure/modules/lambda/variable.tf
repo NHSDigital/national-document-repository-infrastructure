@@ -76,7 +76,7 @@ variable "lambda_ephemeral_storage" {
 variable "memory_size" {
   description = "Amount of memory to allocate to the Lambda function (in MB)."
   type        = number
-  default     = 512
+  default     = 5308
 }
 
 variable "reserved_concurrent_executions" {
