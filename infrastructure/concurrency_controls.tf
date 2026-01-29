@@ -19,6 +19,8 @@ resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_sta
     targetFunction      = module.bulk-upload-lambda.function_name
     reservedConcurrency = var.office_hours_start_concurrency
   })
+
+  depends_on = [aws_cloudwatch_event_rule.bulk_upload_concurrency_office_hours_start]
 }
 
 # Office hours stop (7 PM UTC / 19:00 UTC)
@@ -36,4 +38,6 @@ resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_sto
     targetFunction      = module.bulk-upload-lambda.function_name
     reservedConcurrency = var.office_hours_end_concurrency
   })
+
+  depends_on = [aws_cloudwatch_event_rule.bulk_upload_concurrency_office_hours_stop]
 }
