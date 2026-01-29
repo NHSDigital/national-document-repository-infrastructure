@@ -66,7 +66,7 @@ resource "aws_iam_policy" "administrator_permission_restrictions" {
           "ssm:PutParameter"
         ],
         Resource = [
-          "arn:aws:ssm:*:*:parameter/*",
+          "arn:aws:ssm:*:*:parameter/*"
         ]
       }
     ]
