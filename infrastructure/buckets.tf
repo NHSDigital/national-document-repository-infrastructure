@@ -473,7 +473,7 @@ module "pdm-document-store" {
   force_destroy            = local.is_force_destroy
 }
 
-module "report-store" {
+module "ndr-report-store" {
   source                    = "./modules/s3/"
   access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
