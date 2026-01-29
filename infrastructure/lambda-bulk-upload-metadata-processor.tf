@@ -3,7 +3,6 @@ module "bulk-upload-metadata-processor-lambda" {
   name           = "BulkUploadMetadataProcessor"
   handler        = "handlers.bulk_upload_metadata_processor_handler.lambda_handler"
   lambda_timeout = 900
-  memory_size    = 1769
 
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,

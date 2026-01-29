@@ -46,7 +46,6 @@ module "generate-document-manifest-lambda" {
   handler                  = "handlers.generate_document_manifest_handler.lambda_handler"
   lambda_timeout           = 900
   lambda_ephemeral_storage = 512
-  memory_size              = 1769
   iam_role_policy_documents = [
     module.ndr-document-store.s3_read_policy_document,
     module.ndr-document-store.s3_write_policy_document,

@@ -3,7 +3,6 @@ module "bulk-upload-report-lambda" {
   name           = "BulkUploadReportLambda"
   handler        = "handlers.bulk_upload_report_handler.lambda_handler"
   lambda_timeout = 900
-  memory_size    = 1769
   iam_role_policy_documents = [
     module.statistical-reports-store.s3_read_policy_document,
     module.statistical-reports-store.s3_write_policy_document,
