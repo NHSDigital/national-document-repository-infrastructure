@@ -13,7 +13,7 @@ permissions:
   actions: read   # This is required for Plan comment
   id-token: write # This is required for requesting the JWT
   contents: write # This is required for SBOM action
-    
+
 jobs:
   terraform_plan_apply:
     name: Terraform Plan/Apply (ndr-dev)
@@ -45,7 +45,7 @@ jobs:
 
       - name: Select Terraform Workspace
         id: workspace
-        run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
+        run: terraform workspace select ${{ secrets.AWS_WORKSPACE }}
         working-directory: ./infrastructure
         shell: bash
 
@@ -57,6 +57,7 @@ jobs:
       - name: Check Terraform Validation
         id: validate
         run: terraform validate -no-color
+        working-directory: ./infrastructure
 
       - name: Run Terraform Plan
         id: plan
@@ -73,7 +74,7 @@ jobs:
               echo "::add-mask::$cert_block"
             fi
           done || echo "No certificate blocks found to mask."
-          
+
           # Mask sensitive URLs in the Terraform Plan output
           grep -Eo 'https://[a-zA-Z0-9.-]+\.execute-api\.[a-zA-Z0-9.-]+\.amazonaws\.com/[a-zA-Z0-9/._-]*' tfplan.txt | while read -r api_url; do
             if [ -n "$api_url" ]; then
@@ -153,7 +154,7 @@ jobs:
 
             // 2. Prepare format of the comment
             const output = `### Report for environment: ndr-dev
-            
+
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             <details><summary>Initialization Output</summary>
 
@@ -191,7 +192,7 @@ jobs:
                 body: output
               })
             }
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
