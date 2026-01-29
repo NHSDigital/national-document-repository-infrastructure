@@ -77,6 +77,25 @@ resource "aws_iam_policy" "administrator_permission_restrictions" {
   }
 }
 
+resource "aws_iam_policy" "TEST_DELETE" {
+  count = local.is_sandbox ? 1 : 0
+  name  = "AdministratorRestriction"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Deny",
+        Action = [
+          "ssm:PutParameter"
+        ],
+        Resource = [
+          "arn:aws:ssm:*:*:parameter/*",
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "transfer_family_kill_switch" {
   name        = "${terraform.workspace}-transfer-family-kill-switch"
   description = "Permissions for Transfer kill switch Lambda"
