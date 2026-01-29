@@ -16,7 +16,7 @@ module "update-doc-ref-alarm-topic" {
   topic_name             = "update_doc-alarms-topic"
   topic_protocol         = "email"
   is_topic_endpoint_list = true
-  topic_endpoint_list    = nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
   depends_on             = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",

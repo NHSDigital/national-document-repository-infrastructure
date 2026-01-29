@@ -31,7 +31,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
   metric_name         = "5XXError"
   period              = 300
   statistic           = "Sum"
-  threshold           = 5
+  threshold           = 0
   treat_missing_data  = "notBreaching"
 
   dimensions = {

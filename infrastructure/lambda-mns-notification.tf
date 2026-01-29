@@ -54,7 +54,7 @@ module "mns-notification-alarm-topic" {
   topic_name             = "mns-notification-topic"
   topic_protocol         = "email"
   is_topic_endpoint_list = true
-  topic_endpoint_list    = nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
