@@ -23,7 +23,7 @@ resource "aws_ssm_parameter" "secret_ignore_value_changes" {
   depends_on  = [var.resource_depends_on]
   tags = {
     Name = "/ndr/${terraform.workspace}/${var.name}"
-    Type = "terraform.workspace}-ssm_parameter"
+    Type = "${terraform.workspace}-ssm_parameter"
   }
 
   lifecycle {
