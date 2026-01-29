@@ -79,7 +79,7 @@ resource "aws_iam_policy" "administrator_permission_restrictions" {
 
 resource "aws_iam_policy" "TEST_DELETE" {
   count = local.is_sandbox ? 1 : 0
-  name  = "AdministratorRestriction"
+  name  = "TEST_DELETE"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
