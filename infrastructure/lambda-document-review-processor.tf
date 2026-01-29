@@ -13,7 +13,6 @@ module "document_review_processor_lambda" {
     aws_iam_policy.ssm_access_policy.policy
   ]
   kms_deletion_window           = var.kms_deletion_window
-  memory_size                   = 512
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
   rest_api_id                   = null
