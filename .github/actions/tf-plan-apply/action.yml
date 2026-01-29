@@ -6,8 +6,8 @@ inputs:
     description: "AWS IAM Role to assume"
     required: true
 
-  environment:
-    description: "Environment (dev, test, pre-prod, prod)"
+  bucket_prefix:
+    description: "One of dev, test, pre-prod, prod"
     required: true
 
   aws_account_id:
@@ -65,7 +65,7 @@ runs:
         terraform_wrapper: false
 
     - name: Initialise Terraform
-      run: terraform init -backend-config=bucket=ndr-${{ inputs.environment }}-terraform-state-${{ inputs.aws_account_id }}
+      run: terraform init -backend-config=bucket=ndr-${{ inputs.bucket_prefix }}-terraform-state-${{ inputs.aws_account_id }}
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 
