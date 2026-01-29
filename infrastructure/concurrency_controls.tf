@@ -24,7 +24,7 @@ resource "aws_cloudwatch_event_target" "bulk_upload_concurrency_office_hours_sta
 }
 
 # Office hours stop (7 PM UTC / 19:00 UTC)
-resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_stop" {               
+resource "aws_cloudwatch_event_rule" "bulk_upload_concurrency_office_hours_stop" {
   name                = "${terraform.workspace}_bulk-upload-office-hours-stop"
   schedule_expression = "cron(0 19 * * ? *)"
 }
