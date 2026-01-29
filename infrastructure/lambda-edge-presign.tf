@@ -38,12 +38,13 @@ resource "aws_cloudwatch_metric_alarm" "edge_presign_lambda_error" {
 }
 
 module "edge_presign_alarm_topic" {
-  source                = "./modules/sns"
-  sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "edge_presign-alarms-topic"
-  topic_protocol        = "lambda"
-  topic_endpoint        = module.edge-presign-lambda.lambda_arn
-  depends_on            = [module.sns_encryption_key]
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
+  topic_name             = "edge_presign-alarms-topic"
+  topic_protocol         = "email"
+  is_topic_endpoint_list = true
+  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  depends_on             = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
