@@ -3,7 +3,7 @@ module "report-orchestration-lambda" {
   name           = "reportOrchestration"
   handler        = "handlers.report_orchestration_handler.lambda_handler"
   lambda_timeout = 900
-  memory_size    = 1769
+  memory_size    = 5038
 
   iam_role_policy_documents = [
     module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
@@ -26,3 +26,4 @@ module "report-orchestration-lambda" {
     module.bulk_upload_report_dynamodb_table
   ]
 }
+
