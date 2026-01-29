@@ -355,6 +355,19 @@ variable "shared_infra_workspace" {
   default     = "ndr-dev"
 }
 
+# Concurrency Controller
+
+variable "office_hours_start_concurrency" {
+  type    = number
+  default = 1
+}
+
+variable "office_hours_end_concurrency" {
+  type    = number
+  default = 3
+}
+
+
 variable "report-orchestration_bucket_name" {
   description = "The name of the S3 bucket to store Report Orchestrations."
   type        = string
