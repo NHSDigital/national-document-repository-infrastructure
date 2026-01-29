@@ -74,6 +74,12 @@ variable "pdm_document_bucket_name" {
   default     = "pdm-document-store"
 }
 
+variable "report_orchestration_bucket_name" {
+  description = "The name of the S3 bucket to store daily report documents."
+  type        = string
+  default     = "report-orchestration"
+}
+
 variable "statistical_reports_bucket_name" {
   description = "The name of the S3 bucket to store weekly generated statistical reports."
   type        = string
