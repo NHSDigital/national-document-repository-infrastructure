@@ -20,11 +20,6 @@ resource "aws_route53_record" "ndr_fargate_record_cname" {
   ttl     = 300
 }
 
-moved {
-  from = aws_route53_record.ndr_fargate_record
-  to   = aws_route53_record.ndr_fargate_record_cname[0]
-}
-
 resource "aws_route53_record" "ndr_test_fargate_record_alias" {
   count   = terraform.workspace == "ndr-test" ? 1 : 0
   name    = ""
