@@ -28,12 +28,12 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
   metric_name         = "HTTPCode_ELB_5XX_Count"
   period              = 300
   statistic           = "Sum"
-  threshold           = 5
+  threshold           = 0
   treat_missing_data  = "notBreaching"
   dimensions = {
     LoadBalancer = aws_lb.ecs_lb[0].arn_suffix
   }
-  alarm_description = "This alarm indicates that at least 5 5XX statuses have occurred on ${aws_lb.ecs_lb[0].name} within 5 minutes."
+  alarm_description = "This alarm indicates that at least 1 5XX status has occurred on ${aws_lb.ecs_lb[0].name} within 5 minutes."
   alarm_actions     = var.alarm_actions_arn_list
 
   tags = {
