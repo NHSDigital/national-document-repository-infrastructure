@@ -395,13 +395,13 @@ resource "aws_iam_role_policy" "service_quotas_dev" {
           Action = [
             "servicequotas:RequestServiceQuotaIncrease"
           ]
-          Effect   = "Allow"
+          Effect = "Allow"
           Resource = [
             "arn:aws:servicequotas:us-east-1:${data.aws_caller_identity.current.account_id}:lambda/L-B99A9384",
             "arn:aws:servicequotas::${data.aws_caller_identity.current.account_id}:iam/L-E95E4862",
             "arn:aws:servicequotas::${data.aws_caller_identity.current.account_id}:iam/L-FE177D64"
           ]
-          Sid      = "VisualEditor0"
+          Sid = "VisualEditor0"
         },
       ]
       Version = "2012-10-17"
@@ -419,7 +419,8 @@ resource "aws_iam_role_policy" "cert_manager_tags_dev" {
         {
           Action = [
             "acm:AddTagsToCertificate",
-            "acm:DeleteCertificate"          ]
+            "acm:DeleteCertificate"
+          ]
           Effect   = "Allow"
           Resource = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/*"
           Sid      = "VisualEditor0"
