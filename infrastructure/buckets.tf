@@ -18,13 +18,13 @@ module "ndr-document-store" {
     {
       allowed_headers = ["*"]
       allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [local.base_url]
       expose_headers  = ["ETag"]
       max_age_seconds = 3000
     },
     {
       allowed_methods = ["GET"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [local.base_url]
     }
   ]
 }
@@ -41,7 +41,7 @@ module "ndr-zip-request-store" {
   cors_rules = [
     {
       allowed_methods = ["GET"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [local.base_url]
     }
   ]
 }
@@ -62,13 +62,13 @@ module "ndr-lloyd-george-store" {
     {
       allowed_headers = ["*"]
       allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [local.base_url]
       expose_headers  = ["ETag"]
       max_age_seconds = 3000
     },
     {
       allowed_methods = ["GET"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [local.base_url]
     }
   ]
 }
@@ -110,7 +110,7 @@ module "statistical-reports-store" {
   cors_rules = [
     {
       allowed_methods = ["GET"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [local.base_url]
     }
   ]
 }
@@ -131,13 +131,13 @@ module "ndr-bulk-staging-store" {
     {
       allowed_headers = ["*"]
       allowed_methods = ["POST", "PUT", "DELETE"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [local.base_url]
       expose_headers  = ["ETag"]
       max_age_seconds = 3000
     },
     {
       allowed_methods = ["GET"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [local.base_url]
     }
   ]
 }
@@ -174,7 +174,7 @@ module "ndr-document-pending-review-store" {
   cors_rules = [
     {
       allowed_methods = ["GET"]
-      allowed_origins = [contains(["prod"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"]
+      allowed_origins = [local.base_url]
     }
   ]
 }
