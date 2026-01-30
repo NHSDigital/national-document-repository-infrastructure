@@ -375,35 +375,35 @@ data "aws_iam_policy_document" "reporting_ses" {
     }
   }
 
-  statement {
-    sid    = "SESAccessRecipientIdentitySandbox"
-    effect = "Allow"
-
-    actions = [
-      "ses:SendEmail",
-      "ses:SendRawEmail"
-    ]
-
-    resources = [
-      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/*",
-    ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "ses:FromAddress"
-      values   = [local.reporting_ses_from_address_value]
-    }
-  }
+  # statement {
+  #   sid    = "SESAccessRecipientIdentitySandbox"
+  #   effect = "Allow"
+  #
+  #   actions = [
+  #     "ses:SendEmail",
+  #     "ses:SendRawEmail"
+  #   ]
+  #
+  #   resources = [
+  #     "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/*",
+  #   ]
+  #
+  #   condition {
+  #     test     = "StringEquals"
+  #     variable = "ses:FromAddress"
+  #     values   = [local.reporting_ses_from_address_value]
+  #   }
+  # }
 }
 
 resource "aws_iam_policy" "reporting_ses_send" {
-  count  = local.is_sandbox ? 1 : 0
+  # count  = local.is_sandbox ? 1 : 0
   name   = "${terraform.workspace}_reporting_ses_send"
   policy = data.aws_iam_policy_document.reporting_ses.json
 }
 
 resource "aws_iam_role_policy_attachment" "report_distribution_reporting_ses_send" {
-  count      = local.is_sandbox ? 1 : 0
+  # count      = local.is_sandbox ? 1 : 0
   role       = module.report-distribution-lambda.lambda_execution_role_name
   policy_arn = aws_iam_policy.reporting_ses_send[0].arn
 }
