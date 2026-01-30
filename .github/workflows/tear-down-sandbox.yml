@@ -127,7 +127,7 @@ jobs:
           terraform_version: 1.14.3
 
       - name: Initialise Terraform
-        run: terraform init -backend-config=${{ vars.TF_BACKEND_FILE }}
+        run: terraform init -backend-config=bucket=ndr-dev-terraform-state-${{ secrets.AWS_ACCOUNT_ID }}
         working-directory: ./base_iam
 
       - name: Select Terraform Workspace

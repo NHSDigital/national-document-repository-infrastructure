@@ -58,7 +58,6 @@ jobs:
           bucket_prefix: "dev"
           aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           aws_region: ${{ vars.AWS_REGION }}
-          # backend_conf: "backend.conf"
           working_directory: "./base_iam"  # Use separate base_iam directory
           workspace: ${{ github.event.inputs.sandbox_name }}
           tf_vars_file: ${{ vars.TF_VARS_FILE }}
@@ -85,7 +84,6 @@ jobs:
           bucket_prefix: "dev"
           aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           aws_region: ${{ vars.AWS_REGION }}
-          # backend_conf: "backend.conf"
           workspace: ${{ github.event.inputs.sandbox_name }}
           tf_vars_file: ${{ vars.TF_VARS_FILE }}
 
@@ -110,6 +108,5 @@ jobs:
           bucket_prefix: "dev"
           aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           aws_region: ${{ vars.AWS_REGION }}
-          # backend_conf: "backend.conf"
           workspace: ${{ github.event.inputs.sandbox_name }}
           tf_vars_file: ${{ vars.TF_VARS_FILE }}
