@@ -384,6 +384,51 @@ resource "aws_iam_role_policy" "github_terraform_tagging_policy_dev" {
   )
 }
 
+resource "aws_iam_role_policy" "service_quotas_dev" {
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.dev_github_actions[0].id
+  name  = "service_quotas"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "servicequotas:RequestServiceQuotaIncrease"
+          ]
+          Effect   = "Allow"
+          Resource = [
+            "arn:aws:servicequotas:us-east-1:${data.aws_caller_identity.current.account_id}:lambda/L-B99A9384",
+            "arn:aws:servicequotas::${data.aws_caller_identity.current.account_id}:iam/L-E95E4862",
+            "arn:aws:servicequotas::${data.aws_caller_identity.current.account_id}:iam/L-FE177D64"
+          ]
+          Sid      = "VisualEditor0"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "cert_manager_tags_dev" {
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.dev_github_actions[0].id
+  name  = "cert_manager_tags"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "acm:AddTagsToCertificate",
+            "acm:DeleteCertificate"          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/*"
+          Sid      = "VisualEditor0"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
 
 # ATTACHED POLICIES
 
