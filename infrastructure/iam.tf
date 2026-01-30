@@ -405,5 +405,5 @@ resource "aws_iam_policy" "reporting_ses_send" {
 resource "aws_iam_role_policy_attachment" "report_distribution_reporting_ses_send" {
   count      = local.is_sandbox ? 1 : 0
   role       = module.report-distribution-lambda.lambda_execution_role_name
-  policy_arn = aws_iam_policy.reporting_ses_send.arn
+  policy_arn = aws_iam_policy.reporting_ses_send[0].arn
 }
