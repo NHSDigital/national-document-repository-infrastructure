@@ -356,28 +356,7 @@ resource "aws_iam_policy" "s3_document_data_policy_post_document_review_lambda" 
 
 data "aws_iam_policy_document" "reporting_ses" {
   statement {
-    sid    = "SESAccessFromDomain"
-    effect = "Allow"
-
-    actions = [
-      "ses:SendEmail",
-      "ses:SendRawEmail"
-    ]
-
-    resources = [
-      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/${local.reporting_from_domain}",
-      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:configuration-set/${aws_ses_configuration_set.reporting.name}",
-    ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "ses:FromAddress"
-      values   = [local.reporting_ses_from_address_value]
-    }
-  }
-
-  statement {
-    sid    = "SESAccessIdentityWildcardSandbox"
+    sid    = "SESAccess"
     effect = "Allow"
 
     actions = [
@@ -387,7 +366,7 @@ data "aws_iam_policy_document" "reporting_ses" {
 
     resources = [
       "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/*",
-      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:configuration-set/${aws_ses_configuration_set.reporting.name}",
+      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:configuration-set/${aws_ses_configuration_set.reporting.name}"
     ]
 
     condition {
@@ -397,27 +376,25 @@ data "aws_iam_policy_document" "reporting_ses" {
     }
   }
 }
-
-resource "aws_iam_policy" "reporting_ses_send" {
-  count  = local.is_sandbox ? 1 : 0
-  name   = "${terraform.workspace}_reporting_ses_send"
-  policy = data.aws_iam_policy_document.reporting_ses.json
-}
-
-resource "aws_iam_role_policy_attachment" "report_distribution_reporting_ses_send" {
-  count      = local.is_sandbox ? 1 : 0
-  role       = module.report-distribution-lambda.lambda_execution_role_name
-  policy_arn = aws_iam_policy.reporting_ses_send[0].arn
-}
-
-data "aws_iam_policy_document" "ses_feedback_s3_put" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "s3:PutObject"
-    ]
-    resources = [
-      "${module.ses-feedback-store.bucket_arn}/ses-feedback/*"
-    ]
-  }
-}
+#
+# resource "aws_iam_policy" "reporting_ses_send" {
+#   name   = "${terraform.workspace}_reporting_ses_send"
+#   policy = data.aws_iam_policy_document.reporting_ses.json
+# }
+#
+# resource "aws_iam_role_policy_attachment" "report_distribution_reporting_ses_send" {
+#   role       = module.report-distribution-lambda.lambda_execution_role_name
+#   policy_arn = aws_iam_policy.reporting_ses_send.arn
+# }
+#
+# data "aws_iam_policy_document" "ses_feedback_s3_put" {
+#   statement {
+#     effect = "Allow"
+#     actions = [
+#       "s3:PutObject"
+#     ]
+#     resources = [
+#       "${module.ses-feedback-store.bucket_arn}/ses-feedback/*"
+#     ]
+#   }
+# }
