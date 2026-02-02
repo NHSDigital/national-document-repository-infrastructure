@@ -22,11 +22,12 @@ module "get-report-by-ods-alarm" {
 
 
 module "get-report-by-ods-alarm-topic" {
-  source                = "./modules/sns"
-  sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "get-report-by-ods-alarm-topic"
-  topic_protocol        = "lambda"
-  topic_endpoint        = module.get-report-by-ods-lambda.lambda_arn
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
+  topic_name             = "get-report-by-ods-alarm-topic"
+  topic_protocol         = "email"
+  is_topic_endpoint_list = true
+  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -64,7 +65,6 @@ module "get-report-by-ods-lambda" {
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id         = module.get-report-by-ods-gateway.gateway_resource_id
   http_methods        = ["GET"]
-  memory_size         = 1769
   lambda_timeout      = 900
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {

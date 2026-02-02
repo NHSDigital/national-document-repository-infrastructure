@@ -23,12 +23,13 @@ module "lloyd-george-stitch_alarm" {
 
 
 module "lloyd-george-stitch_topic" {
-  source                = "./modules/sns"
-  sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "lloyd-george-stitch-topic"
-  topic_protocol        = "lambda"
-  topic_endpoint        = module.lloyd-george-stitch-lambda.lambda_arn
-  depends_on            = [module.sns_encryption_key]
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
+  topic_name             = "lloyd-george-stitch-topic"
+  topic_protocol         = "email"
+  is_topic_endpoint_list = true
+  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  depends_on             = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -78,7 +79,7 @@ module "lloyd-george-stitch-lambda" {
     LLOYD_GEORGE_BUCKET_NAME      = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME    = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     STITCH_METADATA_DYNAMODB_NAME = "${terraform.workspace}_${var.stitch_metadata_dynamodb_table_name}"
-    CLOUDFRONT_URL                = aws_cloudfront_distribution.s3_presign_mask.domain_name
+    CLOUDFRONT_URL                = one(aws_cloudfront_distribution.s3_presign_mask.aliases)
     WORKSPACE                     = terraform.workspace
     PRESIGNED_ASSUME_ROLE         = aws_iam_role.stitch_presign_url_role.arn
     EDGE_REFERENCE_TABLE          = module.cloudfront_edge_dynamodb_table.table_name

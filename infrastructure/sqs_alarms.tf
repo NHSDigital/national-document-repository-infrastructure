@@ -4,7 +4,6 @@ locals {
     "nrl_main"              = module.sqs-nrl-queue.sqs_name
     "stitching_main"        = module.sqs-stitching-queue.sqs_name
     "lg_bulk_main"          = module.sqs-lg-bulk-upload-metadata-queue.sqs_name
-    "lg_inv_main"           = module.sqs-lg-bulk-upload-invalid-queue.sqs_name
     "mns_main"              = module.sqs-mns-notification-queue[0].sqs_name
     "lg_bulk_expedite_main" = module.lg-bulk-upload-expedite-metadata-queue.sqs_name
     # dead-letter queues

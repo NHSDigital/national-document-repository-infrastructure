@@ -28,7 +28,7 @@ jobs:
     needs: ['set_workspace']
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -43,7 +43,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.13.3
+          terraform_version: 1.14.3
           terraform_wrapper: false
 
       - name: Initialise Terraform
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: NHSDigital/national-document-repository
 
@@ -113,7 +113,7 @@ jobs:
         working-directory: ./app
 
       - name: Cypress Build
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           install: false
           runTests: false
@@ -128,7 +128,7 @@ jobs:
         run: npm install serve -g
 
       - name: Run Cypress Tests (Chrome)
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           install: false
           start: serve -s dist
@@ -139,7 +139,7 @@ jobs:
           CYPRESS_grepTags: 'regression'
   
       - name: Upload Artifacts (Screenshots)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: cypress-screenshots-chrome
@@ -147,7 +147,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Upload Artifacts (Videos)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: cypress-videos-chrome

@@ -31,7 +31,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
   metric_name         = "5XXError"
   period              = 300
   statistic           = "Sum"
-  threshold           = 5
+  threshold           = 0
   treat_missing_data  = "notBreaching"
 
   dimensions = {
@@ -39,7 +39,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_alarm_5XX" {
     Stage   = var.environment
   }
 
-  alarm_description = "This alarm indicates that at least 5 5XX statuses have occurred on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} within 5 minutes."
+  alarm_description = "This alarm indicates that at least 1 5XX status has occurred on ${aws_api_gateway_rest_api.ndr_doc_store_api.name} within 5 minutes."
   alarm_actions     = [aws_sns_topic.alarm_notifications_topic[0].arn]
 
   tags = {
