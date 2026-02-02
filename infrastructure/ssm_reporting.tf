@@ -11,7 +11,7 @@ resource "aws_ssm_parameter" "reporting_ses_from_address" {
 
 data "aws_ssm_parameters_by_path" "reporting_user_input" {
   count           = local.is_shared_workspace ? 0 : 1
-  path            = "/prs/${var.environment}/user-input"
+  path            = "/prs/${var.environment}/reporting/config"
   recursive       = false
   with_decryption = true
 }
