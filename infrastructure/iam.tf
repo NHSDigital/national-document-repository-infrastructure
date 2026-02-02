@@ -376,17 +376,7 @@ data "aws_iam_policy_document" "reporting_ses" {
     }
   }
 }
-#
-# resource "aws_iam_policy" "reporting_ses_send" {
-#   name   = "${terraform.workspace}_reporting_ses_send"
-#   policy = data.aws_iam_policy_document.reporting_ses.json
-# }
-#
-# resource "aws_iam_role_policy_attachment" "report_distribution_reporting_ses_send" {
-#   role       = module.report-distribution-lambda.lambda_execution_role_name
-#   policy_arn = aws_iam_policy.reporting_ses_send.arn
-# }
-#
+
 data "aws_iam_policy_document" "ses_feedback_s3_put" {
   statement {
     effect = "Allow"
