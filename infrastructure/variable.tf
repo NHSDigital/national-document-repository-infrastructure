@@ -373,13 +373,6 @@ variable "office_hours_end_concurrency" {
   default = 3
 }
 
-
-variable "report-orchestration_bucket_name" {
-  description = "The name of the S3 bucket to store Report Orchestrations."
-  type        = string
-  default     = "report-orchestration"
-}
-
 variable "ses-feedback_bucket_name" {
   description = "The name of the S3 bucket to store Simple Email Service feedback Json."
   type        = string
