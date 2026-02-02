@@ -5,7 +5,7 @@ module "report-distribution-lambda" {
   lambda_timeout = 300
 
   iam_role_policy_documents = [
-    module.report-orchestration-store.s3_read_policy_document,
+    module.ndr-report-store.s3_read_policy_document,
     module.bulk_upload_contact_lookup_table.dynamodb_read_policy_document,
     data.aws_iam_policy_document.reporting_ses.json,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
@@ -17,7 +17,7 @@ module "report-distribution-lambda" {
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
 
-    REPORT_BUCKET_NAME = module.report-orchestration-store.bucket_id
+    REPORT_BUCKET_NAME = module.ndr-report-store.bucket_id
     CONTACT_TABLE_NAME = module.bulk_upload_contact_lookup_table.table_name
 
     PRM_MAILBOX_EMAIL     = data.aws_ssm_parameter.prm_mailbox_email.value
