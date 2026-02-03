@@ -366,7 +366,6 @@ data "aws_iam_policy_document" "reporting_ses" {
 
     resources = [
       "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/*",
-      # "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:configuration-set/${aws_ses_configuration_set.reporting.name}",
     ]
 
     condition {
