@@ -203,7 +203,7 @@ resource "aws_cloudwatch_event_rule" "report_orchestration_schedule" {
   name        = "${terraform.workspace}_report_orchestration_schedule"
   description = "Schedule for Report Orchestration Lambda"
   # schedule_expression = "cron(1 7 * * ? *)"
-  schedule_expression = "rate(1 minutes)"
+  schedule_expression = "rate(1 minute)"
 }
 
 resource "aws_cloudwatch_event_target" "report_orchestration_schedule_event" {
