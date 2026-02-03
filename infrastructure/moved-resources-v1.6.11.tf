@@ -17,3 +17,8 @@ moved {
   from = aws_cloudfront_cache_policy.nocache
   to   = aws_cloudfront_cache_policy.nocache[0]
 }
+
+moved {
+  from = aws_route53_record.ndr_fargate_record
+  to   = aws_route53_record.ndr_fargate_record_cname[0]
+}
