@@ -31,11 +31,12 @@ jobs:
         with:
           aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/dev-github-bootstrap
           bucket_prefix: "dev"
+          aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           aws_region: ${{ vars.AWS_REGION }}
+          # backend_conf: "backend.conf"
           working_directory: "./base_iam"  # Use separate base_iam directory
           workspace: ${{ secrets.AWS_WORKSPACE }}
           tf_vars_file: ${{ vars.TF_VARS_FILE }}
-          tf_extra_args: "-var aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}"
 
   terraform_plan_apply:
     name: Terraform Plan/Apply (ndr-dev)
