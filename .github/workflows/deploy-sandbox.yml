@@ -56,7 +56,7 @@ jobs:
         with:
           aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/dev-github-bootstrap
           bucket_prefix: "dev"
-          aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          # aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           aws_region: ${{ vars.AWS_REGION }}
           working_directory: "./base_iam"  # Use separate base_iam directory
           workspace: ${{ github.event.inputs.sandbox_name }}
@@ -82,7 +82,7 @@ jobs:
           # use newly created role
           aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
           bucket_prefix: "dev"
-          aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          # aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           aws_region: ${{ vars.AWS_REGION }}
           workspace: ${{ github.event.inputs.sandbox_name }}
           tf_vars_file: ${{ vars.TF_VARS_FILE }}
@@ -106,7 +106,7 @@ jobs:
           # use newly created role
           aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
           bucket_prefix: "dev"
-          aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          # aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           aws_region: ${{ vars.AWS_REGION }}
           workspace: ${{ github.event.inputs.sandbox_name }}
           tf_vars_file: ${{ vars.TF_VARS_FILE }}
