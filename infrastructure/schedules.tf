@@ -198,3 +198,34 @@ resource "aws_lambda_permission" "transfer_key_manager_schedule_permission" {
     aws_cloudwatch_event_rule.transfer_key_manager_schedule
   ]
 }
+
+resource "aws_cloudwatch_event_rule" "report_orchestration_schedule" {
+  name        = "${terraform.workspace}_report_orchestration_schedule"
+  description = "Schedule for Report Orchestration Lambda"
+  # schedule_expression = "cron(1 7 * * ? *)"
+  schedule_expression = "rate(1 minutes)"
+}
+
+resource "aws_cloudwatch_event_target" "report_orchestration_schedule_event" {
+  rule      = aws_cloudwatch_event_rule.report_orchestration_schedule.name
+  target_id = "report_orchestration_schedule"
+  arn       = module.report-orchestration-lambda.lambda_arn
+
+  depends_on = [
+    module.report-orchestration-lambda,
+    aws_cloudwatch_event_rule.report_orchestration_schedule
+  ]
+}
+
+resource "aws_lambda_permission" "report_orchestration_schedule_permission" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = module.report-orchestration-lambda.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.report_orchestration_schedule.arn
+
+  depends_on = [
+    module.report-orchestration-lambda,
+    aws_cloudwatch_event_rule.report_orchestration_schedule
+  ]
+}
