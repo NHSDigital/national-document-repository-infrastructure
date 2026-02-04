@@ -1,4 +1,5 @@
 resource "aws_ses_configuration_set" "reporting" {
+  count = local.is_shared_workspace ? 1 : 0
   name = "${terraform.workspace}-reporting"
 }
 
