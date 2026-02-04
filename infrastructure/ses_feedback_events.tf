@@ -1,6 +1,6 @@
 resource "aws_ses_configuration_set" "reporting" {
   count = local.is_shared_workspace ? 1 : 0
-  name = "${terraform.workspace}-reporting"
+  name  = "${terraform.workspace}-reporting"
 }
 
 resource "aws_ses_event_destination" "reporting_to_sns" {
