@@ -71,7 +71,7 @@ jobs:
 
       - name: Select Terraform Workspace
         id: workspace
-        run: terraform workspace select ${{ secrets.AWS_WORKSPACE }}
+        run:  terraform workspace select ${{ secrets.AWS_WORKSPACE }}
         working-directory: ./infrastructure
         shell: bash
 
@@ -83,7 +83,6 @@ jobs:
       - name: Check Terraform Validation
         id: validate
         run: terraform validate -no-color
-        working-directory: ./infrastructure
 
       - name: Run Terraform Plan
         id: plan
