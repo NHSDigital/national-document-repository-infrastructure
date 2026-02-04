@@ -45,7 +45,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy_mtls" {
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api_mtls,
-    aws_api_gateway_resource.get_document_reference_mtls,
+    aws_api_gateway_resource.document_reference_by_id_mtls,
     module.get-doc-fhir-lambda,
     aws_api_gateway_integration.get_doc_fhir_lambda_integration,
     aws_lambda_permission.lambda_permission_get_mtls_api,
@@ -55,6 +55,9 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy_mtls" {
     module.search-document-references-fhir-lambda,
     aws_api_gateway_integration.search_doc_fhir_lambda_integration,
     aws_lambda_permission.lambda_permission_search_mtls_api,
+    module.delete-document-references-fhir-lambda,
+    aws_api_gateway_integration.delete_document_references_fhir_lambda,
+    aws_lambda_permission.lambda_permission_delete_mtls_api,
   ]
 
   lifecycle {
@@ -140,4 +143,15 @@ module "mtls_api_endpoint_url_ssm_parameter" {
   type                = "SecureString"
   owner               = var.owner
   environment         = var.environment
+}
+
+resource "aws_api_gateway_resource" "document_reference_by_id_mtls" {
+  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
+  parent_id   = module.fhir_document_reference_mtls_gateway.gateway_resource_id
+  path_part   = "{id}"
+}
+
+moved {
+  from = aws_api_gateway_resource.get_document_reference_mtls
+  to   = aws_api_gateway_resource.document_reference_by_id_mtls
 }

@@ -20,6 +20,9 @@
         },
         "uploadDocumentIteration3Enabled": {
             "name": "uploadDocumentIteration3Enabled"
+        },
+        "bulkUploadSendToReviewEnabled": {
+          "name": "bulkUploadSendToReviewEnabled"
         }
     },
     "values": {
@@ -43,6 +46,9 @@
         },
         "uploadDocumentIteration3Enabled": {
             "enabled": "false"
+        },
+        "bulkUploadSendToReviewEnabled": {
+          "enabled": "true"
         }
     },
     "version": "1"
