@@ -1,5 +1,5 @@
 resource "aws_ses_configuration_set" "reporting" {
-  name  = "${terraform.workspace}-reporting"
+  name = "${terraform.workspace}-reporting"
 }
 
 resource "aws_ses_event_destination" "reporting_to_sns" {
