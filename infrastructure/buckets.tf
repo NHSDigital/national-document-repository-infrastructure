@@ -477,7 +477,7 @@ module "ndr-report-store" {
   source                    = "./modules/s3/"
   access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
-  bucket_name               = var.report_orchestration_bucket_name
+  bucket_name               = var.ndr-report-store
   enable_cors_configuration = false
   enable_bucket_versioning  = true
   environment               = var.environment
