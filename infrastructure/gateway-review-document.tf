@@ -7,7 +7,7 @@ module "review_document_gateway" {
   gateway_path        = "DocumentReview"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = local.base_url_with_quotes
 }
 
 resource "aws_api_gateway_resource" "review_document_id" {
@@ -25,7 +25,7 @@ module "review_document_version_gateway" {
   gateway_path        = "{version}"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = local.base_url_with_quotes
 
   request_parameters = {
     "method.request.path.id"      = true
@@ -42,5 +42,5 @@ module "review_document_status_gateway" {
   require_credentials = true
   authorization       = "CUSTOM"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = local.base_url_with_quotes
 }
