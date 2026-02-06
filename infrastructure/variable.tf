@@ -74,6 +74,12 @@ variable "pdm_document_bucket_name" {
   default     = "pdm-document-store"
 }
 
+variable "report_orchestration_bucket_name" {
+  description = "The name of the S3 bucket to store daily report documents."
+  type        = string
+  default     = "report-orchestration"
+}
+
 variable "statistical_reports_bucket_name" {
   description = "The name of the S3 bucket to store weekly generated statistical reports."
   type        = string
@@ -269,10 +275,10 @@ variable "cloud_only_service_instances" {
 variable "apim_environment" {}
 
 locals {
-  is_sandbox       = !contains(["ndr-dev", "ndr-test", "pre-prod", "prod"], terraform.workspace)
-  is_production    = contains(["pre-prod", "prod"], terraform.workspace)
-  is_force_destroy = !local.is_production
-
+  is_sandbox                          = !contains(["ndr-dev", "ndr-test", "pre-prod", "prod"], terraform.workspace)
+  is_production                       = contains(["pre-prod", "prod"], terraform.workspace)
+  is_force_destroy                    = !local.is_production
+  is_shared_workspace                 = terraform.workspace == var.shared_infra_workspace
   bulk_upload_lambda_concurrent_limit = 3
 
   api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
