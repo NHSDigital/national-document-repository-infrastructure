@@ -42,10 +42,10 @@
             "enabled": "false"
         },
         "uploadDocumentIteration2Enabled": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "uploadDocumentIteration3Enabled": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "bulkUploadSendToReviewEnabled": {
           "enabled": "true"
