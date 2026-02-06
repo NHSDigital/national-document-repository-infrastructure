@@ -42,6 +42,11 @@ inputs:
     required: false
     default: ""
 
+  tf_lock_timeout:
+    description: "Time to wait for Terraform state lock (e.g., 20m)"
+    required: false
+    default: "20m"
+
   do_apply:
     description: "Whether to run 'terraform apply' after 'terraform plan'"
     required: false
@@ -81,12 +86,12 @@ runs:
 
     - name: Run Terraform Plan
       run: |
-        terraform plan -input=false -no-color -var-file="${{ inputs.tf_vars_file }}" ${{ inputs.tf_extra_args }} -out tf.plan
+        terraform plan -lock-timeout="${{ inputs.tf_lock_timeout }}" -input=false -no-color -var-file="${{ inputs.tf_vars_file }}" ${{ inputs.tf_extra_args }} -out tf.plan
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 
     - name: Run Terraform Apply
       if: ${{ inputs.do_apply == 'true' }}
-      run: terraform apply -auto-approve -input=false tf.plan
+      run: terraform apply -lock-timeout="${{ inputs.tf_lock_timeout }}" -auto-approve -input=false tf.plan
       working-directory: ${{ inputs.working_directory }}
       shell: bash
