@@ -22,7 +22,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_alarm_4XX" {
 
 resource "aws_cloudwatch_metric_alarm" "alb_alarm_5XX" {
   alarm_name          = "5XX-status-${aws_lb.ecs_lb[0].name}"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
+  comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   namespace           = "AWS/ApplicationELB"
   metric_name         = "HTTPCode_ELB_5XX_Count"
