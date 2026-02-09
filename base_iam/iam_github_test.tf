@@ -625,6 +625,20 @@ resource "aws_iam_policy" "github_action_policy_2_test" {
           ]
           Sid = "Statement1"
         },
+        {
+          Effect = "Allow",
+          Action = [
+            "ses:CreateConfigurationSet",
+            "ses:DeleteConfigurationSet",
+            "ses:CreateConfigurationSetEventDestination",
+            "ses:UpdateConfigurationSetEventDestination",
+            "ses:DeleteConfigurationSetEventDestination",
+            "ses:DescribeConfigurationSet",
+            "ses:ListConfigurationSets"
+          ],
+          Resource = "*"
+          Sid    = "SesConfigurationSets",
+        }
       ]
       Version = "2012-10-17"
     }
