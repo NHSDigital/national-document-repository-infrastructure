@@ -439,7 +439,7 @@ resource "aws_iam_role_policy" "e2e_mns_permissions_dev" {
     {
       Statement = [
         {
-          Action = "kms:GenerateDataKey"
+          Action   = "kms:GenerateDataKey"
           Effect   = "Allow"
           Resource = "*"
           Condition = {
@@ -447,10 +447,10 @@ resource "aws_iam_role_policy" "e2e_mns_permissions_dev" {
               "aws:ResourceTag/Name" = "alias/mns-notification-encryption-key-kms-*"
             }
           }
-          Sid      = "VisualEditor0"
+          Sid = "VisualEditor0"
         },
         {
-          Action = "sqs:SendMessage"
+          Action   = "sqs:SendMessage"
           Effect   = "Allow"
           Resource = "arn:aws:sqs:eu-west-2:533825906475:*-mns-notification-queue"
           Sid      = "VisualEditor1"
