@@ -637,7 +637,7 @@ resource "aws_iam_policy" "github_action_policy_2_test" {
             "ses:ListConfigurationSets"
           ],
           Resource = "*"
-          Sid    = "SesConfigurationSets",
+          Sid      = "SesConfigurationSets",
         }
       ]
       Version = "2012-10-17"

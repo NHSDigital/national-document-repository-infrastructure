@@ -863,7 +863,7 @@ resource "aws_iam_policy" "github_extended_policy_1_pre_prod" {
             "ses:ListConfigurationSets"
           ],
           Resource = "*"
-          Sid    = "SesConfigurationSets",
+          Sid      = "SesConfigurationSets",
         }
       ]
       Version = "2012-10-17"

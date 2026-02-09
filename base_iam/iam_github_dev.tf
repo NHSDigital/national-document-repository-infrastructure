@@ -940,7 +940,7 @@ resource "aws_iam_policy" "github_actions_extended_dev" {
             "ses:ListConfigurationSets"
           ],
           Resource = "*"
-          Sid    = "SesConfigurationSets",
+          Sid      = "SesConfigurationSets",
         }
 
 
