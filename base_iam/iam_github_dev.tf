@@ -452,7 +452,7 @@ resource "aws_iam_role_policy" "e2e_mns_permissions_dev" {
         {
           Action   = "sqs:SendMessage"
           Effect   = "Allow"
-          Resource = "arn:aws:sqs:eu-west-2:533825906475:*-mns-notification-queue"
+          Resource = "arn:aws:sqs:eu-west-2:${data.aws_caller_identity.current.account_id}:*-mns-notification-queue"
           Sid      = "VisualEditor1"
         }
       ]
