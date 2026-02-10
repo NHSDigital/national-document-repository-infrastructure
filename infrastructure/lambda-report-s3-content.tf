@@ -3,7 +3,7 @@ module "report-s3-content-lambda" {
   name           = "reportS3Content"
   handler        = "handlers.report_s3_content_handler.lambda_handler"
   lambda_timeout = 900
-  memory_size    = 10240   #max memory size
+  memory_size    = 10240 #max memory size
 
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
@@ -14,12 +14,12 @@ module "report-s3-content-lambda" {
   ]
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE                     = terraform.workspace
+    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE                  = terraform.workspace
     STATISTICAL_REPORTS_BUCKET = "${terraform.workspace}-${var.statistical_reports_bucket_name}"
-    LLOYD_GEORGE_BUCKET_NAME  = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.staging_store_bucket_name}"
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
   }
 
