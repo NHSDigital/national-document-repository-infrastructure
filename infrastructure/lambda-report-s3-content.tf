@@ -1,6 +1,6 @@
 module "report-s3-content-lambda" {
   source         = "./modules/lambda"
-  name           = "reportS3Content"
+  name           = "ReportS3Content"
   handler        = "handlers.report_s3_content_handler.lambda_handler"
   lambda_timeout = 900
   memory_size    = 10240 #max memory size
