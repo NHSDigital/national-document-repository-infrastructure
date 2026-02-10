@@ -474,25 +474,25 @@ module "pdm-document-store" {
 }
 
 module "ndr-report-store" {
-  source                    = "./modules/s3/"
-  access_logs_enabled       = local.is_production
-  access_logs_bucket_id     = local.access_logs_bucket_id
-  bucket_name               = var.ndr-report-store
-  enable_bucket_versioning  = true
-  environment               = var.environment
-  owner                     = var.owner
-  force_destroy             = local.is_force_destroy
+  source                   = "./modules/s3/"
+  access_logs_enabled      = local.is_production
+  access_logs_bucket_id    = local.access_logs_bucket_id
+  bucket_name              = var.ndr-report-store
+  enable_bucket_versioning = true
+  environment              = var.environment
+  owner                    = var.owner
+  force_destroy            = local.is_force_destroy
 }
 
 module "ses-feedback-store" {
-  source                    = "./modules/s3/"
-  access_logs_enabled       = local.is_production
-  access_logs_bucket_id     = local.access_logs_bucket_id
-  bucket_name               = var.ses-feedback_bucket_name
-  enable_bucket_versioning  = true
-  environment               = var.environment
-  owner                     = var.owner
-  force_destroy             = local.is_force_destroy
+  source                   = "./modules/s3/"
+  access_logs_enabled      = local.is_production
+  access_logs_bucket_id    = local.access_logs_bucket_id
+  bucket_name              = var.ses-feedback_bucket_name
+  enable_bucket_versioning = true
+  environment              = var.environment
+  owner                    = var.owner
+  force_destroy            = local.is_force_destroy
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "ses_feedback_lifecycle_rules" {
