@@ -3,7 +3,6 @@ module "ses-feedback-monitor-lambda" {
   name           = "SesFeedbackMonitor"
   handler        = "handlers.ses_feedback_monitor_handler.lambda_handler"
   lambda_timeout = 60
-  memory_size    = 512
 
   iam_role_policy_documents = [
     data.aws_iam_policy_document.ses_feedback_s3_put.json,

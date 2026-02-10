@@ -478,7 +478,6 @@ module "ndr-report-store" {
   access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
   bucket_name               = var.ndr-report-store
-  enable_cors_configuration = false
   enable_bucket_versioning  = true
   environment               = var.environment
   owner                     = var.owner
@@ -490,7 +489,6 @@ module "ses-feedback-store" {
   access_logs_enabled       = local.is_production
   access_logs_bucket_id     = local.access_logs_bucket_id
   bucket_name               = var.ses-feedback_bucket_name
-  enable_cors_configuration = false
   enable_bucket_versioning  = true
   environment               = var.environment
   owner                     = var.owner
