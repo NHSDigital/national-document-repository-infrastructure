@@ -19,7 +19,7 @@ module "report-s3-content-lambda" {
     APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                  = terraform.workspace
     STATISTICAL_REPORTS_BUCKET = "${terraform.workspace}-${var.statistical_reports_bucket_name}"
-    LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.staging_store_bucket_name}"
+    BULK_STAGING_BUCKET_NAME   = "${terraform.workspace}-${var.staging_store_bucket_name}"
     LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
   }
 
