@@ -50,6 +50,6 @@ module "document_reference_history_gateway" {
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
-  
+
   depends_on = [module.document_reference_id_gateway]
 }
