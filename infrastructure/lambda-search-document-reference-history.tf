@@ -68,23 +68,24 @@ module "search_document_reference_history_lambda_alarm_topic" {
   })
 }
 
-# resource "aws_api_gateway_integration" "search_document_reference_history_integration" {
-#   rest_api_id             = aws_api_gateway_rest_api.ndr_doc_store_api.id
-#   resource_id             = module.document_reference_history_gateway.gateway_resource_id
-#   http_method             = "GET"
-#   integration_http_method = "GET"
-#   type                    = "AWS_PROXY"
-#   uri                     = module.search_document_reference_history_lambda.invoke_arn
+resource "aws_api_gateway_resource" "document_reference_version" {
+  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  parent_id   = aws_api_gateway_resource.document_reference.id
+  path_part   = "{id}/_history/{version}"
+}
 
-#   depends_on = [module.document_reference_history_gateway]
-# }
+resource "aws_api_gateway_method" "get_document_reference_version" {
+  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id   = aws_api_gateway_resource.document_reference_version.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
 
-# resource "aws_api_gateway_integration" "search_document_reference_version_integration" {
-#   rest_api_id             = aws_api_gateway_rest_api.ndr_doc_store_api.id
-#   resource_id             = module.get-doc-ref-lambda.gateway_resource_id
-#   http_method             = "GET"
-#   integration_http_method = "GET"
-#   type                    = "AWS_PROXY"
-#   uri                     = module.get-doc-ref-lambda.invoke_arn
-#   depends_on = [module.get-doc-ref-lambda]
-# }
+resource "aws_api_gateway_integration" "get_document_reference_version_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id             = aws_api_gateway_resource.document_reference_version.id
+  http_method             = aws_api_gateway_method.get_document_reference_version.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = module.get-doc-ref-lambda.invoke_arn
+}
