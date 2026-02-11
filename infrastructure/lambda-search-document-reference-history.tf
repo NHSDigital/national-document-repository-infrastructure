@@ -76,9 +76,10 @@ resource "aws_api_gateway_resource" "document_reference_version" {
 
 resource "aws_api_gateway_method" "get_document_reference_version" {
   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id   = aws_api_gateway_resource.document_reference_version.id
+  resource_id   = module.document_reference_gateway.gateway_resource_id
   http_method   = "GET"
-  authorization = "NONE"
+  authorization = "CUSTOM"
+  authorizer_id = aws_api_gateway_authorizer.repo_authoriser.id
 }
 
 resource "aws_api_gateway_integration" "get_document_reference_version_integration" {
