@@ -76,3 +76,11 @@ resource "aws_api_gateway_integration" "get_document_reference_version_integrati
   type                    = "AWS_PROXY"
   uri                     = module.get-doc-ref-lambda.invoke_arn
 }
+
+resource "aws_api_gateway_method" "get_document_reference_version_method" {
+  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  resource_id   = module.document_reference_version_gateway.gateway_resource_id
+  http_method   = "GET"
+  authorization = "CUSTOM"
+  authorizer_id = aws_api_gateway_authorizer.repo_authoriser.id
+}
