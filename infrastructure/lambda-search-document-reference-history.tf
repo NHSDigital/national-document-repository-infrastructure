@@ -68,10 +68,22 @@ module "search_document_reference_history_lambda_alarm_topic" {
   })
 }
 
-resource "aws_api_gateway_resource" "document_reference_version" {
+resource "aws_api_gateway_resource" "document_reference_id" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id   = module.document_reference_gateway.gateway_resource_id
-  path_part   = "{id}/_history/{version}"
+  path_part   = "{id}"
+}
+
+resource "aws_api_gateway_resource" "document_reference_history" {
+  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  parent_id   = aws_api_gateway_resource.document_reference_id.id
+  path_part   = "_history"
+}
+
+resource "aws_api_gateway_resource" "document_reference_version" {
+  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  parent_id   = aws_api_gateway_resource.document_reference_history.id
+  path_part   = "{version}"
 }
 
 resource "aws_api_gateway_method" "get_document_reference_version" {
