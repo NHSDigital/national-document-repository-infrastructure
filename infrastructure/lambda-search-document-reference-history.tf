@@ -70,13 +70,13 @@ module "search_document_reference_history_lambda_alarm_topic" {
 
 resource "aws_api_gateway_resource" "document_reference_version" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id   = module.document_reference_gateway.id
+  parent_id   = module.document_reference_gateway.gateway_resource_id
   path_part   = "{id}/_history/{version}"
 }
 
 resource "aws_api_gateway_method" "get_document_reference_version" {
   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id   = module.document_reference_gateway.gateway_resource_id
+  resource_id   = aws_api_gateway_resource.document_reference_version.id
   http_method   = "GET"
   authorization = "CUSTOM"
   authorizer_id = aws_api_gateway_authorizer.repo_authoriser.id
