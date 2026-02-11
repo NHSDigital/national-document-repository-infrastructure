@@ -53,3 +53,21 @@ module "document_reference_history_gateway" {
 
   depends_on = [module.document_reference_id_gateway]
 }
+
+module "document_reference_version_gateway" {
+  source              = "./modules/gateway"
+  api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  parent_id           = module.document_reference_history_gateway.gateway_resource_id
+  http_methods        = ["GET"]
+  authorization       = "CUSTOM"
+  gateway_path        = "{version}"
+  authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
+  require_credentials = true
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+
+  request_parameters = {
+    "method.request.path.version" = true
+  }
+
+  depends_on = [module.document_reference_history_gateway]
+}
