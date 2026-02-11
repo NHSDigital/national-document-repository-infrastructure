@@ -74,25 +74,11 @@ resource "aws_api_gateway_resource" "document_reference_history" {
   path_part   = "_history"
 }
 
-resource "aws_api_gateway_resource" "document_reference_version" {
-  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id   = aws_api_gateway_resource.document_reference_history.id
-  path_part   = "{version}"
-}
-
-resource "aws_api_gateway_method" "get_document_reference_version" {
-  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id   = aws_api_gateway_resource.document_reference_version.id
-  http_method   = "GET"
-  authorization = "CUSTOM"
-  authorizer_id = aws_api_gateway_authorizer.repo_authoriser.id
-}
-
 resource "aws_api_gateway_integration" "get_document_reference_version_integration" {
   rest_api_id             = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id             = aws_api_gateway_resource.document_reference_version.id
-  http_method             = aws_api_gateway_method.get_document_reference_version.http_method
-  integration_http_method = "GET"
+  resource_id             = module.document_reference_version_gateway.gateway_resource_id
+  http_method             = "GET"
+  integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = module.get-doc-ref-lambda.invoke_arn
 }
