@@ -431,6 +431,36 @@ resource "aws_iam_role_policy" "cert_manager_tags_dev" {
   )
 }
 
+resource "aws_iam_role_policy" "e2e_mns_permissions_dev" {
+  count = local.is_sandbox_or_dev ? 1 : 0
+  role  = aws_iam_role.dev_github_actions[0].id
+  name  = "e2e_mns_permissions"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action   = "kms:GenerateDataKey"
+          Effect   = "Allow"
+          Resource = "*"
+          Condition = {
+            StringLike = {
+              "aws:ResourceTag/Name" = "alias/mns-notification-encryption-key-kms-*"
+            }
+          }
+          Sid = "VisualEditor0"
+        },
+        {
+          Action   = "sqs:SendMessage"
+          Effect   = "Allow"
+          Resource = "arn:aws:sqs:eu-west-2:${data.aws_caller_identity.current.account_id}:*-mns-notification-queue"
+          Sid      = "VisualEditor1"
+        }
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
 # ATTACHED POLICIES
 
 resource "aws_iam_role_policy_attachment" "ReadOnlyAccess_dev" {

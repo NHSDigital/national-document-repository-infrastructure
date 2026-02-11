@@ -23,6 +23,9 @@
         },
         "bulkUploadSendToReviewEnabled": {
           "name": "bulkUploadSendToReviewEnabled"
+        },
+        "documentCorrectEnabled": {
+          "name": "documentCorrectEnabled"
         }
     },
     "values": {
@@ -48,6 +51,9 @@
             "enabled": "false"
         },
         "bulkUploadSendToReviewEnabled": {
+          "enabled": "false"
+        },
+        "documentCorrectEnabled": {
           "enabled": "false"
         }
     },
