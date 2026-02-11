@@ -25,8 +25,7 @@ module "search_document_reference_history_lambda" {
     module.ndr-lloyd-george-store,
     module.ndr-document-store,
     module.ndr-app-config,
-    aws_iam_policy.ssm_access_policy,
-    aws_api_gateway_rest_api.ndr_doc_store_api
+    aws_iam_policy.ssm_access_policy
   ]
 }
 
