@@ -68,16 +68,16 @@ module "search_document_reference_history_lambda_alarm_topic" {
   })
 }
 
-resource "aws_api_gateway_integration" "search_document_reference_history_integration" {
-  rest_api_id             = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id             = module.document_reference_history_gateway.gateway_resource_id
-  http_method             = "GET"
-  integration_http_method = "GET"
-  type                    = "AWS_PROXY"
-  uri                     = module.search_document_reference_history_lambda.invoke_arn
+# resource "aws_api_gateway_integration" "search_document_reference_history_integration" {
+#   rest_api_id             = aws_api_gateway_rest_api.ndr_doc_store_api.id
+#   resource_id             = module.document_reference_history_gateway.gateway_resource_id
+#   http_method             = "GET"
+#   integration_http_method = "GET"
+#   type                    = "AWS_PROXY"
+#   uri                     = module.search_document_reference_history_lambda.invoke_arn
 
-  depends_on = [module.document_reference_history_gateway]
-}
+#   depends_on = [module.document_reference_history_gateway]
+# }
 
 # resource "aws_api_gateway_integration" "search_document_reference_version_integration" {
 #   rest_api_id             = aws_api_gateway_rest_api.ndr_doc_store_api.id
