@@ -59,6 +59,8 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.document_reference_gateway,
     module.document-status-check-gateway,
     module.document-status-check-lambda,
+    module.document_reference_history_gateway,
+    module.document_reference_version_gateway,
     module.feature-flags-gateway,
     module.feature-flags-lambda,
     module.fhir_document_reference_gateway,
