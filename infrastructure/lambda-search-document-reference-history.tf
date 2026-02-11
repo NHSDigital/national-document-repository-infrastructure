@@ -61,7 +61,7 @@ module "search_document_reference_history_lambda_alarm_topic" {
           "ArnLike" : {
             "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
           }
-        }
+        },
         "Resource" : "*"
       }
     ]
