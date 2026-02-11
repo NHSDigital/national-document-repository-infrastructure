@@ -70,7 +70,7 @@ module "search_document_reference_history_lambda_alarm_topic" {
 
 resource "aws_api_gateway_resource" "document_reference_version" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id   = aws_api_gateway_resource.document_reference.id
+  parent_id   = aws_api_gateway_resource.document_reference_gateway.id
   path_part   = "{id}/_history/{version}"
 }
 
