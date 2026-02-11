@@ -68,12 +68,6 @@ module "search_document_reference_history_lambda_alarm_topic" {
   })
 }
 
-resource "aws_api_gateway_resource" "document_reference_id" {
-  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id   = module.document_reference_gateway.gateway_resource_id
-  path_part   = "{id}"
-}
-
 resource "aws_api_gateway_resource" "document_reference_history" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id   = aws_api_gateway_resource.document_reference_id.id
@@ -98,7 +92,7 @@ resource "aws_api_gateway_integration" "get_document_reference_version_integrati
   rest_api_id             = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id             = aws_api_gateway_resource.document_reference_version.id
   http_method             = aws_api_gateway_method.get_document_reference_version.http_method
-  integration_http_method = "POST"
+  integration_http_method = "GET"
   type                    = "AWS_PROXY"
   uri                     = module.get-doc-ref-lambda.invoke_arn
 }
