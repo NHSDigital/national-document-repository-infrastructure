@@ -94,13 +94,13 @@ module "ndr-ecs-fargate-data-collection" {
 
 module "ndr-ecs-fargate-s3-data-collection" {
   # count                    = local.is_sandbox ? 0 : 1
-  count                    =  1
-  source                   = "./modules/ecs"
-  ecs_cluster_name         = "s3-data-collection"
-  vpc_id                   = module.ndr-vpc-ui.vpc_id
-  public_subnets           = module.ndr-vpc-ui.public_subnets
-  private_subnets          = module.ndr-vpc-ui.private_subnets
-  sg_name                  = "${terraform.workspace}-s3-data-collection-sg"
+  count            = 1
+  source           = "./modules/ecs"
+  ecs_cluster_name = "s3-data-collection"
+  vpc_id           = module.ndr-vpc-ui.vpc_id
+  public_subnets   = module.ndr-vpc-ui.public_subnets
+  private_subnets  = module.ndr-vpc-ui.private_subnets
+  sg_name          = "${terraform.workspace}-s3-data-collection-sg"
   # sg_name                  = "${terraform.workspace}-data-collection-sg"
   ecs_launch_type          = "FARGATE"
   ecs_cluster_service_name = "${terraform.workspace}-s3-data-collection"
