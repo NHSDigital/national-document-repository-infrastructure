@@ -103,8 +103,8 @@ jobs:
 
   terraform_destroy_base_iam:
     name: Terraform Destroy (base_iam)
-    # Only destroy base_iam in a Sandbox environment. Don't tear down in ndr-test or ndr-dev environments.
-    if: ${{ github.event.inputs.environment == 'development' && github.event.inputs.sandbox_name != 'ndr-dev' }}
+    # Only destroy base_iam in a Sandbox environment. Don't tear down in ndr-dev environments.
+    if: ${{ github.event.inputs.sandbox_name != 'ndr-dev' }}
     runs-on: ubuntu-latest
     needs: [terraform_destroy]
     environment: ${{ inputs.environment }}
