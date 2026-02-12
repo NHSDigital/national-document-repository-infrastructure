@@ -84,7 +84,8 @@
         ],
         "Resource": [
           "arn:aws:ecr:eu-west-2:${account}:repository/ndr-prod-app",
-          "arn:aws:ecr:eu-west-2:${account}:repository/prod-data-collection"
+          "arn:aws:ecr:eu-west-2:${account}:repository/prod-data-collection",
+          "arn:aws:ecr:eu-west-2:${account}:repository/prod-s3-data-collection"
         ]
       }
     ],
