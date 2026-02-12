@@ -99,7 +99,7 @@ module "lloyd_george_reference_dynamodb_table" {
       type = "S"
     }
   ]
-  # adding new attribute
+
   global_secondary_indexes = [
     {
       name            = "FileLocationsIndex"
