@@ -1,10 +1,10 @@
 # aws_iam_role.pre_prod_github_actions[0]:
 resource "aws_iam_role" "pre_prod_github_actions" {
   count                 = local.is_pre_production ? 1 : 0
-  description           = "This role is to provide access for GitHub actions to the pre-prod environment. "
+  name                  = "${terraform.workspace}-github-actions-role"
+  description           = "This role is to provide access for GitHub Actions to the ${terraform.workspace} environment."
   force_detach_policies = false
   max_session_duration  = 3600
-  name                  = "Github-Actions-pre-prod-role"
   name_prefix           = null
   path                  = "/"
   permissions_boundary  = null
