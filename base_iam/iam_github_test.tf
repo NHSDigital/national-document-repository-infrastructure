@@ -1,10 +1,10 @@
-# aws_iam_role.github_role_test[0]:
-resource "aws_iam_role" "github_role_test" {
+# aws_iam_role.test_github_actions[0]:
+resource "aws_iam_role" "test_github_actions" {
   count                 = local.is_testing ? 1 : 0
-  description           = "This role is for the deployment of infrastructure and code from GitHub"
+  name                  = "${terraform.workspace}-github-actions-role"
+  description           = "This role is to provide access for GitHub Actions to the ${terraform.workspace} environment."
   force_detach_policies = false
   max_session_duration  = 3600
-  name                  = "github-action-role"
   name_prefix           = null
   path                  = "/"
   permissions_boundary  = null
@@ -38,10 +38,9 @@ resource "aws_iam_role" "github_role_test" {
 
 # INLINE POLICIES
 
-
 resource "aws_iam_role_policy" "cloudfront_policies_test" {
   count = local.is_testing ? 1 : 0
-  role  = aws_iam_role.github_role_test[0].id
+  role  = aws_iam_role.test_github_actions[0].id
   name  = "cloudfront_policies"
   policy = jsonencode(
     {
@@ -75,7 +74,7 @@ resource "aws_iam_role_policy" "cloudfront_policies_test" {
 
 resource "aws_iam_role_policy" "cloudwatch_logs_policy_test" {
   count = local.is_testing ? 1 : 0
-  role  = aws_iam_role.github_role_test[0].id
+  role  = aws_iam_role.test_github_actions[0].id
   name  = "cloudwatch_logs_policy"
   policy = jsonencode(
     {
@@ -107,11 +106,126 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy_test" {
 
 resource "aws_iam_role_policy" "resource_tagging_test" {
   count = local.is_testing ? 1 : 0
-  role  = aws_iam_role.github_role_test[0].id
+  role  = aws_iam_role.test_github_actions[0].id
   name  = "resource_tagging"
   policy = jsonencode(
     {
       Statement = [
+        {
+          Action = [
+            "resource-groups:GetGroupQuery",
+            "backup:TagResource",
+            "sns:TagResource",
+            "lambda:TagResource",
+            "resource-groups:UpdateGroup",
+            "iam:UntagRole",
+            "iam:TagRole",
+            "resource-groups:GetTags",
+            "sns:UntagResource",
+            "resource-groups:Untag",
+            "lambda:UntagResource",
+            "elasticloadbalancing:RemoveTags",
+            "cognito-identity:UntagResource",
+            "resource-groups:GetGroup",
+            "resource-groups:GetGroupConfiguration",
+            "backup:UntagResource",
+            "cognito-identity:TagResource",
+            "resource-groups:Tag",
+            "logs:UntagResource",
+            "resource-groups:UpdateGroupQuery",
+            "iam:TagPolicy",
+            "logs:TagResource",
+            "events:TagResource",
+            "resource-groups:DeleteGroup",
+            "elasticloadbalancing:AddTags",
+            "iam:UntagPolicy",
+            "resource-groups:ListGroupResources",
+            "iam:UntagInstanceProfile",
+            "events:UntagResource",
+            "iam:TagInstanceProfile",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:events:*:694282683086:event-bus/*",
+            "arn:aws:events:*:694282683086:rule/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/gwy/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/net/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/app/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:truststore/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener/app/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener/gwy/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/net/*/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener/net/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/app/*/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:targetgroup/*/*",
+            "arn:aws:lambda:*:694282683086:event-source-mapping:*",
+            "arn:aws:lambda:*:694282683086:code-signing-config:*",
+            "arn:aws:lambda:*:694282683086:function:*",
+            "arn:aws:cognito-identity:*:694282683086:identitypool/*",
+            "arn:aws:resource-groups:*:694282683086:group/*",
+            "arn:aws:backup:*:694282683086:backup-plan:*",
+            "arn:aws:backup:*:694282683086:report-plan:*-*",
+            "arn:aws:backup:*:694282683086:restore-testing-plan:*-*",
+            "arn:aws:backup:*:694282683086:backup-vault:*",
+            "arn:aws:backup:*:694282683086:legal-hold:*",
+            "arn:aws:backup:*:694282683086:framework:*-*",
+            "arn:aws:iam::694282683086:policy/*",
+            "arn:aws:iam::694282683086:instance-profile/*",
+            "arn:aws:iam::694282683086:role/*",
+            "arn:aws:sns:*:694282683086:*",
+            "arn:aws:logs:*:694282683086:log-group:*",
+            "arn:aws:logs:*:694282683086:delivery-source:*",
+            "arn:aws:logs:*:694282683086:delivery:*",
+            "arn:aws:logs:*:694282683086:destination:*",
+            "arn:aws:logs:*:694282683086:delivery-destination:*",
+            "arn:aws:logs:*:694282683086:anomaly-detector:*",
+            "*",
+          ]
+          Sid = "VisualEditor0"
+        },
+        {
+          Action = [
+            "events:TagResource",
+            "elasticloadbalancing:RemoveTags",
+            "elasticloadbalancing:AddTags",
+            "events:UntagResource",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/app/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/net/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:targetgroup/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:truststore/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/gwy/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener/gwy/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener/app/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener/net/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/app/*/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/net/*/*/*/*",
+            "arn:aws:events:*:694282683086:rule/*",
+          ]
+          Sid = "VisualEditor1"
+        },
+        {
+          Action = [
+            "elasticloadbalancing:RemoveTags",
+            "elasticloadbalancing:AddTags",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:elasticloadbalancing:*:694282683086:truststore/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener/app/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener/gwy/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener/net/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/net/*/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/app/*/*/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:targetgroup/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/gwy/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/net/*/*",
+            "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/app/*/*",
+          ]
+          Sid = "VisualEditor2"
+        },
         {
           Action = [
             "resource-groups:SearchResources",
@@ -130,7 +244,7 @@ resource "aws_iam_role_policy" "resource_tagging_test" {
 
 resource "aws_iam_role_policy" "rum_policy_test" {
   count = local.is_testing ? 1 : 0
-  role  = aws_iam_role.github_role_test[0].id
+  role  = aws_iam_role.test_github_actions[0].id
   name  = "rum_policy"
   policy = jsonencode(
     {
@@ -192,8 +306,8 @@ resource "aws_iam_role_policy" "rum_policy_test" {
 
 resource "aws_iam_role_policy" "scheduler_policy_test" {
   count = local.is_testing ? 1 : 0
-  role  = aws_iam_role.github_role_test[0].id
-  name  = "scheduler-policy"
+  role  = aws_iam_role.test_github_actions[0].id
+  name  = "scheduler_policy"
   policy = jsonencode(
     {
       Statement = [
@@ -215,9 +329,34 @@ resource "aws_iam_role_policy" "scheduler_policy_test" {
   )
 }
 
-resource "aws_iam_role_policy" "virus_scan_cognito_test" {
+resource "aws_iam_role_policy" "service_quotas_test" {
   count = local.is_testing ? 1 : 0
-  role  = aws_iam_role.github_role_test[0].id
+  role  = aws_iam_role.test_github_actions[0].id
+  name  = "service_quotas"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "servicequotas:RequestServiceQuotaIncrease",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:servicequotas:us-east-1:${data.aws_caller_identity.current.account_id}:lambda/L-B99A9384",
+            "arn:aws:servicequotas::${data.aws_caller_identity.current.account_id}:iam/L-E95E4862",
+            "arn:aws:servicequotas::${data.aws_caller_identity.current.account_id}:iam/L-FE177D64",
+          ]
+          Sid = "VisualEditor0"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "virus-scan-cognito_test" {
+  count = local.is_testing ? 1 : 0
+  role  = aws_iam_role.test_github_actions[0].id
   name  = "virus-scan-cognito"
   policy = jsonencode(
     {
@@ -252,18 +391,18 @@ resource "aws_iam_role_policy" "virus_scan_cognito_test" {
   )
 }
 
-###############################################################
+##############################################################################################################
 # ATTACHED POLICIES
 
 resource "aws_iam_role_policy_attachment" "ReadOnlyAccess_test" {
   count      = local.is_testing ? 1 : 0
-  role       = aws_iam_role.github_role_test[0].name
+  role       = aws_iam_role.test_github_actions[0].id
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
 
 resource "aws_iam_role_policy_attachment" "github_action_policy_test" {
   count      = local.is_testing ? 1 : 0
-  role       = aws_iam_role.github_role_test[0].name
+  role       = aws_iam_role.test_github_actions[0].id
   policy_arn = aws_iam_policy.github_action_policy_test[0].arn
 }
 
@@ -526,7 +665,7 @@ resource "aws_iam_policy" "github_action_policy_test" {
 
 resource "aws_iam_role_policy_attachment" "github_action_policy_2_test" {
   count      = local.is_testing ? 1 : 0
-  role       = aws_iam_role.github_role_test[0].name
+  role       = aws_iam_role.test_github_actions[0].id
   policy_arn = aws_iam_policy.github_action_policy_2_test[0].arn
 }
 
@@ -589,6 +728,7 @@ resource "aws_iam_policy" "github_action_policy_2_test" {
             "s3:GetObject",
             "s3:PutObject",
             "s3:DeleteObject",
+            "s3:ListBucket",
             "lambda:GetLayerVersion",
             "lambda:PublishLayerVersion",
             "lambda:DeleteLayerVersion",
@@ -618,6 +758,25 @@ resource "aws_iam_policy" "github_action_policy_2_test" {
             "events:TagResource",
             "kms:Encrypt",
             "kms:CreateGrant",
+            "kms:Decrypt",
+            "apigateway:AddCertificateToDomain",
+            "apigateway:POST",
+            "apigateway:GET",
+            "apigateway:PATCH",
+            "apigateway:DELETE",
+            "cloudfront:UpdateOriginAccessControl",
+            "cloudfront:GetOriginAccessControl",
+            "states:CreateStateMachine",
+            "states:UpdateStateMachine",
+            "states:DeleteStateMachine",
+            "states:DescribeStateMachine",
+            "acm:DeleteCertificate",
+            "acm:DescribeCertificate",
+            "acm:RequestCertificate",
+            "acm:AddTagsToCertificate",
+            "states:TagResource",
+            "states:UntagResource",
+            "apigateway:RemoveCertificateFromDomain",
           ]
           Effect = "Allow"
           Resource = [
