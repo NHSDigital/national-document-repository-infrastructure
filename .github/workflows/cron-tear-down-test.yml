@@ -18,7 +18,9 @@ jobs:
       sandbox_name: ndr-test
       environment: test
     secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_WORKSPACE }}-github-actions-role
+
+      # TODO: Use ${{ secrets.AWS_WORKSPACE }} or ${{ matrix.sandbox-name }} everywhere?
 
   cleanup_versions:
     name: Cleanup Versions
@@ -28,7 +30,7 @@ jobs:
       sandbox_name: ndr-test
       environment: test
     secrets:
-      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
+      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_WORKSPACE }}-github-actions-role
 
   terraform_destroy_process:
     name: Destroy Test Environment
@@ -48,10 +50,11 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_WORKSPACE }}-github-actions-role
           role-skip-session-tagging: true
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
+
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -100,3 +103,38 @@ jobs:
         id: destroy
         run: terraform destroy -auto-approve -var-file="${{ vars.TF_VARS_FILE }}"
         working-directory: ./infrastructure
+
+  terraform_destroy_base_iam:
+    name: Terraform Destroy base_iam
+    runs-on: ubuntu-latest
+    needs: [terraform_destroy_process]
+    environment: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/dev-github-bootstrap
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.14.3
+
+      - name: Initialise Terraform
+        run: terraform init -backend-config=bucket=ndr-dev-terraform-state-${{ secrets.AWS_ACCOUNT_ID }}
+        working-directory: ./base_iam
+
+      - name: Select Terraform Workspace
+        run: terraform workspace select ${{ secrets.AWS_WORKSPACE }}
+        working-directory: ./base_iam
+
+      - name: Run Terraform Destroy
+        run: terraform destroy -auto-approve -var-file="${{ vars.TF_VARS_FILE }}" -var aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}
+        working-directory: ./base_iam
