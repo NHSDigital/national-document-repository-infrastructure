@@ -35,31 +35,6 @@ resource "aws_iam_role_policy" "s3_access" {
         ]
         Effect   = "Allow"
         Resource = ["arn:aws:s3:::prod-${var.aws_region}-starport-layer-bucket/*"]
-      },
-      {
-        Sid = "ListBucketVersionsForS3DataCollection"
-        Action = [
-          "s3:ListBucket",
-          "s3:ListBucketVersions",
-          "s3:GetBucketLocation"
-        ]
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:s3:::${terraform.workspace}-staging-bulk-store"
-        ]
-      },
-      {
-        Sid = "ReadVersionedObjectsIfNeeded"
-        Action = [
-          "s3:GetObject",
-          "s3:GetObjectVersion",
-          "s3:GetObjectTagging",
-          "s3:GetObjectVersionTagging"
-        ]
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:s3:::${terraform.workspace}-staging-bulk-store/*"
-        ]
       }
     ]
   })
