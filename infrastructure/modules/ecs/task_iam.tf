@@ -45,7 +45,6 @@ resource "aws_iam_role_policy" "s3_access" {
         ]
         Effect = "Allow"
         Resource = [
-          "arn:aws:s3:::${terraform.workspace}-lloyd-george-store",
           "arn:aws:s3:::${terraform.workspace}-staging-bulk-store"
         ]
       },
@@ -59,7 +58,6 @@ resource "aws_iam_role_policy" "s3_access" {
         ]
         Effect = "Allow"
         Resource = [
-          "arn:aws:s3:::${terraform.workspace}-lloyd-george-store/*",
           "arn:aws:s3:::${terraform.workspace}-staging-bulk-store/*"
         ]
       }

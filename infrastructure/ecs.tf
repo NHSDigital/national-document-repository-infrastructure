@@ -114,10 +114,6 @@ module "ndr-ecs-fargate-s3-data-collection" {
   task_role                = aws_iam_role.s3_data_collection_task_role[0].arn
   environment_vars = [
     {
-      "name" : "LLOYD_GEORGE_BUCKET_NAME",
-      "value" : "${terraform.workspace}-${var.lloyd_george_bucket_name}"
-    },
-    {
       "name" : "BULK_STAGING_BUCKET_NAME",
       "value" : "${terraform.workspace}-${var.staging_store_bucket_name}"
     },
@@ -207,7 +203,6 @@ resource "aws_iam_policy" "s3_data_collection_s3_policy" {
           "s3:GetBucketLocation"
         ]
         Resource = [
-          "arn:aws:s3:::${terraform.workspace}-${var.lloyd_george_bucket_name}",
           "arn:aws:s3:::${terraform.workspace}-${var.staging_store_bucket_name}"
         ]
       },
@@ -221,7 +216,6 @@ resource "aws_iam_policy" "s3_data_collection_s3_policy" {
           "s3:GetObjectVersionTagging"
         ]
         Resource = [
-          "arn:aws:s3:::${terraform.workspace}-${var.lloyd_george_bucket_name}/*",
           "arn:aws:s3:::${terraform.workspace}-${var.staging_store_bucket_name}/*"
         ]
       }
@@ -233,12 +227,6 @@ resource "aws_iam_role_policy_attachment" "s3_data_collection_task_role_s3_polic
   count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.s3_data_collection_task_role[0].name
   policy_arn = aws_iam_policy.s3_data_collection_s3_policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "s3_data_collection_lloyd_george_store" {
-  count      = local.is_sandbox ? 0 : 1
-  role       = aws_iam_role.s3_data_collection_task_role[0].name
-  policy_arn = module.ndr-lloyd-george-store.s3_list_object_policy
 }
 
 resource "aws_iam_role_policy_attachment" "s3_data_collection_bulk_staging_store" {
