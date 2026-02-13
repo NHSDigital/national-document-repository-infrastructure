@@ -223,7 +223,7 @@ resource "aws_iam_policy" "s3_data_collection_s3_policy" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "s3_data_collection_task_role_s3_policy" {
+resource "aws_iam_role_policy_attachment" "s3_data_collection_task_role_s3" {
   count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.s3_data_collection_task_role[0].name
   policy_arn = aws_iam_policy.s3_data_collection_s3_policy.arn
