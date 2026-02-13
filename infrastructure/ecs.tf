@@ -93,15 +93,13 @@ module "ndr-ecs-fargate-data-collection" {
 }
 
 module "ndr-ecs-fargate-s3-data-collection" {
-  # count                    = local.is_sandbox ? 0 : 1
-  count            = 1
+  count            = local.is_sandbox ? 0 : 1
   source           = "./modules/ecs"
   ecs_cluster_name = "s3-data-collection"
   vpc_id           = module.ndr-vpc-ui.vpc_id
   public_subnets   = module.ndr-vpc-ui.public_subnets
   private_subnets  = module.ndr-vpc-ui.private_subnets
   sg_name          = "${terraform.workspace}-s3-data-collection-sg"
-  # sg_name                  = "${terraform.workspace}-data-collection-sg"
   ecs_launch_type          = "FARGATE"
   ecs_cluster_service_name = "${terraform.workspace}-s3-data-collection"
   ecr_repository_url       = module.ndr-docker-ecr-s3-data-collection[0].ecr_repository_url
@@ -173,7 +171,7 @@ resource "aws_iam_role" "data_collection_task_role" {
 }
 
 resource "aws_iam_role" "s3_data_collection_task_role" {
-  count = 1
+  count = local.is_sandbox ? 0 : 1
   name  = "${terraform.workspace}_s3_data_collection_task_role"
   assume_role_policy = jsonencode(
     {
@@ -232,26 +230,31 @@ resource "aws_iam_policy" "s3_data_collection_s3_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "s3_data_collection_task_role_s3_policy" {
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.s3_data_collection_task_role[0].name
   policy_arn = aws_iam_policy.s3_data_collection_s3_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "s3_data_collection_lloyd_george_store" {
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.s3_data_collection_task_role[0].name
   policy_arn = module.ndr-lloyd-george-store.s3_list_object_policy
 }
 
 resource "aws_iam_role_policy_attachment" "s3_data_collection_bulk_staging_store" {
+   count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.s3_data_collection_task_role[0].name
   policy_arn = module.ndr-bulk-staging-store.s3_list_object_policy
 }
 
 resource "aws_iam_role_policy_attachment" "s3_data_collection_stat_reports_write" {
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.s3_data_collection_task_role[0].name
   policy_arn = module.statistical-reports-store.s3_object_access_policy
 }
 
 resource "aws_iam_role_policy_attachment" "s3_data_collection_app_config" {
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.s3_data_collection_task_role[0].name
   policy_arn = module.ndr-app-config.app_config_policy_arn
 }

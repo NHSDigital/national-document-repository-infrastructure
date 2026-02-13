@@ -108,7 +108,7 @@ resource "aws_iam_role_policy_attachment" "data_collection_ecs_execution" {
 }
 
 resource "aws_scheduler_schedule" "s3_data_collection_ecs" {
-  count       = 1
+  count      = local.is_sandbox ? 0 : 1
   name_prefix = "${terraform.workspace}_s3_data_collection_ecs"
   description = "A weekly trigger for the data collection run"
 
@@ -135,7 +135,7 @@ resource "aws_scheduler_schedule" "s3_data_collection_ecs" {
 }
 
 resource "aws_iam_role" "s3_data_collection_ecs_execution" {
-  count = 1
+  count = local.is_sandbox ? 0 : 1
   name  = "${terraform.workspace}_s3_data_collection_scheduler_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -152,7 +152,7 @@ resource "aws_iam_role" "s3_data_collection_ecs_execution" {
 }
 
 resource "aws_iam_role_policy_attachment" "s3_data_collection_ecs_execution" {
-  count      = 1
+  count      = local.is_sandbox ? 0 : 1
   role       = aws_iam_role.s3_data_collection_ecs_execution[0].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
 }

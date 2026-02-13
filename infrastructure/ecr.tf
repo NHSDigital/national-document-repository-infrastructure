@@ -18,7 +18,7 @@ module "ndr-docker-ecr-data-collection" {
 }
 
 module "ndr-docker-ecr-s3-data-collection" {
-  count               = 1
+  count               = local.is_sandbox ? 0 : 1
   source              = "./modules/ecr/"
   app_name            = "${terraform.workspace}-s3-data-collection"
   allow_force_destroy = local.is_force_destroy
