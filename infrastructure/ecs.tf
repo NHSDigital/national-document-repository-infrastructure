@@ -147,45 +147,42 @@ module "ndr-ecs-fargate-s3-data-collection" {
 resource "aws_iam_role" "data_collection_task_role" {
   count = local.is_sandbox ? 0 : 1
   name  = "${terraform.workspace}_data_collection_task_role"
-  assume_role_policy = jsonencode(
-    {
-      "Version" : "2012-10-17",
-      "Statement" : [
-        {
-          "Sid" : "",
-          "Effect" : "Allow",
-          "Principal" : {
-            "Service" : [
-              "ecs-tasks.amazonaws.com"
-            ]
-          },
-          "Action" : "sts:AssumeRole"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = ""
+        Effect = "Allow"
+        Principal = {
+          Service = [
+            "ecs-tasks.amazonaws.com"
+          ]
         }
-      ]
-    }
-  )
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role" "s3_data_collection_task_role" {
   count = local.is_sandbox ? 0 : 1
   name  = "${terraform.workspace}_s3_data_collection_task_role"
-  assume_role_policy = jsonencode(
-    {
-      "Version" : "2012-10-17",
-      "Statement" : [
-        {
-          "Sid" : "",
-          "Effect" : "Allow",
-          "Principal" : {
-            "Service" : [
-              "ecs-tasks.amazonaws.com"
-            ]
-          },
-          "Action" : "sts:AssumeRole"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = ""
+        Effect = "Allow"
+        Principal = {
+          Service = [
+            "ecs-tasks.amazonaws.com"
+          ]
         }
-      ]
-    }
-  )
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_policy" "s3_data_collection_s3_policy" {
