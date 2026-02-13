@@ -35,7 +35,7 @@ resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
     },
     {
       "rulePriority": 2,
-      "description": "Keep most 5 most recent images",
+      "description": "Keep the 5 most recent images",
       "selection": {
         "tagStatus": "any",
         "countType": "imageCountMoreThan",
