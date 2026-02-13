@@ -2,17 +2,15 @@ resource "aws_iam_role" "task_exec" {
   name = "${terraform.workspace}-${var.ecs_cluster_name}-ecs-task"
   assume_role_policy = jsonencode(
     {
-      "Version" : "2012-10-17",
-      "Statement" : [
+      Version = "2012-10-17"
+      Statement = [
         {
-          "Sid" : "",
-          "Effect" : "Allow",
-          "Principal" : {
-            "Service" : [
-              "ecs-tasks.amazonaws.com"
-            ]
-          },
-          "Action" : "sts:AssumeRole"
+          Sid    = ""
+          Effect = "Allow"
+          Principal = {
+            Service = ["ecs-tasks.amazonaws.com"]
+          }
+          Action = "sts:AssumeRole"
         }
       ]
     }
@@ -34,9 +32,36 @@ resource "aws_iam_role_policy" "s3_access" {
       {
         Action = [
           "s3:GetObject"
-        ],
-        Effect   = "Allow",
+        ]
+        Effect   = "Allow"
         Resource = ["arn:aws:s3:::prod-${var.aws_region}-starport-layer-bucket/*"]
+      },
+      {
+        Sid    = "ListBucketVersionsForS3DataCollection"
+        Action = [
+          "s3:ListBucket",
+          "s3:ListBucketVersions",
+          "s3:GetBucketLocation"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:s3:::${terraform.workspace}-lloyd-george-store",
+          "arn:aws:s3:::${terraform.workspace}-staging-bulk-store"
+        ]
+      },
+      {
+        Sid    = "ReadVersionedObjectsIfNeeded"
+        Action = [
+          "s3:GetObject",
+          "s3:GetObjectVersion",
+          "s3:GetObjectTagging",
+          "s3:GetObjectVersionTagging"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:s3:::${terraform.workspace}-lloyd-george-store/*",
+          "arn:aws:s3:::${terraform.workspace}-staging-bulk-store/*"
+        ]
       }
     ]
   })
