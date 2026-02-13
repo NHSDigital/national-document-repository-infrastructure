@@ -194,6 +194,48 @@ resource "aws_iam_role" "s3_data_collection_task_role" {
   )
 }
 
+resource "aws_iam_policy" "s3_data_collection_s3_policy" {
+  name = "${terraform.workspace}_s3_data_collection_s3_policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "ListBucketVersionsForS3DataCollection"
+        Effect = "Allow"
+        Action = [
+          "s3:ListBucket",
+          "s3:ListBucketVersions",
+          "s3:GetBucketLocation"
+        ]
+        Resource = [
+          "arn:aws:s3:::${terraform.workspace}-${var.lloyd_george_bucket_name}",
+          "arn:aws:s3:::${terraform.workspace}-${var.staging_store_bucket_name}"
+        ]
+      },
+      {
+        Sid    = "ReadVersionedObjectsIfNeeded"
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:GetObjectVersion",
+          "s3:GetObjectTagging",
+          "s3:GetObjectVersionTagging"
+        ]
+        Resource = [
+          "arn:aws:s3:::${terraform.workspace}-${var.lloyd_george_bucket_name}/*",
+          "arn:aws:s3:::${terraform.workspace}-${var.staging_store_bucket_name}/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "s3_data_collection_task_role_s3_policy" {
+  role       = aws_iam_role.s3_data_collection_task_role[0].name
+  policy_arn = aws_iam_policy.s3_data_collection_s3_policy.arn
+}
+
 resource "aws_iam_role_policy_attachment" "s3_data_collection_lloyd_george_store" {
   role       = aws_iam_role.s3_data_collection_task_role[0].name
   policy_arn = module.ndr-lloyd-george-store.s3_list_object_policy
