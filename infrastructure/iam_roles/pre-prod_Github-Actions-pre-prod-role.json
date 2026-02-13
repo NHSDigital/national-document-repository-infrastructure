@@ -55,7 +55,8 @@
         ],
         "Resource": [
           "arn:aws:ecr:eu-west-2:${account}:repository/ndr-pre-prod-app",
-          "arn:aws:ecr:eu-west-2:${account}:repository/pre-prod-data-collection"
+          "arn:aws:ecr:eu-west-2:${account}:repository/pre-prod-data-collection",
+          "arn:aws:ecr:eu-west-2:${account}:repository/pre-prod-s3-data-collection"
         ]
       }
     ],
