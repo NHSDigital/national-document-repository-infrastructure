@@ -22,9 +22,9 @@ resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
   "rules": [
     {
       "rulePriority": 1,
-      "description": "Keep most 5 most recent tagged images",
+      "description": "Keep most 5 most recent images",
       "selection": {
-        "tagStatus": "tagged",
+        "tagStatus": "any",
         "countType": "imageCountMoreThan",
         "countNumber": 5
       },
