@@ -60,7 +60,7 @@ resource "aws_lambda_permission" "bulk_upload_report_schedule_permission" {
 resource "aws_scheduler_schedule" "data_collection_ecs" {
   count       = local.is_sandbox ? 0 : 1
   name_prefix = "${terraform.workspace}_data_collection_ecs"
-  description = "A weekly trigger for the s3 data collection run"
+  description = "A weekly trigger for the data collection run"
 
   flexible_time_window {
     mode = "OFF"
@@ -110,7 +110,7 @@ resource "aws_iam_role_policy_attachment" "data_collection_ecs_execution" {
 resource "aws_scheduler_schedule" "s3_data_collection_ecs" {
   count       = local.is_sandbox ? 0 : 1
   name_prefix = "${terraform.workspace}_s3_data_collection_ecs"
-  description = "A weekly trigger for the data collection run"
+  description = "A weekly trigger for the s3 data collection run"
 
   flexible_time_window {
     mode = "OFF"

@@ -32,8 +32,8 @@ resource "aws_iam_role_policy" "s3_access" {
       {
         Action = [
           "s3:GetObject"
-        ]
-        Effect   = "Allow"
+        ],
+        Effect   = "Allow",
         Resource = ["arn:aws:s3:::prod-${var.aws_region}-starport-layer-bucket/*"]
       }
     ]
