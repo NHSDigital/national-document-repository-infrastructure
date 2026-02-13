@@ -37,7 +37,7 @@ resource "aws_iam_role_policy" "s3_access" {
         Resource = ["arn:aws:s3:::prod-${var.aws_region}-starport-layer-bucket/*"]
       },
       {
-        Sid    = "ListBucketVersionsForS3DataCollection"
+        Sid = "ListBucketVersionsForS3DataCollection"
         Action = [
           "s3:ListBucket",
           "s3:ListBucketVersions",
@@ -50,7 +50,7 @@ resource "aws_iam_role_policy" "s3_access" {
         ]
       },
       {
-        Sid    = "ReadVersionedObjectsIfNeeded"
+        Sid = "ReadVersionedObjectsIfNeeded"
         Action = [
           "s3:GetObject",
           "s3:GetObjectVersion",
