@@ -22,11 +22,12 @@ resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
   "rules": [
     {
       "rulePriority": 1,
-      "description": "Keep most 5 most recent images",
+      "description": "Expire images older than 7 days",
       "selection": {
-        "tagStatus": "any",
-        "countType": "imageCountMoreThan",
-        "countNumber": 5
+        "tagStatus": "untagged",
+        "countType": "sinceImagePushed",
+        "countUnit": "days",
+        "countNumber": 7
       },
       "action": {
         "type": "expire"
@@ -34,12 +35,11 @@ resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
     },
     {
       "rulePriority": 2,
-      "description": "Expire images older than 7 days",
+      "description": "Keep most 5 most recent images",
       "selection": {
-        "tagStatus": "untagged",
-        "countType": "sinceImagePushed",
-        "countUnit": "days",
-        "countNumber": 7
+        "tagStatus": "any",
+        "countType": "imageCountMoreThan",
+        "countNumber": 5
       },
       "action": {
         "type": "expire"
