@@ -108,7 +108,7 @@ resource "aws_iam_role_policy_attachment" "data_collection_ecs_execution" {
 }
 
 resource "aws_scheduler_schedule" "s3_data_collection_ecs" {
-  count      = local.is_sandbox ? 0 : 1
+  count       = local.is_sandbox ? 0 : 1
   name_prefix = "${terraform.workspace}_s3_data_collection_ecs"
   description = "A weekly trigger for the data collection run"
 
