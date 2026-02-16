@@ -2,15 +2,17 @@ resource "aws_iam_role" "task_exec" {
   name = "${terraform.workspace}-${var.ecs_cluster_name}-ecs-task"
   assume_role_policy = jsonencode(
     {
-      Version = "2012-10-17"
-      Statement = [
+      "Version" : "2012-10-17",
+      "Statement" : [
         {
-          Sid    = ""
-          Effect = "Allow"
-          Principal = {
-            Service = ["ecs-tasks.amazonaws.com"]
-          }
-          Action = "sts:AssumeRole"
+          "Sid" : "",
+          "Effect" : "Allow",
+          "Principal" : {
+            "Service" : [
+              "ecs-tasks.amazonaws.com"
+            ]
+          },
+          "Action" : "sts:AssumeRole"
         }
       ]
     }

@@ -107,57 +107,6 @@ resource "aws_iam_role_policy_attachment" "data_collection_ecs_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
 }
 
-resource "aws_scheduler_schedule" "s3_data_collection_ecs" {
-  count       = local.is_sandbox ? 0 : 1
-  name_prefix = "${terraform.workspace}_s3_data_collection_ecs"
-  description = "A weekly trigger for the s3 data collection run"
-
-  flexible_time_window {
-    mode = "OFF"
-  }
-
-  schedule_expression = "cron(0 4 ? * SAT *)"
-
-  target {
-    arn      = module.ndr-ecs-fargate-s3-data-collection[0].ecs_cluster_arn
-    role_arn = aws_iam_role.s3_data_collection_ecs_execution[0].arn
-    ecs_parameters {
-      task_definition_arn = replace(module.ndr-ecs-fargate-s3-data-collection[0].task_definition_arn, "/:[0-9]+$/", "")
-      task_count          = 1
-      launch_type         = "FARGATE"
-      network_configuration {
-        assign_public_ip = false
-        security_groups  = [module.ndr-ecs-fargate-s3-data-collection[0].security_group_id]
-        subnets          = [for subnet in module.ndr-vpc-ui.private_subnets : subnet]
-      }
-    }
-  }
-}
-
-resource "aws_iam_role" "s3_data_collection_ecs_execution" {
-  count = local.is_sandbox ? 0 : 1
-  name  = "${terraform.workspace}_s3_data_collection_scheduler_role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "scheduler.amazonaws.com"
-        }
-      },
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "s3_data_collection_ecs_execution" {
-  count      = local.is_sandbox ? 0 : 1
-  role       = aws_iam_role.s3_data_collection_ecs_execution[0].name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
-}
-
-
 resource "aws_cloudwatch_event_rule" "nhs_oauth_token_generator_schedule" {
   name                = "${terraform.workspace}_nhs_oauth_token_generator_schedule"
   description         = "Schedule for NHS OAuth Token Generator Lambda"
