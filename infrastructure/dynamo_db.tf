@@ -607,7 +607,7 @@ module "user_restriction_table" {
       type = "S"
     },
     {
-      name = "SmartCardId"
+      name = "RestrictedSmartCardId"
       type = "S"
     },
     {
@@ -615,19 +615,27 @@ module "user_restriction_table" {
       type = "S"
     },
     {
-      name = "OdsCode"
+      name = "PatientOdsCode"
       type = "S"
     },
     {
       name = "Created"
+      type = "S"
+    },
+    {
+      name = "CreatorSmartCardId"
+      type = "S"
+    },
+    {
+      name = "Status"
       type = "S"
     }
   ]
 
   global_secondary_indexes = [
     {
-      name            = "SmartCardIdIndex"
-      hash_key        = "SmartCardId"
+      name            = "RestrictedSmartCardIdIndex"
+      hash_key        = "RestrictedSmartCardId"
       range_key       = "Created"
       projection_type = "ALL"
     },
@@ -638,15 +646,21 @@ module "user_restriction_table" {
       projection_type = "ALL"
     },
     {
-      name            = "OdsCodeNhsNumberIndex"
-      hash_key        = "OdsCode"
+      name            = "PatientOdsCodeNhsNumberIndex"
+      hash_key        = "PatientOdsCode"
       range_key       = "NhsNumber"
       projection_type = "ALL"
     },
     {
-      name            = "OdsCodeSmartCardIdIndex"
-      hash_key        = "OdsCode"
-      range_key       = "SmartCardId"
+      name            = "PatientOdsCodeSmartCardIdIndex"
+      hash_key        = "PatientOdsCode"
+      range_key       = "RestrictedSmartCardId"
+      projection_type = "ALL"
+    },
+    {
+      name = "CreatorIndex"
+      hash_key = "CreatorSmartCardId"
+      range_key = "Created"
       projection_type = "ALL"
     }
   ]
