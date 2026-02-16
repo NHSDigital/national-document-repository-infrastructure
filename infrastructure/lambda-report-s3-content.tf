@@ -7,7 +7,6 @@ module "report-s3-content-lambda" {
 
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
-    module.ndr-lloyd-george-store.s3_read_policy_document,
     module.statistical-reports-store.s3_read_policy_document,
     module.statistical-reports-store.s3_write_policy_document,
     module.ndr-app-config.app_config_policy,
@@ -20,7 +19,6 @@ module "report-s3-content-lambda" {
     WORKSPACE                  = terraform.workspace
     STATISTICAL_REPORTS_BUCKET = "${terraform.workspace}-${var.statistical_reports_bucket_name}"
     BULK_STAGING_BUCKET_NAME   = "${terraform.workspace}-${var.staging_store_bucket_name}"
-    LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
   }
 
   is_gateway_integration_needed = false
