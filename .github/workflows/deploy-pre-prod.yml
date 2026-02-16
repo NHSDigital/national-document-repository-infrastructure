@@ -80,6 +80,7 @@ jobs:
         with:
           ref: ${{ needs.tag_main.outputs.version }}
           fetch-depth: "0"
+
       - name: Apply Main
         uses: ./.github/actions/tf-plan-apply
         with:
