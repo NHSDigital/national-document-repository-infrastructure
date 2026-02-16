@@ -615,12 +615,12 @@ module "user_restriction_table" {
       type = "S"
     },
     {
-      name = "PatientOdsCode"
+      name = "OdsCode"
       type = "S"
     },
     {
       name = "Created"
-      type = "S"
+      type = "N"
     },
     {
       name = "CreatorSmartCardId"
@@ -629,6 +629,10 @@ module "user_restriction_table" {
     {
       name = "Status"
       type = "S"
+    },
+    {
+      name = "LastUpdated"
+      type = "N"
     }
   ]
 
@@ -646,14 +650,14 @@ module "user_restriction_table" {
       projection_type = "ALL"
     },
     {
-      name            = "PatientOdsCodeNhsNumberIndex"
-      hash_key        = "PatientOdsCode"
+      name            = "OdsCodeNhsNumberIndex"
+      hash_key        = "OdsCode"
       range_key       = "NhsNumber"
       projection_type = "ALL"
     },
     {
-      name            = "PatientOdsCodeSmartCardIdIndex"
-      hash_key        = "PatientOdsCode"
+      name            = "OdsCodeSmartCardIdIndex"
+      hash_key        = "OdsCode"
       range_key       = "RestrictedSmartCardId"
       projection_type = "ALL"
     },
