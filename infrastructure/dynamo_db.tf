@@ -641,7 +641,7 @@ module "user_restriction_table" {
       name            = "OdsCodeNhsNumberIndex"
       hash_key        = "OdsCode"
       range_key       = "NhsNumber"
-      protection_type = "ALL"
+      projection_type = "ALL"
     },
     {
       name            = "OdsCodeSmartCardIdIndex"
