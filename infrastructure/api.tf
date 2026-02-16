@@ -43,7 +43,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
     aws_api_gateway_authorizer.repo_authoriser,
-    aws_api_gateway_resource.document_reference_by_id,
+    aws_api_gateway_resource.get_document_reference,
     module.access-audit-gateway,
     module.access-audit-lambda,
     module.back-channel-logout-gateway,
@@ -52,7 +52,6 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.create-token-gateway,
     module.create-token-lambda,
     module.delete-doc-ref-gateway,
-    module.delete-document-references-fhir-lambda,
     module.delete-doc-ref-lambda,
     module.document-manifest-job-gateway,
     module.document-manifest-job-lambda,
@@ -182,15 +181,4 @@ module "api_endpoint_url_ssm_parameter" {
   type                = "SecureString"
   owner               = var.owner
   environment         = var.environment
-}
-
-resource "aws_api_gateway_resource" "document_reference_by_id" {
-  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  parent_id   = module.fhir_document_reference_gateway[0].gateway_resource_id
-  path_part   = "{id}"
-}
-
-moved {
-  from = aws_api_gateway_resource.get_document_reference
-  to   = aws_api_gateway_resource.document_reference_by_id
 }

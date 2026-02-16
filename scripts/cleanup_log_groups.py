@@ -30,11 +30,9 @@ class CleanupLogGroups:
                     print(f"Deleted log group: {log_group_name}")
                 except ClientError as e:
                     print(f"Failed to delete log group {log_group_name}: {e}")
-                    sys.exit(1)
 
         except ClientError as e:
             print(f"Error during log group cleanup: {e}")
-            sys.exit(1)
 
 
 if __name__ == "__main__":

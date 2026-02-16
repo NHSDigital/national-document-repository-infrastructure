@@ -15,9 +15,10 @@ module "bulk-upload-lambda" {
     module.sqs-stitching-queue.sqs_write_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
+    module.sqs-lg-bulk-upload-invalid-queue.sqs_read_policy_document,
+    module.sqs-lg-bulk-upload-invalid-queue.sqs_write_policy_document,
     module.lg-bulk-upload-expedite-metadata-queue.sqs_write_policy_document,
     module.lg-bulk-upload-expedite-metadata-queue.sqs_read_policy_document,
-    module.document_review_queue.sqs_write_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy
   ]
@@ -35,9 +36,9 @@ module "bulk-upload-lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     BULK_UPLOAD_DYNAMODB_NAME  = "${terraform.workspace}_${var.bulk_upload_report_dynamodb_table_name}"
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
+    INVALID_SQS_QUEUE_URL      = module.sqs-lg-bulk-upload-invalid-queue.sqs_url
     PDS_FHIR_IS_STUBBED        = local.is_sandbox
     PDF_STITCHING_SQS_URL      = module.sqs-stitching-queue.sqs_url
-    REVIEW_SQS_QUEUE_URL       = module.document_review_queue.sqs_url
     APIM_API_URL               = data.aws_ssm_parameter.apim_url.value
   }
 
@@ -49,6 +50,7 @@ module "bulk-upload-lambda" {
   depends_on = [
     module.ndr-bulk-staging-store,
     module.sqs-lg-bulk-upload-metadata-queue,
+    module.sqs-lg-bulk-upload-invalid-queue,
     module.ndr-lloyd-george-store,
     module.lloyd_george_reference_dynamodb_table,
     module.bulk_upload_report_dynamodb_table,
@@ -96,12 +98,11 @@ module "bulk-upload-alarm" {
 }
 
 module "bulk-upload-alarm-topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "bulk-upload-topic"
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "bulk-upload-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.bulk-upload-lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

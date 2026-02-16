@@ -76,7 +76,7 @@ variable "lambda_ephemeral_storage" {
 variable "memory_size" {
   description = "Amount of memory to allocate to the Lambda function (in MB)."
   type        = number
-  default     = 5308
+  default     = 512
 }
 
 variable "reserved_concurrent_executions" {
@@ -103,13 +103,13 @@ variable "persistent_workspaces" {
 variable "default_lambda_layers" {
   type = list(string)
   default = [
-    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:207"
+    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:120"
   ]
 }
 
 variable "extra_lambda_layers" {
   type    = list(string)
-  default = ["arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:64"]
+  default = ["arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:53"]
 }
 
 variable "kms_deletion_window" {

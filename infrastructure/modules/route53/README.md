@@ -67,6 +67,8 @@ module "dns" {
 | <a name="input_api_gateway_zone_id"></a> [api\_gateway\_zone\_id](#input\_api\_gateway\_zone\_id) | The Route53 zone ID associated with the API Gateway custom domain. | `string` | n/a | yes |
 | <a name="input_dns_name"></a> [dns\_name](#input\_dns\_name) | The target DNS name for the record, typically the Fargate or Load Balancer endpoint. | `string` | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | The root domain name used to find or create the Route53 hosted zone. | `string` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment tag used for context and identification (e.g., 'dev', 'prod'). | `string` | n/a | yes |
+| <a name="input_owner"></a> [owner](#input\_owner) | Owner tag used for resource tagging and identification. | `string` | n/a | yes |
 | <a name="input_using_arf_hosted_zone"></a> [using\_arf\_hosted\_zone](#input\_using\_arf\_hosted\_zone) | Whether to use a shared hosted zone for ARF or multi-module deployments. | `bool` | `true` | no |
 
 ## Outputs

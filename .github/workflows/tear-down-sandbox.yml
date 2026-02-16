@@ -54,7 +54,7 @@ jobs:
       sandbox_name: ${{ inputs.sandbox_name }}
       environment: ${{ inputs.environment }}
     secrets:
-      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   cleanup_versions:
     name: Cleanup Versions
@@ -64,7 +64,7 @@ jobs:
       sandbox_name: ${{ inputs.sandbox_name }}
       environment: ${{ inputs.environment }}
     secrets:
-      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   terraform_destroy:
     name: Terraform Destroy
@@ -73,21 +73,31 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
         with:
           ref: ${{ inputs.git_ref }}
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.11
+
+      - name: Install Python Dependencies
+        run: |
+          python3 -m venv ./venv
+          ./venv/bin/pip3 install --upgrade pip boto3
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.14.3
+          terraform_version: 1.13.3
 
       - name: Initialise Terraform
         run: terraform init -backend-config=${{ vars.TF_BACKEND_FILE }}
@@ -100,71 +110,6 @@ jobs:
       - name: Run Terraform Destroy
         run: terraform destroy -auto-approve -var-file="${{ vars.TF_VARS_FILE }}"
         working-directory: ./infrastructure
-
-  terraform_destroy_base_iam:
-    name: Terraform Destroy (base_iam)
-    # Only destroy base_iam in a Sandbox environment. Don't tear down in ndr-test or ndr-dev environments.
-    if: ${{ github.event.inputs.environment == 'development' && github.event.inputs.sandbox_name != 'ndr-dev' }}
-    runs-on: ubuntu-latest
-    needs: [terraform_destroy]
-    environment: ${{ inputs.environment }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ inputs.git_ref }}
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v5
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/dev-github-bootstrap
-          aws-region: ${{ vars.AWS_REGION }}
-          mask-aws-account-id: true
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.14.3
-
-      - name: Initialise Terraform
-        run: terraform init -backend-config=bucket=ndr-dev-terraform-state-${{ secrets.AWS_ACCOUNT_ID }}
-        working-directory: ./base_iam
-
-      - name: Select Terraform Workspace
-        run: terraform workspace select ${{ inputs.sandbox_name }}
-        working-directory: ./base_iam
-
-      - name: Run Terraform Destroy
-        run: terraform destroy -auto-approve -var-file="${{ vars.TF_VARS_FILE }}" -var aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}
-        working-directory: ./base_iam
-
-  cleanup_resources:
-    name: Cleanup Resources
-    runs-on: ubuntu-latest
-    needs: [terraform_destroy_base_iam]
-    environment: ${{ inputs.environment }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ inputs.git_ref }}
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v5
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/dev-github-bootstrap
-          aws-region: ${{ vars.AWS_REGION }}
-          mask-aws-account-id: true
-
-      - name: Setup Python 3.11
-        uses: actions/setup-python@v6
-        with:
-          python-version: 3.11
-
-      - name: Install Python Dependencies
-        run: |
-          python3 -m venv ./venv
-          ./venv/bin/pip3 install --upgrade pip boto3
 
       - name: Run Cleanup Script (Terraform Workspace)
         run: ./venv/bin/python3 -u scripts/cleanup_terraform_states.py ${{ inputs.sandbox_name }}

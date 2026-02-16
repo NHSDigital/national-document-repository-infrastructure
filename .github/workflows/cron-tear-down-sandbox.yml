@@ -2,7 +2,7 @@ name: 'Z-CRON: Tear down - Sandboxes'
 
 on:
   schedule:
-    - cron: 59 18,20,22 * * 1-5 # utc time
+    - cron: 59 18-21 * * 1-5 # utc time
 
 permissions:
   pull-requests: write
@@ -16,7 +16,7 @@ jobs:
     environment: development
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
         with:
           ref: main
 

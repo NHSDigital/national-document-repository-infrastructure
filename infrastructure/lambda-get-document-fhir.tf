@@ -1,6 +1,18 @@
+resource "aws_api_gateway_resource" "get_document_reference" {
+  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
+  parent_id   = module.fhir_document_reference_gateway[0].gateway_resource_id
+  path_part   = "{id}"
+}
+
+resource "aws_api_gateway_resource" "get_document_reference_mtls" {
+  rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
+  parent_id   = module.fhir_document_reference_mtls_gateway.gateway_resource_id
+  path_part   = "{id}"
+}
+
 resource "aws_api_gateway_method" "get_document_reference" {
   rest_api_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id      = aws_api_gateway_resource.document_reference_by_id.id
+  resource_id      = aws_api_gateway_resource.get_document_reference.id
   http_method      = "GET"
   authorization    = "NONE"
   api_key_required = true
@@ -11,7 +23,7 @@ resource "aws_api_gateway_method" "get_document_reference" {
 
 resource "aws_api_gateway_method" "get_document_reference_mtls" {
   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
-  resource_id   = aws_api_gateway_resource.document_reference_by_id_mtls.id
+  resource_id   = aws_api_gateway_resource.get_document_reference_mtls.id
   http_method   = "GET"
   authorization = "NONE"
   request_parameters = {
@@ -35,7 +47,7 @@ module "get-doc-fhir-lambda" {
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id         = aws_api_gateway_resource.document_reference_by_id.id
+  resource_id         = aws_api_gateway_resource.get_document_reference.id
   http_methods        = ["GET"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
@@ -46,7 +58,7 @@ module "get-doc-fhir-lambda" {
     ENVIRONMENT             = var.environment
     PRESIGNED_ASSUME_ROLE   = aws_iam_role.get_fhir_doc_presign_url_role.arn
     OIDC_CALLBACK_URL       = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
-    CLOUDFRONT_URL          = one(aws_cloudfront_distribution.s3_presign_mask.aliases)
+    CLOUDFRONT_URL          = aws_cloudfront_distribution.s3_presign_mask.domain_name
     PDS_FHIR_IS_STUBBED     = local.is_sandbox
   }
   depends_on = [
@@ -58,7 +70,7 @@ module "get-doc-fhir-lambda" {
 
 resource "aws_api_gateway_integration" "get_doc_fhir_lambda_integration" {
   rest_api_id             = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
-  resource_id             = aws_api_gateway_resource.document_reference_by_id_mtls.id
+  resource_id             = aws_api_gateway_resource.get_document_reference_mtls.id
   http_method             = "GET"
   integration_http_method = "POST"
   type                    = "AWS_PROXY"

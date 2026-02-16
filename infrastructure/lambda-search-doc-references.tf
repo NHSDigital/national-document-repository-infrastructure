@@ -23,13 +23,12 @@ module "search_doc_alarm" {
 
 
 module "search_doc_alarm_topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "search_doc_references-alarms-topic"
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
-  depends_on             = [module.sns_encryption_key]
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "search_doc_references-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.search-document-references-lambda.lambda_arn
+  depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -73,11 +72,11 @@ module "search-document-references-lambda" {
   http_methods        = ["GET"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
-    LLOYD_GEORGE_DYNAMODB_NAME = module.lloyd_george_reference_dynamodb_table.table_name
-    WORKSPACE                  = terraform.workspace
+    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
+    DYNAMODB_TABLE_LIST     = "[\u0022${terraform.workspace}_${var.docstore_dynamodb_table_name}\u0022, \u0022${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}\u0022]"
+    WORKSPACE               = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

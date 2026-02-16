@@ -22,13 +22,12 @@ module "delete_doc_alarm" {
 }
 
 module "delete_doc_alarm_topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "delete_doc-alarms-topic"
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
-  depends_on             = [module.sns_encryption_key]
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "delete_doc-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.delete-doc-ref-lambda.lambda_arn
+  depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
