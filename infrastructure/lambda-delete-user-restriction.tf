@@ -56,9 +56,7 @@ module "delete-user-restriction-lambda-alarm-topic" {
         ],
         "Conditon" : {
           "ArnLike" : {
-            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:${module.delete-user-restriction-lambda-alarms.error_alarm_name}",
-            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:${module.delete-user-restriction-lambda-alarms.memory_alarm_name}",
-            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:${module.delete-user-restriction-lambda-alarms.duration_alarm_name}"
+            "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*",
           }
         }
         "Resource" : "*"
