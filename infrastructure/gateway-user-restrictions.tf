@@ -1,6 +1,6 @@
 module "user_restrictions_gateway" {
   source              = "./modules/gateway"
-  api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api
+  api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = aws_api_gateway_rest_api.ndr_doc_store_api.root_resource_id
   http_methods        = ["GET", "POST"]
   authorization       = "CUSTOM"

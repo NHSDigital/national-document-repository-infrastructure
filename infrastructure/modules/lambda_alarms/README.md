@@ -70,9 +70,5 @@ module "lambda_alarms" {
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_duration_alarm_name"></a> [duration\_alarm\_name](#output\_duration\_alarm\_name) | n/a |
-| <a name="output_error_alarm_name"></a> [error\_alarm\_name](#output\_error\_alarm\_name) | n/a |
-| <a name="output_memory_alarm_name"></a> [memory\_alarm\_name](#output\_memory\_alarm\_name) | n/a |
+No outputs.
 <!-- END_TF_DOCS -->
