@@ -595,10 +595,10 @@ module "bulk_upload_contact_lookup_table" {
 }
 
 module "user_restriction_table" {
-  source = "./modules/dynamo_db"
-  table_name = var.user_restrictions_table_name
-  hash_key = "ID"
-  deletion_protection_enabled = var.deletion_protection_enabled
+  source                         = "./modules/dynamo_db"
+  table_name                     = var.user_restrictions_table_name
+  hash_key                       = "ID"
+  deletion_protection_enabled    = var.deletion_protection_enabled
   point_in_time_recovery_enabled = !local.is_sandbox
 
   attributes = [
@@ -626,27 +626,27 @@ module "user_restriction_table" {
 
   global_secondary_indexes = [
     {
-      name = "SmartCardIdIndex"
-      hash_key = "SmartCardId"
-      range_key = "Created"
+      name            = "SmartCardIdIndex"
+      hash_key        = "SmartCardId"
+      range_key       = "Created"
       projection_type = "ALL"
     },
     {
-      name = "NhsNumberIndex"
-      hash_key = "NhsNumber"
-      range_key = "Created"
+      name            = "NhsNumberIndex"
+      hash_key        = "NhsNumber"
+      range_key       = "Created"
       projection_type = "ALL"
     },
     {
-      name = "OdsCodeNhsNumberIndex"
-      hash_key = "OdsCode"
-      range_key = "NhsNumber"
+      name            = "OdsCodeNhsNumberIndex"
+      hash_key        = "OdsCode"
+      range_key       = "NhsNumber"
       protection_type = "ALL"
     },
     {
-      name = "OdsCodeSmartCardIdIndex"
-      hash_key = "OdsCode"
-      range_key = "SmartCardId"
+      name            = "OdsCodeSmartCardIdIndex"
+      hash_key        = "OdsCode"
+      range_key       = "SmartCardId"
       projection_type = "ALL"
     }
   ]
