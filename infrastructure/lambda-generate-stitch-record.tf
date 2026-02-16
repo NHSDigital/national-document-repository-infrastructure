@@ -10,11 +10,12 @@ module "generate-lloyd-george-stitch-alarm" {
 }
 
 module "generate-lloyd-george-stitch-alarm-topic" {
-  source                = "./modules/sns"
-  sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "generate-lloyd-george-stitch-topic"
-  topic_protocol        = "lambda"
-  topic_endpoint        = module.generate-lloyd-george-stitch-lambda.lambda_arn
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
+  topic_name             = "generate-lloyd-george-stitch-topic"
+  topic_protocol         = "email"
+  is_topic_endpoint_list = true
+  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -45,7 +46,6 @@ module "generate-lloyd-george-stitch-lambda" {
   handler                  = "handlers.generate_lloyd_george_stitch_handler.lambda_handler"
   lambda_timeout           = 900
   lambda_ephemeral_storage = 1024
-  memory_size              = 1769
   iam_role_policy_documents = [
     module.ndr-document-store.s3_read_policy_document,
     module.ndr-document-store.s3_write_policy_document,

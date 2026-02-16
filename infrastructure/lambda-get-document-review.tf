@@ -24,7 +24,7 @@ module "get_document_review_lambda" {
     APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
     EDGE_REFERENCE_TABLE          = module.cloudfront_edge_dynamodb_table.table_name
-    CLOUDFRONT_URL                = aws_cloudfront_distribution.s3_presign_mask.domain_name
+    CLOUDFRONT_URL                = one(aws_cloudfront_distribution.s3_presign_mask.aliases)
     PRESIGNED_ASSUME_ROLE         = aws_iam_role.get_document_review_presign.arn
     WORKSPACE                     = terraform.workspace
     PDS_FHIR_IS_STUBBED           = local.is_sandbox
@@ -48,11 +48,12 @@ module "get_document_review_lambda_alarm" {
 
 
 module "get_document_review_lambda_alarm_topic" {
-  source                = "./modules/sns"
-  sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "get-document-review-lambda-alarm-topic"
-  topic_protocol        = "lambda"
-  topic_endpoint        = module.get_document_review_lambda.lambda_arn
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
+  topic_name             = "get-document-review-lambda-alarm-topic"
+  topic_protocol         = "email"
+  is_topic_endpoint_list = true
+  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

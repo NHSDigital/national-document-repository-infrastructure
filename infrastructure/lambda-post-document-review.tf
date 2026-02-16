@@ -27,7 +27,7 @@ module "post_document_review_lambda" {
     WORKSPACE                     = terraform.workspace
     STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
     EDGE_REFERENCE_TABLE          = module.cloudfront_edge_dynamodb_table.table_name
-    CLOUDFRONT_URL                = aws_cloudfront_distribution.s3_presign_mask.domain_name
+    CLOUDFRONT_URL                = one(aws_cloudfront_distribution.s3_presign_mask.aliases)
     PDS_FHIR_IS_STUBBED           = local.is_sandbox
   }
   depends_on = [
@@ -49,11 +49,12 @@ module "post_document_review_lambda_alarm" {
 
 
 module "post_document_review_lambda_alarm_topic" {
-  source                = "./modules/sns"
-  sns_encryption_key_id = module.sns_encryption_key.id
-  topic_name            = "post-document-review-lambda-alarm-topic"
-  topic_protocol        = "lambda"
-  topic_endpoint        = module.post_document_review_lambda.lambda_arn
+  source                 = "./modules/sns"
+  sns_encryption_key_id  = module.sns_encryption_key.id
+  topic_name             = "post-document-review-lambda-alarm-topic"
+  topic_protocol         = "email"
+  is_topic_endpoint_list = true
+  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

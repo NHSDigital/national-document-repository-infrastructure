@@ -20,6 +20,12 @@
         },
         "uploadDocumentIteration3Enabled": {
             "name": "uploadDocumentIteration3Enabled"
+        },
+        "bulkUploadSendToReviewEnabled": {
+          "name": "bulkUploadSendToReviewEnabled"
+        },
+        "documentCorrectEnabled": {
+          "name": "documentCorrectEnabled"
         }
     },
     "values": {
@@ -39,10 +45,16 @@
             "enabled": "false"
         },
         "uploadDocumentIteration2Enabled": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "uploadDocumentIteration3Enabled": {
-            "enabled": "false"
+            "enabled": "true"
+        },
+        "bulkUploadSendToReviewEnabled": {
+          "enabled": "false"
+        },
+        "documentCorrectEnabled": {
+          "enabled": "false"
         }
     },
     "version": "1"

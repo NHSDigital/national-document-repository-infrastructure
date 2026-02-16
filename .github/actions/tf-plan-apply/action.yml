@@ -6,6 +6,14 @@ inputs:
     description: "AWS IAM Role to assume"
     required: true
 
+  bucket_prefix:
+    description: "One of dev, test, pre-prod, prod"
+    required: true
+
+  aws_account_id:
+    description: "AWS Account ID"
+    required: true
+
   aws_region:
     description: "AWS Region to use"
     required: true
@@ -14,11 +22,7 @@ inputs:
   terraform_version:
     description: "Terraform version to use"
     required: false
-    default: "1.13.3"
-
-  backend_conf:
-    description: "Terraform backend config file"
-    required: true
+    default: "1.14.3"
 
   working_directory:
     description: "Terraform working directory"
@@ -37,6 +41,11 @@ inputs:
     description: "Additional Terraform arguments to pass in"
     required: false
     default: ""
+
+  tf_lock_timeout:
+    description: "Time to wait for Terraform state lock (e.g., 20m)"
+    required: false
+    default: "20m"
 
   do_apply:
     description: "Whether to run 'terraform apply' after 'terraform plan'"
@@ -61,7 +70,7 @@ runs:
         terraform_wrapper: false
 
     - name: Initialise Terraform
-      run: terraform init -backend-config=${{ inputs.backend_conf }}
+      run: terraform init -backend-config=bucket=ndr-${{ inputs.bucket_prefix }}-terraform-state-${{ inputs.aws_account_id }}
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 
@@ -77,12 +86,12 @@ runs:
 
     - name: Run Terraform Plan
       run: |
-        terraform plan -input=false -no-color -var-file="${{ inputs.tf_vars_file }}" ${{ inputs.tf_extra_args }} -out tf.plan
+        terraform plan -lock-timeout="${{ inputs.tf_lock_timeout }}" -input=false -no-color -var-file="${{ inputs.tf_vars_file }}" ${{ inputs.tf_extra_args }} -out tf.plan
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 
     - name: Run Terraform Apply
       if: ${{ inputs.do_apply == 'true' }}
-      run: terraform apply -auto-approve -input=false tf.plan
+      run: terraform apply -lock-timeout="${{ inputs.tf_lock_timeout }}" -auto-approve -input=false tf.plan
       working-directory: ${{ inputs.working_directory }}
       shell: bash
