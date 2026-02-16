@@ -29,8 +29,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_alarm" {
   period              = "300"
   evaluation_periods  = "1"
   statistic           = "Maximum"
-  alarm_actions       = var.alarm_actions
-  ok_actions          = var.ok_actions
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_memory_alarm" {
@@ -46,6 +44,4 @@ resource "aws_cloudwatch_metric_alarm" "lambda_memory_alarm" {
   period              = "300"
   evaluation_periods  = "1"
   statistic           = "Maximum"
-  alarm_actions       = var.alarm_actions
-  ok_actions          = var.ok_actions
 }

@@ -7,7 +7,7 @@ module "access-audit-gateway" {
   gateway_path        = "AccessAudit"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = local.base_url_with_quotes
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
 module "access-audit-alarm" {
@@ -23,13 +23,12 @@ module "access-audit-alarm" {
 
 
 module "access-audit-alarm-topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "access-audit-alarms-topic"
-  depends_on             = [module.sns_encryption_key]
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "access-audit-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.access-audit-lambda.lambda_arn
+  depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

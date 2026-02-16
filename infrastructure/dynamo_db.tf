@@ -93,10 +93,6 @@ module "lloyd_george_reference_dynamodb_table" {
     {
       name = "S3FileKey"
       type = "S"
-    },
-    {
-      name = "Created"
-      type = "S"
     }
   ]
 
@@ -109,7 +105,6 @@ module "lloyd_george_reference_dynamodb_table" {
     {
       name            = "NhsNumberIndex"
       hash_key        = "NhsNumber"
-      range_key       = "Created"
       projection_type = "ALL"
     },
     {

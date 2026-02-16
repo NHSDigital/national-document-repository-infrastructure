@@ -35,7 +35,7 @@ module "login_redirect_lambda" {
     APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
-    OIDC_CALLBACK_URL       = local.oidc_callback_url
+    OIDC_CALLBACK_URL       = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
     AUTH_DYNAMODB_NAME      = "${terraform.workspace}_${var.auth_state_dynamodb_table_name}"
   }
   depends_on = [
@@ -60,12 +60,11 @@ module "login_redirect_alarm" {
 
 
 module "login_redirect-alarm_topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "login_redirect-alarms-topic"
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "login_redirect-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.login_redirect_lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

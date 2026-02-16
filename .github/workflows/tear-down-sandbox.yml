@@ -54,7 +54,7 @@ jobs:
       sandbox_name: ${{ inputs.sandbox_name }}
       environment: ${{ inputs.environment }}
     secrets:
-      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   cleanup_versions:
     name: Cleanup Versions
@@ -64,7 +64,7 @@ jobs:
       sandbox_name: ${{ inputs.sandbox_name }}
       environment: ${{ inputs.environment }}
     secrets:
-      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   terraform_destroy:
     name: Terraform Destroy
@@ -73,7 +73,7 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
         with:
           ref: ${{ inputs.git_ref }}
 
@@ -90,14 +90,14 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.14.3
+          terraform_version: 1.13.3
 
       - name: Initialise Terraform
         run: terraform init -backend-config=${{ vars.TF_BACKEND_FILE }}

@@ -1,12 +1,16 @@
-variable "dns_name" {
-  description = "The target DNS name for the record, typically the Fargate or Load Balancer endpoint."
+variable "environment" {
+  description = "Environment tag used for context and identification (e.g., 'dev', 'prod')."
   type        = string
 }
 
-variable "dns_zone_id" {
-  description = "The Route53 zone ID of the load balancer."
+variable "owner" {
+  description = "Owner tag used for resource tagging and identification."
   type        = string
-  default     = ""
+}
+
+variable "dns_name" {
+  description = "The target DNS name for the record, typically the Fargate or Load Balancer endpoint."
+  type        = string
 }
 
 variable "domain" {

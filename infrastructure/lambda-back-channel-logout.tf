@@ -6,7 +6,7 @@ module "back-channel-logout-gateway" {
   authorization       = "NONE"
   gateway_path        = "BackChannelLogout"
   require_credentials = false
-  origin              = local.base_url_with_quotes
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
 module "back_channel_logout_lambda" {
@@ -32,7 +32,7 @@ module "back_channel_logout_lambda" {
     ENVIRONMENT                    = var.environment
     AUTH_DYNAMODB_NAME             = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
-    OIDC_CALLBACK_URL              = local.oidc_callback_url
+    OIDC_CALLBACK_URL              = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
@@ -56,12 +56,11 @@ module "back_channel_logout_alarm" {
 
 
 module "back_channel_logout_alarm_topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "back-channel-logout-alarms-topic"
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "back-channel-logout-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.back_channel_logout_lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

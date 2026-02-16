@@ -4,7 +4,8 @@ locals {
 }
 
 resource "aws_iam_role" "cognito_unauthenticated" {
-  name = local.cognito_role_name
+  count = local.is_production ? 0 : 1
+  name  = local.cognito_role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -17,7 +18,7 @@ resource "aws_iam_role" "cognito_unauthenticated" {
         Action = "sts:AssumeRoleWithWebIdentity",
         Condition = {
           StringEquals = {
-            "cognito-identity.amazonaws.com:aud" = aws_cognito_identity_pool.cloudwatch_rum.id
+            "cognito-identity.amazonaws.com:aud" = aws_cognito_identity_pool.cloudwatch_rum[0].id
           },
           "ForAnyValue:StringLike" = {
             "cognito-identity.amazonaws.com:amr" = "unauthenticated"
@@ -29,6 +30,7 @@ resource "aws_iam_role" "cognito_unauthenticated" {
 }
 
 resource "aws_iam_policy" "cloudwatch_rum_cognito_access" {
+  count       = local.is_production ? 0 : 1
   name        = "${terraform.workspace}-cloudwatch-rum-cognito-access-policy"
   description = "Policy for unauthenticated Cognito identities"
 
@@ -39,7 +41,7 @@ resource "aws_iam_policy" "cloudwatch_rum_cognito_access" {
         {
           "Effect" : "Allow",
           "Action" : "rum:PutRumEvents",
-          "Resource" : "arn:aws:rum:${local.current_region}:${local.current_account_id}:appmonitor/${aws_rum_app_monitor.ndr.id}"
+          "Resource" : "arn:aws:rum:${local.current_region}:${local.current_account_id}:appmonitor/${aws_rum_app_monitor.ndr[0].id}"
         }
       ]
   })
@@ -73,37 +75,38 @@ resource "aws_cloudwatch_log_resource_policy" "rum_log" {
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_rum_cognito_unauth" {
-  role       = aws_iam_role.cognito_unauthenticated.name
-  policy_arn = aws_iam_policy.cloudwatch_rum_cognito_access.arn
+  count      = local.is_production ? 0 : 1
+  role       = aws_iam_role.cognito_unauthenticated[0].name
+  policy_arn = aws_iam_policy.cloudwatch_rum_cognito_access[0].arn
 }
 
 resource "aws_cognito_identity_pool_roles_attachment" "cloudwatch_rum" {
-  identity_pool_id = aws_cognito_identity_pool.cloudwatch_rum.id
+  count            = local.is_production ? 0 : 1
+  identity_pool_id = aws_cognito_identity_pool.cloudwatch_rum[0].id
+
   roles = {
-    unauthenticated = aws_iam_role.cognito_unauthenticated.arn
+    unauthenticated = aws_iam_role.cognito_unauthenticated[0].arn
   }
 }
 
 resource "aws_cognito_identity_pool" "cloudwatch_rum" {
+  count                            = local.is_production ? 0 : 1
   identity_pool_name               = "${terraform.workspace}-cloudwatch-rum-identity-pool"
   allow_unauthenticated_identities = true
 }
 
 resource "aws_rum_app_monitor" "ndr" {
+  count          = local.is_production ? 0 : 1
   name           = "${terraform.workspace}-app-monitor"
   domain         = "*.${var.domain}"
   cw_log_enabled = true
 
   app_monitor_configuration {
-    identity_pool_id    = aws_cognito_identity_pool.cloudwatch_rum.id
+    identity_pool_id    = aws_cognito_identity_pool.cloudwatch_rum[0].id
     allow_cookies       = true
     enable_xray         = false
     session_sample_rate = 1.0
     telemetries         = ["errors", "performance", "http"]
-  }
-
-  custom_events {
-    status = "ENABLED"
   }
 
   depends_on = [aws_cloudwatch_log_resource_policy.rum_log]

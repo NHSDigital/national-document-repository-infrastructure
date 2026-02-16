@@ -29,6 +29,7 @@ module "migration-dynamodb-lambda" {
   }
 
   lambda_timeout                 = 900
+  memory_size                    = 1024
   reserved_concurrent_executions = contains(["prod"], terraform.workspace) ? 100 : 5
 
   depends_on = [

@@ -127,7 +127,6 @@ module "ecs_service" {
 | <a name="output_certificate_arn"></a> [certificate\_arn](#output\_certificate\_arn) | The arn of certificate that load balancer is using |
 | <a name="output_container_port"></a> [container\_port](#output\_container\_port) | The container port number of docker image, which was provided as input variable of this module |
 | <a name="output_dns_name"></a> [dns\_name](#output\_dns\_name) | n/a |
-| <a name="output_dns_zone_id"></a> [dns\_zone\_id](#output\_dns\_zone\_id) | n/a |
 | <a name="output_ecs_cluster_arn"></a> [ecs\_cluster\_arn](#output\_ecs\_cluster\_arn) | n/a |
 | <a name="output_load_balancer_arn"></a> [load\_balancer\_arn](#output\_load\_balancer\_arn) | The arn of the load balancer |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | n/a |

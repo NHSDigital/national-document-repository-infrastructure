@@ -3,6 +3,7 @@ module "bulk-upload-report-lambda" {
   name           = "BulkUploadReportLambda"
   handler        = "handlers.bulk_upload_report_handler.lambda_handler"
   lambda_timeout = 900
+  memory_size    = 1769
   iam_role_policy_documents = [
     module.statistical-reports-store.s3_read_policy_document,
     module.statistical-reports-store.s3_write_policy_document,
@@ -60,12 +61,11 @@ module "bulk-upload-report-alarm" {
 }
 
 module "bulk-upload-report-alarm-topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "bulk-upload-report-topic"
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "bulk-upload-report-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.bulk-upload-report-lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

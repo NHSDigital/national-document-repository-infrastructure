@@ -7,7 +7,7 @@ module "search-patient-details-gateway" {
   gateway_path        = "SearchPatient"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = local.base_url_with_quotes
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
 module "search_patient_alarm" {
@@ -22,13 +22,12 @@ module "search_patient_alarm" {
 }
 
 module "search_patient_alarm_topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "search_patient_details_alarms-topic"
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
-  depends_on             = [module.sns_encryption_key]
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "search_patient_details_alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.search-patient-details-lambda.lambda_arn
+  depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -65,6 +64,7 @@ module "search-patient-details-lambda" {
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
   resource_id         = module.search-patient-details-gateway.gateway_resource_id
   http_methods        = ["GET"]
+  memory_size         = 1769
   lambda_environment_variables = {
     APPCONFIG_APPLICATION          = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT          = module.ndr-app-config.app_config_environment_id

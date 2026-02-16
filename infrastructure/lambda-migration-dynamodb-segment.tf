@@ -3,6 +3,7 @@ module "migration-dynamodb-segment-lambda" {
   name           = "MigrationDynamodbSegment"
   handler        = "handlers.migration_dynamodb_segment_handler.lambda_handler"
   lambda_timeout = 900
+  memory_size    = 1792
   iam_role_policy_documents = [
     module.migration-dynamodb-segment-store.s3_read_policy_document,
     module.migration-dynamodb-segment-store.s3_write_policy_document,

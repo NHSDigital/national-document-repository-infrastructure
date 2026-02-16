@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0" # When upgrading to v6.x, please update cloudfront minimum_protocol_version
+      version = "~> 5.0"
     }
     awscc = {
       source  = "hashicorp/awscc"

@@ -10,13 +10,12 @@ module "get-doc-ref-alarm" {
 }
 
 module "get-doc-ref-alarm-topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "get_doc-alarms-topic"
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
-  depends_on             = [module.sns_encryption_key]
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "get_doc-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.get-doc-ref-lambda.lambda_arn
+  depends_on            = [module.sns_encryption_key]
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -65,7 +64,7 @@ module "get-doc-ref-lambda" {
     WORKSPACE                  = terraform.workspace
     PRESIGNED_ASSUME_ROLE      = aws_iam_role.get_doc_ref_presign_url_role.arn
     EDGE_REFERENCE_TABLE       = module.cloudfront_edge_dynamodb_table.table_name
-    CLOUDFRONT_URL             = one(aws_cloudfront_distribution.s3_presign_mask.aliases)
+    CLOUDFRONT_URL             = aws_cloudfront_distribution.s3_presign_mask.domain_name
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

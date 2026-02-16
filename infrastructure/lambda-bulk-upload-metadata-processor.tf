@@ -3,6 +3,7 @@ module "bulk-upload-metadata-processor-lambda" {
   name           = "BulkUploadMetadataProcessor"
   handler        = "handlers.bulk_upload_metadata_processor_handler.lambda_handler"
   lambda_timeout = 900
+  memory_size    = 1769
 
   iam_role_policy_documents = [
     module.ndr-bulk-staging-store.s3_read_policy_document,
@@ -13,7 +14,6 @@ module "bulk-upload-metadata-processor-lambda" {
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
     module.lg-bulk-upload-expedite-metadata-queue.sqs_read_policy_document,
     module.lg-bulk-upload-expedite-metadata-queue.sqs_write_policy_document,
-    module.document_review_queue.sqs_write_policy_document,
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
@@ -30,8 +30,8 @@ module "bulk-upload-metadata-processor-lambda" {
     LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     METADATA_SQS_QUEUE_URL     = module.sqs-lg-bulk-upload-metadata-queue.sqs_url
     EXPEDITE_SQS_QUEUE_URL     = module.lg-bulk-upload-expedite-metadata-queue.sqs_url
-    REVIEW_SQS_QUEUE_URL       = module.document_review_queue.sqs_url
-    VIRUS_SCAN_STUB            = !local.is_production
+
+    VIRUS_SCAN_STUB = !local.is_production
   }
 
   vpc_subnet_ids         = length(data.aws_security_groups.virus_scanner_api.ids) == 1 ? module.ndr-vpc-ui.private_subnets : []
@@ -55,12 +55,11 @@ module "bulk-upload-metadata-processor-alarm" {
 }
 
 module "bulk-upload-metadata-processor-alarm-topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "bulk-upload-metadata-processor-topic"
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "bulk-upload-metadata-processor-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.bulk-upload-metadata-processor-lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

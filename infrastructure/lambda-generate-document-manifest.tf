@@ -10,12 +10,11 @@ module "generate-document-manifest-alarm" {
 }
 
 module "generate-document-manifest-alarm-topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "generate-document-manifest-topic"
-  topic_protocol         = "email"
-  is_topic_endpoint_list = true
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "generate-document-manifest-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.generate-document-manifest-lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -46,6 +45,7 @@ module "generate-document-manifest-lambda" {
   handler                  = "handlers.generate_document_manifest_handler.lambda_handler"
   lambda_timeout           = 900
   lambda_ephemeral_storage = 512
+  memory_size              = 1769
   iam_role_policy_documents = [
     module.ndr-document-store.s3_read_policy_document,
     module.ndr-document-store.s3_write_policy_document,

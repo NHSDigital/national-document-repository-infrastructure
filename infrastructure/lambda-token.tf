@@ -6,7 +6,7 @@ module "create-token-gateway" {
   authorization       = "NONE"
   gateway_path        = "TokenRequest"
   require_credentials = false
-  origin              = local.base_url_with_quotes
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
 module "create-token-lambda" {
@@ -33,7 +33,7 @@ module "create-token-lambda" {
     WORKSPACE                       = terraform.workspace
     SSM_PARAM_JWT_TOKEN_PRIVATE_KEY = "jwt_token_private_key"
 
-    OIDC_CALLBACK_URL       = local.oidc_callback_url
+    OIDC_CALLBACK_URL       = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
     AUTH_STATE_TABLE_NAME   = "${terraform.workspace}_${var.auth_state_dynamodb_table_name}"
     AUTH_SESSION_TABLE_NAME = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     ENVIRONMENT             = var.environment
@@ -46,6 +46,7 @@ module "create-token-lambda" {
     module.create-token-gateway,
     module.ndr-app-config
   ]
+  memory_size = 1769
 }
 
 module "create_token-alarm" {
@@ -61,12 +62,11 @@ module "create_token-alarm" {
 
 
 module "create_token-alarm_topic" {
-  source                 = "./modules/sns"
-  sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "logout-alarms-topic"
-  topic_protocol         = "email"
-  topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
-  is_topic_endpoint_list = true
+  source                = "./modules/sns"
+  sns_encryption_key_id = module.sns_encryption_key.id
+  topic_name            = "logout-alarms-topic"
+  topic_protocol        = "lambda"
+  topic_endpoint        = module.create-token-lambda.lambda_arn
   delivery_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
