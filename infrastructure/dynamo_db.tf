@@ -625,14 +625,6 @@ module "user_restriction_table" {
     {
       name = "CreatorSmartCardId"
       type = "S"
-    },
-    {
-      name = "Status"
-      type = "S"
-    },
-    {
-      name = "LastUpdated"
-      type = "N"
     }
   ]
 
