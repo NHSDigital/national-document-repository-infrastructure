@@ -19,13 +19,8 @@ module "search_document_reference_history_lambda" {
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
 
   depends_on = [
+    aws_api_gateway_rest_api.ndr_doc_store_api,
     module.document_reference_history_gateway,
-    module.document_reference_dynamodb_table,
-    module.lloyd_george_reference_dynamodb_table,
-    module.ndr-lloyd-george-store,
-    module.ndr-document-store,
-    module.ndr-app-config,
-    aws_iam_policy.ssm_access_policy
   ]
 }
 
