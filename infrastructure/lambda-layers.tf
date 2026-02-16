@@ -17,3 +17,8 @@ module "lambda-layer-reports" {
   source     = "./modules/lambda_layers"
   layer_name = "reports"
 }
+
+module "lambda-layer-files" {
+  source     = "./modules/lambda_layers"
+  layer_name = "files"
+}

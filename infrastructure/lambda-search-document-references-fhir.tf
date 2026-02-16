@@ -24,9 +24,9 @@ module "search-document-references-fhir-lambda" {
     APPCONFIG_APPLICATION           = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT           = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION         = module.ndr-app-config.app_config_configuration_profile_id
-    DYNAMODB_TABLE_LIST             = "[\u0022${module.core_dynamodb_table.table_name}\u0022, \u0022${module.lloyd_george_reference_dynamodb_table.table_name}\u0022]"
     DOCUMENT_RETRIEVE_ENDPOINT_APIM = "${local.apim_api_url}/DocumentReference"
     WORKSPACE                       = terraform.workspace
+    LLOYD_GEORGE_DYNAMODB_NAME      = module.lloyd_george_reference_dynamodb_table.table_name
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
