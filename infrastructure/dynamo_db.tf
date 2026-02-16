@@ -658,9 +658,9 @@ module "user_restriction_table" {
       projection_type = "ALL"
     },
     {
-      name = "CreatorIndex"
-      hash_key = "CreatorSmartCardId"
-      range_key = "Created"
+      name            = "CreatorIndex"
+      hash_key        = "CreatorSmartCardId"
+      range_key       = "Created"
       projection_type = "ALL"
     }
   ]
