@@ -44,6 +44,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     aws_api_gateway_authorizer.repo_authoriser,
     aws_api_gateway_resource.document_reference_by_id,
+    aws_api_gateway_integration.get_document_reference_version_integration,
     module.access-audit-gateway,
     module.access-audit-lambda,
     module.back-channel-logout-gateway,
