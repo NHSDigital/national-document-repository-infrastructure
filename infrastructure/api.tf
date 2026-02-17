@@ -93,7 +93,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.patch_document_review_lambda,
     module.virus_scan_result_gateway,
     module.virus_scan_result_lambda,
-    module.user_restriction_id_gateway,
+    module.user_restrictions_gateway,
     module.user_restrictions_user_search_gateway,
   ]
 

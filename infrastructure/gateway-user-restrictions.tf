@@ -14,7 +14,7 @@ module "user_restriction_id_gateway" {
   source              = "./modules/gateway"
   api_gateway_id      = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id           = module.user_restrictions_gateway.gateway_resource_id
-  http_methods        = ["GET", "DELETE"]
+  http_methods        = ["DELETE"]
   gateway_path        = "{id}"
   authorization       = "CUSTOM"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
