@@ -275,10 +275,16 @@ locals {
 
   bulk_upload_lambda_concurrent_limit = 3
 
-  api_gateway_subdomain_name   = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
-  api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
+  # Domain URLs
+  base_url             = contains(["prod", "ndr-test"], terraform.workspace) ? "https://${var.domain}" : "https://${terraform.workspace}.${var.domain}"
+  base_url_with_quotes = contains(["prod", "ndr-test"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  oidc_callback_url    = contains(["prod", "ndr-test"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
 
-  mtls_api_gateway_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}.${var.domain}" : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}.${var.domain}"
+  api_gateway_subdomain_name   = contains(["prod", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}"
+  api_gateway_full_domain_name = contains(["prod", "test", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix}${var.domain}" : "${var.certificate_subdomain_name_prefix}${terraform.workspace}.${var.domain}"
+
+  mtls_api_gateway_subdomain_name   = contains(["prod", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}." : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}"
+  mtls_api_gateway_full_domain_name = contains(["prod", "ndr-test"], terraform.workspace) ? "${var.certificate_subdomain_name_prefix_mtls}.${var.domain}" : "${var.certificate_subdomain_name_prefix_mtls}.${terraform.workspace}.${var.domain}"
 
   cloudfront_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.cloudfront_subdomain}${var.domain}" : "${var.cloudfront_subdomain}${terraform.workspace}.${var.domain}"
 
@@ -356,7 +362,6 @@ variable "shared_infra_workspace" {
 }
 
 # Concurrency Controller 
-
 variable "office_hours_start_concurrency" {
   type    = number
   default = 1
