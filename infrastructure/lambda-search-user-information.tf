@@ -52,9 +52,9 @@ module "search-user-information-lambda-alarm-topic" {
           "Service" : "cloudwatch.amazonaws.com"
         },
         "Action" : [
-          "SNS:Publish"
+          "SNS:Publish",
         ],
-        "Conditon" : {
+        "Condition" : {
           "ArnLike" : {
             "aws:SourceArn" : "arn:aws:cloudwatch:eu-west-2:${data.aws_caller_identity.current.account_id}:alarm:*"
           }
