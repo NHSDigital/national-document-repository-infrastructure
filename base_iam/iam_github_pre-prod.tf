@@ -1,10 +1,10 @@
-# aws_iam_role.github_role_pre-prod[0]:
-resource "aws_iam_role" "github_role_pre_prod" {
+# aws_iam_role.pre_prod_github_actions[0]:
+resource "aws_iam_role" "pre_prod_github_actions" {
   count                 = local.is_pre_production ? 1 : 0
-  description           = "This role is to provide access for GitHub actions to the pre-prod environment. "
+  name                  = "${terraform.workspace}-github-actions-role"
+  description           = "This role is to provide access for GitHub Actions to the ${terraform.workspace} environment."
   force_detach_policies = false
   max_session_duration  = 3600
-  name                  = "Github-Actions-pre-prod-role"
   name_prefix           = null
   path                  = "/"
   permissions_boundary  = null
@@ -30,13 +30,6 @@ resource "aws_iam_role" "github_role_pre_prod" {
             Federated = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
           }
         },
-        {
-          Action = "sts:AssumeRole"
-          Effect = "Allow"
-          Principal = {
-            AWS = "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/AWSReservedSSO_DomainCGpit-Administrators_3f00be4c22ce78e5/ABKH2@hscic.gov.uk"
-          }
-        },
       ]
       Version = "2012-10-17"
     }
@@ -48,7 +41,7 @@ resource "aws_iam_role" "github_role_pre_prod" {
 
 resource "aws_iam_role_policy" "cloudfront_policy_pre_prod" {
   count = local.is_pre_production ? 1 : 0
-  role  = aws_iam_role.github_role_pre_prod[0].id
+  role  = aws_iam_role.pre_prod_github_actions[0].name
   name  = "cloudfront_policy"
   policy = jsonencode(
     {
@@ -68,7 +61,7 @@ resource "aws_iam_role_policy" "cloudfront_policy_pre_prod" {
             "cloudfront:CreateInvalidation",
             "cloudfront:UpdateOriginAccessControl",
             "cloudfront:CreateOriginRequestPolicy",
-            "cloudfront:UpdateOriginRequestPolicy"
+            "cloudfront:UpdateOriginRequestPolicy",
           ]
           Effect   = "Allow"
           Resource = "*"
@@ -82,7 +75,7 @@ resource "aws_iam_role_policy" "cloudfront_policy_pre_prod" {
 
 resource "aws_iam_role_policy" "cloudwatch_logs_policy_pre_prod" {
   count = local.is_pre_production ? 1 : 0
-  role  = aws_iam_role.github_role_pre_prod[0].id
+  role  = aws_iam_role.pre_prod_github_actions[0].name
   name  = "cloudwatch_logs_policy"
   policy = jsonencode(
     {
@@ -112,7 +105,7 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy_pre_prod" {
 
 resource "aws_iam_role_policy" "ecr_policy_pre_prod" {
   count = local.is_pre_production ? 1 : 0
-  role  = aws_iam_role.github_role_pre_prod[0].id
+  role  = aws_iam_role.pre_prod_github_actions[0].name
   name  = "ecr_policy"
   policy = jsonencode(
     {
@@ -141,7 +134,7 @@ resource "aws_iam_role_policy" "ecr_policy_pre_prod" {
 
 resource "aws_iam_role_policy" "ecs_policy_pre_prod" {
   count = local.is_pre_production ? 1 : 0
-  role  = aws_iam_role.github_role_pre_prod[0].id
+  role  = aws_iam_role.pre_prod_github_actions[0].name
   name  = "ecs_policy"
   policy = jsonencode(
     {
@@ -163,7 +156,7 @@ resource "aws_iam_role_policy" "ecs_policy_pre_prod" {
 
 resource "aws_iam_role_policy" "github_extended_policy_virus_scanner_pre_prod" {
   count = local.is_pre_production ? 1 : 0
-  role  = aws_iam_role.github_role_pre_prod[0].id
+  role  = aws_iam_role.pre_prod_github_actions[0].name
   name  = "github-extended-policy-virus-scanner"
   policy = jsonencode(
     {
@@ -198,7 +191,7 @@ resource "aws_iam_role_policy" "github_extended_policy_virus_scanner_pre_prod" {
 
 resource "aws_iam_role_policy" "lambda_pre_prod" {
   count = local.is_pre_production ? 1 : 0
-  role  = aws_iam_role.github_role_pre_prod[0].id
+  role  = aws_iam_role.pre_prod_github_actions[0].name
   name  = "lambda"
   policy = jsonencode(
     {
@@ -234,7 +227,7 @@ resource "aws_iam_role_policy" "lambda_pre_prod" {
 
 resource "aws_iam_role_policy" "mtls_gateway_pre_prod" {
   count = local.is_pre_production ? 1 : 0
-  role  = aws_iam_role.github_role_pre_prod[0].id
+  role  = aws_iam_role.pre_prod_github_actions[0].name
   name  = "mtls-gateway"
   policy = jsonencode(
     {
@@ -302,7 +295,7 @@ resource "aws_iam_role_policy" "mtls_gateway_pre_prod" {
 
 resource "aws_iam_role_policy" "resource_tagging_pre_prod" {
   count = local.is_pre_production ? 1 : 0
-  role  = aws_iam_role.github_role_pre_prod[0].id
+  role  = aws_iam_role.pre_prod_github_actions[0].name
   name  = "resource_tagging"
   policy = jsonencode(
     {
@@ -437,27 +430,133 @@ resource "aws_iam_role_policy" "resource_tagging_pre_prod" {
   )
 }
 
+resource "aws_iam_role_policy" "rum_policy_pre_prod" {
+  count = local.is_pre_production ? 1 : 0
+  role  = aws_iam_role.pre_prod_github_actions[0].name
+  name  = "rum_policy"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "cognito-identity:SetIdentityPoolRoles",
+            "cognito-identity:CreateIdentityPool",
+            "cognito-identity:DeleteIdentityPool",
+            "cognito-identity:UpdateIdentityPool",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:cognito-identity:eu-west-2:${data.aws_caller_identity.current.account_id}:identitypool/*"
+          Sid      = "AllowIdentityPool"
+        },
+        {
+          Action = [
+            "rum:TagResource",
+            "rum:UntagResource",
+            "rum:ListTagsForResource",
+            "iam:PassRole",
+            "rum:UpdateAppMonitor",
+            "rum:GetAppMonitor",
+            "rum:CreateAppMonitor",
+            "rum:DeleteAppMonitor",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:rum:eu-west-2:${data.aws_caller_identity.current.account_id}:appmonitor/*"
+          Sid      = "AllowAppMonitor"
+        },
+        {
+          Action = [
+            "logs:DeleteLogGroup",
+            "logs:DeleteResourcePolicy",
+            "logs:DescribeLogGroups",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*RUMService*"
+          Sid      = "AllowRumServiceLogs"
+        },
+        {
+          Action = [
+            "logs:CreateLogDelivery",
+            "logs:GetLogDelivery",
+            "logs:UpdateLogDelivery",
+            "logs:DeleteLogDelivery",
+            "logs:ListLogDeliveries",
+            "logs:DescribeResourcePolicies",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "AllowRumServiceAllLogs"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
 
-##############################################################################################################
+resource "aws_iam_role_policy" "scheduler_policy_pre_prod" {
+  count = local.is_pre_production ? 1 : 0
+  role  = aws_iam_role.pre_prod_github_actions[0].name
+  name  = "scheduler_policy"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action   = "scheduler:DeleteSchedule"
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "VisualEditor0"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "step_functions_pre_prod" {
+  count = local.is_pre_production ? 1 : 0
+  role  = aws_iam_role.pre_prod_github_actions[0].name
+  name  = "step_functions"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "states:DescribeStateMachine",
+            "states:UpdateStateMachine",
+            "states:DeleteStateMachine",
+            "states:CreateStateMachine",
+            "states:TagResource",
+            "states:UntagResource",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:states:eu-west-2:${data.aws_caller_identity.current.account_id}:stateMachine:*"
+          Sid      = "VisualEditor0"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+
 # ATTACHED POLICIES
 
 resource "aws_iam_role_policy_attachment" "ReadOnlyAccess_pre_prod" {
   count      = local.is_pre_production ? 1 : 0
-  role       = aws_iam_role.github_role_pre_prod[0].name
+  role       = aws_iam_role.pre_prod_github_actions[0].name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
 
 resource "aws_iam_role_policy_attachment" "github_actions_policy_pre_prod" {
   count      = local.is_pre_production ? 1 : 0
-  role       = aws_iam_role.github_role_pre_prod[0].name
+  role       = aws_iam_role.pre_prod_github_actions[0].name
   policy_arn = aws_iam_policy.github_actions_policy_pre_prod[0].arn
 }
 
-# aws_iam_policy.github_actions_policy_pre-prod[0]:
+# aws_iam_policy.github_actions_policy_pre_prod[0]:
 resource "aws_iam_policy" "github_actions_policy_pre_prod" {
   count       = local.is_pre_production ? 1 : 0
   description = null
-  name        = "github-actions-policy"
+  name        = "${terraform.workspace}-github-actions-policy"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -696,7 +795,7 @@ resource "aws_iam_policy" "github_actions_policy_pre_prod" {
             "ec2:AllocateAddress",
             "ec2:CreateNatGateway",
             "scheduler:CreateSchedule",
-            "scheduler:UpdateSchedule"
+            "scheduler:UpdateSchedule",
           ]
           Effect   = "Allow"
           Resource = "*"
@@ -711,15 +810,15 @@ resource "aws_iam_policy" "github_actions_policy_pre_prod" {
 
 resource "aws_iam_role_policy_attachment" "github_extended_policy_1_pre_prod" {
   count      = local.is_pre_production ? 1 : 0
-  role       = aws_iam_role.github_role_pre_prod[0].name
+  role       = aws_iam_role.pre_prod_github_actions[0].name
   policy_arn = aws_iam_policy.github_extended_policy_1_pre_prod[0].arn
 }
 
-# aws_iam_policy.github_extended_policy_1_pre-prod[0]:
+# aws_iam_policy.github_extended_policy_1_pre_prod[0]:
 resource "aws_iam_policy" "github_extended_policy_1_pre_prod" {
   count       = local.is_pre_production ? 1 : 0
   description = "more required items for GitHub access"
-  name        = "github-extended-policy-1"
+  name        = "${terraform.workspace}-github-extended-policy-1"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -845,11 +944,20 @@ resource "aws_iam_policy" "github_extended_policy_1_pre_prod" {
             "s3:PutBucketNotification",
             "iam:UpdateAssumeRolePolicy",
             "sqs:sendmessage",
-            "kms:GenerateDataKey"
+            "kms:GenerateDataKey",
           ]
           Effect   = "Allow"
           Resource = "*"
           Sid      = "VisualEditor0"
+        },
+        {
+          Action = [
+            "acm:AddTagsToCertificate",
+            "acm:DeleteCertificate",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/*"
+          Sid      = "VisualEditor1"
         },
       ]
       Version = "2012-10-17"
