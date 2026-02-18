@@ -17,6 +17,12 @@ module "search_document_reference_history_lambda" {
   resource_id         = module.document_reference_history_gateway.gateway_resource_id
   http_methods        = ["GET"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
+  lambda_environment_variables = {
+    APPCONFIG_APPLICATION           = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT           = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION         = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE                       = terraform.workspace
+  }
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
