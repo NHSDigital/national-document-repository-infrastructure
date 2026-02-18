@@ -615,7 +615,7 @@ module "user_restriction_table" {
       type = "S"
     },
     {
-      name = "OdsCode"
+      name = "Custodian"
       type = "S"
     },
     {
@@ -642,14 +642,14 @@ module "user_restriction_table" {
       projection_type = "ALL"
     },
     {
-      name            = "OdsCodeNhsNumberIndex"
-      hash_key        = "OdsCode"
+      name            = "CustodianByNhsNumberIndex"
+      hash_key        = "Custodian"
       range_key       = "NhsNumber"
       projection_type = "ALL"
     },
     {
-      name            = "OdsCodeSmartCardIdIndex"
-      hash_key        = "OdsCode"
+      name            = "CustodianBySmartCardIdIndex"
+      hash_key        = "Custodian"
       range_key       = "RestrictedSmartCardId"
       projection_type = "ALL"
     },
