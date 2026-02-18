@@ -607,7 +607,7 @@ module "user_restriction_table" {
       type = "S"
     },
     {
-      name = "RestrictedSmartCardId"
+      name = "RestrictedSmartCard"
       type = "S"
     },
     {
@@ -623,15 +623,15 @@ module "user_restriction_table" {
       type = "N"
     },
     {
-      name = "CreatorSmartCardId"
+      name = "CreatorSmartCard"
       type = "S"
     }
   ]
 
   global_secondary_indexes = [
     {
-      name            = "RestrictedSmartCardIdIndex"
-      hash_key        = "RestrictedSmartCardId"
+      name            = "RestrictedSmartCardIndex"
+      hash_key        = "RestrictedSmartCard"
       range_key       = "Created"
       projection_type = "ALL"
     },
@@ -648,14 +648,14 @@ module "user_restriction_table" {
       projection_type = "ALL"
     },
     {
-      name            = "CustodianBySmartCardIdIndex"
+      name            = "CustodianBySmartCardIndex"
       hash_key        = "Custodian"
-      range_key       = "RestrictedSmartCardId"
+      range_key       = "RestrictedSmartCard"
       projection_type = "ALL"
     },
     {
       name            = "CreatorIndex"
-      hash_key        = "CreatorSmartCardId"
+      hash_key        = "CreatorSmartCard"
       range_key       = "Created"
       projection_type = "ALL"
     }
