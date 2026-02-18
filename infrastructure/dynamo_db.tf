@@ -642,6 +642,12 @@ module "user_restriction_table" {
       projection_type = "ALL"
     },
     {
+      name            = "CustodianIndex"
+      hash_key        = "Custodian"
+      range_key       = "Created"
+      projection_type = "ALL"
+    },
+    {
       name            = "CustodianByNhsNumberIndex"
       hash_key        = "Custodian"
       range_key       = "NhsNumber"
