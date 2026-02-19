@@ -622,10 +622,6 @@ module "user_restriction_table" {
       name = "Created"
       type = "N"
     },
-    {
-      name = "CreatorSmartCard"
-      type = "S"
-    }
   ]
 
   global_secondary_indexes = [
@@ -642,20 +638,8 @@ module "user_restriction_table" {
       projection_type = "ALL"
     },
     {
-      name            = "CustodianByNhsNumberIndex"
+      name            = "CustodianIndex"
       hash_key        = "Custodian"
-      range_key       = "NhsNumber"
-      projection_type = "ALL"
-    },
-    {
-      name            = "CustodianBySmartCardIndex"
-      hash_key        = "Custodian"
-      range_key       = "RestrictedSmartCard"
-      projection_type = "ALL"
-    },
-    {
-      name            = "CreatorIndex"
-      hash_key        = "CreatorSmartCard"
       range_key       = "Created"
       projection_type = "ALL"
     }
