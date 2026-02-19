@@ -3,12 +3,8 @@ module "search_document_reference_history_lambda" {
   name    = "SearchDocumentReferenceHistory"
   handler = "handlers.search_document_reference_history_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
-    module.ndr-document-store.s3_read_policy_document,
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy
   ]
@@ -67,18 +63,4 @@ module "search_document_reference_history_lambda_alarm_topic" {
       }
     ]
   })
-}
-
-resource "aws_api_gateway_integration" "get_document_reference_version_integration" {
-  rest_api_id             = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id             = module.document_reference_version_gateway.gateway_resource_id
-  http_method             = "GET"
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = module.get-doc-ref-lambda.invoke_arn
-
-  depends_on = [
-    module.document_reference_version_gateway,
-    module.get-doc-ref-lambda,
-  ]
 }
