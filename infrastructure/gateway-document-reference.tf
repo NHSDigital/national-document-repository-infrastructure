@@ -66,7 +66,7 @@ module "document_reference_version_gateway" {
   origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 
   request_parameters = {
-    "method.request.path.id" = true,
+    "method.request.path.id"      = true,
     "method.request.path.version" = true
   }
 
