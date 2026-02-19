@@ -607,7 +607,7 @@ module "user_restriction_table" {
       type = "S"
     },
     {
-      name = "RestrictedSmartCard"
+      name = "RestrictedSmartcard"
       type = "S"
     },
     {
@@ -626,8 +626,8 @@ module "user_restriction_table" {
 
   global_secondary_indexes = [
     {
-      name            = "RestrictedSmartCardIndex"
-      hash_key        = "RestrictedSmartCard"
+      name            = "RestrictedSmartcardIndex"
+      hash_key        = "RestrictedSmartcard"
       range_key       = "Created"
       projection_type = "ALL"
     },
