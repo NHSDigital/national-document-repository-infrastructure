@@ -5,7 +5,6 @@ module "search-user-information-lambda" {
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
-    module.user_restriction_table.dynamodb_write_policy_document
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -17,7 +16,6 @@ module "search-user-information-lambda" {
     APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
-    RESTRICTIONS_TABLE_NAME = module.user_restriction_table.table_name
   }
 
   depends_on = [
