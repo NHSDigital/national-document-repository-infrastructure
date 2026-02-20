@@ -124,7 +124,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.14.3
+          terraform_version: 1.14.5
 
       - name: Initialise Terraform
         run: terraform init -backend-config=bucket=ndr-dev-terraform-state-${{ secrets.AWS_ACCOUNT_ID }}
