@@ -18,6 +18,22 @@ on:
         required: true
         type: "boolean"
         default: false
+        
+  workflow_call:
+    inputs:
+      git_ref:
+        description: "Branch, tag or SHA to deploy"
+        required: true
+        type: "string"
+      sandbox_name:
+        description: "Sandbox name [a-z0-9]{1,7}"
+        required: true
+        type: "string"
+      skip_main_deployment:
+        description: "Skip main deployment"
+        required: true
+        type: "boolean"
+        default: false
 
 permissions:
   pull-requests: write
