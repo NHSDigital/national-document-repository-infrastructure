@@ -239,7 +239,7 @@ resource "aws_iam_role_policy" "eventbridge_start_reporting_sfn" {
   })
 }
 
-resource "aws_cloudwatch_event_target" "reporting_daily_reports_schedule_target" {
+resource "aws_cloudwatch_event_target" "reporting_daily_reports_schedule" {
   rule      = aws_cloudwatch_event_rule.reporting_daily_reports_schedule.name
   target_id = "reporting_daily_reports"
   arn       = aws_sfn_state_machine.reporting_daily_reports.arn
