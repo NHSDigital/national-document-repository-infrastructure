@@ -244,5 +244,5 @@ resource "aws_cloudwatch_event_target" "reporting_daily_reports_schedule_target"
   target_id = "reporting_daily_reports"
   arn       = aws_sfn_state_machine.reporting_daily_reports.arn
   role_arn  = aws_iam_role.eventbridge_start_reporting_sfn.arn
-  input = jsonencode({})
+  input     = jsonencode({})
 }
