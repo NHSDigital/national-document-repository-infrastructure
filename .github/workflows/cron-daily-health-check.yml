@@ -19,59 +19,78 @@ jobs:
     steps:
       - name: Set Output
         id: set-output
-        run: echo 'workspace=ndrd' >> $GITHUB_OUTPUT      
+        run: echo 'workspace=ndrd' >> $GITHUB_OUTPUT
 
+
+
+
+  # REPLACE WITH ACTION (OR A REUSABLE WORKFLOW)
+  # (it's currently failing because the teardown is expecting a role ndrd-github-actions-role which doesn't exist yet)
+
+  # terraform_plan_apply:
+  #   name: Terraform Plan/Apply (ndrd)
+  #   runs-on: ubuntu-latest
+  #   environment: development
+  #   needs: ['set_workspace']
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v6
+  #       with:
+  #         ref: main
+  #
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v5
+  #       with:
+  #         role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
+  #         role-skip-session-tagging: true
+  #         aws-region: ${{ vars.AWS_REGION }}
+  #         mask-aws-account-id: true
+
+  #     - name: Setup Terraform
+  #       uses: hashicorp/setup-terraform@v3
+  #       with:
+  #         terraform_version: 1.14.3
+  #         terraform_wrapper: false
+
+  #     - name: Initialise Terraform
+  #       id: init
+  #       run: terraform init -backend-config=backend.conf
+  #       working-directory: ./infrastructure
+  #       shell: bash
+
+  #     - name: Select Terraform Workspace
+  #       id: workspace
+  #       run: terraform workspace select -or-create ${{ needs.set_workspace.outputs.workspace }}
+  #       working-directory: ./infrastructure
+  #       shell: bash
+
+  #     - name: Check Terraform Formatting
+  #       run: terraform fmt -check
+  #       working-directory: ./infrastructure
+
+  #     - name: Run Terraform Plan
+  #       id: plan
+  #       run: |
+  #         terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
+  #       working-directory: ./infrastructure
+  #       shell: bash
+
+  #     - name: Run Terraform Apply
+  #       run: terraform apply -auto-approve -input=false tf.plan
+  #       working-directory: ./infrastructure
+
+
+  # WILL NEED TO CHECK THE UPDATED WORKFLOW INTO MAIN BEFORE CALLING THEN REF!
   terraform_plan_apply:
     name: Terraform Plan/Apply (ndrd)
-    runs-on: ubuntu-latest
-    environment: development
-    needs: ['set_workspace']
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          ref: main
+    needs: set_workspace
+    uses: ./.github/workflows/deploy-sandbox.yml
+    with:
+      git_ref: main
+      sandbox_name: ${{ needs.set_workspace.outputs.workspace }}
+      skip_main_deployment: true
+    secrets: inherit
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v5
-        with:
-          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-          role-skip-session-tagging: true
-          aws-region: ${{ vars.AWS_REGION }}
-          mask-aws-account-id: true
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.14.5
-          terraform_wrapper: false
-
-      - name: Initialise Terraform
-        id: init
-        run: terraform init -backend-config=backend.conf
-        working-directory: ./infrastructure
-        shell: bash
-
-      - name: Select Terraform Workspace
-        id: workspace
-        run: terraform workspace select -or-create ${{ needs.set_workspace.outputs.workspace }}
-        working-directory: ./infrastructure
-        shell: bash
-
-      - name: Check Terraform Formatting
-        run: terraform fmt -check
-        working-directory: ./infrastructure
-
-      - name: Run Terraform Plan
-        id: plan
-        run: |
-          terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
-        working-directory: ./infrastructure
-        shell: bash
-
-      - name: Run Terraform Apply
-        run: terraform apply -auto-approve -input=false tf.plan
-        working-directory: ./infrastructure
 
   run_lambda_unit_tests:
     name: Run Lambda Unit Tests
@@ -79,7 +98,7 @@ jobs:
     with:
       python_version: "3.11"
       build_branch: main
-      
+
   run_ui_unit_tests:
     name: Run UI Unit Tests
     uses: NHSDigital/national-document-repository/.github/workflows/base-vitest-test.yml@main
@@ -88,7 +107,7 @@ jobs:
 
   run_cypress_tests:
     name: Run Cypress Tests
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -123,7 +142,7 @@ jobs:
       - name: Copy main.html to index.html for serve compatibility
         run: cp ./dist/main.html ./dist/index.html
         working-directory: ./app
-      
+
       - name: npm install serve -g
         run: npm install serve -g
 
@@ -139,7 +158,8 @@ jobs:
             cypress/e2e/0-ndr-core-tests/**/*.cy.js
         env:
           CYPRESS_BASE_URL: http://localhost:3000
-  
+          CYPRESS_grepTags: 'regression'
+
       - name: Upload Artifacts (Screenshots)
         uses: actions/upload-artifact@v6
         if: failure()
@@ -167,7 +187,7 @@ jobs:
       python_version: "3.11"
     secrets:
       AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
-        
+
   deploy_lambdas:
     name: Deploy Lambdas
     uses: NHSDigital/national-document-repository/.github/workflows/base-lambdas-reusable-deploy-all.yml@main
@@ -194,7 +214,7 @@ jobs:
 
   destroy_test_environment:
     if: always()
-    name: Destroy Sandbox (ndrd) 
+    name: Destroy Sandbox (ndrd)
     needs: ['set_workspace', 'deploy_ui', 'deploy_lambdas']
     uses: ./.github/workflows/tear-down-sandbox.yml
     with:
