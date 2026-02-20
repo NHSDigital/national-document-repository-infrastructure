@@ -97,7 +97,6 @@ jobs:
             cypress/e2e/0-ndr-core-tests/**/*.cy.js
         env:
           CYPRESS_BASE_URL: http://localhost:3000
-          CYPRESS_grepTags: 'regression'
 
       - name: Upload Artifacts (Screenshots)
         uses: actions/upload-artifact@v6
