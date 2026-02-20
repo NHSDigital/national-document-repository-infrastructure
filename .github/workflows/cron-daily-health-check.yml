@@ -4,14 +4,6 @@ on:
   schedule:
     - cron: 30 4 * * 1-5
 
-  # TODO: Revert
-  workflow_dispatch:
-    inputs:
-      git_ref:
-        description: "Branch, tag or SHA to deploy"
-        required: true
-        type: "string"
-
 permissions:
   actions: read   # Required for anchore/sbom-action
   contents: write # Required for anchore/sbom-action
@@ -29,78 +21,15 @@ jobs:
         id: set-output
         run: echo 'workspace=ndrd' >> $GITHUB_OUTPUT
 
-
-
-
-  # REPLACE WITH ACTION (OR A REUSABLE WORKFLOW)
-  # (it's currently failing because the teardown is expecting a role ndrd-github-actions-role which doesn't exist yet)
-
-  # terraform_plan_apply:
-  #   name: Terraform Plan/Apply (ndrd)
-  #   runs-on: ubuntu-latest
-  #   environment: development
-  #   needs: ['set_workspace']
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v6
-  #       with:
-  #         ref: main
-  #
-  #     - name: Configure AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@v5
-  #       with:
-  #         role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
-  #         role-skip-session-tagging: true
-  #         aws-region: ${{ vars.AWS_REGION }}
-  #         mask-aws-account-id: true
-
-  #     - name: Setup Terraform
-  #       uses: hashicorp/setup-terraform@v3
-  #       with:
-  #         terraform_version: 1.14.3
-  #         terraform_wrapper: false
-
-  #     - name: Initialise Terraform
-  #       id: init
-  #       run: terraform init -backend-config=backend.conf
-  #       working-directory: ./infrastructure
-  #       shell: bash
-
-  #     - name: Select Terraform Workspace
-  #       id: workspace
-  #       run: terraform workspace select -or-create ${{ needs.set_workspace.outputs.workspace }}
-  #       working-directory: ./infrastructure
-  #       shell: bash
-
-  #     - name: Check Terraform Formatting
-  #       run: terraform fmt -check
-  #       working-directory: ./infrastructure
-
-  #     - name: Run Terraform Plan
-  #       id: plan
-  #       run: |
-  #         terraform plan -input=false -no-color -var-file="${{vars.TF_VARS_FILE}}" -out tf.plan
-  #       working-directory: ./infrastructure
-  #       shell: bash
-
-  #     - name: Run Terraform Apply
-  #       run: terraform apply -auto-approve -input=false tf.plan
-  #       working-directory: ./infrastructure
-
-
-  # WILL NEED TO CHECK THE UPDATED WORKFLOW INTO MAIN BEFORE CALLING THEN REF!
   terraform_plan_apply:
     name: Terraform Plan/Apply (ndrd)
     needs: set_workspace
     uses: ./.github/workflows/deploy-sandbox.yml
     with:
-      # TODO: Revert this
-      # git_ref: main
-      git_ref: ${{ github.event.inputs.git_ref || 'main' }}
+      git_ref: main
       sandbox_name: ${{ needs.set_workspace.outputs.workspace }}
       skip_main_deployment: true
     secrets: inherit
-
 
   run_lambda_unit_tests:
     name: Run Lambda Unit Tests
@@ -228,10 +157,7 @@ jobs:
     needs: ['set_workspace', 'deploy_ui', 'deploy_lambdas']
     uses: ./.github/workflows/tear-down-sandbox.yml
     with:
-      # TODO: Revert this
-      # git_ref: main
-      git_ref: ${{ github.event.inputs.git_ref || 'main' }}
-
+      git_ref: main
       sandbox_name: ${{ needs.set_workspace.outputs.workspace }}
       environment: development
     secrets: inherit
@@ -257,55 +183,54 @@ jobs:
           echo "::add-mask::$slack_bot_token"
           echo "SLACK_BOT_TOKEN=$slack_bot_token" >> $GITHUB_ENV
 
-      # TODO: Revert this
-      # - name: Send Slack Notification
-      #   uses: slackapi/slack-github-action@v2.1.1
-      #   with:
-      #     method: chat.postMessage
-      #     token: ${{ env.SLACK_BOT_TOKEN }}
-      #     payload: |
-      #       {
-      #         "channel": "${{ vars.ALERTS_SLACK_CHANNEL_ID }}",
-      #         "attachments": [
-      #           {
-      #             "color": "#ff0000",
-      #             "blocks": [
-      #               {
-      #                 "type": "header",
-      #                 "text": {
-      #                   "type": "plain_text",
-      #                   "text": "❌ Workflow `${{ github.workflow }}` failed"
-      #                 }
-      #               },
-      #               {
-      #                 "type": "section",
-      #                 "text": {
-      #                   "type": "mrkdwn",
-      #                   "text": "*Triggered by:* `Scheduled Job`\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"
-      #                 }
-      #               },
-      #               {
-      #                 "type": "divider"
-      #               },
-      #               {
-      #                 "type": "section",
-      #                 "fields": [
-      #                   { "type": "mrkdwn", "text": "*terraform_plan_apply:* ${{ needs.terraform_plan_apply.result == 'success' && ':white_check_mark:' || ':x:' }}" },
-      #                   { "type": "mrkdwn", "text": "*run_lambda_unit_tests:* ${{ needs.run_lambda_unit_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
-      #                   { "type": "mrkdwn", "text": "*run_ui_unit_tests:* ${{ needs.run_ui_unit_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
-      #                   { "type": "mrkdwn", "text": "*run_cypress_tests:* ${{ needs.run_cypress_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
-      #                   { "type": "mrkdwn", "text": "*publish_lambda_layers:* ${{ needs.publish_lambda_layers.result == 'success' && ':white_check_mark:' || ':x:' }}" },
-      #                   { "type": "mrkdwn", "text": "*deploy_lambdas:* ${{ needs.deploy_lambdas.result == 'success' && ':white_check_mark:' || ':x:' }}" },
-      #                   { "type": "mrkdwn", "text": "*deploy_ui:* ${{ needs.deploy_ui.result == 'success' && ':white_check_mark:' || ':x:' }}" }
-      #                 ]
-      #               },
-      #               {
-      #                 "type": "context",
-      #                 "elements": [
-      #                   { "type": "mrkdwn", "text": "Environment: `development` | Sandbox: `${{ needs.set_workspace.outputs.workspace }}`" }
-      #                 ]
-      #               }
-      #             ]
-      #           }
-      #         ]
-      #       }
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          method: chat.postMessage
+          token: ${{ env.SLACK_BOT_TOKEN }}
+          payload: |
+            {
+              "channel": "${{ vars.ALERTS_SLACK_CHANNEL_ID }}",
+              "attachments": [
+                {
+                  "color": "#ff0000",
+                  "blocks": [
+                    {
+                      "type": "header",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "❌ Workflow `${{ github.workflow }}` failed"
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "*Triggered by:* `Scheduled Job`\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"
+                      }
+                    },
+                    {
+                      "type": "divider"
+                    },
+                    {
+                      "type": "section",
+                      "fields": [
+                        { "type": "mrkdwn", "text": "*terraform_plan_apply:* ${{ needs.terraform_plan_apply.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*run_lambda_unit_tests:* ${{ needs.run_lambda_unit_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*run_ui_unit_tests:* ${{ needs.run_ui_unit_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*run_cypress_tests:* ${{ needs.run_cypress_tests.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*publish_lambda_layers:* ${{ needs.publish_lambda_layers.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*deploy_lambdas:* ${{ needs.deploy_lambdas.result == 'success' && ':white_check_mark:' || ':x:' }}" },
+                        { "type": "mrkdwn", "text": "*deploy_ui:* ${{ needs.deploy_ui.result == 'success' && ':white_check_mark:' || ':x:' }}" }
+                      ]
+                    },
+                    {
+                      "type": "context",
+                      "elements": [
+                        { "type": "mrkdwn", "text": "Environment: `development` | Sandbox: `${{ needs.set_workspace.outputs.workspace }}`" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
