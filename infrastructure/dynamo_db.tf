@@ -593,3 +593,58 @@ module "bulk_upload_contact_lookup_table" {
   environment = var.environment
   owner       = var.owner
 }
+
+module "user_restriction_table" {
+  source                         = "./modules/dynamo_db"
+  table_name                     = var.user_restrictions_table_name
+  hash_key                       = "ID"
+  deletion_protection_enabled    = var.deletion_protection_enabled
+  point_in_time_recovery_enabled = !local.is_sandbox
+
+  attributes = [
+    {
+      name = "ID"
+      type = "S"
+    },
+    {
+      name = "RestrictedSmartcard"
+      type = "S"
+    },
+    {
+      name = "NhsNumber"
+      type = "S"
+    },
+    {
+      name = "Custodian"
+      type = "S"
+    },
+    {
+      name = "Created"
+      type = "N"
+    },
+  ]
+
+  global_secondary_indexes = [
+    {
+      name            = "RestrictedSmartcardIndex"
+      hash_key        = "RestrictedSmartcard"
+      range_key       = "Created"
+      projection_type = "ALL"
+    },
+    {
+      name            = "NhsNumberIndex"
+      hash_key        = "NhsNumber"
+      range_key       = "Created"
+      projection_type = "ALL"
+    },
+    {
+      name            = "CustodianIndex"
+      hash_key        = "Custodian"
+      range_key       = "Created"
+      projection_type = "ALL"
+    }
+  ]
+
+  environment = var.environment
+  owner       = var.owner
+}

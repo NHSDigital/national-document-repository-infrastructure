@@ -208,6 +208,12 @@ variable "deletion_protection_enabled" {
   default     = false
 }
 
+variable "user_restrictions_table_name" {
+  description = "The DynamoDB table name for storing user restrictions"
+  type        = string
+  default     = "UserRestrictions"
+}
+
 # VPC Variables
 
 variable "standalone_vpc_tag" {
