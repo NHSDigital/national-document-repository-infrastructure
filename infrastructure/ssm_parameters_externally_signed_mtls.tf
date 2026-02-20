@@ -19,7 +19,7 @@ module "ssm_param_external_client_key" {
   owner                = var.owner
   name                 = "external_client_key"
   type                 = "SecureString"
-  description          = "Externally signed client certificate for mTLS"
+  description          = "Client key for mTLS"
   value                = "REPLACE_ME"
   key_id               = module.pdm_encryption_key.id
   ignore_value_changes = true
@@ -45,7 +45,33 @@ module "ssm_param_unauthorised_client_key" {
   owner                = var.owner
   name                 = "unauthorised_client_key"
   type                 = "SecureString"
-  description          = "Externally signed foobar client certificate for test purposes"
+  description          = "Foobar client key for test purposes"
+  value                = "REPLACE_ME"
+  key_id               = module.pdm_encryption_key.id
+  ignore_value_changes = true
+}
+
+module "ssm_param_lg_client_cert" {
+  count                = local.is_sandbox ? 0 : 1
+  source               = "./modules/ssm_parameter"
+  environment          = var.environment
+  owner                = var.owner
+  name                 = "lg_client_cert"
+  type                 = "SecureString"
+  description          = "Externally signed LG client certificate for mTLS"
+  value                = "REPLACE_ME"
+  key_id               = module.pdm_encryption_key.id
+  ignore_value_changes = true
+}
+
+module "ssm_param_lg_client_key" {
+  count                = local.is_sandbox ? 0 : 1
+  source               = "./modules/ssm_parameter"
+  environment          = var.environment
+  owner                = var.owner
+  name                 = "lg_client_key"
+  type                 = "SecureString"
+  description          = "LG client key for mTLS"
   value                = "REPLACE_ME"
   key_id               = module.pdm_encryption_key.id
   ignore_value_changes = true
