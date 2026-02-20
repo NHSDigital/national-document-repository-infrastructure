@@ -54,7 +54,7 @@ jobs:
       sandbox_name: ${{ inputs.sandbox_name }}
       environment: ${{ inputs.environment }}
     secrets:
-      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   cleanup_versions:
     name: Cleanup Versions
@@ -64,7 +64,7 @@ jobs:
       sandbox_name: ${{ inputs.sandbox_name }}
       environment: ${{ inputs.environment }}
     secrets:
-      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+      AWS_ASSUME_ROLE: ${{ secrets.AWS_ASSUME_ROLE }}
 
   terraform_destroy:
     name: Terraform Destroy
@@ -80,7 +80,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
 
