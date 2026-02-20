@@ -54,6 +54,7 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.delete-doc-ref-gateway,
     module.delete-document-references-fhir-lambda,
     module.delete-doc-ref-lambda,
+    module.delete-user-restriction-lambda,
     module.document-manifest-job-gateway,
     module.document-manifest-job-lambda,
     module.document_reference_gateway,
@@ -74,6 +75,8 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.search_document_review_lambda,
     module.search-patient-details-gateway,
     module.search-patient-details-lambda,
+    module.search-user-information-lambda,
+    module.search-user-restriction-lambda,
     module.send-feedback-gateway,
     module.send-feedback-lambda,
     module.review_document_version_gateway,
@@ -86,9 +89,12 @@ resource "aws_api_gateway_deployment" "ndr_api_deploy" {
     module.document-status-check-lambda,
     module.post-document-references-fhir-lambda,
     module.post_document_review_lambda,
+    module.post-user-restriction-lambda,
     module.patch_document_review_lambda,
     module.virus_scan_result_gateway,
-    module.virus_scan_result_lambda
+    module.virus_scan_result_lambda,
+    module.user_restrictions_gateway,
+    module.user_restrictions_user_search_gateway,
   ]
 
   lifecycle {
