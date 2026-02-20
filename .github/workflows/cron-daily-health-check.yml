@@ -4,6 +4,14 @@ on:
   schedule:
     - cron: 30 4 * * 1-5
 
+  # TODO: Revert
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: "Branch, tag or SHA to deploy"
+        required: true
+        type: "string"
+
 permissions:
   actions: read   # Required for anchore/sbom-action
   contents: write # Required for anchore/sbom-action
@@ -86,7 +94,9 @@ jobs:
     needs: set_workspace
     uses: ./.github/workflows/deploy-sandbox.yml
     with:
-      git_ref: main
+      # TODO: Revert this
+      # git_ref: main
+      git_ref: ${{ github.event.inputs.git_ref || 'main' }}
       sandbox_name: ${{ needs.set_workspace.outputs.workspace }}
       skip_main_deployment: true
     secrets: inherit
@@ -218,7 +228,10 @@ jobs:
     needs: ['set_workspace', 'deploy_ui', 'deploy_lambdas']
     uses: ./.github/workflows/tear-down-sandbox.yml
     with:
-      git_ref: main
+      # TODO: Revert this
+      # git_ref: main
+      git_ref: ${{ github.event.inputs.git_ref || 'main' }}
+
       sandbox_name: ${{ needs.set_workspace.outputs.workspace }}
       environment: development
     secrets: inherit
