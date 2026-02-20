@@ -26,6 +26,9 @@
         },
         "documentCorrectEnabled": {
           "name": "documentCorrectEnabled"
+        },
+        "versionHistoryEnabled": {
+          "name": "versionHistoryEnabled"
         }
     },
     "values": {
@@ -54,6 +57,9 @@
           "enabled": "true"
         },
         "documentCorrectEnabled": {
+          "enabled": "true"
+        },
+        "versionHistoryEnabled": {
           "enabled": "true"
         }
     },
