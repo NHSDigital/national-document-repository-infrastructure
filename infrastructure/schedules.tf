@@ -198,3 +198,51 @@ resource "aws_lambda_permission" "transfer_key_manager_schedule_permission" {
     aws_cloudwatch_event_rule.transfer_key_manager_schedule
   ]
 }
+
+resource "aws_cloudwatch_event_rule" "reporting_daily_reports_schedule" {
+  name                = "${terraform.workspace}_reporting_daily_reports_schedule"
+  description         = "Daily schedule to start reporting_daily_reports Step Function"
+  schedule_expression = "cron(1 7 * * ? *)"
+}
+
+resource "aws_iam_role" "eventbridge_start_reporting_sfn" {
+  name = "${terraform.workspace}_eventbridge_start_reporting_sfn"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "events.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "eventbridge_start_reporting_sfn" {
+  name = "${terraform.workspace}_eventbridge_start_reporting_sfn_policy"
+  role = aws_iam_role.eventbridge_start_reporting_sfn.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid      = "AllowStartExecution"
+        Effect   = "Allow"
+        Action   = "states:StartExecution"
+        Resource = aws_sfn_state_machine.reporting_daily_reports.arn
+      }
+    ]
+  })
+}
+
+resource "aws_cloudwatch_event_target" "reporting_daily_reports_schedule_target" {
+  rule      = aws_cloudwatch_event_rule.reporting_daily_reports_schedule.name
+  target_id = "reporting_daily_reports"
+  arn       = aws_sfn_state_machine.reporting_daily_reports.arn
+  role_arn  = aws_iam_role.eventbridge_start_reporting_sfn.arn
+  input = jsonencode({})
+}
