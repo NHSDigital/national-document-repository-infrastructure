@@ -18,24 +18,36 @@ resource "aws_ecr_repository" "ndr-ecr" {
 resource "aws_ecr_lifecycle_policy" "ndr_ecr_lifecycle_policy" {
   repository = aws_ecr_repository.ndr-ecr.name
   policy     = <<EOF
-  {
-      "rules": [
-          {
-              "rulePriority": 1,
-              "description": "Expire images older than 7 days",
-              "selection": {
-                  "tagStatus": "untagged",
-                  "countType": "sinceImagePushed",
-                  "countUnit": "days",
-                  "countNumber": 7
-              },
-              "action": {
-                  "type": "expire"
-              }
-          }
-      ]
-  }
-  EOF
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Expire images older than 7 days",
+      "selection": {
+        "tagStatus": "untagged",
+        "countType": "sinceImagePushed",
+        "countUnit": "days",
+        "countNumber": 7
+      },
+      "action": {
+        "type": "expire"
+      }
+    },
+    {
+      "rulePriority": 2,
+      "description": "Keep the 5 most recent images",
+      "selection": {
+        "tagStatus": "any",
+        "countType": "imageCountMoreThan",
+        "countNumber": 5
+      },
+      "action": {
+        "type": "expire"
+      }
+    }
+  ]
+}
+EOF
 }
 
 resource "aws_ecr_repository_policy" "ndr_ecr_repository_policy" {
