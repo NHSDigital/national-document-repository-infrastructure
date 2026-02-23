@@ -959,6 +959,20 @@ resource "aws_iam_policy" "github_extended_policy_1_pre_prod" {
           Resource = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/*"
           Sid      = "VisualEditor1"
         },
+        {
+          Effect = "Allow",
+          Action = [
+            "ses:CreateConfigurationSet",
+            "ses:DeleteConfigurationSet",
+            "ses:CreateConfigurationSetEventDestination",
+            "ses:UpdateConfigurationSetEventDestination",
+            "ses:DeleteConfigurationSetEventDestination",
+            "ses:DescribeConfigurationSet",
+            "ses:ListConfigurationSets"
+          ],
+          Resource = "*"
+          Sid      = "SesConfigurationSets",
+        }
       ]
       Version = "2012-10-17"
     }
