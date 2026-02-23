@@ -102,12 +102,73 @@ resource "aws_api_gateway_method_settings" "mtls_api_gateway_stage" {
   }
 }
 
+resource "aws_api_gateway_gateway_response" "resource_not_found" {
+  rest_api_id   = aws_api_gateway_rest_api.your_api.id
+  response_type = "RESOURCE_NOT_FOUND"
+  status_code   = "404"
+
+  response_templates = {
+    "application/fhir+json" = jsonencode({
+      resourceType = "OperationOutcome"
+      issue = [
+        {
+          severity    = "error"
+          code        = "not-found"
+          diagnostics = "The requested resource does not exist"
+        }
+      ]
+    })
+  }
+
+  response_parameters = {
+    "gatewayresponse.header.Access-Control-Allow-Origin"      = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+    "gatewayresponse.header.Access-Control-Allow-Methods"     = "'*'"
+    "gatewayresponse.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Auth,X-Api-Key,X-Amz-Security-Token,X-Auth-Cookie,Accept'"
+    "gatewayresponse.header.Access-Control-Allow-Credentials" = "'true'"
+  }
+}
+
+resource "aws_api_gateway_gateway_response" "invalid_signature" {
+  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
+  response_type = "INVALID_SIGNATURE"
+  status_code   = "401"
+
+  response_templates = {
+    "application/fhir+json" = jsonencode({
+      resourceType = "OperationOutcome"
+      issue = [
+        {
+          severity    = "error"
+          code        = "security"
+          diagnostics = "Client certificate validation failed - invalid or untrusted certificate"
+        }
+      ]
+    })
+  }
+
+  response_parameters = {
+    "gatewayresponse.header.Access-Control-Allow-Origin"      = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+    "gatewayresponse.header.Access-Control-Allow-Methods"     = "'*'"
+    "gatewayresponse.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Auth,X-Api-Key,X-Amz-Security-Token,X-Auth-Cookie,Accept'"
+    "gatewayresponse.header.Access-Control-Allow-Credentials" = "'true'"
+  }
+}
+
 resource "aws_api_gateway_gateway_response" "unauthorised_response_mtls" {
   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
   response_type = "DEFAULT_4XX"
 
   response_templates = {
-    "application/json" = "{\"message\":$context.error.messageString}"
+    "application/fhir+json" = jsonencode({
+      resourceType = "OperationOutcome"
+      issue = [
+        {
+          severity    = "error"
+          code        = "forbidden"
+          diagnostics = "$context.error.messageString"
+        }
+      ]
+    })
   }
 
   response_parameters = {
@@ -123,7 +184,16 @@ resource "aws_api_gateway_gateway_response" "bad_gateway_response_mtls" {
   response_type = "DEFAULT_5XX"
 
   response_templates = {
-    "application/json" = "{\"message\":$context.error.messageString}"
+    "application/fhir+json" = jsonencode({
+      resourceType = "OperationOutcome"
+      issue = [
+        {
+          severity    = "error"
+          code        = "exception"
+          diagnostics = "$context.error.messageString"
+        }
+      ]
+    })
   }
 
   response_parameters = {
