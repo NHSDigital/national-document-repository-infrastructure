@@ -1,4 +1,4 @@
-module "post-user-restriction-lambda" {
+module "post_user_restriction_lambda" {
   source  = "./modules/lambda"
   name    = "CreateUserRestriction"
   handler = "handlers.create_user_restriction_handler.lambda_handler"
@@ -26,17 +26,17 @@ module "post-user-restriction-lambda" {
   ]
 }
 
-module "post-user-restriction-lambda-alarms" {
+module "post_user_restriction_lambda_alarms" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.post-user-restriction-lambda.function_name
-  lambda_timeout       = module.post-user-restriction-lambda.timeout
-  lambda_name          = module.post-user-restriction-lambda.function_name
+  lambda_function_name = module.post_user_restriction_lambda.function_name
+  lambda_timeout       = module.post_user_restriction_lambda.timeout
+  lambda_name          = module.post_user_restriction_lambda.function_name
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.post-user-restriction-lambda-alarm-topic.arn]
-  ok_actions           = [module.post-user-restriction-lambda-alarm-topic.arn]
+  alarm_actions        = [module.post_user_restriction_lambda_alarm_topic.arn]
+  ok_actions           = [module.post_user_restriction_lambda_alarm_topic.arn]
 }
 
-module "post-user-restriction-lambda-alarm-topic" {
+module "post_user_restriction_lambda_alarm_topic" {
   source                 = "./modules/sns"
   sns_encryption_key_id  = module.sns_encryption_key.id
   topic_name             = "post-user-restriction-lambda-alarm-topic"

@@ -1,4 +1,4 @@
-module "search-user-restriction-lambda" {
+module "search_user_restriction_lambda" {
   source  = "./modules/lambda"
   name    = "SearchUserRestriction"
   handler = "handlers.search_user_restriction_handler.lambda_handler"
@@ -26,17 +26,17 @@ module "search-user-restriction-lambda" {
   ]
 }
 
-module "search-user-restriction-lambda-alarms" {
+module "search_user_restriction_lambda_alarms" {
   source               = "./modules/lambda_alarms"
-  lambda_timeout       = module.search-user-restriction-lambda.timeout
-  lambda_function_name = module.search-user-restriction-lambda.function_name
-  lambda_name          = module.search-user-restriction-lambda.function_name
+  lambda_timeout       = module.search_user_restriction_lambda.timeout
+  lambda_function_name = module.search_user_restriction_lambda.function_name
+  lambda_name          = module.search_user_restriction_lambda.function_name
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.search-user-restriction-lambda-alarm-topic.arn]
-  ok_actions           = [module.search-user-restriction-lambda-alarm-topic.arn]
+  alarm_actions        = [module.search_user_restriction_lambda_alarm_topic.arn]
+  ok_actions           = [module.search_user_restriction_lambda_alarm_topic.arn]
 }
 
-module "search-user-restriction-lambda-alarm-topic" {
+module "search_user_restriction_lambda_alarm_topic" {
   source                 = "./modules/sns"
   sns_encryption_key_id  = module.sns_encryption_key.id
   topic_name             = "search-user-restriction-lambda-alarm-topic"

@@ -1,4 +1,4 @@
-module "delete-user-restriction-lambda" {
+module "delete_user_restriction_lambda" {
   source  = "./modules/lambda"
   name    = "DeleteUserRestriction"
   handler = "handlers.delete_user_restriction_handler.lambda_handler"
@@ -26,17 +26,17 @@ module "delete-user-restriction-lambda" {
   ]
 }
 
-module "delete-user-restriction-lambda-alarms" {
+module "delete_user_restriction_lambda_alarms" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.delete-user-restriction-lambda.function_name
-  lambda_timeout       = module.delete-user-restriction-lambda.timeout
-  lambda_name          = module.delete-user-restriction-lambda.function_name
+  lambda_function_name = module.delete_user_restriction_lambda.function_name
+  lambda_timeout       = module.delete_user_restriction_lambda.timeout
+  lambda_name          = module.delete_user_restriction_lambda.function_name
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.delete-user-restriction-lambda-alarm-topic.arn]
-  ok_actions           = [module.delete-user-restriction-lambda-alarm-topic.arn]
+  alarm_actions        = [module.delete_user_restriction_lambda_alarm_topic.arn]
+  ok_actions           = [module.delete_user_restriction_lambda_alarm_topic.arn]
 }
 
-module "delete-user-restriction-lambda-alarm-topic" {
+module "delete_user_restriction_lambda_alarm_topic" {
   source                 = "./modules/sns"
   sns_encryption_key_id  = module.sns_encryption_key.id
   topic_name             = "delete-user-restriction-lambda-alarm-topic"

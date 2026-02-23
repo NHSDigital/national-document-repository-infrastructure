@@ -1,4 +1,4 @@
-module "search-user-information-lambda" {
+module "search_user_information_lambda" {
   source  = "./modules/lambda"
   name    = "SearchUserInformation"
   handler = "handlers.search_user_information_handler.lambda_handler"
@@ -24,17 +24,17 @@ module "search-user-information-lambda" {
   ]
 }
 
-module "search-user-information-lambda-alarms" {
+module "search_user_information_lambda_alarms" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.search-user-information-lambda.function_name
-  lambda_timeout       = module.search-user-information-lambda.timeout
-  lambda_name          = module.search-user-information-lambda.function_name
+  lambda_function_name = module.search_user_information_lambda.function_name
+  lambda_timeout       = module.search_user_information_lambda.timeout
+  lambda_name          = module.search_user_information_lambda.function_name
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.search-user-information-lambda-alarm-topic.arn]
-  ok_actions           = [module.search-user-information-lambda-alarm-topic.arn]
+  alarm_actions        = [module.search_user_information_lambda_alarm_topic.arn]
+  ok_actions           = [module.search_user_information_lambda_alarm_topic.arn]
 }
 
-module "search-user-information-lambda-alarm-topic" {
+module "search_user_information_lambda_alarm_topic" {
   source                 = "./modules/sns"
   sns_encryption_key_id  = module.sns_encryption_key.id
   topic_name             = "search-user-information-lambda-alarm-topic"
