@@ -103,7 +103,7 @@ resource "aws_api_gateway_method_settings" "mtls_api_gateway_stage" {
 }
 
 resource "aws_api_gateway_gateway_response" "resource_not_found" {
-  rest_api_id   = aws_api_gateway_rest_api.your_api.id
+  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
   response_type = "RESOURCE_NOT_FOUND"
   status_code   = "404"
 
