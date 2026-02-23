@@ -1,7 +1,7 @@
-module "delete_user_restriction_lambda" {
+module "create_user_restriction_lambda" {
   source  = "./modules/lambda"
-  name    = "DeleteUserRestriction"
-  handler = "handlers.delete_user_restriction_handler.lambda_handler"
+  name    = "CreateUserRestriction"
+  handler = "handlers.create_user_restriction_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
@@ -9,8 +9,8 @@ module "delete_user_restriction_lambda" {
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id         = module.user_restriction_id_gateway.gateway_resource_id
-  http_methods        = ["DELETE"]
+  resource_id         = module.user_restrictions_gateway.gateway_resource_id
+  http_methods        = ["POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
@@ -22,24 +22,24 @@ module "delete_user_restriction_lambda" {
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.user_restriction_id_gateway
+    module.user_restrictions_gateway
   ]
 }
 
-module "delete_user_restriction_lambda_alarms" {
+module "create_user_restriction_lambda_alarms" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.delete_user_restriction_lambda.function_name
-  lambda_timeout       = module.delete_user_restriction_lambda.timeout
-  lambda_name          = module.delete_user_restriction_lambda.function_name
+  lambda_function_name = module.create_user_restriction_lambda.function_name
+  lambda_timeout       = module.create_user_restriction_lambda.timeout
+  lambda_name          = module.create_user_restriction_lambda.function_name
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.delete_user_restriction_lambda_alarm_topic.arn]
-  ok_actions           = [module.delete_user_restriction_lambda_alarm_topic.arn]
+  alarm_actions        = [module.create_user_restriction_lambda_alarm_topic.arn]
+  ok_actions           = [module.create_user_restriction_lambda_alarm_topic.arn]
 }
 
-module "delete_user_restriction_lambda_alarm_topic" {
+module "create_user_restriction_lambda_alarm_topic" {
   source                 = "./modules/sns"
   sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "delete-user-restriction-lambda-alarm-topic"
+  topic_name             = "create-user-restriction-lambda-alarm-topic"
   topic_protocol         = "email"
   is_topic_endpoint_list = true
   topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))

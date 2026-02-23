@@ -1,45 +1,43 @@
-module "post_user_restriction_lambda" {
+module "get_user_information_lambda" {
   source  = "./modules/lambda"
-  name    = "CreateUserRestriction"
-  handler = "handlers.create_user_restriction_handler.lambda_handler"
+  name    = "GetUserInformation"
+  handler = "handlers.get_user_information_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
-    module.user_restriction_table.dynamodb_write_policy_document
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
-  resource_id         = module.user_restrictions_gateway.gateway_resource_id
-  http_methods        = ["POST"]
+  resource_id         = module.user_restrictions_user_search_gateway.gateway_resource_id
+  http_methods        = ["GET"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
     APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
-    RESTRICTIONS_TABLE_NAME = module.user_restriction_table.table_name
   }
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.user_restrictions_gateway
+    module.user_restrictions_user_search_gateway
   ]
 }
 
-module "post_user_restriction_lambda_alarms" {
+module "get_user_information_lambda_alarms" {
   source               = "./modules/lambda_alarms"
-  lambda_function_name = module.post_user_restriction_lambda.function_name
-  lambda_timeout       = module.post_user_restriction_lambda.timeout
-  lambda_name          = module.post_user_restriction_lambda.function_name
+  lambda_function_name = module.get_user_information_lambda.function_name
+  lambda_timeout       = module.get_user_information_lambda.timeout
+  lambda_name          = module.get_user_information_lambda.function_name
   namespace            = "AWS/Lambda"
-  alarm_actions        = [module.post_user_restriction_lambda_alarm_topic.arn]
-  ok_actions           = [module.post_user_restriction_lambda_alarm_topic.arn]
+  alarm_actions        = [module.get_user_information_lambda_alarm_topic.arn]
+  ok_actions           = [module.get_user_information_lambda_alarm_topic.arn]
 }
 
-module "post_user_restriction_lambda_alarm_topic" {
+module "get_user_information_lambda_alarm_topic" {
   source                 = "./modules/sns"
   sns_encryption_key_id  = module.sns_encryption_key.id
-  topic_name             = "post-user-restriction-lambda-alarm-topic"
+  topic_name             = "get-user-information-lambda-alarm-topic"
   topic_protocol         = "email"
   is_topic_endpoint_list = true
   topic_endpoint_list    = local.is_sandbox ? [] : nonsensitive(split(",", data.aws_ssm_parameter.cloud_security_notification_email_list.value))
