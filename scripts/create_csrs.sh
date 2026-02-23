@@ -9,10 +9,17 @@
 
 set -euo pipefail
 
-mkdir -p csrs
-mkdir -p keys
+mkdir -p csrs/core
+mkdir -p csrs/lloyd_george
+mkdir -p keys/core
+mkdir -p keys/lloyd_george
 
-openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/dev.api.service.nhs.uk.key -out csrs/dev.api.service.nhs.uk.csr -config confs/dev.conf -extensions v3_req
-openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/test.api.service.nhs.uk.key -out csrs/test.api.service.nhs.uk.csr -config confs/test.conf -extensions v3_req
-openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/preprod.api.service.nhs.uk.key -out csrs/preprod.api.service.nhs.uk.csr -config confs/preprod.conf -extensions v3_req
-openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/api.service.nhs.uk.key -out csrs/api.service.nhs.uk.csr -config confs/prod.conf -extensions v3_req
+openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/core/dev.api.service.nhs.uk.key -out csrs/core/dev.api.service.nhs.uk.csr -config confs/core/dev.conf -extensions v3_req
+openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/core/test.api.service.nhs.uk.key -out csrs/core/test.api.service.nhs.uk.csr -config confs/core/test.conf -extensions v3_req
+openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/core/preprod.api.service.nhs.uk.key -out csrs/core/preprod.api.service.nhs.uk.csr -config confs/core/preprod.conf -extensions v3_req
+openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/core/api.service.nhs.uk.key -out csrs/core/api.service.nhs.uk.csr -config confs/core/prod.conf -extensions v3_req
+
+openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/lloyd_george/dev.api.service.nhs.uk.key -out csrs/lloyd_george/dev.api.service.nhs.uk.csr -config confs/lloyd_george/dev.conf -extensions v3_req
+openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/lloyd_george/test.api.service.nhs.uk.key -out csrs/lloyd_george/test.api.service.nhs.uk.csr -config confs/lloyd_george/test.conf -extensions v3_req
+openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/lloyd_george/preprod.api.service.nhs.uk.key -out csrs/lloyd_george/preprod.api.service.nhs.uk.csr -config confs/lloyd_george/preprod.conf -extensions v3_req
+openssl req -new -newkey rsa:4096 -nodes -sha256 -keyout keys/lloyd_george/api.service.nhs.uk.key -out csrs/lloyd_george/api.service.nhs.uk.csr -config confs/lloyd_george/prod.conf -extensions v3_req
