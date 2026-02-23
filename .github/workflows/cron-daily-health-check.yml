@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: 30 4 * * 1-5
 
+  workflow_dispatch:
+    # Allows manual triggering of the workflow from the GitHub Actions tab.
+    # Useful for ad-hoc health checks or testing the workflow.
+
 permissions:
   actions: read   # Required for anchore/sbom-action
   contents: write # Required for anchore/sbom-action
