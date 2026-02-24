@@ -204,30 +204,30 @@ resource "aws_api_gateway_gateway_response" "unauthorized" {
   }
 }
 
-resource "aws_api_gateway_gateway_response" "unauthorised_response_mtls" {
-  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
-  response_type = "DEFAULT_4XX"
+# resource "aws_api_gateway_gateway_response" "unauthorised_response_mtls" {
+#   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
+#   response_type = "DEFAULT_4XX"
 
-  response_templates = {
-    "application/fhir+json" = jsonencode({
-      resourceType = "OperationOutcome"
-      issue = [
-        {
-          severity    = "error"
-          code        = "forbidden"
-          diagnostics = "$context.error.messageString"
-        }
-      ]
-    })
-  }
+#   response_templates = {
+#     "application/fhir+json" = jsonencode({
+#       resourceType = "OperationOutcome"
+#       issue = [
+#         {
+#           severity    = "error"
+#           code        = "forbidden"
+#           diagnostics = "$context.error.messageString"
+#         }
+#       ]
+#     })
+#   }
 
-  response_parameters = {
-    "gatewayresponse.header.Access-Control-Allow-Origin"      = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
-    "gatewayresponse.header.Access-Control-Allow-Methods"     = "'*'"
-    "gatewayresponse.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Auth,X-Api-Key,X-Amz-Security-Token,X-Auth-Cookie,Accept'"
-    "gatewayresponse.header.Access-Control-Allow-Credentials" = "'true'"
-  }
-}
+#   response_parameters = {
+#     "gatewayresponse.header.Access-Control-Allow-Origin"      = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+#     "gatewayresponse.header.Access-Control-Allow-Methods"     = "'*'"
+#     "gatewayresponse.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Auth,X-Api-Key,X-Amz-Security-Token,X-Auth-Cookie,Accept'"
+#     "gatewayresponse.header.Access-Control-Allow-Credentials" = "'true'"
+#   }
+# }
 
 resource "aws_api_gateway_gateway_response" "bad_gateway_response_mtls" {
   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
