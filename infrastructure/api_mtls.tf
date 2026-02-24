@@ -209,16 +209,9 @@ resource "aws_api_gateway_gateway_response" "unauthorised_response_mtls" {
   response_type = "DEFAULT_4XX"
 
   response_templates = {
-    "application/fhir+json" = jsonencode({
-      resourceType = "OperationOutcome"
-      issue = [
-        {
-          severity    = "error"
-          code        = "forbidden"
-          diagnostics = "$context.error.messageString"
-        }
-      ]
-    })
+    "application/fhir+json" = <<EOF
+{"resourceType":"OperationOutcome","issue":[{"severity":"error","code":"security","diagnostics":$context.error.messageString}]}
+EOF
   }
 
   response_parameters = {
