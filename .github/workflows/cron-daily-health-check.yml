@@ -32,7 +32,7 @@ jobs:
     with:
       git_ref: main
       sandbox_name: ${{ needs.set_workspace.outputs.workspace }}
-      skip_main_deployment: true
+      skip_main_deployment: false
     secrets: inherit
 
   run_lambda_unit_tests:
