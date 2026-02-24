@@ -502,8 +502,7 @@ module "pdm_dynamodb_table" {
 module "core_dynamodb_table" {
   source                         = "./modules/dynamo_db"
   table_name                     = var.core_dynamodb_table_name
-  hash_key                       = "NhsNumber"
-  sort_key                       = "ID"
+  hash_key                       = "ID"
   deletion_protection_enabled    = var.deletion_protection_enabled
   stream_enabled                 = true
   stream_view_type               = "OLD_IMAGE"
@@ -519,15 +518,11 @@ module "core_dynamodb_table" {
       name = "NhsNumber"
       type = "S"
     },
-    {
-      name = "DocumentSnomedCodeType"
-      type = "S"
-    }
   ]
   global_secondary_indexes = [
     {
-      name            = "idx_gsi_snomed_code"
-      hash_key        = "DocumentSnomedCodeType"
+      name            = "idx_gsi_nhs_number"
+      hash_key        = "NhsNumber"
       range_key       = "ID"
       projection_type = "ALL"
     }
@@ -648,3 +643,4 @@ module "user_restriction_table" {
   environment = var.environment
   owner       = var.owner
 }
+
