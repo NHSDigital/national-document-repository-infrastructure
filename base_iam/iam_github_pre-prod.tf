@@ -556,7 +556,7 @@ resource "aws_iam_role_policy_attachment" "github_actions_policy_pre_prod" {
 resource "aws_iam_policy" "github_actions_policy_pre_prod" {
   count       = local.is_pre_production ? 1 : 0
   description = null
-  name        = "github-actions-policy"
+  name        = "${terraform.workspace}-github-actions-policy"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -818,7 +818,7 @@ resource "aws_iam_role_policy_attachment" "github_extended_policy_1_pre_prod" {
 resource "aws_iam_policy" "github_extended_policy_1_pre_prod" {
   count       = local.is_pre_production ? 1 : 0
   description = "more required items for GitHub access"
-  name        = "github-extended-policy-1"
+  name        = "${terraform.workspace}-github-extended-policy-1"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -959,6 +959,20 @@ resource "aws_iam_policy" "github_extended_policy_1_pre_prod" {
           Resource = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/*"
           Sid      = "VisualEditor1"
         },
+        {
+          Effect = "Allow",
+          Action = [
+            "ses:CreateConfigurationSet",
+            "ses:DeleteConfigurationSet",
+            "ses:CreateConfigurationSetEventDestination",
+            "ses:UpdateConfigurationSetEventDestination",
+            "ses:DeleteConfigurationSetEventDestination",
+            "ses:DescribeConfigurationSet",
+            "ses:ListConfigurationSets"
+          ],
+          Resource = "*"
+          Sid      = "SesConfigurationSets",
+        }
       ]
       Version = "2012-10-17"
     }

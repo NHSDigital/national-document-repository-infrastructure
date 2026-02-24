@@ -1,6 +1,6 @@
 name: "Tear down - Sandbox/Test"
 
-run-name: "${{ github.event.inputs.git_ref }} | ${{ github.event.inputs.sandbox_name }} | ${{ github.event.inputs.environment }}"
+run-name: "${{ inputs.git_ref }} | ${{ inputs.sandbox_name }} | ${{ inputs.environment }}"
 
 on:
   workflow_dispatch:
@@ -54,7 +54,7 @@ jobs:
       sandbox_name: ${{ inputs.sandbox_name }}
       environment: ${{ inputs.environment }}
     secrets:
-      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name}}-github-actions-role
 
   cleanup_versions:
     name: Cleanup Versions
@@ -64,7 +64,7 @@ jobs:
       sandbox_name: ${{ inputs.sandbox_name }}
       environment: ${{ inputs.environment }}
     secrets:
-      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+      AWS_ASSUME_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name}}-github-actions-role
 
   terraform_destroy:
     name: Terraform Destroy
@@ -80,14 +80,14 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ github.event.inputs.sandbox_name}}-github-actions-role
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name}}-github-actions-role
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.14.3
+          terraform_version: 1.14.5
 
       - name: Initialise Terraform
         run: terraform init -backend-config=${{ vars.TF_BACKEND_FILE }}
@@ -104,7 +104,7 @@ jobs:
   terraform_destroy_base_iam:
     name: Terraform Destroy (base_iam)
     # Only destroy base_iam in a Sandbox environment. Don't tear down in ndr-test or ndr-dev environments.
-    if: ${{ github.event.inputs.environment == 'development' && github.event.inputs.sandbox_name != 'ndr-dev' }}
+    if: ${{ inputs.environment == 'development' && inputs.sandbox_name != 'ndr-dev' }}
     runs-on: ubuntu-latest
     needs: [terraform_destroy]
     environment: ${{ inputs.environment }}
@@ -124,7 +124,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.14.3
+          terraform_version: 1.14.5
 
       - name: Initialise Terraform
         run: terraform init -backend-config=bucket=ndr-dev-terraform-state-${{ secrets.AWS_ACCOUNT_ID }}
