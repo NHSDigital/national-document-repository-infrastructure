@@ -122,6 +122,7 @@ module "ndr-bulk-staging-store" {
   bucket_name               = var.staging_store_bucket_name
   enable_cors_configuration = true
   enable_bucket_versioning  = true
+  suspend_bucket_versioning = true
   cloudfront_arn            = aws_cloudfront_distribution.s3_presign_mask.arn
   cloudfront_enabled        = true
   environment               = var.environment
