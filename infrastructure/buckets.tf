@@ -182,10 +182,13 @@ module "ndr-document-pending-review-store" {
 # Lifecycle Rules
 resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
   bucket = module.ndr-lloyd-george-store.bucket_id
-
   rule {
     id     = "Delete stitched LG records"
     status = "Enabled"
+
+    expiration {
+      days = 1
+    }
 
     filter {
       tag {
@@ -193,27 +196,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "lg-lifecycle-rules" {
         value = "true"
       }
     }
-
-    expiration {
-      days = 1
-    }
-
-    noncurrent_version_expiration {
-      noncurrent_days = 1
-    }
   }
-
-  rule {
-    id     = "Remove orphan delete markers (bucket-wide)"
-    status = "Enabled"
-
-    filter {}
-
-    expiration {
-      expired_object_delete_marker = true
-    }
-  }
-
   rule {
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
@@ -252,6 +235,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     noncurrent_version_expiration {
       noncurrent_days = 1
     }
+
+    filter {}
   }
 
   rule {
@@ -261,6 +246,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     expiration {
       expired_object_delete_marker = true
     }
+
+    filter {}
   }
 
   rule {
