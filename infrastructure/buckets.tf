@@ -248,7 +248,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
       days = 1
     }
 
-    filter {}
   }
 
   rule {
