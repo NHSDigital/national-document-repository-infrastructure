@@ -179,6 +179,26 @@ resource "aws_api_gateway_gateway_response" "access_denied" {
   }
 }
 
+resource "aws_api_gateway_gateway_response" "missing_auth_token" {
+  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
+  response_type = "MISSING_AUTHENTICATION_TOKEN"
+  status_code   = "404"
+
+  response_templates = {
+    "application/json" = jsonencode({
+      resourceType = "OperationOutcome"
+      issue = [{
+        severity    = "error"
+        code        = "not-found"
+        diagnostics = "The requested resource or HTTP method is not supported"
+      }]
+    })
+  }
+
+  response_parameters = {
+    "gatewayresponse.header.Access-Control-Allow-Origin" = ...
+  }
+}
 
 resource "aws_api_gateway_gateway_response" "unauthorised_response_mtls" {
   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
