@@ -10,3 +10,6 @@ module "healthcare_worker_api_base_url" {
   ignore_value_changes = true
 }
 
+data "aws_ssm_parameter" "healthcare_worker_api_base_url" {
+  name = "/ndr/${var.environment}/hcw_api_url"
+}
