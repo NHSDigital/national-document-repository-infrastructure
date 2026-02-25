@@ -226,6 +226,17 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
   bucket = module.ndr-bulk-staging-store.bucket_id
 
   rule {
+    id     = "Delete non-current versions in staging bucket that have existed for 24 hours"
+    status = "Enabled"
+
+    noncurrent_version_expiration {
+      noncurrent_days = 1
+    }
+
+    filter {}
+  }
+
+  rule {
     id     = "Delete objects in user_upload folder that have existed for 24 hours"
     status = "Enabled"
 
@@ -237,24 +248,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
       days = 1
     }
 
-    noncurrent_version_expiration {
-      noncurrent_days = 1
-    }
-
     filter {}
-  }
-
-  rule {
-    id     = "Remove delete markers in user_upload folder"
-    status = "Enabled"
-
-    filter {
-      prefix = "user_upload/"
-    }
-
-    expiration {
-      expired_object_delete_marker = true
-    }
   }
 
   rule {
@@ -267,23 +261,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
 
     expiration {
       days = 1
-    }
-
-    noncurrent_version_expiration {
-      noncurrent_days = 1
-    }
-  }
-
-  rule {
-    id     = "Remove delete markers in review folder"
-    status = "Enabled"
-
-    filter {
-      prefix = "review/"
-    }
-
-    expiration {
-      expired_object_delete_marker = true
     }
   }
 
@@ -298,25 +275,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     expiration {
       days = 1
     }
-
-    noncurrent_version_expiration {
-      noncurrent_days = 1
-    }
-  }
-
-  rule {
-    id     = "Remove delete markers in fhir_upload folder"
-    status = "Enabled"
-
-    filter {
-      prefix = "fhir_upload/"
-    }
-
-    expiration {
-      expired_object_delete_marker = true
-    }
-
-    filter {}
   }
 
   rule {
