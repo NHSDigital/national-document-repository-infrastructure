@@ -247,7 +247,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules"
     expiration {
       days = 1
     }
-
   }
 
   rule {
