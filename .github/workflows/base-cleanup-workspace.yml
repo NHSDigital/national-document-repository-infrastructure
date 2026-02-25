@@ -46,7 +46,7 @@ jobs:
         run: |
           python3 -m venv ./venv
           ./venv/bin/pip3 install --upgrade pip
-          ./venv/bin/pip3 install boto3==1.33.11
+          ./venv/bin/pip3 install boto3==1.42.1
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5

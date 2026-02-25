@@ -4,9 +4,10 @@ variable "topic_name" {
 }
 
 variable "delivery_policy" {
-  description = "Attach delivery or IAM policy."
+  description = "Attach delivery or IAM policy. (Legacy name; used as topic policy JSON in this module.)"
   type        = string
 }
+
 variable "enable_fifo" {
   description = "Attach first in first out policy to notification queue."
   type        = bool
@@ -37,7 +38,7 @@ variable "topic_endpoint_list" {
 }
 
 variable "sns_encryption_key_id" {
-  description = "The ARN of the KMS key used for encrypting the SNS topic."
+  description = "The ARN (or ID) of the KMS key used for encrypting the SNS topic."
   type        = string
 }
 
@@ -57,4 +58,22 @@ variable "is_topic_endpoint_list" {
   description = "Whether to use the topic_endpoint_list instead of a single topic_endpoint."
   type        = bool
   default     = false
+}
+
+variable "topic_policy_json" {
+  description = "Optional SNS topic access policy JSON. If set, it overrides delivery_policy."
+  type        = string
+  default     = null
+}
+
+variable "enable_ses_publish" {
+  description = "If true, module appends a statement allowing ses.amazonaws.com to SNS:Publish to this topic."
+  type        = bool
+  default     = false
+}
+
+variable "ses_source_account_id" {
+  description = "AWS account ID used in the AWS:SourceAccount condition for SES publishing."
+  type        = string
+  default     = ""
 }
