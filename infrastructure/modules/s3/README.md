@@ -96,6 +96,7 @@ module "s3_bucket" {
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment label used for tagging (e.g., 'dev', 'prod'). | `string` | n/a | yes |
 | <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | (Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable. | `bool` | `false` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | Owner label used for resource tagging. | `string` | n/a | yes |
+| <a name="input_suspend_bucket_versioning"></a> [suspend\_bucket\_versioning](#input\_suspend\_bucket\_versioning) | Whether to suspend versioning on the bucket with historic versioning. | `bool` | `false` | no |
 
 ## Outputs
 
