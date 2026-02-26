@@ -70,5 +70,5 @@ module "ssm_param" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_ssm_ignore_change_value"></a> [ssm\_ignore\_change\_value](#output\_ssm\_ignore\_change\_value) | The value of ssm parameter |
+| <a name="output_ssm_value"></a> [ssm\_value](#output\_ssm\_value) | The value of ssm parameter |
 <!-- END_TF_DOCS -->
