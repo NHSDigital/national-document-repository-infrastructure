@@ -11,5 +11,5 @@ module "healthcare_worker_api_base_url" {
 }
 
 data "aws_ssm_parameter" "healthcare_worker_api_base_url" {
-  name = "/ndr/${var.environment}/hcw_api_url"
+  name = local.is_sandbox ? "/ndr/ndr-${var.environment}/hcw_api_url" : "/ndr/${var.environment}/hcw_api_url"
 }
