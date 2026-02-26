@@ -17,7 +17,7 @@ module "get_user_information_lambda" {
     APPCONFIG_CONFIGURATION     = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                   = terraform.workspace
     USE_MOCK_HEALTHCARE_SERVICE = true
-    HEALTHCARE_WORKER_API_URL   = data.aws_ssm_parameter.healthcare_worker_api_base_url.value
+    HEALTHCARE_WORKER_API_URL   = module.healthcare_worker_api_base_url.ssm_ignore_change_value
   }
 
   depends_on = [
