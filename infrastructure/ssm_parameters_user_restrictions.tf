@@ -9,3 +9,7 @@ module "healthcare_worker_api_base_url" {
   value                = "REPLACE ME"
   ignore_value_changes = true
 }
+
+data "aws_ssm_parameter" "healthcare_work_api_base_url" {
+  name = local.is_sandbox ? "ndr/ndr-dev/hcw_api_url" : "ndr/${terraform.workspace}/hcw_api_url"
+}
