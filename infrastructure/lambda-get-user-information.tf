@@ -22,8 +22,7 @@ module "get_user_information_lambda" {
 
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.user_restrictions_user_search_gateway,
-    module.healthcare_worker_api_base_url[0]
+    module.user_restrictions_user_search_gateway
   ]
 }
 

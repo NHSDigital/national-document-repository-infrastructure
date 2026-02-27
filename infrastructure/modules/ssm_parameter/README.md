@@ -68,7 +68,5 @@ module "ssm_param" {
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_ssm_value"></a> [ssm\_value](#output\_ssm\_value) | The value of ssm parameter |
+No outputs.
 <!-- END_TF_DOCS -->
