@@ -1,6 +1,14 @@
 # aws_iam_role.github_role_prod[0]:
 resource "aws_iam_role" "github_role_prod" {
-  count = var.environment == "prod" ? 1 : 0
+  count                 = local.is_prod ? 1 : 0
+  description           = null
+  force_detach_policies = false
+  max_session_duration  = 3600
+  name                  = "github-access-role"
+  name_prefix           = null
+  path                  = "/"
+  permissions_boundary  = null
+  tags                  = {}
   assume_role_policy = jsonencode(
     {
       Statement = [
@@ -26,517 +34,552 @@ resource "aws_iam_role" "github_role_prod" {
       Version = "2012-10-17"
     }
   )
-  description           = null
-  force_detach_policies = false
-  managed_policy_arns = [
-    "arn:aws:iam::${var.aws_account_id}:policy/GitHubAllAccess",
-    "arn:aws:iam::${var.aws_account_id}:policy/ecs_policy",
-    "arn:aws:iam::${var.aws_account_id}:policy/github-extension-1",
-    "arn:aws:iam::${var.aws_account_id}:policy/scheduler_policy",
-    "arn:aws:iam::aws:policy/ReadOnlyAccess",
-  ]
-  max_session_duration = 3600
-  name                 = "github-access-role"
-  name_prefix          = null
-  path                 = "/"
-  permissions_boundary = null
-  tags                 = {}
-  tags_all             = {}
-
-  inline_policy {
-    name = "CloudWatchLogsPolicy"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "logs:ListTagsLogGroup",
-              "logs:CreateLogDelivery",
-              "logs:PutMetricFilter",
-              "logs:DeleteMetricFilter",
-              "logs:DescribeLogGroups",
-              "logs:PutRetentionPolicy",
-              "logs:CreateLogGroup",
-              "logs:CreateLogStream",
-              "logs:PutLogEvents",
-              "logs:PutResourcePolicy",
-            ]
-            Effect   = "Allow"
-            Resource = "*"
-            Sid      = "AllowLogGroup"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "CloudWatchRumPolicy"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "cognito-identity:SetIdentityPoolRoles",
-              "cognito-identity:CreateIdentityPool",
-              "cognito-identity:DeleteIdentityPool",
-              "cognito-identity:UpdateIdentityPool",
-            ]
-            Effect   = "Allow"
-            Resource = "arn:aws:cognito-identity:eu-west-2:${var.aws_account_id}:identitypool/*"
-            Sid      = "AllowIdentityPool"
-          },
-          {
-            Action = [
-              "rum:TagResource",
-              "rum:UntagResource",
-              "rum:ListTagsForResource",
-              "iam:PassRole",
-              "rum:UpdateAppMonitor",
-              "rum:GetAppMonitor",
-              "rum:CreateAppMonitor",
-              "rum:DeleteAppMonitor",
-            ]
-            Effect   = "Allow"
-            Resource = "arn:aws:rum:eu-west-2:${var.aws_account_id}:appmonitor/*"
-            Sid      = "AllowAppMonitor"
-          },
-          {
-            Action = [
-              "logs:DeleteLogGroup",
-              "logs:DeleteResourcePolicy",
-              "logs:DescribeLogGroups",
-            ]
-            Effect   = "Allow"
-            Resource = "arn:aws:logs:eu-west-2:${var.aws_account_id}:log-group:*RUMService*"
-            Sid      = "AllowRumServiceLogs"
-          },
-          {
-            Action = [
-              "logs:CreateLogDelivery",
-              "logs:GetLogDelivery",
-              "logs:UpdateLogDelivery",
-              "logs:DeleteLogDelivery",
-              "logs:ListLogDeliveries",
-              "logs:DescribeResourcePolicies",
-            ]
-            Effect   = "Allow"
-            Resource = "*"
-            Sid      = "AllowRumServiceAllLogs"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "GithubCloudfrontPolicy"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "cloudfront:CreateOriginAccessControl",
-              "cloudfront:DeleteOriginAccessControl",
-              "cloudfront:TagResource",
-              "cloudfront:CreateDistribution",
-              "cloudfront:CreateInvalidation",
-              "lambda:EnableReplication",
-              "cloudfront:CreateCachePolicy",
-              "iam:CreateServiceLinkedRole",
-              "cloudfront:DeleteCachePolicy",
-              "lambda:PublishVersion",
-              "cloudfront:UpdateDistribution",
-              "cloudfront:DeleteDistribution",
-              "cloudfront:UntagResource",
-              "cloudfront:UpdateOriginRequestPolicy",
-              "cloudfront:CreateOriginRequestPolicy",
-              "cloudfront:UpdateOriginAccessControl",
-            ]
-            Effect   = "Allow"
-            Resource = "*"
-            Sid      = "VisualEditor0"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "GithubECSPolicy"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action   = "ecs:TagResource"
-            Effect   = "Allow"
-            Resource = "*"
-            Sid      = "VisualEditor0"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "GithubSchedulerPolicy"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "scheduler:UpdateSchedule",
-              "scheduler:CreateSchedule",
-            ]
-            Effect   = "Allow"
-            Resource = "*"
-            Sid      = "VisualEditor0"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "acm"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "acm:AddTagsToCertificate",
-              "acm:DeleteCertificate",
-            ]
-            Effect   = "Allow"
-            Resource = "arn:aws:acm:us-east-1:${var.aws_account_id}:certificate/*"
-            Sid      = "VisualEditor1"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "ecr_policy"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "ecr:InitiateLayerUpload",
-              "ecr:BatchDeleteImage",
-              "ecr:CompleteLayerUpload",
-              "ecr:InitiateLayerUpload",
-              "ecr:PutImage",
-              "ecr:UploadLayerPart",
-            ]
-            Effect = "Allow"
-            Resource = [
-              "arn:aws:ecr:eu-west-2:${var.aws_account_id}:repository/ndr-prod-app",
-              "arn:aws:ecr:eu-west-2:${var.aws_account_id}:repository/prod-data-collection",
-            ]
-            Sid = "ecrAllowPolicy"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "github-extended-policy-virus-scanner"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "ssm:CreateDocument",
-              "iam:TagRole",
-              "SNS:TagResource",
-              "cognito-idp:CreateUserPool",
-              "cognito-idp:TagResource",
-              "cognito-idp:SetUserPoolMfaConfig",
-              "iam:CreateInstanceProfile",
-              "iam:AddRoleToInstanceProfile",
-              "iam:DeleteInstanceProfile",
-              "cloudformation:CreateResource",
-              "cognito-idp:DeleteUserPool",
-              "cognito-idp:CreateGroup",
-              "cognito-idp:AdminCreateUser",
-              "cognito-idp:CreateUserPoolClient",
-              "cognito-idp:AdminAddUserToGroup",
-            ]
-            Effect   = "Allow"
-            Resource = "*"
-            Sid      = "Statement1"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "lambda"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "lambda:CreateFunction",
-              "lambda:DeleteFunctionConcurrency",
-              "lambda:GetFunction",
-              "lambda:GetFunctionConfiguration",
-              "lambda:InvokeFunction",
-              "lambda:UpdateFunctionCode",
-              "lambda:UpdateFunctionConfiguration",
-              "kms:CreateGrant",
-              "kms:Decrypt",
-              "kms:Encrypt",
-              "kms:TagResource",
-              "kms:UntagResource",
-              "s3:PutObject",
-            ]
-            Effect = "Allow"
-            Resource = [
-              "arn:aws:kms:*:${var.aws_account_id}:key/*",
-              "arn:aws:lambda:eu-west-2:*:function:*",
-            ]
-            Sid = "VisualEditor0"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "mtls-gateway"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "acm:RequestCertificate",
-              "route53:ListHostedZones",
-              "acm:ListCertificates",
-            ]
-            Effect   = "Allow"
-            Resource = "*"
-            Sid      = "VisualEditor0"
-          },
-          {
-            Action   = "apigateway:AddCertificateToDomain"
-            Effect   = "Allow"
-            Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
-            Sid      = "VisualEditor1"
-          },
-          {
-            Action = [
-              "acm:DeleteCertificate",
-              "acm:DescribeCertificate",
-              "acm:GetCertificate",
-              "route53:GetHostedZone",
-              "route53:ChangeResourceRecordSets",
-              "apigateway:AddCertificateToDomain",
-              "acm:AddTagsToCertificate",
-              "apigateway:RemoveCertificateFromDomain",
-              "acm:ListTagsForCertificate",
-            ]
-            Effect = "Allow"
-            Resource = [
-              "arn:aws:apigateway:eu-west-2::/domainnames",
-              "arn:aws:apigateway:eu-west-2::/domainnames/*",
-              "arn:aws:route53:::hostedzone/*",
-              "arn:aws:acm:eu-west-2:${var.aws_account_id}:certificate/*",
-            ]
-            Sid = "VisualEditor2"
-          },
-          {
-            Action = [
-              "apigateway:AddCertificateToDomain",
-              "apigateway:RemoveCertificateFromDomain",
-            ]
-            Effect = "Allow"
-            Resource = [
-              "arn:aws:apigateway:eu-west-2::/domainnames/*",
-              "arn:aws:apigateway:eu-west-2::/domainnames",
-            ]
-            Sid = "VisualEditor3"
-          },
-          {
-            Action   = "apigateway:AddCertificateToDomain"
-            Effect   = "Allow"
-            Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
-            Sid      = "VisualEditor4"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "resource_tagging"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "resource-groups:GetGroupQuery",
-              "backup:TagResource",
-              "sns:TagResource",
-              "lambda:TagResource",
-              "resource-groups:UpdateGroup",
-              "iam:UntagRole",
-              "iam:TagRole",
-              "resource-groups:GetTags",
-              "sns:UntagResource",
-              "resource-groups:Untag",
-              "lambda:UntagResource",
-              "elasticloadbalancing:RemoveTags",
-              "cognito-identity:UntagResource",
-              "resource-groups:GetGroup",
-              "resource-groups:GetGroupConfiguration",
-              "backup:UntagResource",
-              "cognito-identity:TagResource",
-              "resource-groups:Tag",
-              "logs:UntagResource",
-              "resource-groups:UpdateGroupQuery",
-              "iam:TagPolicy",
-              "logs:TagResource",
-              "events:TagResource",
-              "resource-groups:DeleteGroup",
-              "elasticloadbalancing:AddTags",
-              "iam:UntagPolicy",
-              "resource-groups:ListGroupResources",
-              "iam:UntagInstanceProfile",
-              "events:UntagResource",
-              "iam:TagInstanceProfile",
-            ]
-            Effect = "Allow"
-            Resource = [
-              "arn:aws:events:*:${var.aws_account_id}:event-bus/*",
-              "arn:aws:events:*:${var.aws_account_id}:rule/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/gwy/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/net/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/app/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:truststore/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/app/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/gwy/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/net/*/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/net/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/app/*/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:targetgroup/*/*",
-              "arn:aws:lambda:*:${var.aws_account_id}:event-source-mapping:*",
-              "arn:aws:lambda:*:${var.aws_account_id}:code-signing-config:*",
-              "arn:aws:lambda:*:${var.aws_account_id}:function:*",
-              "arn:aws:cognito-identity:*:${var.aws_account_id}:identitypool/*",
-              "arn:aws:resource-groups:*:${var.aws_account_id}:group/*",
-              "arn:aws:backup:*:${var.aws_account_id}:backup-plan:*",
-              "arn:aws:backup:*:${var.aws_account_id}:report-plan:*-*",
-              "arn:aws:backup:*:${var.aws_account_id}:restore-testing-plan:*-*",
-              "arn:aws:backup:*:${var.aws_account_id}:backup-vault:*",
-              "arn:aws:backup:*:${var.aws_account_id}:legal-hold:*",
-              "arn:aws:backup:*:${var.aws_account_id}:framework:*-*",
-              "arn:aws:iam::${var.aws_account_id}:policy/*",
-              "arn:aws:iam::${var.aws_account_id}:instance-profile/*",
-              "arn:aws:iam::${var.aws_account_id}:role/*",
-              "arn:aws:sns:*:${var.aws_account_id}:*",
-              "arn:aws:logs:*:${var.aws_account_id}:log-group:*",
-              "arn:aws:logs:*:${var.aws_account_id}:delivery-source:*",
-              "arn:aws:logs:*:${var.aws_account_id}:delivery:*",
-              "arn:aws:logs:*:${var.aws_account_id}:destination:*",
-              "arn:aws:logs:*:${var.aws_account_id}:delivery-destination:*",
-              "arn:aws:logs:*:${var.aws_account_id}:anomaly-detector:*",
-            ]
-            Sid = "VisualEditor0"
-          },
-          {
-            Action = [
-              "events:TagResource",
-              "elasticloadbalancing:RemoveTags",
-              "elasticloadbalancing:AddTags",
-              "events:UntagResource",
-            ]
-            Effect = "Allow"
-            Resource = [
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/app/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/net/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:targetgroup/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:truststore/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/gwy/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/gwy/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/app/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/net/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/app/*/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/net/*/*/*/*",
-              "arn:aws:events:*:${var.aws_account_id}:rule/*",
-            ]
-            Sid = "VisualEditor1"
-          },
-          {
-            Action = [
-              "elasticloadbalancing:RemoveTags",
-              "elasticloadbalancing:AddTags",
-            ]
-            Effect = "Allow"
-            Resource = [
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:truststore/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/app/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/gwy/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/net/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/net/*/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/app/*/*/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:targetgroup/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/gwy/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/net/*/*",
-              "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/app/*/*",
-            ]
-            Sid = "VisualEditor2"
-          },
-          {
-            Action = [
-              "resource-groups:SearchResources",
-              "resource-groups:CreateGroup",
-              "resource-groups:ListGroups",
-            ]
-            Effect   = "Allow"
-            Resource = "*"
-            Sid      = "VisualEditor3"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
-  inline_policy {
-    name = "step_functions"
-    policy = jsonencode(
-      {
-        Statement = [
-          {
-            Action = [
-              "states:DescribeStateMachine",
-              "states:UpdateStateMachine",
-              "states:DeleteStateMachine",
-              "states:CreateStateMachine",
-              "states:TagResource",
-              "states:UntagResource",
-            ]
-            Effect   = "Allow"
-            Resource = "arn:aws:states:eu-west-2:${var.aws_account_id}:stateMachine:*"
-            Sid      = "VisualEditor0"
-          },
-        ]
-        Version = "2012-10-17"
-      }
-    )
-  }
 }
 
+# INLINE POLICIES
+
+resource "aws_iam_role_policy" "CloudWatchLogsPolicy_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "CloudWatchLogsPolicy"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "logs:ListTagsLogGroup",
+            "logs:CreateLogDelivery",
+            "logs:PutMetricFilter",
+            "logs:DeleteMetricFilter",
+            "logs:DescribeLogGroups",
+            "logs:PutRetentionPolicy",
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "logs:PutResourcePolicy",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "AllowLogGroup"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "CloudWatchRumPolicy_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "CloudWatchRumPolicy"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "cognito-identity:SetIdentityPoolRoles",
+            "cognito-identity:CreateIdentityPool",
+            "cognito-identity:DeleteIdentityPool",
+            "cognito-identity:UpdateIdentityPool",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:cognito-identity:eu-west-2:${var.aws_account_id}:identitypool/*"
+          Sid      = "AllowIdentityPool"
+        },
+        {
+          Action = [
+            "rum:TagResource",
+            "rum:UntagResource",
+            "rum:ListTagsForResource",
+            "iam:PassRole",
+            "rum:UpdateAppMonitor",
+            "rum:GetAppMonitor",
+            "rum:CreateAppMonitor",
+            "rum:DeleteAppMonitor",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:rum:eu-west-2:${var.aws_account_id}:appmonitor/*"
+          Sid      = "AllowAppMonitor"
+        },
+        {
+          Action = [
+            "logs:DeleteLogGroup",
+            "logs:DeleteResourcePolicy",
+            "logs:DescribeLogGroups",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:logs:eu-west-2:${var.aws_account_id}:log-group:*RUMService*"
+          Sid      = "AllowRumServiceLogs"
+        },
+        {
+          Action = [
+            "logs:CreateLogDelivery",
+            "logs:GetLogDelivery",
+            "logs:UpdateLogDelivery",
+            "logs:DeleteLogDelivery",
+            "logs:ListLogDeliveries",
+            "logs:DescribeResourcePolicies",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "AllowRumServiceAllLogs"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "GithubCloudfrontPolicy_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "GithubCloudfrontPolicy"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "cloudfront:CreateOriginAccessControl",
+            "cloudfront:DeleteOriginAccessControl",
+            "cloudfront:TagResource",
+            "cloudfront:CreateDistribution",
+            "cloudfront:CreateInvalidation",
+            "lambda:EnableReplication",
+            "cloudfront:CreateCachePolicy",
+            "iam:CreateServiceLinkedRole",
+            "cloudfront:DeleteCachePolicy",
+            "lambda:PublishVersion",
+            "cloudfront:UpdateDistribution",
+            "cloudfront:DeleteDistribution",
+            "cloudfront:UntagResource",
+            "cloudfront:UpdateOriginRequestPolicy",
+            "cloudfront:CreateOriginRequestPolicy",
+            "cloudfront:UpdateOriginAccessControl",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "VisualEditor0"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "GithubECSPolicy_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "GithubECSPolicy"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action   = "ecs:TagResource"
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "VisualEditor0"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "GithubSchedulerPolicy_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "GithubSchedulerPolicy"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "scheduler:UpdateSchedule",
+            "scheduler:CreateSchedule",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "VisualEditor0"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "acm_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "acm"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "acm:AddTagsToCertificate",
+            "acm:DeleteCertificate",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:acm:us-east-1:${var.aws_account_id}:certificate/*"
+          Sid      = "VisualEditor1"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "ecr_policy_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "ecr_policy"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "ecr:InitiateLayerUpload",
+            "ecr:BatchDeleteImage",
+            "ecr:CompleteLayerUpload",
+            "ecr:InitiateLayerUpload",
+            "ecr:PutImage",
+            "ecr:UploadLayerPart",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:ecr:eu-west-2:${var.aws_account_id}:repository/ndr-prod-app",
+            "arn:aws:ecr:eu-west-2:${var.aws_account_id}:repository/prod-data-collection",
+          ]
+          Sid = "ecrAllowPolicy"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "github_extended_policy_virus_scanner_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "github-extended-policy-virus-scanner"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "ssm:CreateDocument",
+            "iam:TagRole",
+            "SNS:TagResource",
+            "cognito-idp:CreateUserPool",
+            "cognito-idp:TagResource",
+            "cognito-idp:SetUserPoolMfaConfig",
+            "iam:CreateInstanceProfile",
+            "iam:AddRoleToInstanceProfile",
+            "iam:DeleteInstanceProfile",
+            "cloudformation:CreateResource",
+            "cognito-idp:DeleteUserPool",
+            "cognito-idp:CreateGroup",
+            "cognito-idp:AdminCreateUser",
+            "cognito-idp:CreateUserPoolClient",
+            "cognito-idp:AdminAddUserToGroup",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "Statement1"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "lambda_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "lambda"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "lambda:CreateFunction",
+            "lambda:DeleteFunctionConcurrency",
+            "lambda:GetFunction",
+            "lambda:GetFunctionConfiguration",
+            "lambda:InvokeFunction",
+            "lambda:UpdateFunctionCode",
+            "lambda:UpdateFunctionConfiguration",
+            "kms:CreateGrant",
+            "kms:Decrypt",
+            "kms:Encrypt",
+            "kms:TagResource",
+            "kms:UntagResource",
+            "s3:PutObject",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:kms:*:${var.aws_account_id}:key/*",
+            "arn:aws:lambda:eu-west-2:*:function:*",
+          ]
+          Sid = "VisualEditor0"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "mtls_gateway_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "mtls-gateway"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "acm:RequestCertificate",
+            "route53:ListHostedZones",
+            "acm:ListCertificates",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "VisualEditor0"
+        },
+        {
+          Action   = "apigateway:AddCertificateToDomain"
+          Effect   = "Allow"
+          Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
+          Sid      = "VisualEditor1"
+        },
+        {
+          Action = [
+            "acm:DeleteCertificate",
+            "acm:DescribeCertificate",
+            "acm:GetCertificate",
+            "route53:GetHostedZone",
+            "route53:ChangeResourceRecordSets",
+            "apigateway:AddCertificateToDomain",
+            "acm:AddTagsToCertificate",
+            "apigateway:RemoveCertificateFromDomain",
+            "acm:ListTagsForCertificate",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:apigateway:eu-west-2::/domainnames",
+            "arn:aws:apigateway:eu-west-2::/domainnames/*",
+            "arn:aws:route53:::hostedzone/*",
+            "arn:aws:acm:eu-west-2:${var.aws_account_id}:certificate/*",
+          ]
+          Sid = "VisualEditor2"
+        },
+        {
+          Action = [
+            "apigateway:AddCertificateToDomain",
+            "apigateway:RemoveCertificateFromDomain",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:apigateway:eu-west-2::/domainnames/*",
+            "arn:aws:apigateway:eu-west-2::/domainnames",
+          ]
+          Sid = "VisualEditor3"
+        },
+        {
+          Action   = "apigateway:AddCertificateToDomain"
+          Effect   = "Allow"
+          Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
+          Sid      = "VisualEditor4"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "resource_tagging_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "resource_tagging"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "resource-groups:GetGroupQuery",
+            "backup:TagResource",
+            "sns:TagResource",
+            "lambda:TagResource",
+            "resource-groups:UpdateGroup",
+            "iam:UntagRole",
+            "iam:TagRole",
+            "resource-groups:GetTags",
+            "sns:UntagResource",
+            "resource-groups:Untag",
+            "lambda:UntagResource",
+            "elasticloadbalancing:RemoveTags",
+            "cognito-identity:UntagResource",
+            "resource-groups:GetGroup",
+            "resource-groups:GetGroupConfiguration",
+            "backup:UntagResource",
+            "cognito-identity:TagResource",
+            "resource-groups:Tag",
+            "logs:UntagResource",
+            "resource-groups:UpdateGroupQuery",
+            "iam:TagPolicy",
+            "logs:TagResource",
+            "events:TagResource",
+            "resource-groups:DeleteGroup",
+            "elasticloadbalancing:AddTags",
+            "iam:UntagPolicy",
+            "resource-groups:ListGroupResources",
+            "iam:UntagInstanceProfile",
+            "events:UntagResource",
+            "iam:TagInstanceProfile",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:events:*:${var.aws_account_id}:event-bus/*",
+            "arn:aws:events:*:${var.aws_account_id}:rule/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/gwy/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/net/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/app/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:truststore/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/app/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/gwy/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/net/*/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/net/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/app/*/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:targetgroup/*/*",
+            "arn:aws:lambda:*:${var.aws_account_id}:event-source-mapping:*",
+            "arn:aws:lambda:*:${var.aws_account_id}:code-signing-config:*",
+            "arn:aws:lambda:*:${var.aws_account_id}:function:*",
+            "arn:aws:cognito-identity:*:${var.aws_account_id}:identitypool/*",
+            "arn:aws:resource-groups:*:${var.aws_account_id}:group/*",
+            "arn:aws:backup:*:${var.aws_account_id}:backup-plan:*",
+            "arn:aws:backup:*:${var.aws_account_id}:report-plan:*-*",
+            "arn:aws:backup:*:${var.aws_account_id}:restore-testing-plan:*-*",
+            "arn:aws:backup:*:${var.aws_account_id}:backup-vault:*",
+            "arn:aws:backup:*:${var.aws_account_id}:legal-hold:*",
+            "arn:aws:backup:*:${var.aws_account_id}:framework:*-*",
+            "arn:aws:iam::${var.aws_account_id}:policy/*",
+            "arn:aws:iam::${var.aws_account_id}:instance-profile/*",
+            "arn:aws:iam::${var.aws_account_id}:role/*",
+            "arn:aws:sns:*:${var.aws_account_id}:*",
+            "arn:aws:logs:*:${var.aws_account_id}:log-group:*",
+            "arn:aws:logs:*:${var.aws_account_id}:delivery-source:*",
+            "arn:aws:logs:*:${var.aws_account_id}:delivery:*",
+            "arn:aws:logs:*:${var.aws_account_id}:destination:*",
+            "arn:aws:logs:*:${var.aws_account_id}:delivery-destination:*",
+            "arn:aws:logs:*:${var.aws_account_id}:anomaly-detector:*",
+          ]
+          Sid = "VisualEditor0"
+        },
+        {
+          Action = [
+            "events:TagResource",
+            "elasticloadbalancing:RemoveTags",
+            "elasticloadbalancing:AddTags",
+            "events:UntagResource",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/app/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/net/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:targetgroup/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:truststore/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/gwy/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/gwy/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/app/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/net/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/app/*/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/net/*/*/*/*",
+            "arn:aws:events:*:${var.aws_account_id}:rule/*",
+          ]
+          Sid = "VisualEditor1"
+        },
+        {
+          Action = [
+            "elasticloadbalancing:RemoveTags",
+            "elasticloadbalancing:AddTags",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:truststore/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/app/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/gwy/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener/net/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/net/*/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:listener-rule/app/*/*/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:targetgroup/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/gwy/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/net/*/*",
+            "arn:aws:elasticloadbalancing:*:${var.aws_account_id}:loadbalancer/app/*/*",
+          ]
+          Sid = "VisualEditor2"
+        },
+        {
+          Action = [
+            "resource-groups:SearchResources",
+            "resource-groups:CreateGroup",
+            "resource-groups:ListGroups",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "VisualEditor3"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "step_functions_prod" {
+  count = local.is_prod ? 1 : 0
+  role  = aws_iam_role.github_role_prod[0].id
+  name  = "step_functions"
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action = [
+            "states:DescribeStateMachine",
+            "states:UpdateStateMachine",
+            "states:DeleteStateMachine",
+            "states:CreateStateMachine",
+            "states:TagResource",
+            "states:UntagResource",
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:states:eu-west-2:${var.aws_account_id}:stateMachine:*"
+          Sid      = "VisualEditor0"
+        },
+      ]
+      Version = "2012-10-17"
+    }
+  )
+}
+
+###############################################################
+# ATTACHED POLICIES
+
+resource "aws_iam_role_policy_attachment" "ReadOnlyAccess_prod" {
+  count      = local.is_prod ? 1 : 0
+  role       = aws_iam_role.github_role_prod[0].name
+  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "GitHubAllAccess_prod" {
+  count      = local.is_prod ? 1 : 0
+  role       = aws_iam_role.github_role_prod[0].name
+  policy_arn = aws_iam_policy.GitHubAllAccess_prod[0].arn
+}
 
 # aws_iam_policy.GitHubAllAccess_prod[0]:
 resource "aws_iam_policy" "GitHubAllAccess_prod" {
-  count       = var.environment == "prod" ? 1 : 0
+  count       = local.is_prod ? 1 : 0
   description = "Access for Github Workflows"
-  name        = "GitHubAllAccess"
+  name        = "${terraform.workspace}-GitHubAllAccess"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -783,16 +826,20 @@ resource "aws_iam_policy" "GitHubAllAccess_prod" {
       Version = "2012-10-17"
     }
   )
-  tags     = {}
-  tags_all = {}
+  tags = {}
 }
 
+resource "aws_iam_role_policy_attachment" "ecs_policy_prod" {
+  count      = local.is_prod ? 1 : 0
+  role       = aws_iam_role.github_role_prod[0].name
+  policy_arn = aws_iam_policy.ecs_policy_prod[0].arn
+}
 
 # aws_iam_policy.ecs_policy_prod[0]:
 resource "aws_iam_policy" "ecs_policy_prod" {
-  count       = var.environment == "prod" ? 1 : 0
+  count       = local.is_prod ? 1 : 0
   description = null
-  name        = "ecs_policy"
+  name        = "${terraform.workspace}-ecs_policy"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -811,16 +858,20 @@ resource "aws_iam_policy" "ecs_policy_prod" {
       Version = "2012-10-17"
     }
   )
-  tags     = {}
-  tags_all = {}
+  tags = {}
 }
 
+resource "aws_iam_role_policy_attachment" "github_extension_1_prod" {
+  count      = local.is_prod ? 1 : 0
+  role       = aws_iam_role.github_role_prod[0].name
+  policy_arn = aws_iam_policy.github_extension_1_prod[0].arn
+}
 
 # aws_iam_policy.github_extension_1_prod[0]:
 resource "aws_iam_policy" "github_extension_1_prod" {
-  count       = var.environment == "prod" ? 1 : 0
+  count       = local.is_prod ? 1 : 0
   description = null
-  name        = "github-extension-1"
+  name        = "${terraform.workspace}-github-extension-1"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -957,16 +1008,20 @@ resource "aws_iam_policy" "github_extension_1_prod" {
       Version = "2012-10-17"
     }
   )
-  tags     = {}
-  tags_all = {}
+  tags = {}
 }
 
+resource "aws_iam_role_policy_attachment" "scheduler_policy_prod" {
+  count      = local.is_prod ? 1 : 0
+  role       = aws_iam_role.github_role_prod[0].name
+  policy_arn = aws_iam_policy.scheduler_policy_prod[0].arn
+}
 
 # aws_iam_policy.scheduler_policy_prod[0]:
 resource "aws_iam_policy" "scheduler_policy_prod" {
   count       = var.environment == "prod" ? 1 : 0
   description = null
-  name        = "scheduler_policy"
+  name        = "${terraform.workspace}-scheduler_policy"
   name_prefix = null
   path        = "/"
   policy = jsonencode(
@@ -982,8 +1037,5 @@ resource "aws_iam_policy" "scheduler_policy_prod" {
       Version = "2012-10-17"
     }
   )
-  tags     = {}
-  tags_all = {}
+  tags = {}
 }
-
-
