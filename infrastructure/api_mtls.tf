@@ -102,12 +102,38 @@ resource "aws_api_gateway_method_settings" "mtls_api_gateway_stage" {
   }
 }
 
+resource "aws_api_gateway_gateway_response" "missing_auth_token" {
+  rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
+  response_type = "MISSING_AUTHENTICATION_TOKEN"
+  status_code   = "404"
+
+  response_templates = {
+    "application/json" = jsonencode({
+      resourceType = "OperationOutcome"
+      issue = [{
+        severity    = "error"
+        code        = "not-found"
+        diagnostics = "The requested resource or HTTP method is not supported"
+      }]
+    })
+  }
+
+  response_parameters = {
+    "gatewayresponse.header.Access-Control-Allow-Origin"      = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+    "gatewayresponse.header.Access-Control-Allow-Methods"     = "'*'"
+    "gatewayresponse.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Auth,X-Api-Key,X-Amz-Security-Token,X-Auth-Cookie,Accept'"
+    "gatewayresponse.header.Access-Control-Allow-Credentials" = "'true'"
+  }
+}
+
 resource "aws_api_gateway_gateway_response" "unauthorised_response_mtls" {
   rest_api_id   = aws_api_gateway_rest_api.ndr_doc_store_api_mtls.id
   response_type = "DEFAULT_4XX"
 
   response_templates = {
-    "application/json" = "{\"message\":$context.error.messageString}"
+    "application/fhir+json" = <<EOF
+{"resourceType":"OperationOutcome","issue":[{"severity":"error","code":"security","diagnostics":$context.error.messageString}]}
+EOF
   }
 
   response_parameters = {
@@ -123,9 +149,10 @@ resource "aws_api_gateway_gateway_response" "bad_gateway_response_mtls" {
   response_type = "DEFAULT_5XX"
 
   response_templates = {
-    "application/json" = "{\"message\":$context.error.messageString}"
+    "application/fhir+json" = <<EOF
+{"resourceType":"OperationOutcome","issue":[{"severity":"error","code":"exception","diagnostics":$context.error.messageString}]}
+EOF
   }
-
   response_parameters = {
     "gatewayresponse.header.Access-Control-Allow-Origin"      = local.base_url_with_quotes
     "gatewayresponse.header.Access-Control-Allow-Methods"     = "'*'"

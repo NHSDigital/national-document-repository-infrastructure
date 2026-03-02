@@ -21,6 +21,12 @@ variable "enable_bucket_versioning" {
   default     = false
 }
 
+variable "suspend_bucket_versioning" {
+  description = "Whether to suspend versioning on the bucket with historic versioning."
+  type        = bool
+  default     = false
+}
+
 variable "cors_rules" {
   description = "List of CORS rules to apply to the S3 bucket."
   default     = []

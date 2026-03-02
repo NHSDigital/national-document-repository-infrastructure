@@ -122,6 +122,7 @@ module "ndr-bulk-staging-store" {
   bucket_name               = var.staging_store_bucket_name
   enable_cors_configuration = true
   enable_bucket_versioning  = true
+  suspend_bucket_versioning = true
   cloudfront_arn            = aws_cloudfront_distribution.s3_presign_mask.arn
   cloudfront_enabled        = true
   environment               = var.environment
@@ -223,30 +224,61 @@ resource "aws_s3_bucket_lifecycle_configuration" "doc-store-lifecycle-rules" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "staging-store-lifecycle-rules" {
   bucket = module.ndr-bulk-staging-store.bucket_id
+
+  rule {
+    id     = "Delete non-current versions in staging bucket that have existed for 24 hours"
+    status = "Enabled"
+
+    expiration {
+      expired_object_delete_marker = true
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 1
+    }
+
+    filter {}
+  }
+
   rule {
     id     = "Delete objects in user_upload folder that have existed for 24 hours"
     status = "Enabled"
 
-    expiration {
-      days = 1
-    }
-
     filter {
       prefix = "user_upload/"
     }
+
+    expiration {
+      days = 1
+    }
   }
+
   rule {
     id     = "Delete objects in review folder that have existed for 24 hours"
     status = "Enabled"
 
-    expiration {
-      days = 1
-    }
-
     filter {
       prefix = "review/"
     }
+
+    expiration {
+      days = 1
+    }
   }
+
+  rule {
+    id     = "Delete objects in fhir_upload folder that have existed for 24 hours"
+    status = "Enabled"
+
+    filter {
+      prefix = "fhir_upload/"
+    }
+
+    expiration {
+      days = 1
+    }
+  }
+
   rule {
     id     = "default-to-intelligent-tiering"
     status = "Enabled"
@@ -471,4 +503,43 @@ module "pdm-document-store" {
   environment              = var.environment
   owner                    = var.owner
   force_destroy            = local.is_force_destroy
+}
+
+module "ndr-report-store" {
+  source                   = "./modules/s3/"
+  access_logs_enabled      = local.is_production
+  access_logs_bucket_id    = local.access_logs_bucket_id
+  bucket_name              = var.ndr-report-store
+  enable_bucket_versioning = true
+  environment              = var.environment
+  owner                    = var.owner
+  force_destroy            = local.is_force_destroy
+}
+
+module "ses-feedback-store" {
+  source                   = "./modules/s3/"
+  access_logs_enabled      = local.is_production
+  access_logs_bucket_id    = local.access_logs_bucket_id
+  bucket_name              = var.ses-feedback_bucket_name
+  enable_bucket_versioning = true
+  environment              = var.environment
+  owner                    = var.owner
+  force_destroy            = local.is_force_destroy
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "ses_feedback_lifecycle_rules" {
+  bucket = module.ses-feedback-store.bucket_id
+
+  rule {
+    id     = "Expire SES feedback events after 90 days"
+    status = "Enabled"
+
+    filter {
+      prefix = "ses-feedback/"
+    }
+
+    expiration {
+      days = 90
+    }
+  }
 }

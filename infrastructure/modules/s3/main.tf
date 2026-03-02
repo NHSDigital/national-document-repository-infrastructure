@@ -129,7 +129,7 @@ resource "aws_s3_bucket_versioning" "bucket_versioning" {
   count  = var.enable_bucket_versioning ? 1 : 0
   bucket = aws_s3_bucket.bucket.id
   versioning_configuration {
-    status = "Enabled"
+    status = var.suspend_bucket_versioning ? "Suspended" : "Enabled"
   }
 
   depends_on = [aws_s3_bucket.bucket]
