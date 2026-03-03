@@ -38,7 +38,7 @@ resource "aws_ses_domain_mail_from" "reporting" {
 
 resource "aws_route53_record" "ses_mail_from_mx" {
   count   = var.enable ? 1 : 0
-  zone_id = module.route53_fargate_ui.zone_id
+  zone_id = var.zone_id
   name    = "mail.${terraform.workspace}.${var.domain}"
   type    = "MX"
   ttl     = 600
@@ -50,7 +50,7 @@ resource "aws_route53_record" "ses_mail_from_mx" {
 
 resource "aws_route53_record" "ses_mail_from_spf" {
   count   = var.enable ? 1 : 0
-  zone_id = module.route53_fargate_ui.zone_id
+  zone_id = var.zone_id
   name    = "mail.${terraform.workspace}.${var.domain}"
   type    = "TXT"
   ttl     = 600
