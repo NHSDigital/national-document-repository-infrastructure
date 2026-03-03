@@ -18,6 +18,7 @@ module "create_user_restriction_lambda" {
     APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
     RESTRICTIONS_TABLE_NAME = module.user_restriction_table.table_name
+    HEALTHCARE_WORKER_API_URL = module.healthcare_worker_api_base_url.value
   }
 
   depends_on = [
