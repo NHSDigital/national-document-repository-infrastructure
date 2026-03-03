@@ -59,3 +59,13 @@ resource "aws_route53_record" "ses_mail_from_spf" {
     "v=spf1 include:amazonses.com -all"
   ]
 }
+
+resource "aws_route53_record" "dmarc" {
+  count   = var.enable ? 1 : 0
+  zone_id = var.zone_id
+  name    = "_dmarc.${aws_ses_domain_identity.ndr_ses[0].domain}"
+  type    = "TXT"
+  ttl     = 300
+
+  records = ["v=DMARC1; p=none; adkim=s; aspf=s"]
+}
