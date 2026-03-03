@@ -30,8 +30,7 @@ module "ses_feedback_topic" {
     ]
   })
 
-  enable_ses_publish    = true
-  ses_source_account_id = data.aws_caller_identity.current.account_id
+  enable_ses_publish = true
 }
 
 resource "aws_lambda_permission" "allow_sns_invoke_ses_feedback_monitor" {

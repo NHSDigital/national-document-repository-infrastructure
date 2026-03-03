@@ -19,14 +19,10 @@ module "ses-feedback-monitor-lambda" {
     SES_FEEDBACK_BUCKET_NAME = module.ses-feedback-store.bucket_id
     SES_FEEDBACK_PREFIX      = "ses-feedback/"
     PRM_MAILBOX_EMAIL        = data.aws_ssm_parameter.prm_mailbox_email.value
-    SES_FROM_ADDRESS         = local.reporting_ses_from_address_value
+    SES_FROM_ADDRESS         = module.ses.report_email_address
     ALERT_ON_EVENT_TYPES     = "BOUNCE,REJECT"
   }
 
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
-
-  depends_on = [
-    module.ses-feedback-store
-  ]
 }

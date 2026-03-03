@@ -17,7 +17,6 @@ resource "aws_ses_event_destination" "reporting_to_sns" {
   }
 
   depends_on = [
-    module.ses_feedback_topic,
     aws_lambda_permission.allow_sns_invoke_ses_feedback_monitor
   ]
 }

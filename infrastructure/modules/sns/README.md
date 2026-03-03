@@ -93,7 +93,6 @@ module "sns_topic" {
 | <a name="input_enable_ses_publish"></a> [enable\_ses\_publish](#input\_enable\_ses\_publish) | If true, module appends a statement allowing ses.amazonaws.com to SNS:Publish to this topic. | `bool` | `false` | no |
 | <a name="input_is_topic_endpoint_list"></a> [is\_topic\_endpoint\_list](#input\_is\_topic\_endpoint\_list) | Whether to use the topic\_endpoint\_list instead of a single topic\_endpoint. | `bool` | `false` | no |
 | <a name="input_raw_message_delivery"></a> [raw\_message\_delivery](#input\_raw\_message\_delivery) | Whether to enable raw message delivery for the SNS subscription. | `bool` | `false` | no |
-| <a name="input_ses_source_account_id"></a> [ses\_source\_account\_id](#input\_ses\_source\_account\_id) | AWS account ID used in the AWS:SourceAccount condition for SES publishing. | `string` | `""` | no |
 | <a name="input_sns_encryption_key_id"></a> [sns\_encryption\_key\_id](#input\_sns\_encryption\_key\_id) | The ARN (or ID) of the KMS key used for encrypting the SNS topic. | `string` | n/a | yes |
 | <a name="input_sqs_feedback"></a> [sqs\_feedback](#input\_sqs\_feedback) | Map of IAM role ARNs and sample rate for success and failure feedback. | `map(string)` | `{}` | no |
 | <a name="input_topic_endpoint"></a> [topic\_endpoint](#input\_topic\_endpoint) | A single endpoint (e.g., SQS queue or Lambda function ARN) to subscribe to the topic. | `any` | `null` | no |

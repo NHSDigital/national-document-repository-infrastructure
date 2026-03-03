@@ -71,9 +71,3 @@ variable "enable_ses_publish" {
   type        = bool
   default     = false
 }
-
-variable "ses_source_account_id" {
-  description = "AWS account ID used in the AWS:SourceAccount condition for SES publishing."
-  type        = string
-  default     = ""
-}

@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 locals {
   base_topic_policy_json = var.topic_policy_json != null ? var.topic_policy_json : var.delivery_policy
   base_topic_policy_obj  = jsondecode(local.base_topic_policy_json)
@@ -24,7 +26,7 @@ locals {
     Resource = aws_sns_topic.sns_topic.arn
     Condition = {
       StringEquals = {
-        "AWS:SourceAccount" = var.ses_source_account_id
+        "AWS:SourceAccount" = data.aws_caller_identity.current.account_id
       }
     }
   } : null

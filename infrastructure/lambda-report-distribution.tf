@@ -21,7 +21,7 @@ module "report-distribution-lambda" {
     CONTACT_TABLE_NAME = module.bulk_upload_contact_lookup_table.table_name
 
     PRM_MAILBOX_EMAIL     = data.aws_ssm_parameter.prm_mailbox_email.value
-    SES_FROM_ADDRESS      = local.reporting_ses_from_address_value
+    SES_FROM_ADDRESS      = module.ses.report_email_address
     SES_CONFIGURATION_SET = aws_ses_configuration_set.reporting.name
   }
 
