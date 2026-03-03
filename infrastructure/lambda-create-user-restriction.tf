@@ -13,12 +13,12 @@ module "create_user_restriction_lambda" {
   http_methods        = ["POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE               = terraform.workspace
-    RESTRICTIONS_TABLE_NAME = module.user_restriction_table.table_name
-    HEALTHCARE_WORKER_API_URL = module.healthcare_worker_api_base_url.value
+    APPCONFIG_APPLICATION     = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT     = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE                 = terraform.workspace
+    RESTRICTIONS_TABLE_NAME   = module.user_restriction_table.table_name
+    HEALTHCARE_WORKER_API_URL = local.is_sandbox ? "" : data.aws_ssm_parameter.hcw_api_url[0].value
   }
 
   depends_on = [
