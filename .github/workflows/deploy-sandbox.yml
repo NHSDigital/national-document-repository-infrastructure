@@ -78,52 +78,51 @@ jobs:
           workspace: ${{ inputs.sandbox_name }}
           tf_vars_file: ${{ vars.TF_VARS_FILE }}
           tf_extra_args: "-var aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}"
-          # TODO: REVERT
-          tf_plan_only: true
-
-  # terraform_plan_apply_main:
-  #   name: Terraform Plan/Apply (main)
-  #   if: ${{ !inputs.skip_main_deployment }}
-  #   runs-on: ubuntu-latest
-  #   needs: terraform_plan_apply_base_iam
-  #   environment: development
-  #   steps:
-  #     - name: Checkout main
-  #       uses: actions/checkout@v6
-  #       with:
-  #         ref: main
-
-  #     - name: Apply Main
-  #       uses: ./.github/actions/tf-plan-apply
-  #       with:
-  #         # use newly created role
-  #         aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name}}-github-actions-role
-  #         bucket_prefix: "dev"
-  #         aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-  #         aws_region: ${{ vars.AWS_REGION }}
-  #         workspace: ${{ inputs.sandbox_name }}
-  #         tf_vars_file: ${{ vars.TF_VARS_FILE }}
 
 
-  # terraform_plan_apply_branch:
-  #   name: Terraform Plan/Apply (branch)
-  #   if: ${{ always() && inputs.git_ref != 'main' && needs.validate_inputs.result == 'success' && needs.terraform_plan_apply_base_iam.result == 'success' && (needs.terraform_plan_apply_main.result == 'success' || needs.terraform_plan_apply_main.result == 'skipped') }}
-  #   runs-on: ubuntu-latest
-  #   needs: [validate_inputs, terraform_plan_apply_base_iam, terraform_plan_apply_main]
-  #   environment: development
-  #   steps:
-  #     - name: Checkout Branch
-  #       uses: actions/checkout@v6
-  #       with:
-  #         ref: ${{ inputs.git_ref}}
+  terraform_plan_apply_main:
+    name: Terraform Plan/Apply (main)
+    if: ${{ !inputs.skip_main_deployment }}
+    runs-on: ubuntu-latest
+    needs: terraform_plan_apply_base_iam
+    environment: development
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v6
+        with:
+          ref: main
 
-  #     - name: Apply Branch
-  #       uses: ./.github/actions/tf-plan-apply
-  #       with:
-  #         # use newly created role
-  #         aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name}}-github-actions-role
-  #         bucket_prefix: "dev"
-  #         aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-  #         aws_region: ${{ vars.AWS_REGION }}
-  #         workspace: ${{ inputs.sandbox_name }}
-  #         tf_vars_file: ${{ vars.TF_VARS_FILE }}
+      - name: Apply Main
+        uses: ./.github/actions/tf-plan-apply
+        with:
+          # use newly created role
+          aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name}}-github-actions-role
+          bucket_prefix: "dev"
+          aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          aws_region: ${{ vars.AWS_REGION }}
+          workspace: ${{ inputs.sandbox_name }}
+          tf_vars_file: ${{ vars.TF_VARS_FILE }}
+
+
+  terraform_plan_apply_branch:
+    name: Terraform Plan/Apply (branch)
+    if: ${{ always() && inputs.git_ref != 'main' && needs.validate_inputs.result == 'success' && needs.terraform_plan_apply_base_iam.result == 'success' && (needs.terraform_plan_apply_main.result == 'success' || needs.terraform_plan_apply_main.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    needs: [validate_inputs, terraform_plan_apply_base_iam, terraform_plan_apply_main]
+    environment: development
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.git_ref}}
+
+      - name: Apply Branch
+        uses: ./.github/actions/tf-plan-apply
+        with:
+          # use newly created role
+          aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name}}-github-actions-role
+          bucket_prefix: "dev"
+          aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          aws_region: ${{ vars.AWS_REGION }}
+          workspace: ${{ inputs.sandbox_name }}
+          tf_vars_file: ${{ vars.TF_VARS_FILE }}

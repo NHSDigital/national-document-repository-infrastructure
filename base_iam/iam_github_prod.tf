@@ -1,6 +1,6 @@
 # aws_iam_role.prod_github_actions[0]:
 resource "aws_iam_role" "prod_github_actions" {
-  count                 = local.is_development ? 1 : 0
+  count                 = local.is_prod ? 1 : 0
   name                  = "${terraform.workspace}-github-actions-role"
   description           = "This role is to provide access for GitHub Actions to the ${terraform.workspace} environment."
   force_detach_policies = false
@@ -39,7 +39,7 @@ resource "aws_iam_role" "prod_github_actions" {
 # INLINE POLICIES
 
 resource "aws_iam_role_policy" "CloudWatchLogsPolicy_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "CloudWatchLogsPolicy"
   policy = jsonencode(
@@ -69,7 +69,7 @@ resource "aws_iam_role_policy" "CloudWatchLogsPolicy_prod" {
 }
 
 resource "aws_iam_role_policy" "CloudWatchRumPolicy_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "CloudWatchRumPolicy"
   policy = jsonencode(
@@ -131,7 +131,7 @@ resource "aws_iam_role_policy" "CloudWatchRumPolicy_prod" {
 }
 
 resource "aws_iam_role_policy" "GithubCloudfrontPolicy_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "GithubCloudfrontPolicy"
   policy = jsonencode(
@@ -167,7 +167,7 @@ resource "aws_iam_role_policy" "GithubCloudfrontPolicy_prod" {
 }
 
 resource "aws_iam_role_policy" "GithubECSPolicy_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "GithubECSPolicy"
   policy = jsonencode(
@@ -186,7 +186,7 @@ resource "aws_iam_role_policy" "GithubECSPolicy_prod" {
 }
 
 resource "aws_iam_role_policy" "GithubSchedulerPolicy_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "GithubSchedulerPolicy"
   policy = jsonencode(
@@ -208,7 +208,7 @@ resource "aws_iam_role_policy" "GithubSchedulerPolicy_prod" {
 }
 
 resource "aws_iam_role_policy" "acm_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "acm"
   policy = jsonencode(
@@ -230,7 +230,7 @@ resource "aws_iam_role_policy" "acm_prod" {
 }
 
 resource "aws_iam_role_policy" "ecr_policy_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "ecr_policy"
   policy = jsonencode(
@@ -259,7 +259,7 @@ resource "aws_iam_role_policy" "ecr_policy_prod" {
 }
 
 resource "aws_iam_role_policy" "github_extended_policy_virus_scanner_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "github-extended-policy-virus-scanner"
   policy = jsonencode(
@@ -294,7 +294,7 @@ resource "aws_iam_role_policy" "github_extended_policy_virus_scanner_prod" {
 }
 
 resource "aws_iam_role_policy" "lambda_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "lambda"
   policy = jsonencode(
@@ -330,7 +330,7 @@ resource "aws_iam_role_policy" "lambda_prod" {
 }
 
 resource "aws_iam_role_policy" "mtls_gateway_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "mtls-gateway"
   policy = jsonencode(
@@ -398,7 +398,7 @@ resource "aws_iam_role_policy" "mtls_gateway_prod" {
 }
 
 resource "aws_iam_role_policy" "resource_tagging_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "resource_tagging"
   policy = jsonencode(
@@ -535,7 +535,7 @@ resource "aws_iam_role_policy" "resource_tagging_prod" {
 }
 
 resource "aws_iam_role_policy" "step_functions_prod" {
-  count = local.is_development ? 1 : 0
+  count = local.is_prod ? 1 : 0
   role  = aws_iam_role.prod_github_actions[0].id
   name  = "step_functions"
   policy = jsonencode(
@@ -564,20 +564,20 @@ resource "aws_iam_role_policy" "step_functions_prod" {
 # ATTACHED POLICIES
 
 resource "aws_iam_role_policy_attachment" "ReadOnlyAccess_prod" {
-  count      = local.is_development ? 1 : 0
+  count      = local.is_prod ? 1 : 0
   role       = aws_iam_role.prod_github_actions[0].name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
 
 resource "aws_iam_role_policy_attachment" "GitHubAllAccess_prod" {
-  count      = local.is_development ? 1 : 0
+  count      = local.is_prod ? 1 : 0
   role       = aws_iam_role.prod_github_actions[0].name
   policy_arn = aws_iam_policy.GitHubAllAccess_prod[0].arn
 }
 
 # aws_iam_policy.GitHubAllAccess_prod[0]:
 resource "aws_iam_policy" "GitHubAllAccess_prod" {
-  count       = local.is_development ? 1 : 0
+  count       = local.is_prod ? 1 : 0
   description = "Access for Github Workflows"
   name        = "${terraform.workspace}-GitHubAllAccess"
   name_prefix = null
@@ -830,14 +830,14 @@ resource "aws_iam_policy" "GitHubAllAccess_prod" {
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_policy_prod" {
-  count      = local.is_development ? 1 : 0
+  count      = local.is_prod ? 1 : 0
   role       = aws_iam_role.prod_github_actions[0].name
   policy_arn = aws_iam_policy.ecs_policy_prod[0].arn
 }
 
 # aws_iam_policy.ecs_policy_prod[0]:
 resource "aws_iam_policy" "ecs_policy_prod" {
-  count       = local.is_development ? 1 : 0
+  count       = local.is_prod ? 1 : 0
   description = null
   name        = "${terraform.workspace}-ecs_policy"
   name_prefix = null
@@ -862,14 +862,14 @@ resource "aws_iam_policy" "ecs_policy_prod" {
 }
 
 resource "aws_iam_role_policy_attachment" "github_extension_1_prod" {
-  count      = local.is_development ? 1 : 0
+  count      = local.is_prod ? 1 : 0
   role       = aws_iam_role.prod_github_actions[0].name
   policy_arn = aws_iam_policy.github_extension_1_prod[0].arn
 }
 
 # aws_iam_policy.github_extension_1_prod[0]:
 resource "aws_iam_policy" "github_extension_1_prod" {
-  count       = local.is_development ? 1 : 0
+  count       = local.is_prod ? 1 : 0
   description = null
   name        = "${terraform.workspace}-github-extension-1"
   name_prefix = null
@@ -1012,14 +1012,14 @@ resource "aws_iam_policy" "github_extension_1_prod" {
 }
 
 resource "aws_iam_role_policy_attachment" "scheduler_policy_prod" {
-  count      = local.is_development ? 1 : 0
+  count      = local.is_prod ? 1 : 0
   role       = aws_iam_role.prod_github_actions[0].name
   policy_arn = aws_iam_policy.scheduler_policy_prod[0].arn
 }
 
 # aws_iam_policy.scheduler_policy_prod[0]:
 resource "aws_iam_policy" "scheduler_policy_prod" {
-  count       = local.is_development ? 1 : 0
+  count       = local.is_prod ? 1 : 0
   description = null
   name        = "${terraform.workspace}-scheduler_policy"
   name_prefix = null
