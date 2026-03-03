@@ -11,5 +11,5 @@ module "healthcare_worker_api_base_url" {
 }
 
 data "aws_ssm_parameter" "healthcare_worker_api_base_url" {
-  name = local.is_sandbox ? "/ndr/ndr-dev/hcw_api_url" : "/ndr/${terraform.workspace}/hcw_api_url"
+  name = local.is_sandbox ? "/ndr/${var.shared_infra_workspace}/hcw_api_url" : "/ndr/${terraform.workspace}/hcw_api_url"
 }
