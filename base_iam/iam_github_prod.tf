@@ -1019,7 +1019,7 @@ resource "aws_iam_role_policy_attachment" "scheduler_policy_prod" {
 
 # aws_iam_policy.scheduler_policy_prod[0]:
 resource "aws_iam_policy" "scheduler_policy_prod" {
-  count       = var.environment == "prod" ? 1 : 0
+  count       = local.is_prod ? 1 : 0
   description = null
   name        = "${terraform.workspace}-scheduler_policy"
   name_prefix = null
