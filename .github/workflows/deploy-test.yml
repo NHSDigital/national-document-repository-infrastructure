@@ -1,6 +1,6 @@
 name: "Deploy - Test"
 
-run-name: "${{ github.event.inputs.git_ref }}"
+run-name: "${{ inputs.git_ref }}"
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.inputs.git_ref}}
+          ref: ${{ inputs.git_ref}}
 
       - name: Apply base_iam
         uses: ./.github/actions/tf-plan-apply

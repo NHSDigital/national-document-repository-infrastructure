@@ -1,6 +1,6 @@
 name: "Deploy - Prod"
 
-run-name: "${{ github.event.inputs.git_tag }}"
+run-name: "${{ inputs.git_tag }}"
 
 on:
   workflow_dispatch:
@@ -48,7 +48,7 @@ jobs:
       - name: Checkout Tag
         uses: actions/checkout@v6
         with:
-          ref: refs/tags/${{ github.event.inputs.git_tag}}
+          ref: refs/tags/${{ inputs.git_tag}}
           fetch-depth: "0"
 
       - name: Apply Main
