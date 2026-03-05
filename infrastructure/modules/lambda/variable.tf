@@ -103,7 +103,7 @@ variable "persistent_workspaces" {
 variable "default_lambda_layers" {
   type = list(string)
   default = [
-    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:207"
+    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:217"
   ]
 }
 

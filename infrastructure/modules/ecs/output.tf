@@ -2,6 +2,10 @@ output "dns_name" {
   value = var.is_lb_needed ? aws_lb.ecs_lb[0].dns_name : null
 }
 
+output "dns_zone_id" {
+  value = var.is_lb_needed ? aws_lb.ecs_lb[0].zone_id : null
+}
+
 output "security_group_id" {
   value = aws_security_group.ndr_ecs_sg.id
 }
