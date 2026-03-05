@@ -45,7 +45,7 @@ module "get-doc-fhir-lambda" {
     WORKSPACE               = terraform.workspace
     ENVIRONMENT             = var.environment
     PRESIGNED_ASSUME_ROLE   = aws_iam_role.get_fhir_doc_presign_url_role.arn
-    OIDC_CALLBACK_URL       = local.oidc_callback_url
+    OIDC_CALLBACK_URL       = contains(["prod"], terraform.workspace) ? "https://${var.domain}/auth-callback" : "https://${terraform.workspace}.${var.domain}/auth-callback"
     CLOUDFRONT_URL          = one(aws_cloudfront_distribution.s3_presign_mask.aliases)
     PDS_FHIR_IS_STUBBED     = local.is_sandbox
   }
