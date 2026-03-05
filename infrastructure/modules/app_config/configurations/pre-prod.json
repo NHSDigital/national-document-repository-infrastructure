@@ -26,6 +26,9 @@
         },
         "documentCorrectEnabled": {
           "name": "documentCorrectEnabled"
+        },
+        "userRestrictionEnabled": {
+            "name": "userRestrictionEnabled"
         }
     },
     "values": {
@@ -55,6 +58,9 @@
         },
         "documentCorrectEnabled": {
           "enabled": "false"
+        },
+        "userRestrictionEnabled": {
+            "enabled": "false"
         }
     },
     "version": "1"
