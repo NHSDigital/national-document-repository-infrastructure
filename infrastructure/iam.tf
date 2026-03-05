@@ -354,37 +354,37 @@ resource "aws_iam_policy" "s3_document_data_policy_post_document_review_lambda" 
   })
 }
 
-# data "aws_iam_policy_document" "reporting_ses" {
-#   statement {
-#     sid    = "SESAccess"
-#     effect = "Allow"
-#
-#     actions = [
-#       "ses:SendEmail",
-#       "ses:SendRawEmail"
-#     ]
-#
-#     resources = [
-#       "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/*",
-#       "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:configuration-set/${aws_ses_configuration_set.reporting.name}"
-#     ]
-#
-#     condition {
-#       test     = "StringEquals"
-#       variable = "ses:FromAddress"
-#       values   = [local.reporting_ses_from_address_value]
-#     }
-#   }
-# }
-#
-# data "aws_iam_policy_document" "ses_feedback_s3_put" {
-#   statement {
-#     effect = "Allow"
-#     actions = [
-#       "s3:PutObject"
-#     ]
-#     resources = [
-#       "${module.ses-feedback-store.bucket_arn}/ses-feedback/*"
-#     ]
-#   }
-# }
+data "aws_iam_policy_document" "reporting_ses" {
+  statement {
+    sid    = "SESAccess"
+    effect = "Allow"
+
+    actions = [
+      "ses:SendEmail",
+      "ses:SendRawEmail"
+    ]
+
+    resources = [
+      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:identity/*",
+      "arn:aws:ses:${var.region}:${data.aws_caller_identity.current.account_id}:configuration-set/${aws_ses_configuration_set.reporting.name}"
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "ses:FromAddress"
+      values   = [local.reporting_ses_from_address_value]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "ses_feedback_s3_put" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:PutObject"
+    ]
+    resources = [
+      "${module.ses-feedback-store.bucket_arn}/ses-feedback/*"
+    ]
+  }
+}
