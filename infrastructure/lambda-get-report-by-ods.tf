@@ -7,7 +7,7 @@ module "get-report-by-ods-gateway" {
   gateway_path        = "OdsReport"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = local.base_url_with_quotes
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
 module "get-report-by-ods-alarm" {

@@ -19,7 +19,7 @@ module "document_reference_gateway" {
   gateway_path        = "DocumentReference"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = local.base_url_with_quotes
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 }
 
 module "document_reference_id_gateway" {
@@ -31,7 +31,7 @@ module "document_reference_id_gateway" {
   gateway_path        = "{id}"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = local.base_url_with_quotes
+  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
 
   request_parameters = {
     "method.request.path.id" = true
