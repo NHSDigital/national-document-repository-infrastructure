@@ -6,7 +6,7 @@ module "logout-gateway" {
   authorization       = "NONE"
   gateway_path        = "Logout"
   require_credentials = false
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = local.base_url_with_quotes
 }
 
 module "logout_lambda" {
