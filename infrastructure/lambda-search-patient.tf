@@ -60,6 +60,7 @@ module "search-patient-details-lambda" {
     module.ndr-app-config.app_config_policy,
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,
     module.auth_session_dynamodb_table.dynamodb_read_policy_document,
+    module.user_restriction_table.dynamodb_read_policy_document,
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -73,6 +74,7 @@ module "search-patient-details-lambda" {
     PDS_FHIR_IS_STUBBED            = local.is_sandbox,
     WORKSPACE                      = terraform.workspace
     AUTH_SESSION_TABLE_NAME        = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
+    RESTRICTIONS_TABLE_NAME        = module.user_restriction_table.table_name
   }
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   depends_on = [
