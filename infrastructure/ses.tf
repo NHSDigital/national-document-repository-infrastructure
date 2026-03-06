@@ -1,6 +1,6 @@
 locals {
-  domain_prefix = terraform.workspace
-  domain        = "${local.domain_prefix}.${var.domain}"
+  domain_prefix = terraform.workspace == "ndr-test" ? "" : terraform.workspace
+  domain        = terraform.workspace == "ndr-test" ? var.domain : "${terraform.workspace}.${var.domain}"
 }
 
 module "ndr-feedback-mailbox" {
