@@ -1,6 +1,6 @@
 name: 'Tool: Rename Git Tag'
 
-run-name: "${{ github.event.inputs.old_tag }} -> ${{ github.event.inputs.new_tag }}"
+run-name: "${{ inputs.old_tag }} -> ${{ inputs.new_tag }}"
 
 on:
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.inputs.old_tag }}
+          ref: ${{ inputs.old_tag }}
           fetch-depth: 0
       
       - name: Check SHA
@@ -49,6 +49,6 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/${{ github.event.inputs.new_tag }}',
+              ref: 'refs/tags/${{ inputs.new_tag }}',
               sha: '${{ steps.get-sha.outputs.BRANCH_SHA }}'
             })
