@@ -8,7 +8,7 @@ variable "zone_id" {
   type        = string
 }
 
-variable "enable" {
-  description = "Whether to enable the creation of SES identity, DKIM, and DNS records."
+variable "is_sandbox" {
+  description = "Whether the workspace being created is a sandbox."
   type        = bool
 }
