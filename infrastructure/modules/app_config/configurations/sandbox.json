@@ -29,6 +29,9 @@
         },
         "userRestrictionEnabled": {
             "name": "userRestrictionEnabled"
+        },
+        "versionHistoryEnabled": {
+          "name": "versionHistoryEnabled"
         }
     },
     "values": {
@@ -61,6 +64,9 @@
         },
         "userRestrictionEnabled": {
             "enabled": "true"
+        },
+        "versionHistoryEnabled": {
+          "enabled": "true"
         }
     },
     "version": "1"
