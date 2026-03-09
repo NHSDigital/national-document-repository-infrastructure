@@ -49,7 +49,7 @@ module "document_reference_history_gateway" {
   gateway_path        = "_history"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = local.base_url_with_quotes
 
   depends_on = [module.document_reference_id_gateway]
 }
@@ -63,7 +63,7 @@ module "document_reference_version_gateway" {
   gateway_path        = "{version}"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = local.base_url_with_quotes
 
   request_parameters = {
     "method.request.path.id"      = true,
