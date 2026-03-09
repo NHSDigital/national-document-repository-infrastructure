@@ -12,7 +12,7 @@ resource "aws_route53_record" "ndr_ses_dkim_record" {
   count = 3
 
   zone_id = var.zone_id
-  name    = var.is_sandbox ? "${aws_ses_domain_dkim.ndr_dkim[0].dkim_tokens[count.index]}._domainkey.${terraform.workspace}.dev" : "${aws_ses_domain_dkim.ndr_dkim[0].dkim_tokens[count.index]}._domainkey.${terraform.workspace}"
+  name    = var.is_sandbox ? "${aws_ses_domain_dkim.ndr_dkim.dkim_tokens[count.index]}._domainkey.${terraform.workspace}.dev" : "${aws_ses_domain_dkim.ndr_dkim.dkim_tokens[count.index]}._domainkey.${terraform.workspace}"
   type    = "CNAME"
   ttl     = 1800
   records = ["${aws_ses_domain_dkim.ndr_dkim.dkim_tokens[count.index]}.dkim.amazonses.com"]
