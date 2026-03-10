@@ -1,6 +1,6 @@
 name: "Deploy - Pre-prod"
 
-run-name: "${{ github.event.inputs.branch_or_tag }}"
+run-name: "${{ inputs.branch_or_tag }}"
 
 on:
   workflow_dispatch:
@@ -21,18 +21,18 @@ jobs:
     name: Tag main
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.versioning.outputs.tag || github.event.inputs.branch_or_tag }}
+      version: ${{ steps.versioning.outputs.tag || inputs.branch_or_tag }}
     permissions: write-all
     steps:
       - name: Checkout main
-        if: ${{ github.event.inputs.branch_or_tag == 'main' }}
+        if: ${{ inputs.branch_or_tag == 'main' }}
         uses: actions/checkout@v6
         with:
           ref: main
           fetch-depth: "0"
 
       - name: Bump version and push tag
-        if: ${{ github.event.inputs.branch_or_tag == 'main' }}
+        if: ${{ inputs.branch_or_tag == 'main' }}
         id: versioning
         uses: anothrNick/github-tag-action@1.64.0
         env:
@@ -42,7 +42,7 @@ jobs:
 
       - name: View outputs
         run: |
-          echo Tag to deploy: ${{ steps.versioning.outputs.tag || github.event.inputs.branch_or_tag }}
+          echo Tag to deploy: ${{ steps.versioning.outputs.tag || inputs.branch_or_tag }}
 
   terraform_plan_apply_base_iam:
     name: Terraform Plan/Apply base-iam (pre-prod)
