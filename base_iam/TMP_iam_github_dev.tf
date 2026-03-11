@@ -1,6 +1,6 @@
 resource "aws_iam_role_policy_attachment" "github_actions_policy_dev" {
   count      = local.is_dev ? 1 : 0
-  role       = aws_iam_role.dev_github_actions.name
+  role       = aws_iam_role.github_actions.name
   policy_arn = aws_iam_policy.github_actions_policy_dev[0].arn
 }
 
@@ -11,6 +11,45 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
+      {
+        Action   = "kms:GenerateDataKey"
+        Effect   = "Allow"
+        Resource = "*"
+        Condition = {
+          StringLike = {
+            "aws:ResourceTag/Name" = "alias/mns-notification-encryption-key-kms-*"
+          }
+        }
+      },
+      {
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:ecr:eu-west-2:*:repository/*"
+      },
+      {
+        Action   = "apigateway:SetWebACL"
+        Effect   = "Allow"
+        Resource = "arn:aws:apigateway:eu-west-2::/restapis/*/stages/*"
+      },
+      {
+        Action = [
+          "dynamodb:DeleteItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateTimeToLive"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:dynamodb:*:*:table/ndr-terraform-locks"
+      },
       {
         Action = [
           "backup:TagResource",
@@ -72,19 +111,6 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
       },
       {
         Action = [
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:BatchGetImage",
-          "ecr:CompleteLayerUpload",
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:InitiateLayerUpload",
-          "ecr:PutImage",
-          "ecr:UploadLayerPart"
-        ]
-        Effect   = "Allow"
-        Resource = "arn:aws:ecr:eu-west-2:*:repository/*"
-      },
-      {
-        Action = [
           "cloudfront:*",
           "cognito-idp:*",
           "config:DeleteConfigurationRecorder",
@@ -102,22 +128,6 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
         Resource = "*"
       },
       {
-        Action   = "sqs:SendMessage"
-        Effect   = "Allow"
-        Resource = "arn:aws:sqs:eu-west-2:${data.aws_caller_identity.current.account_id}:*-mns-notification-queue"
-      },
-      {
-        Action = [
-          "dynamodb:DeleteItem",
-          "dynamodb:DescribeTable",
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:UpdateTimeToLive"
-        ]
-        Effect   = "Allow"
-        Resource = "arn:aws:dynamodb:*:*:table/ndr-terraform-locks"
-      },
-      {
         Action = [
           "s3:DeleteBucketPolicy",
           "s3:DeleteObject",
@@ -127,16 +137,6 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}/ndr/terraform.tfstate"
-      },
-      {
-        Action   = "logs:PutDeliverySource"
-        Effect   = "Allow"
-        Resource = "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-source:*"
-      },
-      {
-        Action   = "iam:ListRoles"
-        Effect   = "Allow"
-        Resource = "arn:aws:lambda:eu-west-2:*:function:*"
       },
       {
         Action = [
@@ -153,24 +153,24 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
         ]
       },
       {
-        Action   = "kms:GenerateDataKey"
-        Effect   = "Allow"
-        Resource = "*"
-        Condition = {
-          StringLike = {
-            "aws:ResourceTag/Name" = "alias/mns-notification-encryption-key-kms-*"
-          }
-        }
-      },
-      {
         Action   = "s3:ListBucket"
         Effect   = "Allow"
         Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}"
       },
       {
-        Action   = "apigateway:SetWebACL"
+        Action   = "iam:ListRoles"
         Effect   = "Allow"
-        Resource = "arn:aws:apigateway:eu-west-2::/restapis/*/stages/*"
+        Resource = "arn:aws:lambda:eu-west-2:*:function:*"
+      },
+      {
+        Action   = "logs:PutDeliverySource"
+        Effect   = "Allow"
+        Resource = "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-source:*"
+      },
+      {
+        Action   = "sqs:SendMessage"
+        Effect   = "Allow"
+        Resource = "arn:aws:sqs:eu-west-2:${data.aws_caller_identity.current.account_id}:*-mns-notification-queue"
       },
     ]
   })

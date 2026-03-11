@@ -1,6 +1,6 @@
 resource "aws_iam_role_policy_attachment" "github_actions_policy_dev_test_pre-prod_prod" {
   count      = local.is_dev_test_pre-prod_prod ? 1 : 0
-  role       = aws_iam_role.dev_github_actions.name
+  role       = aws_iam_role.github_actions.name
   policy_arn = aws_iam_policy.github_actions_policy_dev_test_pre-prod_prod[0].arn
 }
 
@@ -285,6 +285,15 @@ resource "aws_iam_policy" "github_actions_policy_dev_test_pre-prod_prod" {
       },
       {
         Action = [
+          "logs:DeleteLogGroup",
+          "logs:DeleteResourcePolicy",
+          "logs:DescribeLogGroups"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*RUMService*"
+      },
+      {
+        Action = [
           "cognito-identity:CreateIdentityPool",
           "cognito-identity:DeleteIdentityPool",
           "cognito-identity:SetIdentityPoolRoles",
@@ -292,15 +301,6 @@ resource "aws_iam_policy" "github_actions_policy_dev_test_pre-prod_prod" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:cognito-identity:eu-west-2:${data.aws_caller_identity.current.account_id}:identitypool/*"
-      },
-      {
-        Action = [
-          "logs:DeleteLogGroup",
-          "logs:DeleteResourcePolicy",
-          "logs:DescribeLogGroups"
-        ]
-        Effect   = "Allow"
-        Resource = "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*RUMService*"
       },
     ]
   })

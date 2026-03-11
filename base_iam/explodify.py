@@ -167,7 +167,7 @@ def create_policy_file(group, permissions):
     with open(filename, 'w') as f:
         f.write(f'resource "aws_iam_role_policy_attachment" "github_actions_policy_{group}" {{\n')
         f.write(f'  count      = local.is_{group} ? 1 : 0\n')
-        f.write(f'  role       = aws_iam_role.dev_github_actions.name\n')
+        f.write(f'  role       = aws_iam_role.github_actions.name\n')
         f.write(f'  policy_arn = aws_iam_policy.github_actions_policy_{group}[0].arn\n')
         f.write('}\n\n')
 
