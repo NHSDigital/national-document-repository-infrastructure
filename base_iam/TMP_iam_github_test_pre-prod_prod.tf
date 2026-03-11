@@ -1,13 +1,13 @@
 resource "aws_iam_role_policy_attachment" "github_actions_policy_test_pre-prod_prod" {
-count      = local.is_test_pre-prod_prod ? 1 : 0
-role       = aws_iam_role.dev_github_actions.name
-policy_arn = aws_iam_policy.github_actions_policy_test_pre-prod_prod[0].arn
+  count      = local.is_test_pre-prod_prod ? 1 : 0
+  role       = aws_iam_role.dev_github_actions.name
+  policy_arn = aws_iam_policy.github_actions_policy_test_pre-prod_prod[0].arn
 }
 
 resource "aws_iam_policy" "github_actions_policy_test_pre-prod_prod" {
   count = local.is_test_pre-prod_prod ? 1 : 0
-  name   = "github-actions-policy-test_pre-prod_prod"
-  path   = "/"
+  name  = "github-actions-policy-test_pre-prod_prod"
+  path  = "/"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -46,7 +46,7 @@ resource "aws_iam_policy" "github_actions_policy_test_pre-prod_prod" {
           "s3:PutObject",
           "ssm:CreateDocument"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       },
     ]

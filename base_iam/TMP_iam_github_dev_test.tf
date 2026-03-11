@@ -1,13 +1,13 @@
 resource "aws_iam_role_policy_attachment" "github_actions_policy_dev_test" {
-count      = local.is_dev_test ? 1 : 0
-role       = aws_iam_role.dev_github_actions.name
-policy_arn = aws_iam_policy.github_actions_policy_dev_test[0].arn
+  count      = local.is_dev_test ? 1 : 0
+  role       = aws_iam_role.dev_github_actions.name
+  policy_arn = aws_iam_policy.github_actions_policy_dev_test[0].arn
 }
 
 resource "aws_iam_policy" "github_actions_policy_dev_test" {
   count = local.is_dev_test ? 1 : 0
-  name   = "github-actions-policy-dev_test"
-  path   = "/"
+  name  = "github-actions-policy-dev_test"
+  path  = "/"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -56,7 +56,7 @@ resource "aws_iam_policy" "github_actions_policy_dev_test" {
           "states:UntagResource",
           "states:UpdateStateMachine"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       },
       {
@@ -74,7 +74,7 @@ resource "aws_iam_policy" "github_actions_policy_dev_test" {
           "logs:TagResource",
           "logs:UntagResource"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*"
       },
       {

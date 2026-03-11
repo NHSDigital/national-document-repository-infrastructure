@@ -31,12 +31,12 @@ locals {
   shared_terraform_state_bucket = "ndr-${var.environment}-terraform-state-${data.aws_caller_identity.current.account_id}"
 
   # TODO: Maybe temp - Used by explodify script to generate github policy files.
-  is_dev_pre-prod_prod          = !contains(["ndr-test"], terraform.workspace)
-  is_dev_test_pre-prod_prod     = true
-  is_dev_test                   = !contains(["pre-prod", "prod"], terraform.workspace)
-  is_dev                        = !contains(["ndr-test", "pre-prod", "prod"], terraform.workspace)
-  is_pre-prod_prod              =  contains(["pre-prod", "prod"], terraform.workspace)
-  is_pre-prod                   = terraform.workspace == "pre-prod"
-  is_test_pre-prod_prod         = contains(["ndr-test", "pre-prod", "prod"], terraform.workspace)
-  is_test                       = terraform.workspace == "ndr-test"
+  is_dev_pre-prod_prod      = !contains(["ndr-test"], terraform.workspace)
+  is_dev_test_pre-prod_prod = true
+  is_dev_test               = !contains(["pre-prod", "prod"], terraform.workspace)
+  is_dev                    = !contains(["ndr-test", "pre-prod", "prod"], terraform.workspace)
+  is_pre-prod_prod          = contains(["pre-prod", "prod"], terraform.workspace)
+  is_pre-prod               = terraform.workspace == "pre-prod"
+  is_test_pre-prod_prod     = contains(["ndr-test", "pre-prod", "prod"], terraform.workspace)
+  is_test                   = terraform.workspace == "ndr-test"
 }

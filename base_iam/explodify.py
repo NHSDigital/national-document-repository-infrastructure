@@ -166,9 +166,9 @@ def create_policy_file(group, permissions):
     filename = f"TMP_iam_github_{group}.tf"
     with open(filename, 'w') as f:
         f.write(f'resource "aws_iam_role_policy_attachment" "github_actions_policy_{group}" {{\n')
-        f.write(f'count      = local.is_{group} ? 1 : 0\n')
-        f.write(f'role       = aws_iam_role.dev_github_actions.name\n')
-        f.write(f'policy_arn = aws_iam_policy.github_actions_policy_{group}[0].arn\n')
+        f.write(f'  count      = local.is_{group} ? 1 : 0\n')
+        f.write(f'  role       = aws_iam_role.dev_github_actions.name\n')
+        f.write(f'  policy_arn = aws_iam_policy.github_actions_policy_{group}[0].arn\n')
         f.write('}\n\n')
 
         f.write(f'resource "aws_iam_policy" "github_actions_policy_{group}" {{\n')
@@ -181,8 +181,8 @@ def create_policy_file(group, permissions):
         f.write('    Statement = [\n')
         for (resource, condition, effect), actions in permissions.items():
             f.write('      {\n')
-            f.write(f'        Action = {pretty_list(actions)}\n')
-            f.write(f'        Effect = "{effect}"\n')
+            f.write(f'        Action   = {pretty_list(actions)}\n')
+            f.write(f'        Effect   = "{effect}"\n')
             f.write(f'        Resource = {pretty_list(resource)}\n')
             if condition:
                 f.write(f'        Condition = {pretty_dict(condition.split("~|||~"))}\n')
@@ -193,10 +193,10 @@ def create_policy_file(group, permissions):
 
 
 def main():
-    iam_dev=explodify("iam_github_dev.tf")
-    iam_test=explodify("iam_github_test.tf")
-    iam_pre_prod=explodify("iam_github_pre-prod.tf")
-    iam_prod=explodify("iam_github_prod.tf")
+    iam_dev=explodify("iam_github_dev.tf.OLD")
+    iam_test=explodify("iam_github_test.tf.OLD")
+    iam_pre_prod=explodify("iam_github_pre-prod.tf.OLD")
+    iam_prod=explodify("iam_github_prod.tf.OLD")
 
     # all_keys = sorted(set(iam_dev.keys()) | set(iam_test.keys()) | set(iam_pre_prod.keys()) | set(iam_prod.keys()))
     all_keys = set().union(iam_dev, iam_test, iam_pre_prod, iam_prod)
