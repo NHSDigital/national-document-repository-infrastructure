@@ -1,13 +1,13 @@
 resource "aws_iam_role_policy_attachment" "github_actions_policy_dev_pre-prod_prod" {
-count      = local.is_dev_pre-prod_prod ? 1 : 0
-role       = aws_iam_role.dev_github_actions.name
-policy_arn = aws_iam_policy.github_actions_policy_dev_pre-prod_prod[0].arn
+  count      = local.is_dev_pre-prod_prod ? 1 : 0
+  role       = aws_iam_role.dev_github_actions.name
+  policy_arn = aws_iam_policy.github_actions_policy_dev_pre-prod_prod[0].arn
 }
 
 resource "aws_iam_policy" "github_actions_policy_dev_pre-prod_prod" {
   count = local.is_dev_pre-prod_prod ? 1 : 0
-  name   = "github-actions-policy-dev_pre-prod_prod"
-  path   = "/"
+  name  = "github-actions-policy-dev_pre-prod_prod"
+  path  = "/"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -55,6 +55,26 @@ resource "aws_iam_policy" "github_actions_policy_dev_pre-prod_prod" {
       },
       {
         Action = [
+          "acm:ListCertificates",
+          "ecs:UpdateCluster",
+          "logs:PutRetentionPolicy"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "apigateway:AddCertificateToDomain",
+          "apigateway:RemoveCertificateFromDomain"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:apigateway:eu-west-2::/domainnames",
+          "arn:aws:apigateway:eu-west-2::/domainnames/*"
+        ]
+      },
+      {
+        Action = [
           "elasticloadbalancing:AddTags",
           "elasticloadbalancing:RemoveTags",
           "events:TagResource",
@@ -76,37 +96,17 @@ resource "aws_iam_policy" "github_actions_policy_dev_pre-prod_prod" {
         ]
       },
       {
+        Action   = "apigateway:AddCertificateToDomain"
+        Effect   = "Allow"
+        Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
+      },
+      {
         Action = [
           "acm:AddTagsToCertificate",
           "acm:DeleteCertificate"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/*"
-      },
-      {
-        Action = [
-          "apigateway:AddCertificateToDomain",
-          "apigateway:RemoveCertificateFromDomain"
-        ]
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:apigateway:eu-west-2::/domainnames",
-          "arn:aws:apigateway:eu-west-2::/domainnames/*"
-        ]
-      },
-      {
-        Action = [
-          "acm:ListCertificates",
-          "ecs:UpdateCluster",
-          "logs:PutRetentionPolicy"
-        ]
-        Effect = "Allow"
-        Resource = "*"
-      },
-      {
-        Action = "apigateway:AddCertificateToDomain"
-        Effect = "Allow"
-        Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
       },
     ]
   })
