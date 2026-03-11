@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          ref: refs/tags/${{ github.event.inputs.git_tag}}
+          ref: refs/tags/${{ github.event.inputs.git_tag }}
           fetch-depth: "0"
 
       - name: Apply base_iam
@@ -48,7 +48,7 @@ jobs:
       - name: Checkout Tag
         uses: actions/checkout@v6
         with:
-          ref: refs/tags/${{ inputs.git_tag}}
+          ref: refs/tags/${{ inputs.git_tag }}
           fetch-depth: "0"
 
       - name: Apply Main

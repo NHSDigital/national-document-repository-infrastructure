@@ -1,0 +1,113 @@
+resource "aws_iam_role_policy_attachment" "github_actions_policy_dev_pre-prod_prod" {
+count      = local.is_dev_pre-prod_prod ? 1 : 0
+role       = aws_iam_role.dev_github_actions.name
+policy_arn = aws_iam_policy.github_actions_policy_dev_pre-prod_prod[0].arn
+}
+
+resource "aws_iam_policy" "github_actions_policy_dev_pre-prod_prod" {
+  count = local.is_dev_pre-prod_prod ? 1 : 0
+  name   = "github-actions-policy-dev_pre-prod_prod"
+  path   = "/"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "acm:AddTagsToCertificate",
+          "acm:DeleteCertificate",
+          "acm:DescribeCertificate",
+          "acm:GetCertificate",
+          "acm:ListTagsForCertificate",
+          "apigateway:AddCertificateToDomain",
+          "apigateway:RemoveCertificateFromDomain",
+          "route53:ChangeResourceRecordSets",
+          "route53:GetHostedZone"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:acm:eu-west-2:${data.aws_caller_identity.current.account_id}:certificate/*",
+          "arn:aws:apigateway:eu-west-2::/domainnames",
+          "arn:aws:apigateway:eu-west-2::/domainnames/*",
+          "arn:aws:route53:::hostedzone/*"
+        ]
+      },
+      {
+        Action = [
+          "kms:CreateGrant",
+          "kms:Decrypt",
+          "kms:Encrypt",
+          "kms:TagResource",
+          "kms:UntagResource",
+          "lambda:CreateFunction",
+          "lambda:DeleteFunctionConcurrency",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:InvokeFunction",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
+          "s3:PutObject"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:kms:*:${data.aws_caller_identity.current.account_id}:key/*",
+          "arn:aws:lambda:eu-west-2:*:function:*"
+        ]
+      },
+      {
+        Action = [
+          "elasticloadbalancing:AddTags",
+          "elasticloadbalancing:RemoveTags",
+          "events:TagResource",
+          "events:UntagResource"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/app/*/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/net/*/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/app/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/gwy/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/net/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/app/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/gwy/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/net/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*",
+          "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*"
+        ]
+      },
+      {
+        Action = [
+          "acm:AddTagsToCertificate",
+          "acm:DeleteCertificate"
+        ]
+        Effect = "Allow"
+        Resource = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/*"
+      },
+      {
+        Action = [
+          "apigateway:AddCertificateToDomain",
+          "apigateway:RemoveCertificateFromDomain"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:apigateway:eu-west-2::/domainnames",
+          "arn:aws:apigateway:eu-west-2::/domainnames/*"
+        ]
+      },
+      {
+        Action = [
+          "acm:ListCertificates",
+          "ecs:UpdateCluster",
+          "logs:PutRetentionPolicy"
+        ]
+        Effect = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = "apigateway:AddCertificateToDomain"
+        Effect = "Allow"
+        Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
+      },
+    ]
+  })
+}
