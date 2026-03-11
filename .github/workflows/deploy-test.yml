@@ -24,7 +24,7 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v6
         with:
-          ref: ${{ inputs.git_ref}}
+          ref: ${{ inputs.git_ref }}
 
       - name: Apply base_iam
         uses: ./.github/actions/tf-plan-apply
@@ -47,7 +47,7 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.inputs.git_ref}}
+          ref: ${{ github.event.inputs.git_ref }}
 
       - name: Apply Main
         uses: ./.github/actions/tf-plan-apply
