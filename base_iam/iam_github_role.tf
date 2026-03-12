@@ -1,5 +1,5 @@
 resource "aws_iam_role" "github_actions" {
-  name                  = "github-actions-role"
+  name                  = "${terraform.workspace}-github-actions-role"
   description           = "This role provides access for GitHub Actions to the ${terraform.workspace} environment. "
   force_detach_policies = false
   max_session_duration  = 3600

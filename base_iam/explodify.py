@@ -129,7 +129,7 @@ def explodify(filename):
 
 
 # def create_policy_file(group, permissions):
-#     filename = f"TMP_iam_github_{group}.tf"
+#     filename = f"NEW_iam_github_{group}.tf"
 #     with open(filename, 'w') as f:
 #         f.write('resource "aws_iam_policy" "github_actions_policy" {\n')
 #         f.write(f'  name   = "github-actions-policy-{group}"\n')
@@ -163,7 +163,7 @@ def pretty_dict(items):
 
 
 def create_policy_file(group, permissions):
-    filename = f"TMP_iam_github_{group}.tf"
+    filename = f"NEW_iam_github_{group}.tf"
     with open(filename, 'w') as f:
         f.write(f'resource "aws_iam_role_policy_attachment" "github_actions_policy_{group}" {{\n')
         f.write(f'  count      = local.is_{group} ? 1 : 0\n')
@@ -173,7 +173,8 @@ def create_policy_file(group, permissions):
 
         f.write(f'resource "aws_iam_policy" "github_actions_policy_{group}" {{\n')
         f.write(f'  count = local.is_{group} ? 1 : 0\n')
-        f.write(f'  name   = "github-actions-policy-{group}"\n')
+        f.write('  name   = "${terraform.workspace}')
+        f.write(f'-github-actions-policy-{group}"\n')
         f.write('  path   = "/"\n')
 
         f.write('  policy = jsonencode({\n')

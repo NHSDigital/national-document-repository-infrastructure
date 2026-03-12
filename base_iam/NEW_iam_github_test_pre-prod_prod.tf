@@ -6,7 +6,7 @@ resource "aws_iam_role_policy_attachment" "github_actions_policy_test_pre-prod_p
 
 resource "aws_iam_policy" "github_actions_policy_test_pre-prod_prod" {
   count = local.is_test_pre-prod_prod ? 1 : 0
-  name  = "github-actions-policy-test_pre-prod_prod"
+  name  = "${terraform.workspace}-github-actions-policy-test_pre-prod_prod"
   path  = "/"
   policy = jsonencode({
     Version = "2012-10-17"
