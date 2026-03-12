@@ -271,17 +271,13 @@ resource "aws_iam_policy" "github_actions_policy_dev_test_pre-prod_prod" {
       },
       {
         Action = [
-          "iam:PassRole",
-          "rum:CreateAppMonitor",
-          "rum:DeleteAppMonitor",
-          "rum:GetAppMonitor",
-          "rum:ListTagsForResource",
-          "rum:TagResource",
-          "rum:UntagResource",
-          "rum:UpdateAppMonitor"
+          "cognito-identity:CreateIdentityPool",
+          "cognito-identity:DeleteIdentityPool",
+          "cognito-identity:SetIdentityPoolRoles",
+          "cognito-identity:UpdateIdentityPool"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:rum:eu-west-2:${data.aws_caller_identity.current.account_id}:appmonitor/*"
+        Resource = "arn:aws:cognito-identity:eu-west-2:${data.aws_caller_identity.current.account_id}:identitypool/*"
       },
       {
         Action = [
@@ -294,13 +290,17 @@ resource "aws_iam_policy" "github_actions_policy_dev_test_pre-prod_prod" {
       },
       {
         Action = [
-          "cognito-identity:CreateIdentityPool",
-          "cognito-identity:DeleteIdentityPool",
-          "cognito-identity:SetIdentityPoolRoles",
-          "cognito-identity:UpdateIdentityPool"
+          "iam:PassRole",
+          "rum:CreateAppMonitor",
+          "rum:DeleteAppMonitor",
+          "rum:GetAppMonitor",
+          "rum:ListTagsForResource",
+          "rum:TagResource",
+          "rum:UntagResource",
+          "rum:UpdateAppMonitor"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:cognito-identity:eu-west-2:${data.aws_caller_identity.current.account_id}:identitypool/*"
+        Resource = "arn:aws:rum:eu-west-2:${data.aws_caller_identity.current.account_id}:appmonitor/*"
       },
     ]
   })
