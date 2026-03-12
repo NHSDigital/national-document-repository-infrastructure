@@ -123,15 +123,8 @@ def create_policy_file(group, permissions):
         f.write('  policy = jsonencode({\n')
         f.write('    Version = "2012-10-17"\n')
         f.write('    Statement = [\n')
-        # for (resource, condition, effect), actions in permissions.items():
-        print("\nGROUP:", group)
-        print("PERMISSION KEYS:")
-        for p in permissions.keys():
-            print(f"  - {p}")
-        print("SORTED PERMISSION KEYS:")
-        for p in sorted(permissions.keys()):
-            print(f"  - {p}")
-        for (resource, condition, effect) in sorted(permissions.keys()):
+
+        for (resource, condition, effect) in sorted(permissions.keys(), key=lambda x: (sorted(x[0]), x[1], x[2])):
             actions = permissions[(resource, condition, effect)]
             f.write('      {\n')
             f.write(f'        Action   = {pretty_list(actions)}\n')
@@ -180,7 +173,6 @@ def main():
         # print(f"!! {group}:")
         # for (resource, condition, effect), actions in reversed_permissions.items():
         #     print(f"  - {resource} {condition} {effect}: {actions}")
-
         create_policy_file(group, reversed_permissions)
 
 
