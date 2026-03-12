@@ -13,31 +13,24 @@ resource "aws_iam_policy" "github_actions_policy_dev_pre-prod_prod" {
     Statement = [
       {
         Action = [
-          "acm:ListCertificates",
-          "ecs:UpdateCluster",
-          "logs:PutRetentionPolicy"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-      {
-        Action = [
-          "acm:AddTagsToCertificate",
-          "acm:DeleteCertificate",
-          "acm:DescribeCertificate",
-          "acm:GetCertificate",
-          "acm:ListTagsForCertificate",
-          "apigateway:AddCertificateToDomain",
-          "apigateway:RemoveCertificateFromDomain",
-          "route53:ChangeResourceRecordSets",
-          "route53:GetHostedZone"
+          "elasticloadbalancing:AddTags",
+          "elasticloadbalancing:RemoveTags",
+          "events:TagResource",
+          "events:UntagResource"
         ]
         Effect = "Allow"
         Resource = [
-          "arn:aws:acm:eu-west-2:${data.aws_caller_identity.current.account_id}:certificate/*",
-          "arn:aws:apigateway:eu-west-2::/domainnames",
-          "arn:aws:apigateway:eu-west-2::/domainnames/*",
-          "arn:aws:route53:::hostedzone/*"
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/app/*/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/net/*/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/app/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/gwy/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/net/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/app/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/gwy/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/net/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*",
+          "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*"
         ]
       },
       {
@@ -63,28 +56,6 @@ resource "aws_iam_policy" "github_actions_policy_dev_pre-prod_prod" {
         ]
       },
       {
-        Action = [
-          "elasticloadbalancing:AddTags",
-          "elasticloadbalancing:RemoveTags",
-          "events:TagResource",
-          "events:UntagResource"
-        ]
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/app/*/*/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/net/*/*/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/app/*/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/gwy/*/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/net/*/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/app/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/gwy/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/net/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*",
-          "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*"
-        ]
-      },
-      {
         Action   = "apigateway:AddCertificateToDomain"
         Effect   = "Allow"
         Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
@@ -103,10 +74,39 @@ resource "aws_iam_policy" "github_actions_policy_dev_pre-prod_prod" {
       {
         Action = [
           "acm:AddTagsToCertificate",
+          "acm:DeleteCertificate",
+          "acm:DescribeCertificate",
+          "acm:GetCertificate",
+          "acm:ListTagsForCertificate",
+          "apigateway:AddCertificateToDomain",
+          "apigateway:RemoveCertificateFromDomain",
+          "route53:ChangeResourceRecordSets",
+          "route53:GetHostedZone"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:acm:eu-west-2:${data.aws_caller_identity.current.account_id}:certificate/*",
+          "arn:aws:apigateway:eu-west-2::/domainnames",
+          "arn:aws:apigateway:eu-west-2::/domainnames/*",
+          "arn:aws:route53:::hostedzone/*"
+        ]
+      },
+      {
+        Action = [
+          "acm:AddTagsToCertificate",
           "acm:DeleteCertificate"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/*"
+      },
+      {
+        Action = [
+          "acm:ListCertificates",
+          "ecs:UpdateCluster",
+          "logs:PutRetentionPolicy"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
       },
     ]
   })

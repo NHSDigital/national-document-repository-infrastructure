@@ -60,6 +60,15 @@ resource "aws_iam_policy" "github_actions_policy_dev_test" {
         Resource = "*"
       },
       {
+        Action = "servicequotas:RequestServiceQuotaIncrease"
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:servicequotas::${data.aws_caller_identity.current.account_id}:iam/L-E95E4862",
+          "arn:aws:servicequotas::${data.aws_caller_identity.current.account_id}:iam/L-FE177D64",
+          "arn:aws:servicequotas:us-east-1:${data.aws_caller_identity.current.account_id}:lambda/L-B99A9384"
+        ]
+      },
+      {
         Action = [
           "logs:AssociateKmsKey",
           "logs:CreateLogGroup",
@@ -76,15 +85,6 @@ resource "aws_iam_policy" "github_actions_policy_dev_test" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*"
-      },
-      {
-        Action = "servicequotas:RequestServiceQuotaIncrease"
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:servicequotas::${data.aws_caller_identity.current.account_id}:iam/L-E95E4862",
-          "arn:aws:servicequotas::${data.aws_caller_identity.current.account_id}:iam/L-FE177D64",
-          "arn:aws:servicequotas:us-east-1:${data.aws_caller_identity.current.account_id}:lambda/L-B99A9384"
-        ]
       },
     ]
   })

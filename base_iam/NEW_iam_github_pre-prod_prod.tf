@@ -13,6 +13,51 @@ resource "aws_iam_policy" "github_actions_policy_pre-prod_prod" {
     Statement = [
       {
         Action = [
+          "SNS:TagResource",
+          "backup:DescribeBackupJob",
+          "backup:TagResource",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:PutResourcePolicy",
+          "s3:CreateBucket",
+          "s3:DeleteBucket",
+          "s3:DeleteBucketPolicy",
+          "s3:DeleteObjectTagging",
+          "s3:DeleteObjectVersion",
+          "s3:DeleteObjectVersionTagging",
+          "s3:GetAccelerateConfiguration",
+          "s3:GetBucketAcl",
+          "s3:GetBucketCORS",
+          "s3:GetBucketLogging",
+          "s3:GetBucketObjectLockConfiguration",
+          "s3:GetBucketOwnershipControls",
+          "s3:GetBucketPolicy",
+          "s3:GetBucketPublicAccessBlock",
+          "s3:GetBucketRequestPayment",
+          "s3:GetBucketTagging",
+          "s3:GetBucketVersioning",
+          "s3:GetBucketWebsite",
+          "s3:GetEncryptionConfiguration",
+          "s3:GetLifecycleConfiguration",
+          "s3:GetReplicationConfiguration",
+          "s3:PutBucketAcl",
+          "s3:PutBucketCORS",
+          "s3:PutBucketLogging",
+          "s3:PutBucketNotification",
+          "s3:PutBucketOwnershipControls",
+          "s3:PutBucketPolicy",
+          "s3:PutBucketPublicAccessBlock",
+          "s3:PutBucketTagging",
+          "s3:PutBucketVersioning",
+          "s3:PutIntelligentTieringConfiguration",
+          "s3:PutLifecycleConfiguration",
+          "sqs:tagqueue"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
           "backup:TagResource",
           "backup:UntagResource",
           "cognito-identity:TagResource",
@@ -92,51 +137,6 @@ resource "aws_iam_policy" "github_actions_policy_pre-prod_prod" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:states:eu-west-2:${data.aws_caller_identity.current.account_id}:stateMachine:*"
-      },
-      {
-        Action = [
-          "SNS:TagResource",
-          "backup:DescribeBackupJob",
-          "backup:TagResource",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "logs:PutResourcePolicy",
-          "s3:CreateBucket",
-          "s3:DeleteBucket",
-          "s3:DeleteBucketPolicy",
-          "s3:DeleteObjectTagging",
-          "s3:DeleteObjectVersion",
-          "s3:DeleteObjectVersionTagging",
-          "s3:GetAccelerateConfiguration",
-          "s3:GetBucketAcl",
-          "s3:GetBucketCORS",
-          "s3:GetBucketLogging",
-          "s3:GetBucketObjectLockConfiguration",
-          "s3:GetBucketOwnershipControls",
-          "s3:GetBucketPolicy",
-          "s3:GetBucketPublicAccessBlock",
-          "s3:GetBucketRequestPayment",
-          "s3:GetBucketTagging",
-          "s3:GetBucketVersioning",
-          "s3:GetBucketWebsite",
-          "s3:GetEncryptionConfiguration",
-          "s3:GetLifecycleConfiguration",
-          "s3:GetReplicationConfiguration",
-          "s3:PutBucketAcl",
-          "s3:PutBucketCORS",
-          "s3:PutBucketLogging",
-          "s3:PutBucketNotification",
-          "s3:PutBucketOwnershipControls",
-          "s3:PutBucketPolicy",
-          "s3:PutBucketPublicAccessBlock",
-          "s3:PutBucketTagging",
-          "s3:PutBucketVersioning",
-          "s3:PutIntelligentTieringConfiguration",
-          "s3:PutLifecycleConfiguration",
-          "sqs:tagqueue"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
       },
       {
         Action = [

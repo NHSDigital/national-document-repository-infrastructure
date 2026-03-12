@@ -12,6 +12,11 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
     Version = "2012-10-17"
     Statement = [
       {
+        Action   = "s3:ListBucket"
+        Effect   = "Allow"
+        Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}"
+      },
+      {
         Action = [
           "backup:TagResource",
           "backup:UntagResource",
@@ -72,14 +77,28 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
       },
       {
         Action = [
-          "s3:DeleteBucketPolicy",
-          "s3:DeleteObject",
-          "s3:GetObject",
-          "s3:PutBucketPolicy",
-          "s3:PutObject"
+          "dynamodb:DeleteItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateTimeToLive"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}/ndr/terraform.tfstate"
+        Resource = "arn:aws:dynamodb:*:*:table/ndr-terraform-locks"
+      },
+      {
+        Action = [
+          "cloudtrail:AddTags",
+          "cloudtrail:CreateTrail",
+          "cloudtrail:DeleteTrail",
+          "cloudtrail:StartLogging"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:cloudtrail:eu-west-2:${data.aws_caller_identity.current.account_id}:channel/*",
+          "arn:aws:cloudtrail:eu-west-2:${data.aws_caller_identity.current.account_id}:eventdatastore/*",
+          "arn:aws:cloudtrail:eu-west-2:${data.aws_caller_identity.current.account_id}:trail/*"
+        ]
       },
       {
         Action = [
@@ -113,54 +132,20 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
         Resource = "arn:aws:ecr:eu-west-2:*:repository/*"
       },
       {
-        Action = [
-          "cloudtrail:AddTags",
-          "cloudtrail:CreateTrail",
-          "cloudtrail:DeleteTrail",
-          "cloudtrail:StartLogging"
-        ]
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:cloudtrail:eu-west-2:${data.aws_caller_identity.current.account_id}:channel/*",
-          "arn:aws:cloudtrail:eu-west-2:${data.aws_caller_identity.current.account_id}:eventdatastore/*",
-          "arn:aws:cloudtrail:eu-west-2:${data.aws_caller_identity.current.account_id}:trail/*"
-        ]
-      },
-      {
-        Action   = "iam:ListRoles"
-        Effect   = "Allow"
-        Resource = "arn:aws:lambda:eu-west-2:*:function:*"
-      },
-      {
-        Action   = "logs:PutDeliverySource"
-        Effect   = "Allow"
-        Resource = "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-source:*"
-      },
-      {
-        Action   = "s3:ListBucket"
-        Effect   = "Allow"
-        Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}"
-      },
-      {
         Action   = "apigateway:SetWebACL"
         Effect   = "Allow"
         Resource = "arn:aws:apigateway:eu-west-2::/restapis/*/stages/*"
       },
       {
         Action = [
-          "dynamodb:DeleteItem",
-          "dynamodb:DescribeTable",
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:UpdateTimeToLive"
+          "s3:DeleteBucketPolicy",
+          "s3:DeleteObject",
+          "s3:GetObject",
+          "s3:PutBucketPolicy",
+          "s3:PutObject"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:dynamodb:*:*:table/ndr-terraform-locks"
-      },
-      {
-        Action   = "sqs:SendMessage"
-        Effect   = "Allow"
-        Resource = "arn:aws:sqs:eu-west-2:${data.aws_caller_identity.current.account_id}:*-mns-notification-queue"
+        Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}/ndr/terraform.tfstate"
       },
       {
         Action   = "kms:GenerateDataKey"
@@ -171,6 +156,21 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
             "aws:ResourceTag/Name" = "alias/mns-notification-encryption-key-kms-*"
           }
         }
+      },
+      {
+        Action   = "logs:PutDeliverySource"
+        Effect   = "Allow"
+        Resource = "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-source:*"
+      },
+      {
+        Action   = "sqs:SendMessage"
+        Effect   = "Allow"
+        Resource = "arn:aws:sqs:eu-west-2:${data.aws_caller_identity.current.account_id}:*-mns-notification-queue"
+      },
+      {
+        Action   = "iam:ListRoles"
+        Effect   = "Allow"
+        Resource = "arn:aws:lambda:eu-west-2:*:function:*"
       },
     ]
   })
