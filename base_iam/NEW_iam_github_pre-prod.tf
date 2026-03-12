@@ -13,14 +13,6 @@ resource "aws_iam_policy" "github_actions_policy_pre-prod" {
     Statement = [
       {
         Action = [
-          "kms:GenerateDataKey",
-          "sqs:sendmessage"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-      {
-        Action = [
           "ecr:BatchDeleteImage",
           "ecr:CompleteLayerUpload",
           "ecr:InitiateLayerUpload",
@@ -32,6 +24,14 @@ resource "aws_iam_policy" "github_actions_policy_pre-prod" {
           "arn:aws:ecr:eu-west-2:${data.aws_caller_identity.current.account_id}:repository/ndr-pre-prod-app",
           "arn:aws:ecr:eu-west-2:${data.aws_caller_identity.current.account_id}:repository/pre-prod-data-collection"
         ]
+      },
+      {
+        Action = [
+          "kms:GenerateDataKey",
+          "sqs:sendmessage"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
       },
     ]
   })
