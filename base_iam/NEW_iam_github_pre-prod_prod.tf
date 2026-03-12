@@ -128,18 +128,6 @@ resource "aws_iam_policy" "github_actions_policy_pre-prod_prod" {
       },
       {
         Action = [
-          "states:CreateStateMachine",
-          "states:DeleteStateMachine",
-          "states:DescribeStateMachine",
-          "states:TagResource",
-          "states:UntagResource",
-          "states:UpdateStateMachine"
-        ]
-        Effect   = "Allow"
-        Resource = "arn:aws:states:eu-west-2:${data.aws_caller_identity.current.account_id}:stateMachine:*"
-      },
-      {
-        Action = [
           "elasticloadbalancing:AddTags",
           "elasticloadbalancing:RemoveTags"
         ]
@@ -156,6 +144,18 @@ resource "aws_iam_policy" "github_actions_policy_pre-prod_prod" {
           "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
           "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*"
         ]
+      },
+      {
+        Action = [
+          "states:CreateStateMachine",
+          "states:DeleteStateMachine",
+          "states:DescribeStateMachine",
+          "states:TagResource",
+          "states:UntagResource",
+          "states:UpdateStateMachine"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:states:eu-west-2:${data.aws_caller_identity.current.account_id}:stateMachine:*"
       },
     ]
   })

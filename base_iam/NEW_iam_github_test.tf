@@ -55,25 +55,6 @@ resource "aws_iam_policy" "github_actions_policy_test" {
       },
       {
         Action = [
-          "elasticloadbalancing:AddTags",
-          "elasticloadbalancing:RemoveTags"
-        ]
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/app/*/*/*/*",
-          "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/net/*/*/*/*",
-          "arn:aws:elasticloadbalancing:*:694282683086:listener/app/*/*/*",
-          "arn:aws:elasticloadbalancing:*:694282683086:listener/gwy/*/*/*",
-          "arn:aws:elasticloadbalancing:*:694282683086:listener/net/*/*/*",
-          "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/app/*/*",
-          "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/gwy/*/*",
-          "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/net/*/*",
-          "arn:aws:elasticloadbalancing:*:694282683086:targetgroup/*/*",
-          "arn:aws:elasticloadbalancing:*:694282683086:truststore/*/*"
-        ]
-      },
-      {
-        Action = [
           "backup:TagResource",
           "backup:UntagResource",
           "cognito-identity:TagResource",
@@ -141,6 +122,25 @@ resource "aws_iam_policy" "github_actions_policy_test" {
           "arn:aws:logs:*:694282683086:log-group:*",
           "arn:aws:resource-groups:*:694282683086:group/*",
           "arn:aws:sns:*:694282683086:*"
+        ]
+      },
+      {
+        Action = [
+          "elasticloadbalancing:AddTags",
+          "elasticloadbalancing:RemoveTags"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/app/*/*/*/*",
+          "arn:aws:elasticloadbalancing:*:694282683086:listener-rule/net/*/*/*/*",
+          "arn:aws:elasticloadbalancing:*:694282683086:listener/app/*/*/*",
+          "arn:aws:elasticloadbalancing:*:694282683086:listener/gwy/*/*/*",
+          "arn:aws:elasticloadbalancing:*:694282683086:listener/net/*/*/*",
+          "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/app/*/*",
+          "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/gwy/*/*",
+          "arn:aws:elasticloadbalancing:*:694282683086:loadbalancer/net/*/*",
+          "arn:aws:elasticloadbalancing:*:694282683086:targetgroup/*/*",
+          "arn:aws:elasticloadbalancing:*:694282683086:truststore/*/*"
         ]
       },
       {
