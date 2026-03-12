@@ -255,7 +255,7 @@ resource "aws_iam_policy" "github_actions_policy_dev_test_pre-prod_prod_2" {
           "route53:ListHostedZones",
           "route53:ListResourceRecordSets",
           "route53:ListTagsForResource",
-          ]
+        ]
         Effect   = "Allow"
         Resource = "*"
       },
