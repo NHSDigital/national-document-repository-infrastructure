@@ -70,37 +70,3 @@ resource "aws_iam_role_policy_attachment" "ReadOnlyAccess_dev" {
   role       = aws_iam_role.github_actions.name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
-
-
-# data "aws_iam_policy_document" "github_assume_role_policy" {
-#     statement {
-#         actions = ["sts:AssumeRoleWithWebIdentity"]
-#         effect = "Allow"
-#         condition {
-#             test = "StringEquals"
-#             variable = "token.actions.githubusercontent.com:aud"
-#             values = ["sts.amazonaws.com"]
-#         }
-#         condition {
-#             test = "StringLike"
-#             variable = "token.actions.githubusercontent.com:sub"
-#             values = [
-#                 "repo:NHSDigital/national-document-repository-infrastructure:*",
-#                 "repo:NHSDigital/national-document-repository:*",
-#             ]
-#         }
-#         principals {
-#             type = "Federated"
-#             identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"]
-#         }
-#     }
-#     # make this statement conditional on being in a sandbox or dev environment
-#     statement {
-#         actions = ["sts:AssumeRole"]
-#         effect = "Allow"
-#         principals {
-#             type = "AWS"
-#             identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-reserved/sso.amazonaws.com/eu-west-2/AWSReservedSSO_DomainCGpit-Administrators_e00623801cb4b59e"]
-#         }
-#     }
-# }

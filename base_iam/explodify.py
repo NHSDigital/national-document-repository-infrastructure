@@ -1,7 +1,8 @@
+""" A temporary script to read in the existing IAM policies, explode them into individual permissions,
+    remove duplicates, and then group those permissions by environment (dev, test, pre-prod, prod.) """
+
 from collections import defaultdict
 import re
-
-# TODO: Don't forget arn:aws:iam::aws:policy/ReadOnlyAccess policy to common
 
 def read_file(filename):
     with open(filename, 'r') as f:
@@ -12,17 +13,12 @@ def explodify(filename):
     lines = read_file(filename)
 
     state = None
-    # exploded_policies = {}
     exploded_policies = set()
 
     for line in lines:
-        # print(line)
-
         if line.startswith('resource "aws_iam_policy" '):
-            # print(">> NEW POLICY")
             state = 'policy'
         elif line.startswith('resource "aws_iam_role_policy" '):
-            # print(">> NEW ROLE POLICY")
             state = 'role_policy'
 
         elif re.match(r'Statement *= *\[', line) and state in ['policy', 'role_policy']:
@@ -32,43 +28,22 @@ def explodify(filename):
         elif line.startswith('{') and state == 'statement':
             action = None
             resource = None
-            sid = None
             effect = None
             condition = {}
         elif line.startswith('}') and state == 'statement':
-            # print(f">> ACTION: {action}")
-            # print(f">> RESOURCE: {resource}")
-            # print(f">> SID: {sid}")
-            # print(f">> EFFECT: {effect}")
-            # print(f">> CONDITION: {condition}")
-
             condition = "" if not condition else "~|||~".join(condition)
-
             for a in action:
                 key = (a, effect, condition, frozenset(resource))
                 exploded_policies.add(key)
 
-                # for r in resource:
-                #     key = (a, effect, condition, r)
-                #     exploded_policies.add(key)
-
-                # key = (a, effect, condition)
-                # for r in resource:
-                    # if key in exploded_policies:
-                    #     exploded_policies[key].add(r)
-                    # else:
-                    #     exploded_policies[key] = {r}
-
         # ACTION
         elif state == 'statement' and (matches := re.findall(r'Action *= *"(.*?)"', line)):
             action = matches
-            # print(f">> ACTION: {action}")
         elif state == 'statement' and re.match(r'Action *= *\[', line):
             action = []
             state = 'action'
         elif line.startswith(']') and state == 'action':
             state = 'statement'
-            # print(f">> ACTION: {action}")
         elif state == 'action':
             matches = re.findall(r'"(.*?)"', line)
             action.append(*matches)
@@ -76,31 +51,26 @@ def explodify(filename):
         # RESOURCE
         elif state == 'statement' and (matches := re.findall(r'Resource *= *"(.*?)"', line)):
             resource = matches
-            # print(f">> RESOURCE: {resource}")
         elif state == 'statement' and line.startswith('Resource = ['):
             resource = []
             state = 'resource'
         elif line.startswith(']') and state == 'resource':
             state = 'statement'
-            # print(f">> RESOURCE: {resource}")
         elif state == 'resource':
             matches = re.findall(r'"(.*?)"', line)
             resource.append(*matches)
 
         # SID
-        elif state == 'statement' and (matches := re.findall(r'Sid *= *"(.*?)"', line)):
-            sid = matches
-            # print(f">> SID: {sid}")
+        # elif state == 'statement' and (matches := re.findall(r'Sid *= *"(.*?)"', line)):
+        #     sid = matches
 
         # EFFECT
         elif state == 'statement' and (matches := re.findall(r'Effect *= *"(.*?)"', line)):
             effect = matches[0]
-            # print(f">> EFFECT: {effect}")
 
         # CONDITION
         elif state == 'statement' and (matches := re.findall(r'Condition *= *"(.*?)"', line)):
             condition = matches
-            # print(f">> CONDITION: {condition}")
         elif state == 'statement' and line.startswith('Condition = {'):
             condition = []
             counter = 1
@@ -112,7 +82,6 @@ def explodify(filename):
             counter -= 1
             if counter == 0:
                 state = 'statement'
-                # print(f">> CONDITION: {condition}")
             else:
                 condition.append(line)
 
@@ -121,34 +90,8 @@ def explodify(filename):
 
         else:
             pass
-            # print(">> INGORING", line)
-    # print("EXPLODED POLICIES:")
-    # for k, v in exploded_policies.items():
-    #     print(f">> {k}: {v}")
+
     return(exploded_policies)
-
-
-# def create_policy_file(group, permissions):
-#     filename = f"NEW_iam_github_{group}.tf"
-#     with open(filename, 'w') as f:
-#         f.write('resource "aws_iam_policy" "github_actions_policy" {\n')
-#         f.write(f'  name   = "github-actions-policy-{group}"\n')
-#         f.write('  path   = "/"\n')
-#         f.write('  policy = jsonencode({\n')
-#         f.write('    Version = "2012-10-17"\n')
-#         f.write('    Statement = [\n')
-#         for p in permissions:
-#             action, effect, condition, resource = p
-#             f.write('      {\n')
-#             f.write(f'        Action = "{action}"\n')
-#             f.write(f'        Effect = "{effect}"\n')
-#             f.write(f'        Resource = "{resource}"\n')
-#             if condition:
-#                 f.write(f'        Condition = {condition}\n')
-#             f.write('      },\n')
-#         f.write('    ]\n')
-#         f.write('  })\n')
-#         f.write('}\n')
 
 
 def pretty_list(items):
@@ -180,7 +123,9 @@ def create_policy_file(group, permissions):
         f.write('  policy = jsonencode({\n')
         f.write('    Version = "2012-10-17"\n')
         f.write('    Statement = [\n')
-        for (resource, condition, effect), actions in permissions.items():
+        # for (resource, condition, effect), actions in permissions.items():
+        for (resource, condition, effect) in sorted(permissions.keys()):
+            actions = permissions[(resource, condition, effect)]
             f.write('      {\n')
             f.write(f'        Action   = {pretty_list(actions)}\n')
             f.write(f'        Effect   = "{effect}"\n')
@@ -199,13 +144,11 @@ def main():
     iam_pre_prod=explodify("iam_github_pre-prod.tf.OLD")
     iam_prod=explodify("iam_github_prod.tf.OLD")
 
-    # all_keys = sorted(set(iam_dev.keys()) | set(iam_test.keys()) | set(iam_pre_prod.keys()) | set(iam_prod.keys()))
     all_keys = set().union(iam_dev, iam_test, iam_pre_prod, iam_prod)
     grouped_permissions = defaultdict(set)
 
     # Group permissions by environment (ie, just dev, or dev+test, or dev+test+pre-prod, etc)
     for permission in all_keys:
-        # print(f">> {permission}:")
         group_key = []
         if permission in iam_dev:
             group_key.append("dev")
@@ -216,21 +159,20 @@ def main():
         if permission in iam_prod:
             group_key.append("prod")
         grouped_permissions["_".join(group_key)].add(permission)
-        print(f">> {permission}: {'_'.join(group_key)}")
+        # print(f">> {permission}: {'_'.join(group_key)}")
 
     print("Permissions per Group...")
     for group in sorted(grouped_permissions.keys()):
         print(f"## {group}: {len(grouped_permissions[group])}")
-        # create_policy_file(group, grouped_permissions[group])
 
     # Reverse grouped_permissions to be grouped by resource and condition.
     for group, permissions in grouped_permissions.items():
         reversed_permissions = defaultdict(list)
         for action, effect, condition, resource in permissions:
             reversed_permissions[(resource, condition, effect)].append(action)
-        print(f"!! {group}:")
-        for (resource, condition, effect), actions in reversed_permissions.items():
-            print(f"  - {resource} {condition} {effect}: {actions}")
+        # print(f"!! {group}:")
+        # for (resource, condition, effect), actions in reversed_permissions.items():
+        #     print(f"  - {resource} {condition} {effect}: {actions}")
 
         create_policy_file(group, reversed_permissions)
 

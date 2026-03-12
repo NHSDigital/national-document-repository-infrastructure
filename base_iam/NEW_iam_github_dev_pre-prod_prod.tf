@@ -13,69 +13,6 @@ resource "aws_iam_policy" "github_actions_policy_dev_pre-prod_prod" {
     Statement = [
       {
         Action = [
-          "acm:AddTagsToCertificate",
-          "acm:DeleteCertificate"
-        ]
-        Effect   = "Allow"
-        Resource = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/*"
-      },
-      {
-        Action = [
-          "kms:CreateGrant",
-          "kms:Decrypt",
-          "kms:Encrypt",
-          "kms:TagResource",
-          "kms:UntagResource",
-          "lambda:CreateFunction",
-          "lambda:DeleteFunctionConcurrency",
-          "lambda:GetFunction",
-          "lambda:GetFunctionConfiguration",
-          "lambda:InvokeFunction",
-          "lambda:UpdateFunctionCode",
-          "lambda:UpdateFunctionConfiguration",
-          "s3:PutObject"
-        ]
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:kms:*:${data.aws_caller_identity.current.account_id}:key/*",
-          "arn:aws:lambda:eu-west-2:*:function:*"
-        ]
-      },
-      {
-        Action = [
-          "apigateway:AddCertificateToDomain",
-          "apigateway:RemoveCertificateFromDomain"
-        ]
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:apigateway:eu-west-2::/domainnames",
-          "arn:aws:apigateway:eu-west-2::/domainnames/*"
-        ]
-      },
-      {
-        Action = [
-          "elasticloadbalancing:AddTags",
-          "elasticloadbalancing:RemoveTags",
-          "events:TagResource",
-          "events:UntagResource"
-        ]
-        Effect = "Allow"
-        Resource = [
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/app/*/*/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/net/*/*/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/app/*/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/gwy/*/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/net/*/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/app/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/gwy/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/net/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
-          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*",
-          "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*"
-        ]
-      },
-      {
-        Action = [
           "acm:ListCertificates",
           "ecs:UpdateCluster",
           "logs:PutRetentionPolicy"
@@ -104,9 +41,72 @@ resource "aws_iam_policy" "github_actions_policy_dev_pre-prod_prod" {
         ]
       },
       {
+        Action = [
+          "kms:CreateGrant",
+          "kms:Decrypt",
+          "kms:Encrypt",
+          "kms:TagResource",
+          "kms:UntagResource",
+          "lambda:CreateFunction",
+          "lambda:DeleteFunctionConcurrency",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:InvokeFunction",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
+          "s3:PutObject"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:kms:*:${data.aws_caller_identity.current.account_id}:key/*",
+          "arn:aws:lambda:eu-west-2:*:function:*"
+        ]
+      },
+      {
+        Action = [
+          "elasticloadbalancing:AddTags",
+          "elasticloadbalancing:RemoveTags",
+          "events:TagResource",
+          "events:UntagResource"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/app/*/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener-rule/net/*/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/app/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/gwy/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:listener/net/*/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/app/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/gwy/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:loadbalancer/net/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
+          "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*",
+          "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*"
+        ]
+      },
+      {
         Action   = "apigateway:AddCertificateToDomain"
         Effect   = "Allow"
         Resource = "arn:aws:apigateway:eu-west-2::/domainnames"
+      },
+      {
+        Action = [
+          "apigateway:AddCertificateToDomain",
+          "apigateway:RemoveCertificateFromDomain"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:apigateway:eu-west-2::/domainnames",
+          "arn:aws:apigateway:eu-west-2::/domainnames/*"
+        ]
+      },
+      {
+        Action = [
+          "acm:AddTagsToCertificate",
+          "acm:DeleteCertificate"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/*"
       },
     ]
   })
