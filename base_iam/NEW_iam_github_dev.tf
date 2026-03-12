@@ -6,50 +6,11 @@ resource "aws_iam_role_policy_attachment" "github_actions_policy_dev" {
 
 resource "aws_iam_policy" "github_actions_policy_dev" {
   count = local.is_dev ? 1 : 0
-  name  = "github-actions-policy-dev"
+  name  = "${terraform.workspace}-github-actions-policy-dev"
   path  = "/"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      {
-        Action   = "kms:GenerateDataKey"
-        Effect   = "Allow"
-        Resource = "*"
-        Condition = {
-          StringLike = {
-            "aws:ResourceTag/Name" = "alias/mns-notification-encryption-key-kms-*"
-          }
-        }
-      },
-      {
-        Action = [
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:BatchGetImage",
-          "ecr:CompleteLayerUpload",
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:InitiateLayerUpload",
-          "ecr:PutImage",
-          "ecr:UploadLayerPart"
-        ]
-        Effect   = "Allow"
-        Resource = "arn:aws:ecr:eu-west-2:*:repository/*"
-      },
-      {
-        Action   = "apigateway:SetWebACL"
-        Effect   = "Allow"
-        Resource = "arn:aws:apigateway:eu-west-2::/restapis/*/stages/*"
-      },
-      {
-        Action = [
-          "dynamodb:DeleteItem",
-          "dynamodb:DescribeTable",
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:UpdateTimeToLive"
-        ]
-        Effect   = "Allow"
-        Resource = "arn:aws:dynamodb:*:*:table/ndr-terraform-locks"
-      },
       {
         Action = [
           "backup:TagResource",
@@ -110,6 +71,22 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
         ]
       },
       {
+        Action   = "logs:PutDeliverySource"
+        Effect   = "Allow"
+        Resource = "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-source:*"
+      },
+      {
+        Action = [
+          "dynamodb:DeleteItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateTimeToLive"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:dynamodb:*:*:table/ndr-terraform-locks"
+      },
+      {
         Action = [
           "cloudfront:*",
           "cognito-idp:*",
@@ -126,6 +103,19 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
         ]
         Effect   = "Allow"
         Resource = "*"
+      },
+      {
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:ecr:eu-west-2:*:repository/*"
       },
       {
         Action = [
@@ -153,6 +143,16 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
         ]
       },
       {
+        Action   = "kms:GenerateDataKey"
+        Effect   = "Allow"
+        Resource = "*"
+        Condition = {
+          StringLike = {
+            "aws:ResourceTag/Name" = "alias/mns-notification-encryption-key-kms-*"
+          }
+        }
+      },
+      {
         Action   = "s3:ListBucket"
         Effect   = "Allow"
         Resource = "arn:aws:s3:::ndr-dev-terraform-state-${data.aws_caller_identity.current.account_id}"
@@ -163,14 +163,14 @@ resource "aws_iam_policy" "github_actions_policy_dev" {
         Resource = "arn:aws:lambda:eu-west-2:*:function:*"
       },
       {
-        Action   = "logs:PutDeliverySource"
-        Effect   = "Allow"
-        Resource = "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-source:*"
-      },
-      {
         Action   = "sqs:SendMessage"
         Effect   = "Allow"
         Resource = "arn:aws:sqs:eu-west-2:${data.aws_caller_identity.current.account_id}:*-mns-notification-queue"
+      },
+      {
+        Action   = "apigateway:SetWebACL"
+        Effect   = "Allow"
+        Resource = "arn:aws:apigateway:eu-west-2::/restapis/*/stages/*"
       },
     ]
   })
