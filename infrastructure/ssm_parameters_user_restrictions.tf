@@ -10,8 +10,7 @@ module "healthcare_worker_api_base_url" {
   ignore_value_changes = true
 }
 
-data "aws_ssm_parameter" "hcw_api_url" {
-  count = local.is_sandbox ? 0 : 1
-  name  = "/ndr/${terraform.workspace}/hcw_api_url"
+data "aws_ssm_parameter" "healthcare_worker_api_base_url" {
+  name = "/ndr/${var.shared_infra_workspace}/hcw_api_url"
 }
 
