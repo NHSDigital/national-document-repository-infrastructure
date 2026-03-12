@@ -33,7 +33,7 @@ def explodify(filename):
         elif line.startswith('}') and state == 'statement':
             condition = "" if not condition else "~|||~".join(condition)
             for a in action:
-                key = (a, effect, condition, frozenset(resource))
+                key = (a, effect, condition, frozenset(sorted(resource)))
                 exploded_policies.add(key)
 
         # ACTION
@@ -124,6 +124,13 @@ def create_policy_file(group, permissions):
         f.write('    Version = "2012-10-17"\n')
         f.write('    Statement = [\n')
         # for (resource, condition, effect), actions in permissions.items():
+        print("\nGROUP:", group)
+        print("PERMISSION KEYS:")
+        for p in permissions.keys():
+            print(f"  - {p}")
+        print("SORTED PERMISSION KEYS:")
+        for p in sorted(permissions.keys()):
+            print(f"  - {p}")
         for (resource, condition, effect) in sorted(permissions.keys()):
             actions = permissions[(resource, condition, effect)]
             f.write('      {\n')
@@ -166,7 +173,7 @@ def main():
         print(f"## {group}: {len(grouped_permissions[group])}")
 
     # Reverse grouped_permissions to be grouped by resource and condition.
-    for group, permissions in grouped_permissions.items():
+    for group, permissions in sorted(grouped_permissions.items()):
         reversed_permissions = defaultdict(list)
         for action, effect, condition, resource in permissions:
             reversed_permissions[(resource, condition, effect)].append(action)
