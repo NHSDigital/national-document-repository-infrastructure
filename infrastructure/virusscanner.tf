@@ -124,3 +124,4 @@ resource "aws_lambda_permission" "allow_sns_invoke_transfer_family_kill_switch" 
   principal     = "sns.amazonaws.com"
   source_arn    = module.cloud_storage_security[0].proactive_notifications_topic_arn
 }
+
