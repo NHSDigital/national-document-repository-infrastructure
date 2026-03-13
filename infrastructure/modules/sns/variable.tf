@@ -60,20 +60,14 @@ variable "is_topic_endpoint_list" {
   default     = false
 }
 
-# variable "topic_policy_json" {
-#   description = "Optional SNS topic access policy JSON. If set, it overrides delivery_policy."
-#   type        = string
-#   default     = null
-# }
-#
-# variable "enable_ses_publish" {
-#   description = "If true, module appends a statement allowing ses.amazonaws.com to SNS:Publish to this topic."
-#   type        = bool
-#   default     = false
-# }
-#
-# variable "ses_source_account_id" {
-#   description = "AWS account ID used in the AWS:SourceAccount condition for SES publishing."
-#   type        = string
-#   default     = ""
-# }
+variable "topic_policy_json" {
+  description = "Optional SNS topic access policy JSON. If set, it overrides delivery_policy."
+  type        = string
+  default     = null
+}
+
+variable "enable_ses_publish" {
+  description = "If true, module appends a statement allowing ses.amazonaws.com to SNS:Publish to this topic."
+  type        = bool
+  default     = false
+}

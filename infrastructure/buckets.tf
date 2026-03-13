@@ -527,7 +527,7 @@ module "ses-feedback-store" {
   force_destroy            = local.is_force_destroy
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "ses_feedback_lifecycle_rules" {
+resource "aws_s3_bucket_lifecycle_configuration" "ses_feedback_store" {
   bucket = module.ses-feedback-store.bucket_id
 
   rule {
