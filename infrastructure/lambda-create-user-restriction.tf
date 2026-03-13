@@ -5,7 +5,8 @@ module "create_user_restriction_lambda" {
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
-    module.user_restriction_table.dynamodb_write_policy_document
+    module.user_restriction_table.dynamodb_write_policy_document,
+    module.user_restriction_table.dynamodb_read_policy_document
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -13,11 +14,12 @@ module "create_user_restriction_lambda" {
   http_methods        = ["POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE               = terraform.workspace
-    RESTRICTIONS_TABLE_NAME = module.user_restriction_table.table_name
+    APPCONFIG_APPLICATION     = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT     = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
+    WORKSPACE                 = terraform.workspace
+    RESTRICTIONS_TABLE_NAME   = module.user_restriction_table.table_name
+    HEALTHCARE_WORKER_API_URL = local.is_sandbox ? "" : data.aws_ssm_parameter.healthcare_worker_api_base_url.value
   }
 
   depends_on = [
