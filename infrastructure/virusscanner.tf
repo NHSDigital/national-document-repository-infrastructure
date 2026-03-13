@@ -100,7 +100,7 @@ resource "aws_sns_topic_subscription" "proactive_virus_scanning_notifications" {
   topic_arn = module.cloud_storage_security[0].proactive_notifications_topic_arn
   filter_policy = jsonencode({
     "notificationType" : ["scanResult"],
-    "scanResult" : ["Infected", "Error", "Unscannable", "Suspicious"]
+    "scanResult" : ["Infected", "Error", "Unscannable", "Suspicious", "InfectedAllowed"]
   })
 }
 
@@ -112,7 +112,7 @@ resource "aws_sns_topic_subscription" "proactive_virus_scanning_kill_switch" {
 
   filter_policy = jsonencode({
     "notificationType" : ["scanResult"],
-    "scanResult" : ["Infected", "Error", "Unscannable", "Suspicious"]
+    "scanResult" : ["Infected", "Suspicious"]
   })
 }
 
