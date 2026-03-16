@@ -32,6 +32,16 @@ resource "aws_iam_policy" "read_only_role_extra_permissions" {
         Resource = [
           "arn:aws:kms:eu-west-2:${data.aws_caller_identity.current.account_id}:key/*",
         ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:PutQueryDefinition",
+          "logs:DeleteQueryDefinition",
+        ],
+        Resource = [
+          "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group::log-stream:",
+        ]
       }
     ]
   })
