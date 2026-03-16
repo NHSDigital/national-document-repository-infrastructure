@@ -11,7 +11,7 @@ resource "aws_api_gateway_rest_api" "ndr_doc_store_api" {
 resource "aws_api_gateway_domain_name" "custom_api_domain" {
   domain_name              = local.api_gateway_full_domain_name
   regional_certificate_arn = module.ndr-ecs-fargate-app.certificate_arn
-  security_policy          = "TLS_1_2"
+  security_policy          = "SecurityPolicy_TLS13_1_3_2025_09"
 
   endpoint_configuration {
     types = ["REGIONAL"]
@@ -198,9 +198,4 @@ resource "aws_api_gateway_resource" "document_reference_by_id" {
   rest_api_id = aws_api_gateway_rest_api.ndr_doc_store_api.id
   parent_id   = module.fhir_document_reference_gateway[0].gateway_resource_id
   path_part   = "{id}"
-}
-
-moved {
-  from = aws_api_gateway_resource.get_document_reference
-  to   = aws_api_gateway_resource.document_reference_by_id
 }

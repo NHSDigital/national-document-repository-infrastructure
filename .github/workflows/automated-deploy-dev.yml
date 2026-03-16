@@ -60,7 +60,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.14.6
+          terraform_version: 1.14.7
           terraform_wrapper: true
 
       - name: Initialise Terraform
@@ -270,7 +270,7 @@ jobs:
           echo "SLACK_BOT_TOKEN=$slack_bot_token" >> $GITHUB_ENV
 
       - name: Send Slack Notification
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v3.0.1
         with:
           method: chat.postMessage
           token: ${{ env.SLACK_BOT_TOKEN }}
