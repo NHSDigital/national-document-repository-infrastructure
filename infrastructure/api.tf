@@ -1,7 +1,8 @@
 # Create Document Store API
 resource "aws_api_gateway_rest_api" "ndr_doc_store_api" {
-  name        = "${terraform.workspace}-DocStoreAPI"
-  description = "Document store API for Repo"
+  name                         = "${terraform.workspace}-DocStoreAPI"
+  description                  = "Document store API for Repo"
+  disable_execute_api_endpoint = true
 
   tags = {
     Name = "${terraform.workspace}-docstore-api"
@@ -11,10 +12,11 @@ resource "aws_api_gateway_rest_api" "ndr_doc_store_api" {
 resource "aws_api_gateway_domain_name" "custom_api_domain" {
   domain_name              = local.api_gateway_full_domain_name
   regional_certificate_arn = module.ndr-ecs-fargate-app.certificate_arn
-  security_policy          = "SecurityPolicy_TLS13_1_3_2025_09"
+  security_policy          = "SecurityPolicy_TLS13_2025_EDGE"
+  endpoint_access_mode     = "BASIC"
 
   endpoint_configuration {
-    types = ["REGIONAL"]
+    types = ["EDGE"]
   }
 }
 

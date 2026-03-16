@@ -7,13 +7,13 @@ from botocore.exceptions import ClientError
 def trigger_delete_workflow(token: str, sandbox: str):
     owner = "NHSDigital"
     repo = "national-document-repository-infrastructure"
-    workflow = "tear-down-sandbox.yml"
+    workflow_id = "tear-down-sandbox.yml"
 
-    url = f"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflow}/dispatches"
+    url = f"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches"
     headers = {
         "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {token}",
-        "X-GitHub-Api-Version": "2022-11-28",
+        "X-GitHub-Api-Version": "2026-03-10",
     }
 
     inputs = {
