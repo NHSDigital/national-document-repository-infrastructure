@@ -47,7 +47,6 @@ module "document_reference_dynamodb_table" {
   ttl_attribute_name = "TTL"
 
   # Optional: enable streams
-  stream_enabled   = true
   stream_view_type = "OLD_IMAGE"
 
   # Optional: point-in-time recovery
@@ -107,7 +106,6 @@ module "document_reference_dynamodb_table" {
 | <a name="input_owner"></a> [owner](#input\_owner) | Identifies the team or person responsible for the resource (used for tagging). | `string` | n/a | yes |
 | <a name="input_point_in_time_recovery_enabled"></a> [point\_in\_time\_recovery\_enabled](#input\_point\_in\_time\_recovery\_enabled) | Enables PITR for backups. | `bool` | `false` | no |
 | <a name="input_sort_key"></a> [sort\_key](#input\_sort\_key) | Optional range/sort key for composite primary key. | `string` | `null` | no |
-| <a name="input_stream_enabled"></a> [stream\_enabled](#input\_stream\_enabled) | Whether DynamoDB Streams are enabled. | `bool` | `false` | no |
 | <a name="input_stream_view_type"></a> [stream\_view\_type](#input\_stream\_view\_type) | Type of stream view (e.g., OLD\_IMAGE). | `string` | `"NEW_AND_OLD_IMAGES"` | no |
 | <a name="input_table_name"></a> [table\_name](#input\_table\_name) | Name of the DynamoDB table. | `string` | `null` | no |
 | <a name="input_ttl_attribute_name"></a> [ttl\_attribute\_name](#input\_ttl\_attribute\_name) | Name of the TTL attribute. | `string` | `""` | no |
