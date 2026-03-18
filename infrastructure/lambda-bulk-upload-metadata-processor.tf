@@ -130,7 +130,7 @@ resource "aws_lambda_permission" "bulk_upload_metadata_processor_lambda_expedite
 }
 
 resource "aws_cloudwatch_metric_alarm" "bulk_upload_metadata_processor_expedite_validation_failed" {
-  count = local.is_sandbox ? 0 : 1
+  # count               = local.is_sandbox ? 0 : 1
   alarm_name          = "${terraform.workspace}-bulk-upload-metadata-processor-expedite-validation-failed"
   alarm_description   = "Alarm when expedite upload validation fails in the bulk upload metadata processor lambda."
   namespace           = "NDRInsights"
