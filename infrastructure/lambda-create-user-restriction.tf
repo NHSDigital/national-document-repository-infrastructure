@@ -1,7 +1,7 @@
 module "create_user_restriction_lambda" {
   source  = "./modules/lambda"
   name    = "CreateUserRestriction"
-  handler = "handlers.user_restrictions.create_user_restriction_handler.lambda_handler"
+  handler = "handlers.create_user_restriction_handler.lambda_handler"
   iam_role_policy_documents = [
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
