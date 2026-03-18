@@ -166,6 +166,7 @@ resource "aws_iam_role_policy" "github_extended_policy_virus_scanner_pre_prod" {
             "ssm:CreateDocument",
             "iam:TagRole",
             "SNS:TagResource",
+            "SNS:SetSubscriptionAttributes",
             "cognito-idp:CreateUserPool",
             "cognito-idp:TagResource",
             "cognito-idp:SetUserPoolMfaConfig",
