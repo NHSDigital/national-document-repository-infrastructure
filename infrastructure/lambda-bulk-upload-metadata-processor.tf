@@ -142,8 +142,8 @@ resource "aws_cloudwatch_metric_alarm" "bulk_upload_metadata_processor_expedite_
   threshold           = 0
   treat_missing_data  = "notBreaching"
 
-  alarm_actions = [module.bulk-upload-metadata-processor-alarm-topic.arn]
-
+  # alarm_actions = [module.bulk-upload-metadata-processor-alarm-topic.arn]
+  alarm_actions = [module.sqs_alarm_lambda_topic.arn]
   tags = {
     Name         = "${terraform.workspace}-bulk-upload-metadata-processor-expedite-validation-failed"
     severity     = "medium"
