@@ -10,6 +10,8 @@ module "mns-notification-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.document_upload_review_dynamodb_table.dynamodb_write_policy_document,
     module.document_upload_review_dynamodb_table.dynamodb_read_policy_document,
+    module.user_restriction_table.dynamodb_read_policy_document,
+    module.user_restriction_table.dynamodb_write_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
     module.ndr-app-config.app_config_policy,
     aws_iam_policy.kms_mns_lambda_access[0].policy,
@@ -26,6 +28,7 @@ module "mns-notification-lambda" {
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
     MNS_NOTIFICATION_QUEUE_URL    = module.sqs-mns-notification-queue[0].sqs_url
     PDS_FHIR_IS_STUBBED           = local.is_sandbox
+    RESTRICTIONS_TABLE_NAME       = module.user_restriction_table.table_name
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
