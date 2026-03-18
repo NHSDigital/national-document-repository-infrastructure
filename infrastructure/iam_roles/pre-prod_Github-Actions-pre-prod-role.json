@@ -78,6 +78,7 @@
           "ssm:CreateDocument",
           "iam:TagRole",
           "SNS:TagResource",
+          "SNS:SetSubscriptionAttributes",
           "cognito-idp:CreateUserPool",
           "cognito-idp:TagResource",
           "cognito-idp:SetUserPoolMfaConfig",
