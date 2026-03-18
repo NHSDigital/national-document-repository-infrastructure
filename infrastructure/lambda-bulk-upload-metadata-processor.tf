@@ -128,3 +128,32 @@ resource "aws_lambda_permission" "bulk_upload_metadata_processor_lambda_expedite
     aws_cloudwatch_event_rule.bulk_upload_metadata_processor_lambda_expedite
   ]
 }
+
+resource "aws_cloudwatch_metric_alarm" "bulk_upload_metadata_processor_expedite_validation_failed" {
+  count = local.is_sandbox ? 0 : 1
+  alarm_name          = "${terraform.workspace}-bulk-upload-metadata-processor-expedite-validation-failed"
+  alarm_description   = "Alarm when expedite upload validation fails in the bulk upload metadata processor lambda."
+  namespace           = "NDRInsights"
+  metric_name         = "ExpediteUploadValidationFailed"
+  statistic           = "Sum"
+  period              = 3600
+  evaluation_periods  = 1
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  treat_missing_data  = "notBreaching"
+
+  alarm_actions = [module.bulk-upload-metadata-processor-alarm-topic.arn]
+
+  tags = {
+    Name         = "${terraform.workspace}-bulk-upload-metadata-processor-expedite-validation-failed"
+    severity     = "medium"
+    alarm_group  = "${terraform.workspace}-bulk-upload-metadata-processor"
+    alarm_metric = "ExpediteUploadValidationFailed"
+    is_kpi       = "false"
+  }
+
+  depends_on = [
+    aws_cloudwatch_log_metric_filter.bulk_upload_metadata_processor_expedite_validation_failed,
+    module.bulk-upload-metadata-processor-alarm-topic,
+  ]
+}

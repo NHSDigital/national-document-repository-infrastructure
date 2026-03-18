@@ -19,3 +19,16 @@ resource "aws_cloudwatch_log_metric_filter" "pds_tracker" {
     value     = "1"
   }
 }
+
+resource "aws_cloudwatch_log_metric_filter" "bulk_upload_metadata_processor_expedite_validation_failed" {
+  count = local.is_sandbox ? 0 : 1
+  name           = "${terraform.workspace}-bulk-upload-metadata-processor-expedite-validation-failed"
+  log_group_name = "/aws/lambda/${module.bulk-upload-metadata-processor-lambda.function_name}"
+  pattern        = "\"EXPEDITE_UPLOAD_VALIDATION_FAILED\""
+
+  metric_transformation {
+    name      = "ExpediteUploadValidationFailed"
+    namespace = "NDRInsights"
+    value     = "1"
+  }
+}
