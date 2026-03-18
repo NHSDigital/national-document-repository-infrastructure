@@ -7,7 +7,7 @@ module "user_restrictions_gateway" {
   gateway_path        = "UserRestriction"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = local.base_url_with_quotes
 }
 
 module "user_restriction_id_gateway" {
@@ -19,7 +19,7 @@ module "user_restriction_id_gateway" {
   authorization       = "CUSTOM"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = local.base_url_with_quotes
 
   request_parameters = {
     "method.request.path.id" = true
@@ -35,5 +35,5 @@ module "user_restrictions_user_search_gateway" {
   authorization       = "CUSTOM"
   authorizer_id       = aws_api_gateway_authorizer.repo_authoriser.id
   require_credentials = true
-  origin              = contains(["prod"], terraform.workspace) ? "'https://${var.domain}'" : "'https://${terraform.workspace}.${var.domain}'"
+  origin              = local.base_url_with_quotes
 }
