@@ -4,7 +4,6 @@ module "document_upload_review_dynamodb_table" {
   hash_key                       = "ID"
   sort_key                       = "Version"
   deletion_protection_enabled    = local.is_production
-  stream_enabled                 = false
   ttl_enabled                    = false
   point_in_time_recovery_enabled = !local.is_sandbox
 

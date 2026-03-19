@@ -177,8 +177,3 @@ resource "aws_api_gateway_resource" "document_reference_by_id_mtls" {
   parent_id   = module.fhir_document_reference_mtls_gateway.gateway_resource_id
   path_part   = "{id}"
 }
-
-moved {
-  from = aws_api_gateway_resource.get_document_reference_mtls
-  to   = aws_api_gateway_resource.document_reference_by_id_mtls
-}
