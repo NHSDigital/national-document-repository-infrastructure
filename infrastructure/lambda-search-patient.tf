@@ -71,7 +71,7 @@ module "search-patient-details-lambda" {
     APPCONFIG_ENVIRONMENT          = module.ndr-app-config.app_config_environment_id
     APPCONFIG_CONFIGURATION        = module.ndr-app-config.app_config_configuration_profile_id
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
-    PDS_FHIR_IS_STUBBED            = local.is_sandbox,
+    PDS_FHIR_IS_STUBBED            = local.is_sandbox
     WORKSPACE                      = terraform.workspace
     AUTH_SESSION_TABLE_NAME        = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     RESTRICTIONS_TABLE_NAME        = module.user_restriction_table.table_name
