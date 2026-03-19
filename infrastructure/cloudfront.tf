@@ -178,6 +178,59 @@ resource "aws_cloudfront_origin_request_policy" "uploader" {
   }
 }
 
+resource "aws_cloudwatch_log_group" "cloudfront_standard_logs" {
+  provider          = aws.us_east_1
+  # count        = local.is_sandbox ? 0 : 1
+  count             = 1
+  name              = "/aws/vendedlogs/cloudfront/${terraform.workspace}/standard"
+  retention_in_days = 30
+}
+
+resource "aws_cloudwatch_log_delivery_source" "cloudfront_standard_logs" {
+  provider     = aws.us_east_1
+  # count        = local.is_sandbox ? 0 : 1
+  count        = 1
+  name         = "${terraform.workspace}-cloudfront-standard-logs"
+  log_type     = "ACCESS_LOGS"
+  resource_arn = aws_cloudfront_distribution.s3_presign_mask.arn
+}
+
+resource "aws_cloudwatch_log_delivery_destination" "cloudfront_standard_logs" {
+  provider = aws.us_east_1
+  # count    = local.is_sandbox ? 0 : 1
+  count    = 1
+  name     = "${terraform.workspace}-cloudfront-standard-logs-destination"
+
+  delivery_destination_configuration {
+    destination_resource_arn = aws_cloudwatch_log_group.cloudfront_standard_logs[0].arn
+  }
+}
+
+resource "aws_cloudwatch_log_delivery" "cloudfront_standard_logs" {
+  provider                 = aws.us_east_1
+  # count                    = local.is_sandbox ? 0 : 1
+  count                    = 1
+  delivery_source_name     = aws_cloudwatch_log_delivery_source.cloudfront_standard_logs[0].name
+  delivery_destination_arn = aws_cloudwatch_log_delivery_destination.cloudfront_standard_logs[0].arn
+  output_format            = "json"
+
+  record_fields = [
+    "date",
+    "time",
+    "x-edge-location",
+    "c-ip",
+    "cs-method",
+    "x-host-header",
+    "cs-uri-stem",
+    "cs-uri-query",
+    "sc-status",
+    "time-taken",
+    "x-edge-request-id",
+    "cs(User-Agent)",
+    "cs(Referer)"
+  ]
+}
+
 resource "aws_cloudfront_cache_policy" "nocache" {
   count       = local.is_sandbox ? 0 : 1
   name        = "${terraform.workspace}_nocache_policy"
