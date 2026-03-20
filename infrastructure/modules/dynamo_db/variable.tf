@@ -52,16 +52,10 @@ variable "deletion_protection_enabled" {
   default     = null
 }
 
-variable "stream_enabled" {
-  description = "Whether DynamoDB Streams are enabled."
-  type        = bool
-  default     = false
-}
-
 variable "stream_view_type" {
   description = "Type of stream view (e.g., OLD_IMAGE)."
   type        = string
-  default     = "NEW_AND_OLD_IMAGES"
+  default     = null
 }
 
 variable "environment" {

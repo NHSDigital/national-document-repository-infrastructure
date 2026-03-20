@@ -19,6 +19,7 @@ module "search_user_restriction_lambda" {
     WORKSPACE                 = terraform.workspace
     RESTRICTIONS_TABLE_NAME   = module.user_restriction_table.table_name
     HEALTHCARE_WORKER_API_URL = data.aws_ssm_parameter.healthcare_worker_api_base_url.value
+    PDS_FHIR_IS_STUBBED       = local.is_sandbox
   }
 
   depends_on = [

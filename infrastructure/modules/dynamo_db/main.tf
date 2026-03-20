@@ -3,7 +3,7 @@ resource "aws_dynamodb_table" "ndr_dynamodb_table" {
   hash_key                    = var.hash_key
   range_key                   = var.sort_key
   billing_mode                = var.billing_mode
-  stream_enabled              = var.stream_enabled
+  stream_enabled              = var.stream_view_type != null
   stream_view_type            = var.stream_view_type
   deletion_protection_enabled = var.deletion_protection_enabled
 
@@ -26,9 +26,20 @@ resource "aws_dynamodb_table" "ndr_dynamodb_table" {
 
     content {
       name            = global_secondary_index.value.name
-      hash_key        = global_secondary_index.value.hash_key
       projection_type = global_secondary_index.value.projection_type
-      range_key       = lookup(global_secondary_index.value, "range_key", null)
+
+      key_schema {
+        attribute_name = global_secondary_index.value.hash_key
+        key_type       = "HASH"
+      }
+
+      dynamic "key_schema" {
+        for_each = lookup(global_secondary_index.value, "range_key", null) != null ? [global_secondary_index.value.range_key] : []
+        content {
+          attribute_name = key_schema.value
+          key_type       = "RANGE"
+        }
+      }
     }
   }
 
