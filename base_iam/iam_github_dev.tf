@@ -86,8 +86,11 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy_dev" {
   name  = "cloudwatch_logs_policy"
   policy = jsonencode(
     {
+      Version = "2012-10-17"
       Statement = [
         {
+          Sid    = "LogGroups"
+          Effect = "Allow"
           Action = [
             "logs:DescribeLogGroups",
             "logs:CreateLogGroup",
@@ -103,23 +106,24 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy_dev" {
             "logs:AssociateKmsKey",
             "logs:DisassociateKmsKey"
           ]
-          Effect = "Allow"
           Resource = [
             "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*",
             "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:*"
           ]
-          Sid = "Statement1"
         },
         {
+          Sid    = "DeliveryReadWrite"
+          Effect = "Allow"
           Action = [
             "logs:PutDeliverySource",
             "logs:PutDeliveryDestination",
             "logs:CreateDelivery",
+            "logs:GetDelivery",
             "logs:GetDeliverySource",
             "logs:GetDeliveryDestination",
-            "logs:DescribeDeliverySources",
-            "logs:DescribeDeliveryDestinations",
-            "logs:DescribeDeliveries",
+            "logs:GetDeliveryDestinationPolicy",
+            "logs:PutDeliveryDestinationPolicy",
+            "logs:DeleteDeliveryDestinationPolicy",
             "logs:UpdateDeliveryConfiguration",
             "logs:DeleteDelivery",
             "logs:DeleteDeliverySource",
@@ -127,16 +131,24 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy_dev" {
             "logs:TagResource",
             "logs:UntagResource"
           ]
-          Effect = "Allow"
           Resource = [
             "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-source:*",
             "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-destination:*",
             "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery:*"
           ]
-          Sid = "Statement2"
+        },
+        {
+          Sid    = "DeliveryDescribe"
+          Effect = "Allow"
+          Action = [
+            "logs:DescribeDeliverySources",
+            "logs:DescribeDeliveryDestinations",
+            "logs:DescribeDeliveries",
+            "logs:DescribeConfigurationTemplates"
+          ]
+          Resource = "*"
         }
       ]
-      Version = "2012-10-17"
     }
   )
 }
