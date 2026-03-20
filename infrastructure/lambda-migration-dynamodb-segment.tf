@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "migration_dynamodb_access" {
       "dynamodb:DescribeTable"
     ]
     resources = [
-      "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/${terraform.workspace}_*"
+      "arn:aws:dynamodb:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:table/${terraform.workspace}_*"
     ]
   }
 }

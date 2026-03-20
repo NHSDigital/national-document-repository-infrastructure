@@ -62,9 +62,9 @@ data "aws_iam_policy_document" "sfn_permissions" {
       "states:ListMapRuns"
     ]
     resources = [
-      "arn:aws:states:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:stateMachine:${terraform.workspace}_migration_dynamodb_step_function",
-      "arn:aws:states:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:execution:${terraform.workspace}_migration_dynamodb_step_function/*",
-      "arn:aws:states:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:mapRun:${terraform.workspace}_migration_dynamodb_step_function/*"
+      "arn:aws:states:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:stateMachine:${terraform.workspace}_migration_dynamodb_step_function",
+      "arn:aws:states:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:execution:${terraform.workspace}_migration_dynamodb_step_function/*",
+      "arn:aws:states:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:mapRun:${terraform.workspace}_migration_dynamodb_step_function/*"
     ]
   }
 

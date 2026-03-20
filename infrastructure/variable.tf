@@ -300,9 +300,6 @@ locals {
 
   cloudfront_full_domain_name = contains(["prod"], terraform.workspace) ? "${var.cloudfront_subdomain}${var.domain}" : "${var.cloudfront_subdomain}${terraform.workspace}.${var.domain}"
 
-  current_region     = data.aws_region.current.name
-  current_account_id = data.aws_caller_identity.current.account_id
-
   apim_api_url = "https://${var.apim_environment}api.service.nhs.uk/national-document-repository/FHIR/R4"
 
   truststore_bucket_id          = local.is_sandbox ? "ndr-dev-${var.truststore_bucket_name}" : module.ndr-truststore[0].bucket_id

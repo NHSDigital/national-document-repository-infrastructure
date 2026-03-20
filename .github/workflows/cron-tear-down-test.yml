@@ -57,7 +57,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.14.6
+          terraform_version: 1.14.7
           terraform_wrapper: false
 
       - name: Initialise Terraform
@@ -114,14 +114,14 @@ jobs:
           ref: main
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v5
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/test-github-bootstrap
           aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: true
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: 1.14.3
 
