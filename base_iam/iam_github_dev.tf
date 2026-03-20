@@ -95,16 +95,20 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy_dev" {
             "logs:PutLogEvents",
             "logs:PutRetentionPolicy",
             "logs:PutResourcePolicy",
+            "logs:DescribeResourcePolicies",
             "logs:DeleteResourcePolicy",
             "logs:DeleteRetentionPolicy",
             "logs:TagResource",
             "logs:UntagResource",
             "logs:AssociateKmsKey",
-            "logs:DisassociateKmsKey",
+            "logs:DisassociateKmsKey"
           ]
-          Effect   = "Allow"
-          Resource = "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*"
-          Sid      = "Statement1"
+          Effect = "Allow"
+          Resource = [
+            "arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:log-group:*",
+            "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:*"
+          ]
+          Sid = "Statement1"
         },
         {
           Action = [
@@ -121,16 +125,16 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy_dev" {
             "logs:DeleteDeliverySource",
             "logs:DeleteDeliveryDestination",
             "logs:TagResource",
-            "logs:UntagResource",
+            "logs:UntagResource"
           ]
           Effect = "Allow"
           Resource = [
             "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-source:*",
             "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-destination:*",
-            "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery:*",
+            "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery:*"
           ]
           Sid = "Statement2"
-        },
+        }
       ]
       Version = "2012-10-17"
     }
