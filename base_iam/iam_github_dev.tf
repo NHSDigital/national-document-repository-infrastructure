@@ -109,10 +109,25 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy_dev" {
         {
           Action = [
             "logs:PutDeliverySource",
+            "logs:PutDeliveryDestination",
+            "logs:CreateDelivery",
+            "logs:GetDeliverySource",
+            "logs:GetDeliveryDestination",
+            "logs:DescribeDeliverySources",
+            "logs:DescribeDeliveryDestinations",
+            "logs:DescribeDeliveries",
+            "logs:UpdateDeliveryConfiguration",
+            "logs:DeleteDelivery",
+            "logs:DeleteDeliverySource",
+            "logs:DeleteDeliveryDestination",
+            "logs:TagResource",
+            "logs:UntagResource",
           ]
           Effect = "Allow"
           Resource = [
             "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-source:*",
+            "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery-destination:*",
+            "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:delivery:*",
           ]
           Sid = "Statement2"
         },
