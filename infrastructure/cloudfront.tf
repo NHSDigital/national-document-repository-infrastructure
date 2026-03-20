@@ -198,8 +198,9 @@ resource "aws_cloudwatch_log_delivery_source" "cloudfront_standard_logs" {
 resource "aws_cloudwatch_log_delivery_destination" "cloudfront_standard_logs" {
   provider = aws.us_east_1
   # count    = local.is_sandbox ? 0 : 1
-  count = 1
-  name  = "${terraform.workspace}-cloudfront-standard-logs-destination"
+  count         = 1
+  name          = "${terraform.workspace}-cloudfront-standard-logs-destination"
+  output_format = "json"
 
   delivery_destination_configuration {
     destination_resource_arn = aws_cloudwatch_log_group.cloudfront_standard_logs[0].arn
@@ -212,7 +213,6 @@ resource "aws_cloudwatch_log_delivery" "cloudfront_standard_logs" {
   count                    = 1
   delivery_source_name     = aws_cloudwatch_log_delivery_source.cloudfront_standard_logs[0].name
   delivery_destination_arn = aws_cloudwatch_log_delivery_destination.cloudfront_standard_logs[0].arn
-  output_format            = "json"
 
   record_fields = [
     "date",
