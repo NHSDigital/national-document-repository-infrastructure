@@ -180,6 +180,7 @@ resource "aws_cloudfront_origin_request_policy" "uploader" {
 
 resource "aws_cloudwatch_log_group" "cloudfront_standard_logs" {
   provider = aws.us_east_1
+  region   = "us-east-1"
   # count             = local.is_sandbox ? 0 : 1
   count             = 1
   name              = "/aws/vendedlogs/cloudfront/${terraform.workspace}/standard"
@@ -188,6 +189,7 @@ resource "aws_cloudwatch_log_group" "cloudfront_standard_logs" {
 
 resource "aws_cloudwatch_log_delivery_source" "cloudfront_standard_logs" {
   provider = aws.us_east_1
+  region   = "us-east-1"
   # count        = local.is_sandbox ? 0 : 1
   count        = 1
   name         = "${terraform.workspace}-cloudfront-standard-logs"
@@ -197,6 +199,7 @@ resource "aws_cloudwatch_log_delivery_source" "cloudfront_standard_logs" {
 
 resource "aws_cloudwatch_log_delivery_destination" "cloudfront_standard_logs" {
   provider = aws.us_east_1
+  region   = "us-east-1"
   # count    = local.is_sandbox ? 0 : 1
   count         = 1
   name          = "${terraform.workspace}-cloudfront-standard-logs-destination"
@@ -209,6 +212,7 @@ resource "aws_cloudwatch_log_delivery_destination" "cloudfront_standard_logs" {
 
 resource "aws_cloudwatch_log_delivery" "cloudfront_standard_logs" {
   provider = aws.us_east_1
+  region   = "us-east-1"
   # count                    = local.is_sandbox ? 0 : 1
   count                    = 1
   delivery_source_name     = aws_cloudwatch_log_delivery_source.cloudfront_standard_logs[0].name
