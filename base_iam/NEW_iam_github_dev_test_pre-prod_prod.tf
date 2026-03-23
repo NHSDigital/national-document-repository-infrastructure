@@ -1,12 +1,12 @@
 # POLICY SPLIT INTO 3 PARTS TO AVOID HITTING THE 6,144 CHARACTER LIMIT FOR AWS IAM POLICIES
 
-resource "aws_iam_role_policy_attachment" "github_actions_policy_dev_test_pre-prod_prod_1" {
+resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod_1" {
   count      = local.is_dev_test_pre-prod_prod ? 1 : 0
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_policy_dev_test_pre-prod_prod_1[0].arn
+  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_1[0].arn
 }
 
-resource "aws_iam_policy" "github_actions_policy_dev_test_pre-prod_prod_1" {
+resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_1" {
   count = local.is_dev_test_pre-prod_prod ? 1 : 0
   name  = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_1"
   path  = "/"
@@ -113,13 +113,13 @@ resource "aws_iam_policy" "github_actions_policy_dev_test_pre-prod_prod_1" {
 }
 
 
-resource "aws_iam_role_policy_attachment" "github_actions_policy_dev_test_pre-prod_prod_2" {
+resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod_2" {
   count      = local.is_dev_test_pre-prod_prod ? 1 : 0
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_policy_dev_test_pre-prod_prod_2[0].arn
+  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_2[0].arn
 }
 
-resource "aws_iam_policy" "github_actions_policy_dev_test_pre-prod_prod_2" {
+resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_2" {
   count = local.is_dev_test_pre-prod_prod ? 1 : 0
   name  = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_2"
   path  = "/"
@@ -265,13 +265,13 @@ resource "aws_iam_policy" "github_actions_policy_dev_test_pre-prod_prod_2" {
 }
 
 
-resource "aws_iam_role_policy_attachment" "github_actions_policy_dev_test_pre-prod_prod_3" {
+resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod_3" {
   count      = local.is_dev_test_pre-prod_prod ? 1 : 0
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_policy_dev_test_pre-prod_prod_3[0].arn
+  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_3[0].arn
 }
 
-resource "aws_iam_policy" "github_actions_policy_dev_test_pre-prod_prod_3" {
+resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_3" {
   count = local.is_dev_test_pre-prod_prod ? 1 : 0
   name  = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_3"
   path  = "/"

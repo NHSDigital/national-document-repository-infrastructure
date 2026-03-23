@@ -1,10 +1,10 @@
-resource "aws_iam_role_policy_attachment" "github_actions_policy_test" {
+resource "aws_iam_role_policy_attachment" "github_actions_test" {
   count      = local.is_test ? 1 : 0
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_policy_test[0].arn
+  policy_arn = aws_iam_policy.github_actions_test[0].arn
 }
 
-resource "aws_iam_policy" "github_actions_policy_test" {
+resource "aws_iam_policy" "github_actions_test" {
   count = local.is_test ? 1 : 0
   name  = "${terraform.workspace}-github-actions-policy-test"
   path  = "/"

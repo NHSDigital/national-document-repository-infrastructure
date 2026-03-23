@@ -1,10 +1,10 @@
-resource "aws_iam_role_policy_attachment" "github_actions_policy_pre-prod" {
+resource "aws_iam_role_policy_attachment" "github_actions_pre-prod" {
   count      = local.is_pre-prod ? 1 : 0
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_policy_pre-prod[0].arn
+  policy_arn = aws_iam_policy.github_actions_pre-prod[0].arn
 }
 
-resource "aws_iam_policy" "github_actions_policy_pre-prod" {
+resource "aws_iam_policy" "github_actions_pre-prod" {
   count = local.is_pre-prod ? 1 : 0
   name  = "${terraform.workspace}-github-actions-policy-pre-prod"
   path  = "/"
