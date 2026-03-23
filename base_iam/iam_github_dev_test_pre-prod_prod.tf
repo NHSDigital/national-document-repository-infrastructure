@@ -424,6 +424,18 @@ resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_3" {
         Effect   = "Allow"
         Resource = "arn:aws:rum:eu-west-2:${data.aws_caller_identity.current.account_id}:appmonitor/*"
       },
+      {
+        Action = [
+          "states:CreateStateMachine",
+          "states:DeleteStateMachine",
+          "states:DescribeStateMachine",
+          "states:TagResource",
+          "states:UntagResource",
+          "states:UpdateStateMachine"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:states:eu-west-2:${data.aws_caller_identity.current.account_id}:stateMachine:*"
+      },
     ]
   })
 }

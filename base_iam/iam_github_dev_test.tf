@@ -49,12 +49,6 @@ resource "aws_iam_policy" "github_actions_dev_test" {
           "ec2:DeleteNatGateway",
           "s3:*",
           "sqs:TagQueue",
-          "states:CreateStateMachine",
-          "states:DeleteStateMachine",
-          "states:DescribeStateMachine",
-          "states:TagResource",
-          "states:UntagResource",
-          "states:UpdateStateMachine"
         ]
         Effect   = "Allow"
         Resource = "*"
