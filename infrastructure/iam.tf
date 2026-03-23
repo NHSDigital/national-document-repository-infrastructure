@@ -126,6 +126,7 @@ resource "aws_iam_policy" "s3_document_data_policy_for_get_doc_ref_lambda" {
         "Effect" : "Allow",
         "Action" : [
           "s3:GetObject",
+          "s3:GetObjectVersion",
         ],
         "Resource" : ["${module.ndr-lloyd-george-store.bucket_arn}/*"]
       }
