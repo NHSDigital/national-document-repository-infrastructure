@@ -373,6 +373,7 @@ resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_3" {
           "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:targetgroup/*/*",
           "arn:aws:elasticloadbalancing:*:${data.aws_caller_identity.current.account_id}:truststore/*/*",
           "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:event-bus/*",
+          "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*",
           "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/*/*",
           "arn:aws:iam::${data.aws_caller_identity.current.account_id}:instance-profile/*",
           "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/*",
