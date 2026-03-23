@@ -157,6 +157,20 @@ resource "aws_iam_policy" "github_actions_pre-prod_prod" {
         Effect   = "Allow"
         Resource = "arn:aws:states:eu-west-2:${data.aws_caller_identity.current.account_id}:stateMachine:*"
       },
+      {
+        Action = [
+          "ecr:BatchDeleteImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:ecr:eu-west-2:${data.aws_caller_identity.current.account_id}:repository/ndr-${var.environment}-app",
+          "arn:aws:ecr:eu-west-2:${data.aws_caller_identity.current.account_id}:repository/${var.environment}-data-collection"
+        ]
+      },
     ]
   })
 }
