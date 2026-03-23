@@ -57,7 +57,7 @@
             "enabled": "true"
         },
         "bulkUploadSendToReviewEnabled": {
-          "enabled": "false"
+          "enabled": "true"
         },
         "documentCorrectEnabled": {
           "enabled": "false"
