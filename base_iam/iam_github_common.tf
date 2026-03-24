@@ -1,10 +1,13 @@
 
+# Resources that are common to all environments (dev, test, pre-prod & prod)
+
 resource "aws_iam_role_policy_attachment" "ReadOnlyAccess" {
   role       = aws_iam_role.github_actions.name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
 
-# POLICY SPLIT INTO 3 PARTS TO AVOID HITTING THE 6,144 CHARACTER LIMIT FOR AWS IAM POLICIES
+
+# The policy is split into 3 parts to avoid hitting the character limit for AWS IAM policies.
 
 resource "aws_iam_role_policy_attachment" "github_actions_common_1" {
   role       = aws_iam_role.github_actions.name

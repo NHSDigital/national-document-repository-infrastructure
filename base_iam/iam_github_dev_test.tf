@@ -1,3 +1,5 @@
+# Resources that are common to the dev and test environments.
+
 resource "aws_iam_role_policy_attachment" "github_actions_dev_test" {
   count      = local.is_dev_test ? 1 : 0
   role       = aws_iam_role.github_actions.name

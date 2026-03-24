@@ -1,3 +1,5 @@
+# Resources that are common to dev, pre-prod & prod environments.
+
 resource "aws_iam_role_policy_attachment" "github_actions_dev_pre-prod_prod" {
   count      = local.is_dev_pre-prod_prod ? 1 : 0
   role       = aws_iam_role.github_actions.name
