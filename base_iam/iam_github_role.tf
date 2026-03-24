@@ -65,8 +65,7 @@ resource "aws_iam_role" "github_actions" {
   )
 }
 
-resource "aws_iam_role_policy_attachment" "ReadOnlyAccess_dev" {
-  count      = local.is_sandbox_or_dev ? 1 : 0
+resource "aws_iam_role_policy_attachment" "ReadOnlyAccess" {
   role       = aws_iam_role.github_actions.name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
