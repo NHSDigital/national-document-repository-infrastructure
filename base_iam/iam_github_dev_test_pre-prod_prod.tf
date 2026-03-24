@@ -9,7 +9,7 @@ resource "aws_iam_role_policy_attachment" "ReadOnlyAccess" {
 resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod_1" {
 
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_1[0].arn
+  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_1.arn
 }
 
 resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_1" {
@@ -120,7 +120,7 @@ resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_1" {
 
 resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod_2" {
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_2[0].arn
+  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_2.arn
 }
 
 resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_2" {
@@ -270,7 +270,7 @@ resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_2" {
 
 resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod_3" {
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_3[0].arn
+  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_3.arn
 }
 
 resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_3" {
