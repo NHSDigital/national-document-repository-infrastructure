@@ -13,8 +13,8 @@ resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod
 }
 
 resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_1" {
-  name  = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_1"
-  path  = "/"
+  name = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_1"
+  path = "/"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -124,8 +124,8 @@ resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod
 }
 
 resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_2" {
-  name  = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_2"
-  path  = "/"
+  name = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_2"
+  path = "/"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -274,8 +274,8 @@ resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod
 }
 
 resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_3" {
-  name  = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_3"
-  path  = "/"
+  name = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_3"
+  path = "/"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
