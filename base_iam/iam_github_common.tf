@@ -6,14 +6,13 @@ resource "aws_iam_role_policy_attachment" "ReadOnlyAccess" {
 
 # POLICY SPLIT INTO 3 PARTS TO AVOID HITTING THE 6,144 CHARACTER LIMIT FOR AWS IAM POLICIES
 
-resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod_1" {
-
+resource "aws_iam_role_policy_attachment" "github_actions_common_1" {
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_1.arn
+  policy_arn = aws_iam_policy.github_actions_common_1.arn
 }
 
-resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_1" {
-  name = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_1"
+resource "aws_iam_policy" "github_actions_common_1" {
+  name = "${terraform.workspace}-github-actions-policy-common-1"
   path = "/"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -118,13 +117,13 @@ resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_1" {
 }
 
 
-resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod_2" {
+resource "aws_iam_role_policy_attachment" "github_actions_common_2" {
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_2.arn
+  policy_arn = aws_iam_policy.github_actions_common_2.arn
 }
 
-resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_2" {
-  name = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_2"
+resource "aws_iam_policy" "github_actions_common_2" {
+  name = "${terraform.workspace}-github-actions-policy-common-2"
   path = "/"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -268,13 +267,13 @@ resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_2" {
 }
 
 
-resource "aws_iam_role_policy_attachment" "github_actions_dev_test_pre-prod_prod_3" {
+resource "aws_iam_role_policy_attachment" "github_actions_common_3" {
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions_dev_test_pre-prod_prod_3.arn
+  policy_arn = aws_iam_policy.github_actions_common_3.arn
 }
 
-resource "aws_iam_policy" "github_actions_dev_test_pre-prod_prod_3" {
-  name = "${terraform.workspace}-github-actions-policy-dev_test_pre-prod_prod_3"
+resource "aws_iam_policy" "github_actions_common_3" {
+  name = "${terraform.workspace}-github-actions-policy-common-3"
   path = "/"
   policy = jsonencode({
     Version = "2012-10-17"

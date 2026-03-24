@@ -30,8 +30,7 @@ locals {
   is_prod                       = terraform.workspace == "prod"
   shared_terraform_state_bucket = "ndr-${var.environment}-terraform-state-${data.aws_caller_identity.current.account_id}"
 
-  is_dev_pre-prod_prod = !contains(["ndr-test"], terraform.workspace)
-  # is_dev_test_pre-prod_prod = true
+  is_dev_pre-prod_prod  = !contains(["ndr-test"], terraform.workspace)
   is_dev_test           = !contains(["pre-prod", "prod"], terraform.workspace)
   is_dev                = !contains(["ndr-test", "pre-prod", "prod"], terraform.workspace)
   is_pre-prod_prod      = contains(["pre-prod", "prod"], terraform.workspace)
