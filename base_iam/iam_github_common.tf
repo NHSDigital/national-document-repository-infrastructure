@@ -282,7 +282,6 @@ resource "aws_iam_policy" "github_actions_common_3" {
     Statement = [
       {
         Action = [
-
           "scheduler:CreateSchedule",
           "scheduler:DeleteSchedule",
           "scheduler:UpdateSchedule",
