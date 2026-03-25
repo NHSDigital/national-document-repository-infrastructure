@@ -1,4 +1,3 @@
-
 # Resources that are common to all environments (dev, test, pre-prod & prod)
 
 resource "aws_iam_role_policy_attachment" "ReadOnlyAccess" {
