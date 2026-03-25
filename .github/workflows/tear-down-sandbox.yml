@@ -87,7 +87,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.14.6
+          terraform_version: 1.14.7
 
       - name: Initialise Terraform
         run: terraform init -backend-config=${{ vars.TF_BACKEND_FILE }}
@@ -124,7 +124,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.14.6
+          terraform_version: 1.14.7
 
       - name: Initialise Terraform
         run: terraform init -backend-config=bucket=ndr-dev-terraform-state-${{ secrets.AWS_ACCOUNT_ID }}

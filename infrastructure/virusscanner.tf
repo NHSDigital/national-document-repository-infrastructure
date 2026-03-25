@@ -68,7 +68,7 @@ module "cloud_storage_security" {
   count = local.is_production ? 1 : 0
 
   source                       = "cloudstoragesec/cloud-storage-security/aws"
-  version                      = "1.8.16+css9.06.000"                            # Check https://help.cloudstoragesec.com/release-notes/latest-v9 for updates
+  version                      = "1.8.18+css9.08.000"                            # Check https://help.cloudstoragesec.com/release-notes/latest-v9 for updates
   cidr                         = [var.cloud_security_console_black_hole_address] # This is a reserved address that does not lead anywhere to make sure CloudStorageSecurity console is not available
   email                        = data.aws_ssm_parameter.cloud_security_admin_email.value
   subnet_a_id                  = aws_subnet.virus_scanning_a[0].id
@@ -100,7 +100,7 @@ resource "aws_sns_topic_subscription" "proactive_virus_scanning_notifications" {
   topic_arn = module.cloud_storage_security[0].proactive_notifications_topic_arn
   filter_policy = jsonencode({
     "notificationType" : ["scanResult"],
-    "scanResult" : ["Infected", "Error", "Unscannable", "Suspicious"]
+    "scanResult" : ["Infected", "Error", "Unscannable", "Suspicious", "InfectedAllowed"]
   })
 }
 
@@ -112,7 +112,7 @@ resource "aws_sns_topic_subscription" "proactive_virus_scanning_kill_switch" {
 
   filter_policy = jsonencode({
     "notificationType" : ["scanResult"],
-    "scanResult" : ["Infected", "Error", "Unscannable", "Suspicious"]
+    "scanResult" : ["Infected", "Suspicious"]
   })
 }
 
