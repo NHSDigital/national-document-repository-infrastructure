@@ -60,13 +60,13 @@
           "enabled": "true"
         },
         "documentCorrectEnabled": {
-          "enabled": "false"
+          "enabled": "true"
         },
         "userRestrictionEnabled": {
-            "enabled": "false"
+            "enabled": "true"
         },
         "versionHistoryEnabled": {
-          "enabled": "false"
+          "enabled": "true"
         }
     },
     "version": "1"
