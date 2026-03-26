@@ -3,6 +3,7 @@ module "pdf-stitching-lambda" {
   name           = "PdfStitchingLambda"
   handler        = "handlers.pdf_stitching_handler.lambda_handler"
   lambda_timeout = 900
+  memory_size    = 10240
   iam_role_policy_documents = [
     module.sqs-nrl-queue.sqs_read_policy_document,
     module.sqs-nrl-queue.sqs_write_policy_document,
