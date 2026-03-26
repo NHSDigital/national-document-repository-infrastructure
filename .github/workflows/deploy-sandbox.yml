@@ -96,7 +96,7 @@ jobs:
         uses: ./.github/actions/tf-plan-apply
         with:
           # use newly created role
-          aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name}}-github-actions-role
+          aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name }}-github-actions-role
           bucket_prefix: "dev"
           aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           aws_region: ${{ vars.AWS_REGION }}
@@ -120,7 +120,7 @@ jobs:
         uses: ./.github/actions/tf-plan-apply
         with:
           # use newly created role
-          aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name}}-github-actions-role
+          aws_assume_role: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.sandbox_name }}-github-actions-role
           bucket_prefix: "dev"
           aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           aws_region: ${{ vars.AWS_REGION }}
