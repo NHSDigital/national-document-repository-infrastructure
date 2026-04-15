@@ -96,9 +96,8 @@ resource "aws_cloudwatch_event_rule" "bulk_upload_metadata_processor_lambda_expe
         "name" : [module.ndr-bulk-staging-store.bucket_id]
       },
       "object" : {
-        "key" : [{
-          "prefix" : "expedite/"
-        }]
+        "key" : [{ "prefix" : "expedite/" }],
+        "size" : [{ "numeric" : [">", 0] }]
       }
     }
   })
