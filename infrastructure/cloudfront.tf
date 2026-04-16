@@ -42,6 +42,11 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     cache_policy_id          = local.cloudfront_cache_policy_id
     origin_request_policy_id = local.cloudfront_viewer_policy_id
 
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.block_invalid_urls.arn
+    }
+
     lambda_function_association {
       event_type = "origin-request"
       lambda_arn = module.edge-presign-lambda.qualified_arn
@@ -105,6 +110,14 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
   web_acl_id = try(module.cloudfront_firewall_waf_v2[0].arn, "")
 
   depends_on = [aws_acm_certificate_validation.cloudfront]
+}
+
+resource "aws_cloudfront_function" "block_invalid_urls" {
+  name    = "block-invalid-urls"
+  runtime = "cloudfront-js-2.0"
+  comment = "Blocks invalid URL requests"
+  publish = true
+  code    = file("${path.module}/code/block-invalid-urls.js")
 }
 
 resource "aws_cloudfront_origin_request_policy" "viewer" {
