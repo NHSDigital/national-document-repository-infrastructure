@@ -22,15 +22,16 @@ module "cloudfront_firewall_waf_v2" {
 }
 
 resource "aws_cloudfront_distribution" "s3_presign_mask" {
-  price_class = "PriceClass_100"
-
+  price_class         = "PriceClass_100"
   aliases             = [local.cloudfront_full_domain_name]
   wait_for_deployment = false
+
   origin {
     domain_name              = module.ndr-lloyd-george-store.bucket_regional_domain_name
     origin_id                = module.ndr-lloyd-george-store.bucket_id
     origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
   }
+
   enabled         = true
   is_ipv6_enabled = true
 
@@ -43,6 +44,7 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     origin_request_policy_id = local.cloudfront_viewer_policy_id
 
     function_association {
+      # IF THIS IS EVER COPIED TO A NEW BEHAVIOR, THE FUNCTION MUST BE UPDATED TO ALLOW THE NEW PATH
       event_type   = "viewer-request"
       function_arn = aws_cloudfront_function.block_invalid_urls.arn
     }
@@ -68,6 +70,12 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     cache_policy_id          = local.cloudfront_cache_policy_id
     origin_request_policy_id = local.cloudfront_viewer_policy_id
 
+    function_association {
+      # IF THIS IS EVER COPIED TO A NEW BEHAVIOR, THE FUNCTION MUST BE UPDATED TO ALLOW THE NEW PATH
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.block_invalid_urls.arn
+    }
+
     lambda_function_association {
       event_type = "origin-request"
       lambda_arn = module.edge-presign-lambda.qualified_arn
@@ -89,6 +97,12 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     cache_policy_id          = local.cloudfront_cache_policy_id
     origin_request_policy_id = local.cloudfront_uploader_policy_id
 
+    function_association {
+      # IF THIS IS EVER COPIED TO A NEW BEHAVIOR, THE FUNCTION MUST BE UPDATED TO ALLOW THE NEW PATH
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.block_invalid_urls.arn
+    }
+
     lambda_function_association {
       event_type = "origin-request"
       lambda_arn = module.edge-presign-lambda.qualified_arn
@@ -107,6 +121,7 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
       locations        = local.allow_us_comms ? ["GB", "US"] : ["GB"]
     }
   }
+
   web_acl_id = try(module.cloudfront_firewall_waf_v2[0].arn, "")
 
   depends_on = [aws_acm_certificate_validation.cloudfront]
