@@ -132,7 +132,7 @@ resource "aws_cloudfront_function" "block_invalid_urls" {
   runtime = "cloudfront-js-2.0"
   comment = "Blocks invalid URL requests"
   publish = true
-  code    = file("${path.module}/code/block-invalid-urls.js")
+  code    = file("${path.module}/code/dist/block-invalid-urls.js")
 }
 
 resource "aws_cloudfront_origin_request_policy" "viewer" {
