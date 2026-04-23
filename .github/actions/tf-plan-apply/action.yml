@@ -64,7 +64,10 @@ runs:
         mask-aws-account-id: true
 
     - name: Generate CloudFront function
-      run: npm install && npm run build
+      run: 
+        npm ci 
+        npm run test
+        npm run build
       working-directory: ./infrastructure/code
       shell: bash
 
