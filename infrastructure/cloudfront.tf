@@ -98,7 +98,7 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
     origin_request_policy_id = local.cloudfront_uploader_policy_id
 
     function_association {
-      # IF THIS IS EVER COPIED TO A NEW BEHAVIOR, THE FUNCTION MUST BE UPDATED TO ALLOW THE NEW PATH
+      # IF THIS IS EVER COPIED TO A NEW CLOUDFRONT [ordered_cache_behavior] BEHAVIOR, THE FUNCTION MUST BE UPDATED TO ALLOW THE NEW PATH
       event_type   = "viewer-request"
       function_arn = aws_cloudfront_function.block_invalid_urls.arn
     }
