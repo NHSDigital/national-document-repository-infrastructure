@@ -2,7 +2,6 @@ module "generate-lloyd-george-stitch-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.generate-lloyd-george-stitch-lambda.function_name
   lambda_timeout       = module.generate-lloyd-george-stitch-lambda.timeout
-  lambda_name          = "generate_lloyd_george_stitch_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.generate-lloyd-george-stitch-alarm-topic.arn]
   ok_actions           = [module.generate-lloyd-george-stitch-alarm-topic.arn]

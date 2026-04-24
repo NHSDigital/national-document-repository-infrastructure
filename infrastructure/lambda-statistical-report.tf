@@ -2,7 +2,6 @@ module "statistical-report-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.statistical-report-lambda.function_name
   lambda_timeout       = module.statistical-report-lambda.timeout
-  lambda_name          = "statistical_report_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.statistical-report-alarm-topic.arn]
   ok_actions           = [module.statistical-report-alarm-topic.arn]

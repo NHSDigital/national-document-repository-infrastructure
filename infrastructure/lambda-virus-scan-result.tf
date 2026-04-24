@@ -14,7 +14,6 @@ module "virus_scan_result_alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.virus_scan_result_lambda.function_name
   lambda_timeout       = module.virus_scan_result_lambda.timeout
-  lambda_name          = "virus_scan_result_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.virus_scan_result_alarm_topic.arn]
   ok_actions           = [module.virus_scan_result_alarm_topic.arn]

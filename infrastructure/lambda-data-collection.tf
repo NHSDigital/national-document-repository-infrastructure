@@ -2,7 +2,6 @@ module "data-collection-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.data-collection-lambda.function_name
   lambda_timeout       = module.data-collection-lambda.timeout
-  lambda_name          = "data_collection_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.data-collection-alarm-topic.arn]
   ok_actions           = [module.data-collection-alarm-topic.arn]

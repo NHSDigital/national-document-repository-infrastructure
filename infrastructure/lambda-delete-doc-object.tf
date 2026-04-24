@@ -2,7 +2,6 @@ module "delete-document-object-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.delete-document-object-lambda.function_name
   lambda_timeout       = module.delete-document-object-lambda.timeout
-  lambda_name          = "delete_document_object_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.delete-document-object-alarm-topic.arn]
   ok_actions           = [module.delete-document-object-alarm-topic.arn]

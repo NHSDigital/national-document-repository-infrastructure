@@ -14,7 +14,6 @@ module "get-report-by-ods-alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.get-report-by-ods-lambda.function_name
   lambda_timeout       = module.get-report-by-ods-lambda.timeout
-  lambda_name          = "get_report_by_ods_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.get-report-by-ods-alarm-topic.arn]
   ok_actions           = [module.get-report-by-ods-alarm-topic.arn]

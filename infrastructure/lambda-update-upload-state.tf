@@ -14,7 +14,6 @@ module "update_upload_state_alarm" {
   source               = "./modules/lambda_alarms"
   lambda_function_name = module.update-upload-state-lambda.function_name
   lambda_timeout       = module.update-upload-state-lambda.timeout
-  lambda_name          = "update_upload_state_handler"
   namespace            = "AWS/Lambda"
   alarm_actions        = [module.update_upload_state_alarm_topic.arn]
   ok_actions           = [module.update_upload_state_alarm_topic.arn]
