@@ -20,7 +20,7 @@ const forbiddenResponse = {
     headers: {
         'content-type': { value: 'text/plain' },
     },
-    body: 'Access Denied: Invalid Path',
+    body: 'Access Denied',
 };
 
 describe('block-invalid-urls handler', () => {
