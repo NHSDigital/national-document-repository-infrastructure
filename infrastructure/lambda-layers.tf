@@ -22,3 +22,8 @@ module "lambda-layer-files" {
   source     = "./modules/lambda_layers"
   layer_name = "files"
 }
+
+module "lambda-layer-stitching" {
+  source     = "./modules/lambda_layers"
+  layer_name = "stitching"
+}

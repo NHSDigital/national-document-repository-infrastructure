@@ -100,17 +100,6 @@ variable "persistent_workspaces" {
   default     = ["ndr-dev", "ndr-test", "pre-prod", "prod"]
 }
 
-variable "default_lambda_layers" {
-  type = list(string)
-  default = [
-    "arn:aws:lambda:eu-west-2:282860088358:layer:AWS-AppConfig-Extension:217"
-  ]
-}
-
-variable "extra_lambda_layers" {
-  type    = list(string)
-  default = ["arn:aws:lambda:eu-west-2:580247275435:layer:LambdaInsightsExtension:64"]
-}
 
 variable "kms_deletion_window" {
   description = "Lambda KMS time to deletion in days"
