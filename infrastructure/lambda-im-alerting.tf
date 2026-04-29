@@ -22,6 +22,7 @@ module "im-alerting-lambda" {
     aws_iam_policy.ssm_access_policy.policy,
     aws_iam_policy.alerting_lambda_alarms.policy,
     aws_iam_policy.alerting_lambda_tags.policy,
+    module.ndr-app-config.app_config_policy,
     module.alarm_state_history_table.dynamodb_read_policy_document,
     module.alarm_state_history_table.dynamodb_write_policy_document
   ]
@@ -29,6 +30,9 @@ module "im-alerting-lambda" {
   rest_api_id         = null
   api_execution_arn   = null
   lambda_environment_variables = {
+    APPCONFIG_APPLICATION       = module.ndr-app-config.app_config_application_id
+    APPCONFIG_ENVIRONMENT       = module.ndr-app-config.app_config_environment_id
+    APPCONFIG_CONFIGURATION     = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                   = terraform.workspace
     TEAMS_WEBHOOK_URL           = data.aws_ssm_parameter.teams_alerting_webhook_url.value
     CONFLUENCE_BASE_URL         = data.aws_ssm_parameter.im_alerting_confluence_url.value
