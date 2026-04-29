@@ -11,10 +11,7 @@ module "ses-feedback-monitor-lambda" {
   ]
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE               = terraform.workspace
+    WORKSPACE = terraform.workspace
 
     SES_FEEDBACK_BUCKET_NAME = module.ses-feedback-store.bucket_id
     SES_FEEDBACK_PREFIX      = "ses-feedback/"

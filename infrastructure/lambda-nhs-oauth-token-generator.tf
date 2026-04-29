@@ -5,7 +5,6 @@ module "nhs-oauth-token-generator-lambda" {
   lambda_timeout = 120
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
-    module.ndr-app-config.app_config_policy
   ]
 
   kms_deletion_window = var.kms_deletion_window

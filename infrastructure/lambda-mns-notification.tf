@@ -13,16 +13,12 @@ module "mns-notification-lambda" {
     module.user_restriction_table.dynamodb_read_policy_document,
     module.user_restriction_table.dynamodb_write_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
-    module.ndr-app-config.app_config_policy,
     aws_iam_policy.kms_mns_lambda_access[0].policy,
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = null
   api_execution_arn   = null
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                     = terraform.workspace
     LLOYD_GEORGE_DYNAMODB_NAME    = module.lloyd_george_reference_dynamodb_table.table_name
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name

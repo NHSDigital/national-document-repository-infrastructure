@@ -14,15 +14,11 @@ module "bulk-upload-metadata-processor-lambda" {
     module.lg-bulk-upload-expedite-metadata-queue.sqs_read_policy_document,
     module.lg-bulk-upload-expedite-metadata-queue.sqs_write_policy_document,
     module.document_review_queue.sqs_write_policy_document,
-    module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy,
     data.aws_iam_policy.aws_lambda_vpc_access_execution_role.policy,
   ]
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                  = terraform.workspace
     STAGING_STORE_BUCKET_NAME  = "${terraform.workspace}-${var.staging_store_bucket_name}"
     BULK_UPLOAD_DYNAMODB_NAME  = "${terraform.workspace}_${var.bulk_upload_report_dynamodb_table_name}"

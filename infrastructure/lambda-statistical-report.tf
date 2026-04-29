@@ -48,7 +48,6 @@ module "statistical-report-lambda" {
   lambda_ephemeral_storage = local.is_production ? 10240 : 1769
   memory_size              = local.is_production ? 10240 : 1769
   iam_role_policy_documents = [
-    module.ndr-app-config.app_config_policy,
     module.statistics_dynamodb_table.dynamodb_read_policy_document,
     module.statistics_dynamodb_table.dynamodb_write_policy_document,
     module.statistical-reports-store.s3_read_policy_document,
@@ -60,9 +59,6 @@ module "statistical-report-lambda" {
   api_execution_arn   = null
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                  = terraform.workspace
     STATISTICS_TABLE           = "${terraform.workspace}_${var.statistics_dynamodb_table_name}"
     STATISTICAL_REPORTS_BUCKET = "${terraform.workspace}-${var.statistical_reports_bucket_name}"

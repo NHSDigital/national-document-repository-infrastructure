@@ -57,7 +57,6 @@ module "access-audit-lambda" {
   name    = "AccessAuditLambda"
   handler = "handlers.access_audit_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.ndr-app-config.app_config_policy,
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,
     module.auth_session_dynamodb_table.dynamodb_read_policy_document,
     module.access_audit_dynamodb_table.dynamodb_write_policy_document
@@ -69,9 +68,6 @@ module "access-audit-lambda" {
 
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE               = terraform.workspace
     AUTH_SESSION_TABLE_NAME = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"
     ACCESS_AUDIT_TABLE_NAME = "${terraform.workspace}_${var.access_audit_dynamodb_table_name}"

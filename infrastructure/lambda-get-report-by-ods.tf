@@ -56,7 +56,6 @@ module "get-report-by-ods-lambda" {
   handler = "handlers.get_report_by_ods_handler.lambda_handler"
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
-    module.ndr-app-config.app_config_policy,
     module.statistical-reports-store.s3_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.document_upload_review_dynamodb_table.dynamodb_read_policy_document
@@ -68,9 +67,6 @@ module "get-report-by-ods-lambda" {
   lambda_timeout      = 900
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     LLOYD_GEORGE_DYNAMODB_NAME    = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     STATISTICAL_REPORTS_BUCKET    = "${terraform.workspace}-${var.statistical_reports_bucket_name}"
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name

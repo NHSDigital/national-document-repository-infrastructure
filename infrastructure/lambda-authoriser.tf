@@ -6,15 +6,11 @@ module "authoriser-lambda" {
     aws_iam_policy.ssm_access_policy_authoriser.policy,
     module.auth_session_dynamodb_table.dynamodb_read_policy_document,
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,
-    module.ndr-app-config.app_config_policy
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION          = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT          = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION        = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                      = terraform.workspace
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
     AUTH_SESSION_TABLE_NAME        = "${terraform.workspace}_${var.auth_session_dynamodb_table_name}"

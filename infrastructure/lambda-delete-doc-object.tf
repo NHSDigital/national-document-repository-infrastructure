@@ -51,17 +51,13 @@ module "delete-document-object-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-lloyd-george-store.s3_write_policy_document,
-    module.ndr-app-config.app_config_policy,
     aws_iam_policy.dynamodb_stream_delete_object_policy.policy
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = null
   api_execution_arn   = null
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE               = terraform.workspace
+    WORKSPACE = terraform.workspace
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false

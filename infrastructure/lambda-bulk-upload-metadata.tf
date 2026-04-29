@@ -8,7 +8,6 @@ module "bulk-upload-metadata-lambda" {
     module.ndr-bulk-staging-store.s3_write_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_read_policy_document,
     module.sqs-lg-bulk-upload-metadata-queue.sqs_write_policy_document,
-    module.ndr-app-config.app_config_policy
   ]
 
   kms_deletion_window = var.kms_deletion_window
@@ -16,9 +15,6 @@ module "bulk-upload-metadata-lambda" {
   api_execution_arn   = null
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION     = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT     = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION   = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                 = terraform.workspace
     STAGING_STORE_BUCKET_NAME = "${terraform.workspace}-${var.staging_store_bucket_name}"
     METADATA_SQS_QUEUE_URL    = module.sqs-lg-bulk-upload-metadata-queue.sqs_url

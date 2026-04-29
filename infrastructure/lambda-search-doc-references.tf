@@ -64,7 +64,6 @@ module "search-document-references-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-document-store.s3_read_policy_document,
-    module.ndr-app-config.app_config_policy,
     aws_iam_policy.ssm_access_policy.policy
   ]
   kms_deletion_window = var.kms_deletion_window
@@ -73,9 +72,6 @@ module "search-document-references-lambda" {
   http_methods        = ["GET"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     LLOYD_GEORGE_DYNAMODB_NAME = module.lloyd_george_reference_dynamodb_table.table_name
     WORKSPACE                  = terraform.workspace
   }
