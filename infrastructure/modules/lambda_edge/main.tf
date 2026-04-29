@@ -20,7 +20,7 @@ resource "aws_lambda_function" "lambda" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "placeholder_lambda.py"
+  source_file = "code/py/placeholder_lambda.py"
   output_path = "placeholder_lambda_payload.zip"
 }
 
