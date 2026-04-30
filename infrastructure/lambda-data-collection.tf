@@ -52,12 +52,8 @@ module "data-collection-lambda" {
     module.statistics_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-lloyd-george-store.s3_write_policy_document,
-    module.ndr-document-store.s3_read_policy_document,
-    module.ndr-document-store.s3_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     aws_iam_policy.cloudwatch_log_query_policy.policy
   ]
   kms_deletion_window = var.kms_deletion_window
@@ -65,12 +61,10 @@ module "data-collection-lambda" {
   api_execution_arn   = null
 
   lambda_environment_variables = {
-    LLOYD_GEORGE_BUCKET_NAME     = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
-    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    DOCUMENT_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.docstore_bucket_name}"
-    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
-    WORKSPACE                    = terraform.workspace
-    STATISTICS_TABLE             = "${terraform.workspace}_${var.statistics_dynamodb_table_name}"
+    LLOYD_GEORGE_BUCKET_NAME   = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    WORKSPACE                  = terraform.workspace
+    STATISTICS_TABLE           = "${terraform.workspace}_${var.statistics_dynamodb_table_name}"
   }
   is_gateway_integration_needed = false
   is_invoked_from_gateway       = false
@@ -79,8 +73,6 @@ module "data-collection-lambda" {
     module.ndr-app-config,
     module.statistics_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
-    module.document_reference_dynamodb_table,
-    module.ndr-document-store,
     module.ndr-lloyd-george-store,
     aws_iam_policy.cloudwatch_log_query_policy
   ]

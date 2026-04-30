@@ -57,8 +57,6 @@ module "update-upload-state-lambda" {
   name    = "UpdateUploadStateLambda"
   handler = "handlers.update_upload_state_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
   ]
@@ -68,7 +66,6 @@ module "update-upload-state-lambda" {
   http_methods        = ["POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     WORKSPACE                    = terraform.workspace,
   }
@@ -76,7 +73,6 @@ module "update-upload-state-lambda" {
     aws_api_gateway_rest_api.ndr_doc_store_api,
     module.update-upload-state-gateway,
     module.ndr-app-config,
-    module.document_reference_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
   ]
 }

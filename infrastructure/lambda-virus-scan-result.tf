@@ -60,8 +60,6 @@ module "virus_scan_result_lambda" {
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
   ]
@@ -71,7 +69,6 @@ module "virus_scan_result_lambda" {
   http_methods        = ["POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     STAGING_STORE_BUCKET_NAME    = "${terraform.workspace}-${var.staging_store_bucket_name}"
     WORKSPACE                    = terraform.workspace
@@ -82,7 +79,6 @@ module "virus_scan_result_lambda" {
     module.ndr-bulk-staging-store,
     module.virus_scan_result_gateway,
     module.ndr-app-config,
-    module.document_reference_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table,
   ]
 }

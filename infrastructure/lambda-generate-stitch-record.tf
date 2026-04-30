@@ -47,8 +47,6 @@ module "generate-lloyd-george-stitch-lambda" {
   lambda_timeout           = 900
   lambda_ephemeral_storage = 1024
   iam_role_policy_documents = [
-    module.ndr-document-store.s3_read_policy_document,
-    module.ndr-document-store.s3_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-lloyd-george-store.s3_write_policy_document,
     aws_iam_policy.dynamodb_stream_stitch_policy.policy,
@@ -72,7 +70,6 @@ module "generate-lloyd-george-stitch-lambda" {
 
   depends_on = [
     module.ndr-app-config,
-    module.ndr-document-store,
     module.ndr-lloyd-george-store,
     module.stitch_metadata_reference_dynamodb_table,
     module.lloyd_george_reference_dynamodb_table

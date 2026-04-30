@@ -58,8 +58,6 @@ module "document-manifest-job-lambda" {
   handler        = "handlers.document_manifest_job_handler.lambda_handler"
   lambda_timeout = 900
   iam_role_policy_documents = [
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.zip_store_reference_dynamodb_table.dynamodb_read_policy_document,
@@ -73,7 +71,6 @@ module "document-manifest-job-lambda" {
   http_methods        = ["GET", "POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
     ZIPPED_STORE_BUCKET_NAME     = "${terraform.workspace}-${var.zip_store_bucket_name}"
     ZIPPED_STORE_DYNAMODB_NAME   = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
@@ -85,7 +82,6 @@ module "document-manifest-job-lambda" {
     module.document-manifest-job-gateway,
     module.ndr-app-config,
     module.lloyd_george_reference_dynamodb_table,
-    module.document_reference_dynamodb_table,
     module.zip_store_reference_dynamodb_table,
     module.ndr-zip-request-store
   ]

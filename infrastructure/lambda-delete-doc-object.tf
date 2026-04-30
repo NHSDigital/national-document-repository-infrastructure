@@ -43,10 +43,6 @@ module "delete-document-object-lambda" {
   handler        = "handlers.delete_document_object_handler.lambda_handler"
   lambda_timeout = 900
   iam_role_policy_documents = [
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
-    module.ndr-document-store.s3_read_policy_document,
-    module.ndr-document-store.s3_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
@@ -74,7 +70,6 @@ resource "aws_iam_policy" "dynamodb_stream_delete_object_policy" {
         Effect = "Allow"
         Resource = [
           module.lloyd_george_reference_dynamodb_table.dynamodb_stream_arn,
-          module.document_reference_dynamodb_table.dynamodb_stream_arn,
           module.unstitched_lloyd_george_reference_dynamodb_table.dynamodb_stream_arn
         ]
       },
@@ -124,23 +119,3 @@ resource "aws_lambda_event_source_mapping" "unstitched_lloyd_george_dynamodb_str
   }
 }
 
-resource "aws_lambda_event_source_mapping" "document_reference_dynamodb_stream" {
-  event_source_arn  = module.document_reference_dynamodb_table.dynamodb_stream_arn
-  function_name     = module.delete-document-object-lambda.lambda_arn
-  batch_size        = 1
-  starting_position = "LATEST"
-
-  filter_criteria {
-    filter {
-      pattern = jsonencode({
-        "eventName" : [
-          "REMOVE"
-        ],
-        userIdentity = {
-          type        = ["Service"],
-          principalId = ["dynamodb.amazonaws.com"]
-        }
-      })
-    }
-  }
-}
