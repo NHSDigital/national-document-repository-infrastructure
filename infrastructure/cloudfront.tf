@@ -128,7 +128,7 @@ resource "aws_cloudfront_distribution" "s3_presign_mask" {
 }
 
 resource "aws_cloudfront_function" "block_invalid_urls" {
-  name    = "block-invalid-urls"
+  name    = "${terraform.workspace}-block-invalid-urls"
   runtime = "cloudfront-js-2.0"
   comment = "Blocks invalid URL requests"
   publish = true
