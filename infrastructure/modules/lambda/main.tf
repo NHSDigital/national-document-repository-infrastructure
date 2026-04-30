@@ -25,7 +25,6 @@ resource "aws_lambda_function" "lambda" {
     security_group_ids = var.vpc_security_group_ids
   }
 
-  layers = local.lambda_layers
 
   lifecycle {
     ignore_changes = [
