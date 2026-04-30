@@ -6,7 +6,7 @@ data "aws_caller_identity" "current" {}
 
 data "archive_file" "lambda_layer_placeholder" {
   type        = "zip"
-  source_file = "placeholder_lambda.py"
+  source_file = "code/py/placeholder_lambda.py"
   output_path = "placeholder_lambda_payload.zip"
 }
 

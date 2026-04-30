@@ -36,7 +36,9 @@ tfplan
 .idea/
 .vscode/
 venv/
+coverage/
 
 #Ignore certificates
 scripts/csrs
 scripts/keys
+infrastructure/code/dist
