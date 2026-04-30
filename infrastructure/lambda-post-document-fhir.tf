@@ -7,7 +7,6 @@ module "post-document-references-fhir-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.core_dynamodb_table.dynamodb_write_policy_document,
     module.ndr-bulk-staging-store.s3_write_policy_document,
-    module.ndr-app-config.app_config_policy,
     aws_iam_policy.mtls_access_ssm_policy.policy,
     aws_iam_policy.ssm_access_policy.policy
   ]
@@ -17,9 +16,6 @@ module "post-document-references-fhir-lambda" {
   http_methods        = ["POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION           = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT           = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION         = module.ndr-app-config.app_config_configuration_profile_id
     STAGING_STORE_BUCKET_NAME       = "${terraform.workspace}-${var.staging_store_bucket_name}"
     DOCUMENT_RETRIEVE_ENDPOINT_APIM = "${local.apim_api_url}/DocumentReference"
     PDS_FHIR_IS_STUBBED             = local.is_sandbox

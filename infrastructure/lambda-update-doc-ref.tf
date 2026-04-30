@@ -53,7 +53,6 @@ module "update-doc-ref-lambda" {
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
-    module.ndr-app-config.app_config_policy,
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = aws_api_gateway_rest_api.ndr_doc_store_api.id
@@ -63,9 +62,6 @@ module "update-doc-ref-lambda" {
   api_execution_arn = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
     STAGING_STORE_BUCKET_NAME     = module.ndr-bulk-staging-store.bucket_id
-    APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_STORE_BUCKET_NAME    = module.ndr-document-store.bucket_id
     DOCUMENT_STORE_DYNAMODB_NAME  = module.document_reference_dynamodb_table.table_name
     LLOYD_GEORGE_DYNAMODB_NAME    = module.lloyd_george_reference_dynamodb_table.table_name

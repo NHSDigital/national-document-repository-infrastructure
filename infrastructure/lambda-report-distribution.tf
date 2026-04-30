@@ -12,10 +12,7 @@ module "report-distribution-lambda" {
   ]
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION   = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT   = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION = module.ndr-app-config.app_config_configuration_profile_id
-    WORKSPACE               = terraform.workspace
+    WORKSPACE = terraform.workspace
 
     REPORT_BUCKET_NAME = module.ndr-report-store.bucket_id
     CONTACT_TABLE_NAME = module.bulk_upload_contact_lookup_table.table_name

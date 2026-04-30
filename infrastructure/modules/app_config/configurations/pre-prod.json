@@ -1,72 +1,12 @@
 {
     "flags": {
-        "uploadLloydGeorgeWorkflowEnabled": {
-            "name": "uploadLloydGeorgeWorkflowEnabled"
-        },
-        "uploadLambdaEnabled": {
-            "name": "uploadLambdaEnabled"
-        },
-        "uploadArfWorkflowEnabled": {
-            "name": "uploadArfWorkflowEnabled"
-        },
         "useSmartcardAuth": {
             "name": "useSmartcardAuth"
-        },
-        "lloydGeorgeValidationStrictModeEnabled": {
-            "name": "lloydGeorgeValidationStrictModeEnabled"
-        },
-        "uploadDocumentIteration2Enabled": {
-            "name": "uploadDocumentIteration2Enabled"
-        },
-        "uploadDocumentIteration3Enabled": {
-            "name": "uploadDocumentIteration3Enabled"
-        },
-        "bulkUploadSendToReviewEnabled": {
-          "name": "bulkUploadSendToReviewEnabled"
-        },
-        "documentCorrectEnabled": {
-          "name": "documentCorrectEnabled"
-        },
-        "userRestrictionEnabled": {
-            "name": "userRestrictionEnabled"
-        },
-        "versionHistoryEnabled": {
-          "name": "versionHistoryEnabled"
         }
     },
     "values": {
-        "uploadLloydGeorgeWorkflowEnabled": {
-            "enabled": "true"
-        },
-        "uploadLambdaEnabled": {
-            "enabled": "true"
-        },
-        "uploadArfWorkflowEnabled": {
-            "enabled": "false"
-        },
         "useSmartcardAuth": {
             "enabled": "true"
-        },
-        "lloydGeorgeValidationStrictModeEnabled": {
-            "enabled": "false"
-        },
-        "uploadDocumentIteration2Enabled": {
-            "enabled": "true"
-        },
-        "uploadDocumentIteration3Enabled": {
-            "enabled": "true"
-        },
-        "bulkUploadSendToReviewEnabled": {
-          "enabled": "true"
-        },
-        "documentCorrectEnabled": {
-          "enabled": "true"
-        },
-        "userRestrictionEnabled": {
-            "enabled": "true"
-        },
-        "versionHistoryEnabled": {
-          "enabled": "true"
         }
     },
     "version": "1"

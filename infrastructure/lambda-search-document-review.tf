@@ -3,7 +3,6 @@ module "search_document_review_lambda" {
   name    = "SearchDocumentReview"
   handler = "handlers.search_document_review_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.ndr-app-config.app_config_policy,
     module.document_upload_review_dynamodb_table.dynamodb_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy
   ]
@@ -16,9 +15,6 @@ module "search_document_review_lambda" {
   is_gateway_integration_needed = true
   is_invoked_from_gateway       = true
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
     WORKSPACE                     = terraform.workspace
     PDS_FHIR_IS_STUBBED           = local.is_sandbox

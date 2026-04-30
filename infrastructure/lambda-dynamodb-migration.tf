@@ -10,7 +10,6 @@ module "migration-dynamodb-lambda" {
     module.ndr-bulk-staging-store.s3_read_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     aws_iam_policy.ssm_access_policy.policy,
-    module.ndr-app-config.app_config_policy,
     module.migration-failed-items-store.s3_write_policy_document
   ]
 
@@ -22,9 +21,6 @@ module "migration-dynamodb-lambda" {
 
   lambda_environment_variables = {
     WORKSPACE                                = terraform.workspace
-    APPCONFIG_APPLICATION                    = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT                    = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION                  = module.ndr-app-config.app_config_configuration_profile_id
     MIGRATION_FAILED_ITEMS_STORE_BUCKET_NAME = "${terraform.workspace}-${var.migration_failed_items_store_bucket_name}"
   }
 

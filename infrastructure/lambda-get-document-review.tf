@@ -3,7 +3,6 @@ module "get_document_review_lambda" {
   name    = "GetDocumentReview"
   handler = "handlers.get_document_review_handler.lambda_handler"
   iam_role_policy_documents = [
-    module.ndr-app-config.app_config_policy,
     module.cloudfront_edge_dynamodb_table.dynamodb_read_policy_document,
     module.cloudfront_edge_dynamodb_table.dynamodb_write_policy_document,
     module.document_upload_review_dynamodb_table.dynamodb_read_policy_document,
@@ -19,9 +18,6 @@ module "get_document_review_lambda" {
   is_gateway_integration_needed = true
   is_invoked_from_gateway       = true
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION         = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT         = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION       = module.ndr-app-config.app_config_configuration_profile_id
     DOCUMENT_REVIEW_DYNAMODB_NAME = module.document_upload_review_dynamodb_table.table_name
     EDGE_REFERENCE_TABLE          = module.cloudfront_edge_dynamodb_table.table_name
     CLOUDFRONT_URL                = one(aws_cloudfront_distribution.s3_presign_mask.aliases)

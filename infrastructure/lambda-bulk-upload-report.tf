@@ -9,16 +9,12 @@ module "bulk-upload-report-lambda" {
     module.bulk_upload_report_dynamodb_table.dynamodb_read_policy_document,
     module.bulk_upload_report_dynamodb_table.dynamodb_write_policy_document,
     aws_iam_policy.dynamodb_policy_scan_bulk_report.policy,
-    module.ndr-app-config.app_config_policy
   ]
   kms_deletion_window = var.kms_deletion_window
   rest_api_id         = null
   api_execution_arn   = null
 
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION      = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT      = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION    = module.ndr-app-config.app_config_configuration_profile_id
     WORKSPACE                  = terraform.workspace
     STATISTICAL_REPORTS_BUCKET = "${terraform.workspace}-${var.statistical_reports_bucket_name}"
     BULK_UPLOAD_DYNAMODB_NAME  = "${terraform.workspace}_${var.bulk_upload_report_dynamodb_table_name}"

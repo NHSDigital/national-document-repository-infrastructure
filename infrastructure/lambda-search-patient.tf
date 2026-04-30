@@ -57,7 +57,6 @@ module "search-patient-details-lambda" {
   handler = "handlers.search_patient_details_handler.lambda_handler"
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
-    module.ndr-app-config.app_config_policy,
     module.auth_session_dynamodb_table.dynamodb_write_policy_document,
     module.auth_session_dynamodb_table.dynamodb_read_policy_document,
     module.user_restriction_table.dynamodb_read_policy_document,
@@ -67,9 +66,6 @@ module "search-patient-details-lambda" {
   resource_id         = module.search-patient-details-gateway.gateway_resource_id
   http_methods        = ["GET"]
   lambda_environment_variables = {
-    APPCONFIG_APPLICATION          = module.ndr-app-config.app_config_application_id
-    APPCONFIG_ENVIRONMENT          = module.ndr-app-config.app_config_environment_id
-    APPCONFIG_CONFIGURATION        = module.ndr-app-config.app_config_configuration_profile_id
     SSM_PARAM_JWT_TOKEN_PUBLIC_KEY = "jwt_token_public_key"
     PDS_FHIR_IS_STUBBED            = local.is_sandbox
     WORKSPACE                      = terraform.workspace
