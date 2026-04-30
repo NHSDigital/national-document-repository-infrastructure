@@ -66,8 +66,8 @@ module "update-upload-state-lambda" {
   http_methods        = ["POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    WORKSPACE                    = terraform.workspace,
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    WORKSPACE                  = terraform.workspace,
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,

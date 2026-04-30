@@ -71,11 +71,11 @@ module "document-manifest-job-lambda" {
   http_methods        = ["GET", "POST"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    ZIPPED_STORE_BUCKET_NAME     = "${terraform.workspace}-${var.zip_store_bucket_name}"
-    ZIPPED_STORE_DYNAMODB_NAME   = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
-    WORKSPACE                    = terraform.workspace
-    PRESIGNED_ASSUME_ROLE        = aws_iam_role.manifest_presign_url_role.arn
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    ZIPPED_STORE_BUCKET_NAME   = "${terraform.workspace}-${var.zip_store_bucket_name}"
+    ZIPPED_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.zip_store_dynamodb_table_name}"
+    WORKSPACE                  = terraform.workspace
+    PRESIGNED_ASSUME_ROLE      = aws_iam_role.manifest_presign_url_role.arn
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
