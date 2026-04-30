@@ -63,6 +63,14 @@ runs:
         aws-region: ${{ inputs.aws_region }}
         mask-aws-account-id: true
 
+    - name: Generate CloudFront function
+      run: 
+        npm ci 
+        npm run test
+        npm run build
+      working-directory: ./infrastructure/code
+      shell: bash
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v4
       with:
