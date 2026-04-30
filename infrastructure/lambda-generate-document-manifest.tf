@@ -47,8 +47,6 @@ module "generate-document-manifest-lambda" {
   lambda_timeout           = 900
   lambda_ephemeral_storage = 512
   iam_role_policy_documents = [
-    module.ndr-document-store.s3_read_policy_document,
-    module.ndr-document-store.s3_write_policy_document,
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.ndr-lloyd-george-store.s3_write_policy_document,
     module.zip_store_reference_dynamodb_table.dynamodb_read_policy_document,
@@ -73,7 +71,6 @@ module "generate-document-manifest-lambda" {
     module.ndr-app-config,
     module.zip_store_reference_dynamodb_table,
     module.ndr-zip-request-store,
-    module.ndr-document-store,
     module.ndr-lloyd-george-store,
     aws_iam_policy.dynamodb_stream_manifest
   ]

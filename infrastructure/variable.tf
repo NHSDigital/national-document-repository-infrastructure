@@ -33,11 +33,6 @@ variable "cloudfront_subdomain" {
 }
 
 # Bucket Variables
-variable "docstore_bucket_name" {
-  description = "The name of the S3 bucket to store ARF documents."
-  type        = string
-  default     = "ndr-document-store"
-}
 
 variable "migration_dynamodb_segment_store_bucket_name" {
   description = "The name of the S3 bucket to store the segments for DynamoDB migration."
@@ -118,11 +113,6 @@ variable "pdm_dynamodb_table_name" {
   default     = "PDMDocumentMetadata"
 }
 
-variable "docstore_dynamodb_table_name" {
-  description = "The name of the DynamoDB table to store the metadata of ARF documents."
-  type        = string
-  default     = "DocumentReferenceMetadata"
-}
 
 variable "lloyd_george_dynamodb_table_name" {
   description = "The name of the DynamoDB table to store the metadata of Lloyd George documents."

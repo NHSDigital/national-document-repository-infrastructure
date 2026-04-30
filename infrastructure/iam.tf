@@ -9,7 +9,7 @@ resource "aws_iam_policy" "s3_document_data_policy_put_only" {
         "Action" : [
           "s3:PutObject",
         ],
-        "Resource" : ["${module.ndr-bulk-staging-store.bucket_arn}/*", "${module.ndr-document-store.bucket_arn}/*"]
+        "Resource" : ["${module.ndr-bulk-staging-store.bucket_arn}/*"]
       }
     ]
   })

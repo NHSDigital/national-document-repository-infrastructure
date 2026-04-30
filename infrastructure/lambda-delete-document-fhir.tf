@@ -14,10 +14,6 @@ module "delete-document-references-fhir-lambda" {
     module.ndr-lloyd-george-store.s3_read_policy_document,
     module.pdm-document-store.s3_write_policy_document,
     module.ndr-lloyd-george-store.s3_write_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
-    module.ndr-document-store.s3_read_policy_document,
-    module.ndr-document-store.s3_write_policy_document,
     module.stitch_metadata_reference_dynamodb_table.dynamodb_read_policy_document,
     module.stitch_metadata_reference_dynamodb_table.dynamodb_write_policy_document,
     module.sqs-nrl-queue.sqs_read_policy_document,
@@ -35,7 +31,6 @@ module "delete-document-references-fhir-lambda" {
     ENVIRONMENT                           = var.environment
     LLOYD_GEORGE_BUCKET_NAME              = "${terraform.workspace}-${var.lloyd_george_bucket_name}"
     LLOYD_GEORGE_DYNAMODB_NAME            = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    DOCUMENT_STORE_DYNAMODB_NAME          = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
     STITCH_METADATA_DYNAMODB_NAME         = "${terraform.workspace}_${var.stitch_metadata_dynamodb_table_name}"
     UNSTITCHED_LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.unstitched_lloyd_george_dynamodb_table_name}"
     NRL_SQS_QUEUE_URL                     = module.sqs-nrl-queue.sqs_url
@@ -44,7 +39,6 @@ module "delete-document-references-fhir-lambda" {
     module.lloyd_george_reference_dynamodb_table,
     module.core_dynamodb_table,
     aws_api_gateway_rest_api.ndr_doc_store_api,
-    module.document_reference_dynamodb_table,
     module.stitch_metadata_reference_dynamodb_table,
     module.ndr-app-config
   ]

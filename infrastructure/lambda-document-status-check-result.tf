@@ -58,8 +58,6 @@ module "document-status-check-lambda" {
   handler = "handlers.document_status_check_handler.lambda_handler"
   iam_role_policy_documents = [
     aws_iam_policy.ssm_access_policy.policy,
-    module.document_reference_dynamodb_table.dynamodb_read_policy_document,
-    module.document_reference_dynamodb_table.dynamodb_write_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_read_policy_document,
     module.lloyd_george_reference_dynamodb_table.dynamodb_write_policy_document,
   ]
@@ -69,9 +67,8 @@ module "document-status-check-lambda" {
   http_methods        = ["GET"]
   api_execution_arn   = aws_api_gateway_rest_api.ndr_doc_store_api.execution_arn
   lambda_environment_variables = {
-    DOCUMENT_STORE_DYNAMODB_NAME = "${terraform.workspace}_${var.docstore_dynamodb_table_name}"
-    LLOYD_GEORGE_DYNAMODB_NAME   = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
-    WORKSPACE                    = terraform.workspace
+    LLOYD_GEORGE_DYNAMODB_NAME = "${terraform.workspace}_${var.lloyd_george_dynamodb_table_name}"
+    WORKSPACE                  = terraform.workspace
   }
   depends_on = [
     aws_api_gateway_rest_api.ndr_doc_store_api,
@@ -79,6 +76,5 @@ module "document-status-check-lambda" {
     module.document-status-check-gateway,
     module.ndr-app-config,
     module.lloyd_george_reference_dynamodb_table,
-    module.document_reference_dynamodb_table,
   ]
 }
