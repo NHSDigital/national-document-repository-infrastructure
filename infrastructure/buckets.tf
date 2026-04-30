@@ -543,3 +543,12 @@ resource "aws_s3_bucket_lifecycle_configuration" "ses_feedback_lifecycle_rules" 
     }
   }
 }
+
+resource "aws_s3_object" "sample_ingestion_files" {
+  for_each = { for f in fileset("${path.module}/sample_ingestion_setup", "**") : f => f }
+
+  bucket = module.ndr-bulk-staging-store.bucket_id
+  key    = each.value
+  source = "${path.module}/sample_ingestion_setup/${each.value}"
+  etag   = filemd5("${path.module}/sample_ingestion_setup/${each.value}")
+}
